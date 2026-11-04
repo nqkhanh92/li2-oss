@@ -1,0 +1,179 @@
+name: CI
+
+# Chạy khi push lên nhánh chính và với mọi pull request.
+#
+# ⚠ `pull_request` (KHÔNG phải `pull_request_target`) là có chủ ý. Với `pull_request`, GitHub
+# **không** cấp secret cho PR đến từ fork — nên người lạ mở PR không chạy được gì bằng token của
+# repo này. Đổi sang `pull_request_target` là cách người ta thường "sửa" để workflow chạy được
+# trên PR fork, và đúng lúc đó nó thành một lỗ thật. Đừng đổi.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Huỷ lần chạy cũ khi có push mới trên cùng nhánh — không trả tiền cho kết quả không ai đọc.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 1 — "bản clone có chạy được không". Đặt TRƯỚC vì nó bắt loại lỗi mà
+  # typecheck/test/build không bao giờ thấy.
+  #
+  # Chuyện đã xảy ra thật 2026-11-04: `public/` rỗng nên git không lưu, mà
+  # `Dockerfile` có `COPY /app/public`. Bản clone không build được, trong khi
+  # cả bốn cổng chạy trên máy dev đều xanh — vì chúng chạy trong thư mục ĐÃ CÓ
+  # `public/`. Job này chạy trên máy trắng với đúng những gì nằm trong git, nên
+  # nó là job duy nhất nhìn repo từ ngoài vào, giống người lạ tải về.
+  # ─────────────────────────────────────────────────────────────────────────
+  clone-chay-duoc:
+    name: Bản clone chạy được (docker compose + e2e)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      # `actions/checkout` chính là một bản clone sạch — không có file nào ngoài git.
+      - uses: actions/checkout@v4
+
+      - name: Dựng .env đúng như README bảo người dùng làm
+        run: |
+          cp .env.example .env
+          # Sinh secret ngay tại đây. Không dùng GitHub Secret: CI không cần
+          # giá trị thật, và một secret thật trong CI là một secret nữa phải canh.
+          SECRET=$(openssl rand -base64 32)
+          SEED_PW="ci-$(openssl rand -hex 12)"
+          python3 - "$SECRET" <<'PY'
+          import sys, re
+          s = open('.env').read()
+          s = re.sub(r'(?m)^SESSION_SECRET=.*$', f'SESSION_SECRET={sys.argv[1]}', s)
+          s = re.sub(r'(?m)^PUBLIC_BASE_URL=.*$', 'PUBLIC_BASE_URL=http://localhost:3000', s)
+          open('.env', 'w').write(s)
+          PY
+          # Mật khẩu seed truyền qua biến của job, không ghi vào .env.
+          echo "SEED_PW=$SEED_PW" >> "$GITHUB_ENV"
+
+      - name: docker compose up
+        run: docker compose up -d
+
+      - name: Chờ web lên
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf -o /dev/null http://localhost:3000/login; then
+              echo "web lên sau $((i*2))s"; exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::web không lên trong 120s"
+          exit 1
+
+      - name: Tạo tài khoản admin (bước 5 của README)
+        run: docker compose exec -T web node scripts/db-seed.mjs ci@example.com "$SEED_PW"
+
+      - name: E2E
+        env:
+          BASE_URL: http://localhost:3000
+          E2E_EMAIL: ci@example.com
+        run: E2E_PASSWORD="$SEED_PW" node scripts/e2e.mjs --rate-limit
+
+      - name: Dọn artifact (kiểm script GC chạy được)
+        run: docker compose exec -T web node scripts/artifacts-gc.mjs
+
+      # Log chỉ in khi có lỗi — thất bại mà không có log thì phải chạy lại mới biết gì.
+      - name: Log container khi thất bại
+        if: failure()
+        run: |
+          echo "── web"; docker compose logs web --tail 120
+          echo "── db";  docker compose logs db  --tail 40
+
+      - name: Hạ stack
+        if: always()
+        run: docker compose down -v
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 2 — kiểm mã. Nhanh hơn job 1 nhưng xếp sau vì nó kiểm thứ hẹp hơn.
+  # Chạy song song với job 1, không phụ thuộc nhau.
+  # ─────────────────────────────────────────────────────────────────────────
+  kiem-ma:
+    name: typecheck + test + build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      # `--frozen-lockfile`: lệch `yarn.lock` thì ĐỎ, không tự sửa. Một CI tự cập
+      # nhật lockfile là một CI kiểm bản không ai review.
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn typecheck
+
+      - run: yarn test
+
+      # `next build` bắt được thứ vitest không bắt — trong lúc dựng v1 có đúng hai
+      # lỗi type mà test xanh vẫn để lọt.
+      - run: yarn build
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 3 — chuỗi bị cấm. Đây là phòng tuyến cho nhóm lỗi mà "chọn file nào
+  # mang sang" không chặn được: vấn đề nằm BÊN TRONG một file bắt buộc phải có.
+  #
+  # Bản thương mại có 59 file hard-code `li2.ai`, 12 UUID khách hàng thật trong
+  # source, và số tài khoản ngân hàng trong một component. Repo này viết mới nên
+  # sạch — job này giữ nó sạch.
+  # ─────────────────────────────────────────────────────────────────────────
+  chuoi-bi-cam:
+    name: Không có domain/định danh riêng trong source
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Quét chuỗi bị cấm
+        run: |
+          set -u
+          # Mỗi mục: chuỗi cần cấm. Dòng có `blocklist-ok:` được miễn — miễn theo
+          # DÒNG, không theo file: loại theo file thì một hit mới trong cùng file
+          # sẽ im lặng.
+          PATTERNS='li2\.ai|lihi\.cyborg\.services|quik\.vn|118\.69\.82\.86|998228|970407|li2\.link|li2\.sh'
+
+          # Bỏ qua chính thư mục .github (file này nhắc các chuỗi đó để giải thích)
+          # và tài liệu — docs/ADR nói về bản thương mại nên phải nhắc tên nó.
+          HITS=$(grep -rnE "$PATTERNS" \
+                   --include='*.ts' --include='*.tsx' --include='*.mjs' \
+                   --include='*.js' --include='*.sql' --include='*.yml' \
+                   . 2>/dev/null \
+                 | grep -v 'blocklist-ok:' \
+                 | grep -v '\.github/' \
+                 || true)
+
+          if [ -n "$HITS" ]; then
+            echo "::error::Tìm thấy domain hoặc định danh riêng trong source:"
+            echo "$HITS"
+            echo ""
+            echo "Sửa bằng cách đưa giá trị ra biến môi trường."
+            echo "Nếu một dòng thật sự hợp lệ, thêm comment '// blocklist-ok: <lý do>' ngay dòng đó."
+            exit 1
+          fi
+          echo "✓ Không có chuỗi bị cấm."
+
+      - name: Cấm giá trị mặc định trỏ tới domain người khác
+        run: |
+          set -u
+          # `PUBLIC_BASE_URL` phải RỖNG trong .env.example. Một mặc định ở đây là
+          # cách bản thương mại đã mời người self-host trỏ link về domain của Li2.
+          VAL=$(grep -E '^PUBLIC_BASE_URL=' .env.example | head -1 | cut -d= -f2-)
+          if [ -n "$VAL" ]; then
+            echo "::error::.env.example đặt PUBLIC_BASE_URL=$VAL — phải để rỗng."
+            exit 1
+          fi
+          echo "✓ PUBLIC_BASE_URL để rỗng."

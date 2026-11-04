@@ -160,3 +160,43 @@ git clone <repo> /tmp/x && cd /tmp/x   # rồi làm ĐÚNG README, không thêm 
 ```
 
 Nếu có CI sau này thì đây là job đầu tiên nên có — nó bắt loại lỗi mà `yarn build` không thấy.
+
+## 2026-11-04 (tiếp) — thêm CI
+
+`.github/workflows/ci.yml`, 3 job chạy song song.
+
+| Job | Kiểm gì | Vì sao có |
+|---|---|---|
+| **`clone-chay-duoc`** | `docker compose up` → seed → `e2e --rate-limit` → `artifacts-gc` | **Job quan trọng nhất.** `actions/checkout` là một bản clone sạch, nên nó nhìn repo **từ ngoài vào** — đúng góc nhìn bắt được lỗi `public/` mà cả bốn cổng cục bộ đều không thấy |
+| `kiem-ma` | `typecheck` + `test` + `build`, `yarn install --frozen-lockfile` | Nhanh hơn, nhưng kiểm hẹp hơn |
+| `chuoi-bi-cam` | Quét `li2.ai`, `lihi.cyborg.services`, `quik.vn`, IP, số tài khoản, `li2.link/sh`. Và `PUBLIC_BASE_URL` phải RỖNG trong `.env.example` | Phòng tuyến cho nhóm lỗi "nằm bên trong một file bắt buộc phải có" — chọn file nào mang sang không chặn được nhóm này |
+
+### Ba quyết định trong file CI, kèm lý do
+
+1. **`pull_request`, KHÔNG `pull_request_target`.** Với `pull_request`, GitHub không cấp secret
+   cho PR từ fork, nên người lạ mở PR không chạy được gì bằng token của repo. Đổi sang
+   `pull_request_target` là cách người ta thường "sửa" để workflow chạy trên PR fork — và đúng
+   lúc đó nó thành lỗ thật. Có comment cảnh báo ngay đầu file.
+2. **`--frozen-lockfile`.** Lệch `yarn.lock` thì đỏ, không tự sửa. Một CI tự cập nhật lockfile là
+   một CI kiểm bản không ai review.
+3. **Miễn trừ theo DÒNG (`blocklist-ok:`), không theo file.** Loại theo tên file thì một hit mới
+   trong cùng file sẽ im lặng; loại theo dòng thì hit mới luôn đỏ.
+
+### Đã chạy thử cục bộ từng bước — và job 3 ĐỎ ngay lần đầu
+
+```
+docker-compose.yml:34   comment nhắc `li2.ai` để giải thích   → đánh dấu blocklist-ok
+.github/workflows/*     bộ lọc .github của tôi viết sai        → sửa regex
+```
+
+Negative control: nhét `const X = 'https://api.li2.ai/v1'` vào `lib/links/destination.ts` →
+
+```
+✓ BẮT ĐƯỢC: lib/links/destination.ts:44
+```
+
+Khôi phục → xanh lại. Và kiểm `pull_request_target` chỉ xuất hiện trong comment, không phải
+trigger (`grep -nE "^\s+pull_request_target:"` → rỗng).
+
+⚠ **CI chưa chạy thật** vì repo chưa có remote. Mọi bước đã chạy cục bộ; lần chạy thật đầu tiên
+sẽ là lần push đầu tiên.

@@ -31,7 +31,7 @@ services:
     environment:
       DATABASE_URL: postgres://li2:${POSTGRES_PASSWORD:-li2_dev_only}@db:5432/li2
       # Địa chỉ công khai của instance NÀY. Không có giá trị mặc định trỏ về bất kỳ domain nào
-      # của người khác — bản thương mại có 59 file hard-code `li2.ai`, đây là chỗ không lặp lại.
+      # của người khác. (blocklist-ok: nhắc tên bản thương mại trong comment giải thích)
       PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
       SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET chua duoc dat - xem .env.example}
       STORAGE_DIR: /data/artifacts
