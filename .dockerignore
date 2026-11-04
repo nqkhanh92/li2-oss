@@ -1,0 +1,39 @@
+# Giữ build context nhỏ, và quan trọng hơn: giữ `.env` khỏi đi vào image.
+# Secret đi vào image là secret đi vào mọi bản copy của image đó.
+
+.git
+.gitignore
+node_modules
+.next
+out
+dist
+
+# Tuyệt đối không copy env thật vào image. `.env.example` thì được — nó không có giá trị nào.
+.env
+.env.*
+!.env.example
+
+# Dữ liệu người dùng: không thuộc image.
+data
+storage
+*.sqlite
+*.sqlite3
+
+__tests__
+coverage
+*.test.ts
+*.test.tsx
+vitest.config.ts
+
+README.md
+LICENSE
+docs
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
+.DS_Store
+*.log
+.vscode
+.idea

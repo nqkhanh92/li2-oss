@@ -1,0 +1,23 @@
+node_modules
+.next
+out
+dist
+coverage
+
+# Env thật không bao giờ vào git. Chỉ `.env.example` được commit, và nó không chứa giá trị nào.
+.env
+.env.*
+!.env.example
+
+# Tệp người dùng tải lên (STORAGE_DIR khi chạy ngoài Docker).
+data
+storage
+
+.DS_Store
+*.log
+npm-debug.log*
+yarn-error.log
+.vscode
+.idea
+next-env.d.ts
+*.tsbuildinfo

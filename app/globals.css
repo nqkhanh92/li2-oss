@@ -1,0 +1,280 @@
+/* CSS thuần, không framework.
+ *
+ * Vì sao: toàn bộ UI của v1 là một trang đăng nhập, một bảng và hai form. Tailwind cho việc đó
+ * thêm một bước build, một file config và một lớp cú pháp mà người tự host phải học trước khi
+ * sửa được màu một cái nút. File này đọc hết trong hai phút.
+ *
+ * Màu lấy từ biến để `prefers-color-scheme` chỉ phải đổi một chỗ — bản thương mại từng sửa dark
+ * mode bằng cách chạm 600 file, trong khi lỗ thật nằm ở 10 dòng biến CSS. */
+
+:root {
+  --bg: #fbfbfa;
+  --surface: #ffffff;
+  --border: #e3e3e0;
+  --text: #1c1c1a;
+  --muted: #6b6b66;
+  --accent: #1f6feb;
+  --accent-text: #ffffff;
+  --danger: #b4232a;
+  --radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17181a;
+    --surface: #1f2124;
+    --border: #35383d;
+    --text: #e8e8e6;
+    --muted: #9a9a95;
+    --accent: #4d8ef7;
+    --accent-text: #0b0c0d;
+    --danger: #e0575f;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.55 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* ─────────────────────────────────────────────────────────────── khung trang */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar .brand {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.topbar .spacer {
+  flex: 1;
+}
+
+.page {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+}
+
+.page-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 21px;
+  margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ─────────────────────────────────────────────────────────────── form */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.card-narrow {
+  max-width: 400px;
+  margin: 72px auto;
+}
+
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.field > span {
+  display: block;
+  font-size: 13px;
+  font-weight: 550;
+  margin-bottom: 5px;
+}
+
+.field > .hint {
+  font-weight: 400;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='url'] {
+  width: 100%;
+  padding: 8px 10px;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+input:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ─────────────────────────────────────────────────────────────── nút */
+
+button,
+.btn {
+  display: inline-block;
+  padding: 7px 13px;
+  font: inherit;
+  font-weight: 550;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover,
+.btn:hover {
+  border-color: var(--muted);
+}
+
+button.primary {
+  color: var(--accent-text);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+button.link-danger {
+  color: var(--danger);
+  border: none;
+  background: none;
+  padding: 2px 0;
+}
+
+.btn-small,
+button.btn-small {
+  padding: 4px 9px;
+  font-size: 13px;
+  font-weight: 450;
+}
+
+/* ─────────────────────────────────────────────────────────────── thông báo */
+
+.alert {
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 14px;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+}
+
+/* ─────────────────────────────────────────────────────────────── bảng link */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+td.actions {
+  white-space: nowrap;
+  text-align: right;
+}
+
+td.actions form {
+  display: inline;
+}
+
+/* Đích có thể dài 2048 ký tự; cắt bằng CSS để một hàng không đẩy bảng tràn ngang. */
+td .truncate {
+  display: block;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+tr.off td {
+  opacity: 0.5;
+}
+
+.badge-off {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 6px;
+}
+
+.empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--muted);
+}

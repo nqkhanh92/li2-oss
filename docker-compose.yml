@@ -1,0 +1,46 @@
+# Một lệnh `docker compose up` là chạy được. Đây là điều kiện tiên quyết của cả dự án:
+# báo cáo đánh giá bản thương mại kết luận "hôm nay không ai clone về chạy được" vì repo không
+# chứa schema DB. Ở đây schema được mount vào initdb nên lần `up` đầu tiên đã có bảng.
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: li2
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-li2_dev_only}
+      POSTGRES_DB: li2
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # Chỉ chạy khi volume còn trống. Đổi schema sau đó thì dùng `yarn db:init`.
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U li2 -d li2']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Không publish cổng ra ngoài theo mặc định. Cần psql từ máy thì bỏ comment:
+    # ports: ['5432:5432']
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://li2:${POSTGRES_PASSWORD:-li2_dev_only}@db:5432/li2
+      # Địa chỉ công khai của instance NÀY. Không có giá trị mặc định trỏ về bất kỳ domain nào
+      # của người khác — bản thương mại có 59 file hard-code `li2.ai`, đây là chỗ không lặp lại.
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET chua duoc dat - xem .env.example}
+      STORAGE_DIR: /data/artifacts
+      MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-31457280}
+    volumes:
+      - artifacts:/data/artifacts
+    ports:
+      - '${PORT:-3000}:3000'
+
+volumes:
+  db_data:
+  artifacts:

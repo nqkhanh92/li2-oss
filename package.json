@@ -1,0 +1,37 @@
+{
+  "name": "li2-oss",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "description": "Short link + QR + artifact hosting. Single-tenant, self-hosted, Postgres only.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "db:init": "node scripts/db-init.mjs",
+    "db:seed": "node scripts/db-seed.mjs"
+  },
+  "dependencies": {
+    "next": "15.5.29",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "pg": "8.13.1",
+    "qrcode": "1.5.4",
+    "zod": "3.24.1",
+    "nanoid": "5.0.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.5",
+    "@types/pg": "8.11.10",
+    "@types/qrcode": "1.5.5",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
+    "typescript": "5.7.3",
+    "vitest": "2.1.8"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
