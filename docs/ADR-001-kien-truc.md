@@ -49,6 +49,28 @@ Một người clone về, chạy `docker compose up`, rồi làm được **đ�
 Không có trong v1 (ghi rõ trong README để không hứa thứ chưa có): analytics nâng cao, heatmap,
 session recording, funnel, attribution/conversion, affiliate, custom domain, chat AI, MCP.
 
+## Bốn lỗ ba agent nêu ra mà bản đầu của ADR này không nói — và xử thế nào
+
+Bản đầu được viết trước khi có code. Ba agent viết code đọc nó rồi chỉ ra bốn chỗ im lặng. Hai đã
+làm, hai đẩy sang `ROADMAP.md`.
+
+| Lỗ | Ai nêu | Xử |
+|---|---|---|
+| **Không có rate limit đăng nhập.** `verifyPassword` tốn ~100ms scrypt, và đường đăng nhập gọi nó **cả khi email không tồn tại** (cố ý, để không tiết lộ email nào có thật). Nên ai cũng buộc được máy chủ tính scrypt — DoS rẻ nhất có thể, và là **hệ quả trực tiếp của hai quyết định bảo mật đúng** | `oss-auth-ui` | **ĐÃ LÀM** — `lib/auth/rate-limit.ts`, 10 lần / 15 phút, kiểm **trước** khi gọi `authenticate`. Nghiệm thu: lần 11 trả `429` + `Retry-After: 900` |
+| **Không ai dọn tệp artifact đã xoá.** Xoá artifact chỉ đổi `status` trong DB (và phải vậy — một QR đã in cần trang "đã gỡ", không phải 404 im lặng), nên volume phình mãi | `oss-artifact` | **ĐÃ LÀM** — `scripts/artifacts-gc.mjs`, mặc định **chỉ in**, phải `--apply` mới xoá. Giữ lại hàng DB có chủ ý. Chặn path traversal ngay trong script dọn vì `storage_path` đến từ DB, và "dữ liệu của mình" không phải lý do để tin |
+| **Không nhắc migration.** `db/schema.sql` là **ảnh chụp**, không phải chuỗi migration. Nâng cấp một instance đang chạy chưa có đường | `oss-infra` | → `ROADMAP.md`. v1 không hứa nâng cấp tại chỗ |
+| **Không nhắc CSRF** | `oss-auth-ui` | Hiện dựa vào `sameSite=lax` + logout chỉ nhận POST. Đủ cho v1, ghi rõ ở `ROADMAP.md` thay vì để người đọc tưởng có token CSRF |
+
+## Hai chỗ chỉ thị của tôi tự mâu thuẫn, và agent phải tự quyết
+
+Ghi lại vì đây là lỗi của tôi lúc giao việc, không phải của agent:
+
+- **Slug**: tôi viết cả *"chuẩn hoá chữ thường"* và *"từ chối chữ hoa"*; cả *"rỗng → sinh nanoid"* và
+  *"rỗng bị từ chối"*. `oss-auth-ui` chọn **chuẩn hoá + sinh tự động** và viết test chốt cả hai mặt.
+  Lựa chọn đúng: người dùng gõ `Demo` nên ra `/demo`, không nên gặp lỗi.
+- **`lib/auth/password.ts` làm cả repo đỏ** và **cả ba** agent đều báo, không agent nào sửa vì ngoài
+  vùng. Đó là hành vi đúng — nhưng nó cho thấy chia vùng theo file cần một người gác ở giữa.
+
 ## Giấy phép
 
 **MIT.** Theo chốt của chủ sản phẩm. Không dùng lại code của bản thương mại nên không kéo theo

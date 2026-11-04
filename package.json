@@ -8,10 +8,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:init": "node scripts/db-init.mjs",
-    "db:seed": "node scripts/db-seed.mjs"
+    "db:seed": "node scripts/db-seed.mjs",
+    "artifacts:gc": "node scripts/artifacts-gc.mjs"
   },
   "dependencies": {
     "next": "15.5.29",

@@ -17,8 +17,8 @@ describe('hashPassword', () => {
     expect(parts[1]).toBe(String(2 ** 15))
     expect(parts[2]).toBe('8')
     expect(parts[3]).toBe('1')
-    expect(Buffer.from(parts[4], 'base64')).toHaveLength(16)
-    expect(Buffer.from(parts[5], 'base64')).toHaveLength(32)
+    expect(Buffer.from(parts[4] ?? '', 'base64')).toHaveLength(16)
+    expect(Buffer.from(parts[5] ?? '', 'base64')).toHaveLength(32)
   })
 
   it('từ chối mật khẩu rỗng', async () => {
@@ -110,11 +110,11 @@ describe('bản nhân bản trong scripts/db-seed.mjs', () => {
     const fromScript = (await hashPasswordStandalone('x')).split('$')
     // So 4 phần đầu (prefix + N + r + p). Salt và hash khác nhau là đúng.
     expect(fromScript.slice(0, 4)).toEqual(fromLib.slice(0, 4))
-    expect(Buffer.from(fromScript[4], 'base64')).toHaveLength(
-      Buffer.from(fromLib[4], 'base64').length
+    expect(Buffer.from(fromScript[4] ?? '', 'base64')).toHaveLength(
+      Buffer.from(fromLib[4] ?? '', 'base64').length
     )
-    expect(Buffer.from(fromScript[5], 'base64')).toHaveLength(
-      Buffer.from(fromLib[5], 'base64').length
+    expect(Buffer.from(fromScript[5] ?? '', 'base64')).toHaveLength(
+      Buffer.from(fromLib[5] ?? '', 'base64').length
     )
   })
 })

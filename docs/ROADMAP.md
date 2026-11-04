@@ -39,3 +39,18 @@ Phạm vi v1 và những gì cố ý nằm ngoài nó: xem [ADR-001](ADR-001-kie
 Giữ ở đây để không ai hỏi lại: heatmap, session recording, funnel, attribution/conversion,
 affiliate, custom domain, chat AI, MCP. Lý do ở ADR-001. Multi-tenant cũng vậy — cần thì fork
 và thêm, bản này không để sẵn một cột `organization_id` mà không route nào lọc theo.
+
+## Thêm 2026-11-04 — từ báo cáo của ba agent viết code
+
+- **Migration.** `db/schema.sql` là ảnh chụp, không phải chuỗi migration. Nâng cấp một instance
+  đang chạy hiện chưa có đường. Cần trước lần phát hành v2 có đổi schema.
+- **CSRF.** Hiện chỉ dựa `sameSite=lax` + logout chỉ nhận POST. Đủ cho một instance single-tenant,
+  nhưng chưa có token CSRF. Ghi ở đây để không ai tưởng là đã có.
+- **Rate limit chạy trong RAM.** `lib/auth/rate-limit.ts` mất bộ đếm khi khởi động lại và không
+  chia sẻ giữa nhiều instance. Chạy nhiều bản sau load balancer thì cần Redis.
+- **`TRUSTED_PROXY=false` làm mọi khách dùng chung một khoá rate limit** (`unknown`), tức một kẻ
+  tấn công khoá được cả nhà. Đánh đổi có chủ ý: thà khoá tạm còn hơn hết CPU. Sửa đúng là dựa vào
+  một header do reverse proxy ký.
+- **Không có ESLint/Prettier.** `yarn typecheck` là cổng duy nhất do máy kiểm. Quy ước code
+  (không dấu chấm phẩy, nháy đơn, 100 cột) hiện chỉ có người đọc kiểm.
+- **GC artifact chưa tự chạy.** `yarn artifacts:gc --apply` phải gọi tay hoặc đặt cron.

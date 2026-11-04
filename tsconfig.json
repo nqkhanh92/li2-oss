@@ -7,6 +7,9 @@
     "jsx": "preserve",
 
     "strict": true,
+    // Bật vì `parts[4]` của một `split()` thật sự có thể là undefined. Nó đã bắt được
+    // một lỗi thật trong `lib/auth/password.ts` lúc dựng.
+    "noUncheckedIndexedAccess": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
 
