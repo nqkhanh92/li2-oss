@@ -119,3 +119,44 @@ yarn test        154/154
 yarn build       13 route, không cần DB
 yarn e2e         59/59 trên docker compose thật
 ```
+
+## 2026-11-04 (tiếp) — thử CLONE SẠCH, và nó KHÔNG chạy được
+
+Câu hỏi của chủ sản phẩm: *"người dùng download chạy được phải không?"* — tôi chưa kiểm, và khi
+kiểm thì **câu trả lời ban đầu là KHÔNG**.
+
+```
+git clone <repo> /tmp/clonetest  →  cp .env.example .env  →  docker compose up -d
+failed to solve: failed to compute cache key: "/app/public": not found
+```
+
+**Nguyên nhân:** `public/` rỗng, và **git không lưu thư mục rỗng**. `Dockerfile:60` có
+`COPY --from=builder /app/public ./public`, nên bản clone không build được.
+
+**⚠ Và đây là phần đáng ghi nhất: KHÔNG MỘT CỔNG NÀO trong bốn cổng bắt được nó.**
+`yarn typecheck`, `yarn test`, `yarn build`, `yarn e2e` — cả bốn chạy trong thư mục làm việc
+**đã có** `public/`, nên cả bốn xanh trong khi bản phát hành hỏng. Đúng lớp lỗi "chạy trên máy
+tôi" mà không bài test nào trong repo có thể thấy, vì chúng không bao giờ nhìn repo từ ngoài.
+
+Sửa: `public/.gitkeep` (có comment giải thích để không ai xoá "tệp rác" đó).
+
+**Nghiệm thu lại bằng bản clone thật**, làm đúng README không thêm bước nào:
+
+```
+git clone . /tmp/clonetest2
+cp .env.example .env  +  openssl rand -base64 32  →  SESSION_SECRET, PUBLIC_BASE_URL
+docker compose up -d                    → web lên sau ~4s
+docker compose exec web node scripts/db-seed.mjs <email> <pass>   → tạo admin
+node scripts/e2e.mjs --rate-limit       → 62/62 đạt
+```
+
+### Bài học cho quy trình phát hành
+
+Bốn cổng hiện có kiểm **mã**; không cái nào kiểm **gói phát hành**. Bước bắt buộc trước mỗi lần
+phát hành, không thay được bằng test:
+
+```bash
+git clone <repo> /tmp/x && cd /tmp/x   # rồi làm ĐÚNG README, không thêm bước
+```
+
+Nếu có CI sau này thì đây là job đầu tiên nên có — nó bắt loại lỗi mà `yarn build` không thấy.
