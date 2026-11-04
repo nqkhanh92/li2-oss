@@ -54,3 +54,7 @@ và thêm, bản này không để sẵn một cột `organization_id` mà khôn
 - **Không có ESLint/Prettier.** `yarn typecheck` là cổng duy nhất do máy kiểm. Quy ước code
   (không dấu chấm phẩy, nháy đơn, 100 cột) hiện chỉ có người đọc kiểm.
 - **GC artifact chưa tự chạy.** `yarn artifacts:gc --apply` phải gọi tay hoặc đặt cron.
+
+- **E2E chưa tự chạy.** `yarn e2e` cần một instance đang chạy và phải gọi tay. Không có CI nên nó
+  là bước trong quy trình phát hành, không phải cổng tự động.
+- **E2E ghi dữ liệu thật** vào instance đang trỏ tới. Chỉ chạy trên môi trường thử nghiệm.

@@ -12,7 +12,8 @@
     "test": "vitest run",
     "db:init": "node scripts/db-init.mjs",
     "db:seed": "node scripts/db-seed.mjs",
-    "artifacts:gc": "node scripts/artifacts-gc.mjs"
+    "artifacts:gc": "node scripts/artifacts-gc.mjs",
+    "e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {
     "next": "15.5.29",

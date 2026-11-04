@@ -65,3 +65,57 @@ Xem `docs/ROADMAP.md`. Đáng chú ý nhất: trang nhập mật khẩu link (ro
 - **Chưa có remote, chưa push.** Repo chỉ nằm trên máy này.
 - Chưa chạy thử trên LiHi. Theo quy ước `~/Project/LiHi/CLAUDE.md`, mọi thứ đi LiHi trước Li2 —
   nhưng đây là repo mới, không đụng gì đang chạy, nên chưa cần.
+
+## 2026-11-04 (tiếp) — nghiệm thu e2e toàn bộ tính năng
+
+Thêm `scripts/e2e.mjs` (`yarn e2e`): **59 phép kiểm** trên instance đang chạy thật, 8 nhóm.
+Thêm `--rate-limit` thì 62 (mục 9 phá trạng thái nên mặc định bỏ).
+
+Môi trường sạch: `docker compose down -v` rồi `up --build`, seed admin với mật khẩu biết trước.
+
+| Nhóm | Phép kiểm | Kết quả |
+|---|---:|---|
+| 1. Xác thực | 8 | đạt |
+| 2. Phân quyền (6 đường đòi đăng nhập) | 6 | đạt |
+| 3. Short link + redirect | 9 | đạt |
+| 4. Bảo mật — PoC từ đợt đánh giá | 9 | đạt |
+| 5. QR | 7 | đạt |
+| 6. Artifact | 11 | đạt |
+| 7. Đếm lượt | 2 | đạt |
+| 8. Tắt link + trang render | 7 | đạt |
+| 9. Rate limit (`--rate-limit`) | 3 | đạt |
+
+### Hai lỗi tìm ra trong CHÍNH bộ test, không phải trong sản phẩm
+
+1. **Không chạy lại được.** Mục 9 khoá IP 15 phút → lần chạy kế tiếp đỏ ngay mục 1.
+2. **Một phép kiểm ĐẠT GIẢ.** Khi bị khoá, "email không tồn tại trả cùng thông điệp với mật khẩu
+   sai" thành đúng một cách vô nghĩa — cả hai đều trả 429. **Một phép kiểm đạt vì lý do sai còn
+   tệ hơn một phép kiểm đỏ.**
+
+Sửa: mục 9 thành opt-in `--rate-limit`, cộng một `preflight()` dừng hẳn (exit 2) với hướng dẫn
+`docker compose restart web` nếu phát hiện IP đang bị khoá. Đã kiểm: chạy liên tiếp hai lần không
+restart → 59/59 cả hai lần.
+
+### Negative control — chứng minh bộ test thật sự đỏ khi hệ thống hỏng
+
+Thay `lib/links/destination.ts` bằng **đúng guard hỏng của bản thương mại**
+(`startsWith('/') && !startsWith('//')`, không dùng `new URL`), build lại, chạy e2e:
+
+```
+✗ destination = /\evil.com bị TỪ CHỐI  — status=201
+Tổng: 59 phép kiểm · đạt 58 · lỗi 1
+```
+
+Khôi phục bằng `git checkout --`, so với bản backup → khớp, và e2e xanh lại 59/59.
+
+Bước này là thứ phân biệt "test chạy xong" với "test có tác dụng". Không có nó thì một bộ e2e
+luôn xanh cũng cho cùng một output.
+
+### Cổng hiện có
+
+```
+yarn typecheck   sạch (noUncheckedIndexedAccess bật)
+yarn test        154/154
+yarn build       13 route, không cần DB
+yarn e2e         59/59 trên docker compose thật
+```
