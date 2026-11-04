@@ -141,6 +141,9 @@ jobs:
       - name: Quét chuỗi bị cấm
         run: |
           set -u
+          # `-i`: KHÔNG phân biệt hoa thường. Bản đầu dùng `-E` và `Li2.ai` viết hoa lọt qua —
+          # agent `ui-shell` tìm ra. Một blocklist phân biệt hoa thường là một blocklist hụt.
+          #
           # Mỗi mục: chuỗi cần cấm. Dòng có `blocklist-ok:` được miễn — miễn theo
           # DÒNG, không theo file: loại theo file thì một hit mới trong cùng file
           # sẽ im lặng.
@@ -148,7 +151,7 @@ jobs:
 
           # Bỏ qua chính thư mục .github (file này nhắc các chuỗi đó để giải thích)
           # và tài liệu — docs/ADR nói về bản thương mại nên phải nhắc tên nó.
-          HITS=$(grep -rnE "$PATTERNS" \
+          HITS=$(grep -rniE "$PATTERNS" \
                    --include='*.ts' --include='*.tsx' --include='*.mjs' \
                    --include='*.js' --include='*.sql' --include='*.yml' \
                    . 2>/dev/null \

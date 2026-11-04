@@ -1,82 +1,48 @@
 import { redirect } from 'next/navigation'
-import { authenticate, createSession, getCurrentUser } from '@/lib/auth/session'
+import { Link2 } from 'lucide-react'
+
+import { getCurrentUser } from '@/lib/auth/session'
+import { Card, CardContent } from '@/components/ui/card'
+import { LoginForm } from '@/components/auth/login-form'
 
 export const dynamic = 'force-dynamic'
 
-/**
- * Mã lỗi → thông điệp. Cố ý KHÔNG truyền thông điệp qua query string.
- *
- * Nếu nhận chuỗi tự do rồi in ra, bất kỳ ai cũng dựng được một URL `/login?error=<chữ-của-họ>`
- * trông như thông báo chính thức của hệ thống — đường vào cho phishing. Chỉ nhận mã từ danh
- * sách đóng này.
- */
-const ERRORS: Record<string, string> = {
-  invalid: 'Email hoặc mật khẩu không đúng.',
-  missing: 'Nhập cả email và mật khẩu.',
-}
+export const metadata = { title: 'Đăng nhập — li2-oss' }
 
 /**
- * Đăng nhập bằng Server Action, không phải `fetch` từ client.
+ * Trang đăng nhập. Server Component mỏng: chỉ chặn người đã đăng nhập và dựng khung;
+ * phần nhập liệu và hiển thị lỗi nằm ở `components/auth/login-form.tsx`.
  *
- * Vì sao: form này chạy khi JavaScript tắt và không cần một dòng state nào ở client.
- * `POST /api/auth/login` vẫn tồn tại cho người gọi bằng script — cả hai đi qua `authenticate`,
- * không có nhánh xác thực thứ hai.
+ * KHÔNG còn đọc `?error=` từ query string như bản trước. Lỗi giờ đến từ phản hồi của
+ * `POST /api/auth/login`, nên không có đường nào cho người ngoài dựng một URL
+ * `/login?error=<chữ-của-họ>` trông như thông báo chính thức — cổng phishing đó đóng hẳn
+ * thay vì phải canh bằng một danh sách mã lỗi đóng.
  */
-async function login(formData: FormData) {
-  'use server'
-
-  const email = String(formData.get('email') ?? '').trim()
-  const password = String(formData.get('password') ?? '')
-
-  if (!email || !password) redirect('/login?error=missing')
-
-  const userId = await authenticate(email, password)
-  if (!userId) redirect('/login?error=invalid')
-
-  await createSession(userId)
-  redirect('/links')
-}
-
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>
-}) {
-  // Đã đăng nhập thì không có lý do gì để thấy form này.
+export default async function LoginPage() {
   if (await getCurrentUser()) redirect('/links')
 
-  const { error } = await searchParams
-  const message = error ? ERRORS[error] : undefined
-
   return (
-    <main className="page">
-      <div className="card card-narrow">
-        <h1>Đăng nhập</h1>
-        <p className="muted" style={{ marginTop: 6, marginBottom: 20 }}>
-          Tài khoản do người vận hành instance này tạo.
+    <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
+      <div className="w-full max-w-[400px]">
+        <div className="mb-6 flex flex-col items-center gap-3 text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-primary text-primary-foreground">
+            <Link2 className="h-6 w-6" />
+          </div>
+          <div>
+            <h1 className="text-xl font-semibold text-foreground">li2-oss</h1>
+            <p className="mt-1 text-s text-slate-500">Short link, QR và artifact — tự host.</p>
+          </div>
+        </div>
+
+        <Card>
+          <CardContent className="p-6 pt-6">
+            <LoginForm />
+          </CardContent>
+        </Card>
+
+        <p className="mt-5 text-center text-xs text-slate-500">
+          Tài khoản do người vận hành instance này tạo. Không có đăng ký tự do.
         </p>
-
-        {message ? (
-          <p className="alert" role="alert">
-            {message}
-          </p>
-        ) : null}
-
-        <form action={login}>
-          <label className="field">
-            <span>Email</span>
-            <input type="email" name="email" autoComplete="username" required autoFocus />
-          </label>
-
-          <label className="field">
-            <span>Mật khẩu</span>
-            <input type="password" name="password" autoComplete="current-password" required />
-          </label>
-
-          <button type="submit" className="primary" style={{ width: '100%', marginTop: 6 }}>
-            Đăng nhập
-          </button>
-        </form>
       </div>
     </main>
   )

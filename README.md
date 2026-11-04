@@ -292,3 +292,15 @@ TypeScript `strict`. Alias `@/*` → repo root.
 **Code comments are written in Vietnamese** — deliberately. In the original codebase a
 Vietnamese comment prevented a production OOM incident, and it only worked because someone read
 it. Pull requests in English are welcome.
+
+## Ghi công bên thứ ba (NOTICE)
+
+| Thành phần | License | Nghĩa vụ |
+|---|---|---|
+| **Be Vietnam Pro** (font) | OFL-1.1 — [bettergui/BeVietnamPro](https://github.com/bettergui/BeVietnamPro) | Giữ dòng ghi công này. Font được `next/font/google` tải lúc build rồi **tự host** — không gọi về Google lúc chạy, nên không rò IP người đọc sang bên thứ ba |
+| shadcn/ui (component trong `components/ui/`) | MIT | — |
+| Radix UI, lucide-react, Tailwind CSS, Next.js, React, `pg`, `qrcode`, `zod`, `nanoid` | MIT | — |
+
+Bản OSS này **không** nhúng dataset địa lý nào. Bản thương mại có ba dataset đang chạy mà license
+chưa tra được (`states.json`, `country-with-code.js`, `vietnam.json`); đó là một trong những lý do
+bản này viết mới thay vì copy.
