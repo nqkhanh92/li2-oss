@@ -1,0 +1,8 @@
+# Giữ thư mục này trong git.
+#
+# Git không lưu thư mục rỗng, và `Dockerfile:60` có `COPY /app/public ./public`. Thiếu tệp này
+# thì bản CLONE không build được — `failed to compute cache key: "/app/public": not found` —
+# trong khi thư mục làm việc của người đã tạo repo vẫn build bình thường.
+#
+# Đã xảy ra thật 2026-11-04, và không một cổng nào trong `typecheck` / `test` / `build` / `e2e`
+# bắt được: cả bốn đều chạy trong thư mục có sẵn `public/`.
