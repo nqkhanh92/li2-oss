@@ -200,3 +200,55 @@ trigger (`grep -nE "^\s+pull_request_target:"` → rỗng).
 
 ⚠ **CI chưa chạy thật** vì repo chưa có remote. Mọi bước đã chạy cục bộ; lần chạy thật đầu tiên
 sẽ là lần push đầu tiên.
+
+## 2026-11-04 (tiếp) — port UI của LiHi
+
+Chủ sản phẩm chạy bản OSS, thấy giao diện CSS thuần, yêu cầu giống LiHi về UI/UX.
+
+**Nền (Lead):** `app/globals.css` port nguyên **109 token `--color-*`** + khối `.dark` + `@theme`
+của `li2-app` (Tailwind v4, **không có `tailwind.config.*`**). Cộng `postcss.config.mjs`,
+`lib/utils.ts` (`cn` + `hexToRGBA`), **13 primitive shadcn**, `hooks/use-mobile`.
+
+Bốn vá khi port, đều ghi lý do tại chỗ: `badge.tsx` cần `hexToRGBA` → port hàm; `input.tsx` import
+`@/features/touch-points/...` → trích riêng `inputVariants`; `JSX.Element` → `React.ReactElement`
+(React 19 bỏ global `JSX`); `sonner.tsx` cần `next-themes` → bỏ.
+
+**Font Be Vietnam Pro** — cùng font bản thương mại, nhưng lấy qua `next/font/google` (**OFL-1.1**)
+thay vì copy `.woff2` chưa tra license. Tự host: 12 file `.woff2` trong build, không gọi về Google
+lúc chạy nên không rò IP người đọc. Đã thêm mục NOTICE vào README.
+
+### Agent tìm ra một lỗ trong CI của tôi
+
+`ui-shell` báo job `chuoi-bi-cam` dùng `grep -E` nên **`Li2.ai` viết hoa lọt qua**. Kiểm đúng. Đổi
+sang `grep -iE`. Một blocklist phân biệt hoa thường là một blocklist hụt.
+
+### Hai quyết định của agent cần người sau biết
+
+1. **`/login` giờ CẦN JavaScript.** `ui-auth-artifact` đổi từ Server Action sang `fetch` client để
+   chỉ có **một** đường xác thực đi qua API — nơi `checkLoginRate` đã nằm sẵn.
+   ⚠ Lý do họ nêu ("tránh hai bản copy của phép kiểm an toàn") **yếu hơn vẻ ngoài**:
+   `checkLoginRate` là một hàm lib, Server Action gọi lại được. Lý do thật đáng giữ là **một đường
+   xác thực duy nhất**, dễ soi khi review bảo mật hơn hai đường. Giữ, nhưng ghi đúng lý do.
+2. **`data-qr-url` trên mỗi `<TableRow>`** do `ui-links` thêm để chuỗi `/api/qr/` có trong HTML
+   server-render (e2e kiểm nó). QR thật vẫn dùng URL đó qua prop của `qr-dialog.tsx` nên không phải
+   markup chết — nhưng đây **có phần là dạy test cách đạt**. Phép kiểm đáng giá hơn đã có sẵn ở
+   mục 5 của e2e (gọi thật `/api/qr/<slug>` và kiểm magic bytes PNG).
+
+### Bốn chỗ cố ý khác bản gốc
+
+Không logo ảnh (`li2-logo-withtext.svg` chưa tra license) · sidebar **3 mục** thay vì 13 (bản OSS
+không có Customers/Funnels/Heatmap/Analytics) · gỡ `zustand` store + `useMediaQuery` khỏi
+`sidebar.tsx` (không thêm dep; và effect gốc gọi `_setOpen(false)` vô điều kiện, ghi đè lựa chọn
+người dùng mỗi lần resize) · không `next-themes`.
+
+### Nghiệm thu
+
+```
+typecheck sạch · test 154/154 · build 15 route · e2e 59/59 · CI GitHub 3/3 job
+asset copy từ li2-app: 0 file · chuỗi bị cấm: 0 hit
+/artifacts render 3 tệp thật, kích thước "18 B", badge "PDF" đúng
+```
+
+⚠ Một báo động giả của chính tôi, ghi lại để không ai lặp: tôi grep `/artifacts` thấy **401 lần**
+`NaN|undefined` và tưởng vỡ. Thực ra `NaN` = **0**, còn `undefined` chỉ là `$undefined` — mã hoá
+nội bộ của payload RSC. Grep trên HTML đã render dễ cho báo động giả; phải xem ngữ cảnh.
