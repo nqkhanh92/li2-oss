@@ -36,6 +36,8 @@ services:
       SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET chua duoc dat - xem .env.example}
       STORAGE_DIR: /data/artifacts
       MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-31457280}
+      # Đặt 'false' khi chạy HTTP trên mạng riêng (LAN/Tailscale) — xem .env.example.
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
     volumes:
       - artifacts:/data/artifacts
     ports:

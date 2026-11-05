@@ -65,13 +65,32 @@ export function generateSessionToken(): string {
   return randomBytes(TOKEN_BYTES).toString('base64url')
 }
 
+/**
+ * Cookie phiên có nên gắn cờ `Secure` không.
+ *
+ * Mặc định: **có** ở production. Nhưng `COOKIE_SECURE=false` tắt được, và đây là một ca dùng
+ * thật chứ không phải cửa sau:
+ *
+ * Một instance tự host rất hay chạy **HTTP trên mạng riêng** — LAN, Tailscale, WireGuard. Ở đó
+ * cờ `Secure` làm trình duyệt **vứt cookie**, và triệu chứng là *"đăng nhập trả 200 nhưng vẫn
+ * thấy trang login"* — gần như không ai đoán ra nguyên nhân. (Trên `localhost` thì vẫn chạy, vì
+ * trình duyệt coi localhost là origin tin cậy — nên lỗi chỉ hiện khi mở từ máy khác, đúng lúc
+ * người ta tưởng đã cài xong.)
+ *
+ * ⚠ Tắt `Secure` nghĩa là cookie phiên đi qua mạng dưới dạng không mã hoá. Chỉ làm vậy trên mạng
+ * bạn tin. Đường đúng vẫn là đặt HTTPS trước app (Caddy, nginx, hay `tailscale serve`).
+ */
+function cookieSecure(): boolean {
+  if (process.env.COOKIE_SECURE === 'false') return false
+  if (process.env.COOKIE_SECURE === 'true') return true
+  return process.env.NODE_ENV === 'production'
+}
+
 export function sessionCookieOptions(expiresAt: Date) {
   return {
     httpOnly: true,
     sameSite: 'lax' as const,
-    // `secure` chỉ ở production: bật nó lúc dev trên http://localhost làm cookie không được đặt,
-    // và triệu chứng là "đăng nhập xong vẫn thấy trang login" — rất khó đoán ra nguyên nhân.
-    secure: process.env.NODE_ENV === 'production',
+    secure: cookieSecure(),
     path: '/',
     expires: expiresAt,
   }
