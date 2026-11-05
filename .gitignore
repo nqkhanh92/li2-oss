@@ -58,7 +58,16 @@ demo/**/dist/
 # Sentry Config File
 .env.sentry-build-plugin
 
-yarn.lock
+# ⚠ KHÔNG ignore `yarn.lock`.
+#
+# Dòng `yarn.lock` từng nằm ở đây và đã làm bản phát hành đầu tiên thiếu lockfile. Hậu quả đo
+# được trên một máy khác: `yarn install` giải lại dependency theo khoảng phiên bản trong
+# package.json và kéo về
+#   recharts 3.10.1   thay vì 3.5.1   → 21 lỗi type, build chết ở deep-link-pie.tsx:101
+#   @modelcontextprotocol/sdk 1.32.2  thay vì 1.30.0 → body mặc định 4 MiB, request MCP 12 MB
+#                                       bị 413 dù giới hạn của repo là 12 MB
+# Và `Dockerfile:23` có `COPY package.json yarn.lock ./`, nên docker build từ bản clone sạch
+# hỏng ngay ở đó.
 supabase/.temp
 
 .github/prompts
