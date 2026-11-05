@@ -1,0 +1,82 @@
+{
+  "sub_title": "Audit Logs help you track activities and changes across the system.",
+  "module": {
+    "audit_log": "Audit Log",
+    "audit_logs": "Audit Logs"
+  },
+  "fields": {
+    "module": "Module",
+    "action": "Action",
+    "user": "User",
+    "target": "Target",
+    "changes": "Changes",
+    "metadata": "Metadata",
+    "timestamp": "Timestamp",
+    "actions": "Actions"
+  },
+  "detail": {
+    "title": "Audit Log Details",
+    "field": "Field",
+    "before": "Before",
+    "after": "After",
+    "not_available": "N/A"
+  },
+  "export": {
+    "title": "Export Audit Logs",
+    "description": "Export audit logs with current filters applied",
+    "format": "Export Format",
+    "select_format": "Select format",
+    "current_filters_applied": "Current filters will be applied to the export:",
+    "all": "All",
+    "from": "From",
+    "until": "Until",
+    "filter_labels": {
+      "module": "Module:",
+      "action": "Action:",
+      "date_range": "Date Range:"
+    }
+  },
+  "access": {
+    "premium_required": "Premium Plan Required",
+    "upgrade_message": "Audit logs are only available on Premium and higher plans. Please upgrade to access this feature."
+  },
+  "messages": {
+    "export_success": "Audit logs exported successfully",
+    "export_error": "Failed to export audit logs"
+  },
+  "filters": {
+    "search_placeholder": "Search...",
+    "module": "Module",
+    "action": "Action",
+    "date_range": "Date Range",
+    "add_filters": "Add Filters",
+    "filter_by": "Filter By",
+    "active_filters": "Active Filters",
+    "loading": "Loading...",
+    "module_options": {
+      "touch_point": "Touch Point",
+      "tag": "Tag",
+      "collection": "Space",
+      "collection_member": "Space Member",
+      "organization": "Organization",
+      "member": "Member",
+      "integration": "Integration",
+      "campaign": "Campaign",
+      "permission": "Permission",
+      "role": "Role",
+      "utm_template": "UTM Template",
+      "api_key": "API Key"
+    },
+    "action_options": {
+      "create": "Create",
+      "update": "Update",
+      "delete": "Delete",
+      "add": "Add",
+      "remove": "Remove",
+      "add_touchpoints": "Add Touchpoints",
+      "remove_touchpoints": "Remove Touchpoints",
+      "update_role": "Update Role",
+      "bulk_add": "Bulk Add"
+    }
+  }
+}

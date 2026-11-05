@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Artifact — prototype hi-fi bấm được (Li2 theme)</title>
+<!--
+  PROTOTYPE TỰ CHỨA, KHÔNG TẢI TÀI NGUYÊN NGOÀI. Mở trực tiếp bằng trình duyệt.
+  Bố cục theo Li2UI/02-artifact-flow.html (§2.1–2.9, §3.1–3.2). Lý lẽ: 01-phan-tich-shortlink-vs-artifact.md §4.
+
+  NGUỒN TOKEN — không tự chế giá trị nào:
+  - Màu, cỡ chữ, bo góc, dark mode: src/app/globals.css
+      @theme light :36-135 (text scale :36-47, color :49-84, slate :99-108, radius :133-135)
+      .dark        :189-242 (Soft Dark Theme)
+    globals.css KHÔNG định nghĩa lại --color-slate-* trong .dark. Thang slate bản dark dưới đây là
+    NGOẠI SUY (đảo thang trên nền oklch 0.19–0.27 hue 264) để prototype đọc được; app thật dùng
+    class slate cứng nên dark mode của app sẽ khác ở các chỗ này. Ghi rõ để không ai chép nhầm.
+  - Font: Be Vietnam Pro self-host (src/app/layout.tsx:19-57); file này không tải font nên dùng
+    font-family "Be Vietnam Pro", Arial, sans-serif — Arial là fallback body (globals.css:264).
+  - Navbar app 52px bg-slate-800 (layout/navbar/navbar.tsx:25); sidebar app 14.5rem = 232px
+    (ui/sidebar.tsx:31), bg-sidebar rounded-tl-3xl, mục active border-l-4 primary + bg-sidebar-accent
+    + shadow (ui/sidebar.tsx:550-554); thanh tiêu đề page 60px (content-layout-nav.tsx:29);
+    nội dung px-12 py-6 max-w-7xl = 1280px (content-layout.tsx:56-76); footer dính h-15 border-slate-300
+    (content-layout.tsx:84).
+  - Button: rounded-[8px], default h-10 / sm h-9 / icon 36px, variant default/secondary/tertiary/table
+    (ui/button.tsx:6-46). Thẻ hàng: bg-card border-slate-300 rounded-[8px] p-3 md:pl-2 md:pr-4 md:py-4,
+    QR 90×90 rounded-[15px] bg-white (touchpoint-card.tsx:212-228); dòng 2 copy tím + mở xanh
+    (:258-279); thanh lượt quét bg-slate-50 border-slate-200 rounded-[6px] (:290); nút analytics vuông
+    (:325-333). Header chi tiết: ArrowLeft · short URL text-s · copy variant=table size-7 ·
+    statbar h-9 · ⋮ secondary size=icon (short-link-detail-header.tsx:86-144).
+  - Khung chi tiết/tạo: sidebar 252px, card gộp bg-card rounded-xl border, panel phải 252px border-l
+    (short-link-form/index.tsx:228-273); mục sidebar px-4 py-2 rounded-lg, active text-primary
+    bg-primary/5 (short-link-sidebar.tsx:84-90). QrPreviewCard: label + 2 nút tròn 28px, khung
+    border rounded-lg, nền lưới 28px, QR trong hộp rounded-xl shadow-sm (qr-preview-card.tsx:34-131).
+  - Dialog: rounded-[16px], xs 480 / sm 640 (custom-dialog-v2.tsx:28-37).
+  - Badge trạng thái: rounded-full border px-2.5 py-0.5 text-xs font-medium, tone class
+    (artifact-status.ts:143-149). Badge quyền xem: bg-slate-100 text-slate-500 text-xs, Công khai
+    KHÔNG badge (artifact-access-badge.tsx:11-13, 24). Icon quyền xem Globe/Lock/KeyRound/Mail
+    (artifact-access.ts:1,18-37).
+  - Copy tiếng Việt: public/lang/vi/artifact.json (nguyên văn), trang cổng src/core/helpers/
+    artifact-landing.ts:19-69; số lần thử = 3 (ARTIFACT_GATE_MAX_TRIES, artifact.type.ts:80);
+    file tối đa 10 MB (ARTIFACT_MAX_BYTES :18); quota 3 live / 30 MB (:304-305).
+  - Trang /a/<token>: CSP default-src 'none' (artifact-landing-shell.ts:11-13) → font hệ thống,
+    hex cứng, không token app, không script. Prototype mô phỏng bằng JS nhưng phần CSS của trang
+    đó giữ đúng ràng buộc hex cứng.
+-->
+<style>
+/* ============ TOKEN (globals.css @theme :36-135) ============ */
+:root {
+  --text-xs: 0.75rem;   --lh-xs: 1rem;
+  --text-s: 0.875rem;   --lh-s: 1.25rem;
+  --text-sm: 0.9375rem; --lh-sm: 1.375rem;
+  --text-base: 1rem;    --lh-base: 1.5rem;
+  --text-l: 1.125rem;   --lh-l: 1.625rem;
+  --text-xl: 1.25rem;   --lh-xl: 1.75rem;
+
+  --background: oklch(0.9759 0.0029 264.54);
+  --foreground: oklch(0.2795 0.0368 260.03);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 3.9%);
+  --popover: hsl(0 0% 100%);
+  --primary: oklch(0.165 0.059 257.19);
+  --primary-light: oklch(0.2265 0.0827 264.64);
+  --primary-foreground: hsl(0 0% 98%);
+  --secondary: hsl(251 67% 44%);
+  --secondary-blue: hsl(220 92% 62%);
+  --secondary-purple: oklch(0.4141 0.2126 280.37);
+  --secondary-orange: oklch(0.6776 0.192952 45.2346);
+  --secondary-dark-cyan: oklch(0.6548 0.1094 194.81);
+  --secondary-yellow: hsl(43 93% 52%);
+  --muted: hsl(0 0% 96.1%);
+  --muted-foreground: hsl(0 0% 45.1%);
+  --border: oklch(0.869 0.0198 252.89);
+  --input: hsl(0 0% 89.8%);
+  --ring: hsl(0 0% 3.9%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --semantic-info: oklch(0.6184 0.1917 262.62);
+  --semantic-warning: oklch(0.6806 0.1423 75.83);
+  --semantic-error: oklch(0.5771 0.2152 27.33);
+  --semantic-success: oklch(0.6271 0.1699 149.21);
+  --sidebar: oklch(0.9759 0.0029 264.54);
+  --sidebar-foreground: oklch(0.2795 0.0368 260.03);
+  --sidebar-accent: hsl(0 0% 100%);
+  --neutral-400: hsl(212 36% 96%);   /* variant=table bg (button.tsx:30) */
+  --neutral-500: hsl(0 0% 91%);
+
+  --slate-50: hsl(210 40% 98%);
+  --slate-100: hsl(210 40% 96%);
+  --slate-200: hsl(214 32% 91%);
+  --slate-300: oklch(0.869 0.0198 252.89);
+  --slate-400: hsl(215 20% 65%);
+  --slate-500: hsl(215 16% 47%);
+  --slate-600: oklch(0.4455 0.0374 257.28);
+  --slate-700: hsl(215 25% 27%);
+  --slate-800: oklch(0.2795 0.0368 260.03);
+  --slate-900: oklch(0.2077 0.0398 265.75);
+
+  --r-btn: 8px; --r-card: 8px; --r-panel: 16px; --r-qr: 15px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
+  --shadow-side: 0 4px 6px 0 rgba(0,0,0,0.09);
+  --h-navbar: 52px; --h-pagenav: 60px; --w-content: 1280px; --w-sidebar: 14.5rem; --w-formside: 252px;
+}
+/* ============ .dark (globals.css :189-242) ============ */
+.dark {
+  --background: oklch(0.19 0.008 264);
+  --foreground: hsl(210 40% 96%);        /* globals :193 = var(--color-slate-100) light = hsl(210 40% 96%) */
+  --card: oklch(0.22 0.008 264);
+  --card-foreground: oklch(0.93 0.006 264);
+  --popover: oklch(0.22 0.008 264);
+  --primary: oklch(0.58 0.15 257.19);
+  --primary-light: oklch(0.65 0.12 264.64);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.62 0.22 280);
+  --secondary-blue: oklch(0.65 0.16 250);
+  --secondary-purple: oklch(0.55 0.2 280.37);
+  --secondary-orange: oklch(0.68 0.14 50);
+  --secondary-dark-cyan: oklch(0.58 0.1 230);
+  --secondary-yellow: oklch(0.78 0.14 85);
+  --muted: oklch(0.27 0.008 264);
+  --muted-foreground: oklch(0.62 0.01 264);
+  --border: oklch(0.32 0.01 264);
+  --input: oklch(0.28 0.008 264);
+  --ring: oklch(0.65 0.14 257.19);
+  --destructive: oklch(0.62 0.22 25);
+  --sidebar: oklch(0.17 0.009 264.54);
+  --sidebar-foreground: oklch(0.9 0.008 260.03);
+  --sidebar-accent: oklch(0.25 0.009 264);
+  --neutral-400: oklch(0.3 0.01 264);
+  --neutral-500: oklch(0.34 0.01 264);
+  /* NGOẠI SUY: globals.css không có slate-* bản dark. Đảo thang để đọc được. */
+  --slate-50: oklch(0.25 0.009 264);
+  --slate-100: oklch(0.27 0.008 264);
+  --slate-200: oklch(0.32 0.01 264);
+  --slate-300: oklch(0.38 0.012 264);
+  --slate-400: oklch(0.55 0.015 264);
+  --slate-500: oklch(0.68 0.012 264);
+  --slate-600: oklch(0.78 0.01 264);
+  --slate-700: oklch(0.86 0.008 264);
+  --slate-800: oklch(0.14 0.008 264);   /* navbar nền; giữ tối */
+  --slate-900: oklch(0.12 0.008 264);
+  --shadow-side: 0 4px 6px 0 rgba(0,0,0,0.4);
+}
+
+/* ============ Nền tảng ============ */
+* { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  margin: 0; background: var(--slate-800); color: var(--foreground);
+  font-family: "Be Vietnam Pro", Arial, Helvetica, sans-serif;
+  font-size: var(--text-s); line-height: var(--lh-s);
+  height: 100vh; overflow: hidden;
+}
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, textarea { font: inherit; }
+a { color: inherit; }
+svg.ic { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; flex: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+[hidden] { display: none !important; }
+
+/* ============ Khung app Li2 ============ */
+#app { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.navbar { height: var(--h-navbar); background: var(--slate-800); color: #fff; display: flex; align-items: center; padding: 0 48px 0 24px; gap: 16px; flex: none; }
+.dark .navbar { background: oklch(0.14 0.008 264); }
+.navbar .logo { width: 150px; height: 36px; display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: var(--text-base); }
+.navbar .logo i { width: 24px; height: 24px; border-radius: 7px; background: linear-gradient(135deg, var(--secondary), var(--secondary-blue)); display: inline-flex; align-items: center; justify-content: center; }
+.navbar .logo i svg { width: 14px; height: 14px; }
+.navbar .org { display: flex; align-items: center; gap: 8px; border-left: 1px solid rgb(255 255 255 / .3); padding: 0 24px; height: 24px; font-size: var(--text-s); }
+.navbar .org .ob { width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(90deg, #B9AAFF 0.08%, #D6A4AF 98.87%); display: inline-flex; align-items: center; justify-content: center; }
+.navbar .org .ob svg { width: 14px; height: 14px; }
+.navbar .right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.navbar .lang { display: flex; align-items: center; gap: 4px; padding: 8px; font-size: var(--text-xs); font-weight: 500; }
+.navbar .bell { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; }
+.navbar .user { display: flex; align-items: center; gap: 8px; margin-left: 24px; font-size: var(--text-xs); }
+.navbar .user .av { width: 32px; height: 32px; border-radius: 999px; background: var(--secondary-orange); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; color: #fff; font-size: 12px; }
+.shell { flex: 1; display: flex; min-height: 0; }
+.sidebar { width: var(--w-sidebar); flex: none; background: var(--sidebar); color: var(--sidebar-foreground); border-top-left-radius: 24px; padding: 16px 24px 24px; display: flex; flex-direction: column; gap: 2px; position: relative; }
+.sidebar .grp { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate-400); padding: 12px 8px 6px; }
+.sidebar .mi { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 12px 0 8px; border-radius: 8px; border-left: 4px solid transparent; font-size: var(--text-s); color: var(--sidebar-foreground); width: 100%; text-align: left; }
+.sidebar .mi svg { width: 20px; height: 20px; }
+.sidebar .mi:hover { background: var(--sidebar-accent); color: var(--primary); border-left-color: var(--primary); box-shadow: var(--shadow-side); }
+.sidebar .mi.on { background: var(--sidebar-accent); color: var(--primary); border-left-color: var(--primary); box-shadow: var(--shadow-side); }
+.sidebar .collapse { position: absolute; top: 24px; right: 8px; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 999px; background: var(--card); border: 1px solid var(--border); display: inline-flex; align-items: center; justify-content: center; color: var(--slate-500); }
+.sidebar .collapse svg { width: 14px; height: 14px; }
+.main { flex: 1; min-width: 0; background: var(--background); display: flex; flex-direction: column; }
+.pagenav { height: var(--h-pagenav); min-height: var(--h-pagenav); border-bottom: 1px solid var(--border); padding: 0 48px; display: flex; align-items: center; flex: none; }
+.pagenav .inner { height: 100%; display: flex; align-items: center; gap: 12px; width: 100%; max-width: var(--w-content); margin: 0 auto; min-width: 0; }
+.pagenav h3 { margin: 0; font-size: var(--text-l); line-height: var(--lh-l); font-weight: 500; color: var(--foreground); }
+.pagenav .extra { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+.pagenav .back { width: 20px; height: 20px; color: var(--slate-500); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.pagenav .back svg { width: 20px; height: 20px; }
+.pagebody { flex: 1; overflow-y: auto; padding: 24px 48px; min-height: 0; }
+.pagebody > .inner { max-width: var(--w-content); margin: 0 auto; }
+.pagefoot { height: 60px; flex: none; border-top: 1px solid var(--slate-300); background: var(--background); display: flex; align-items: center; justify-content: center; gap: 16px; }
+.pagefoot .reason { position: absolute; margin-top: 56px; font-size: var(--text-xs); color: var(--slate-500); }
+
+/* ============ Nguyên tử (ui/button.tsx, badge, input) ============ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: var(--r-btn); font-size: 14px; font-weight: 500; line-height: 20px; border: 1px solid transparent; white-space: nowrap; transition: background-color .15s, color .15s, border-color .15s; }
+.btn svg { width: 20px; height: 20px; }
+.btn.sm { height: 36px; font-size: 14px; }
+.btn.sm svg { width: 18px; height: 18px; }
+.btn.xs { height: 32px; padding: 0 8px; font-size: var(--text-xs); }
+.btn.icon { width: 36px; height: 36px; padding: 0; }
+.btn.icon svg { width: 18px; height: 18px; }
+.btn.default { background: var(--primary); color: var(--primary-foreground); }
+.btn.default:hover { background: var(--primary-light); }
+.btn.secondary { background: var(--card); color: var(--slate-700); border-color: var(--slate-200); }
+.btn.secondary:hover { color: var(--primary-light); }
+.btn.tertiary { background: transparent; color: var(--slate-700); }
+.btn.tertiary:hover { background: var(--slate-50); color: var(--primary-light); }
+.btn.table { background: var(--neutral-400); color: var(--primary); width: 28px; height: 28px; padding: 0; border-radius: 8px; }
+.btn.table:hover { background: var(--neutral-500); }
+.btn.table svg { width: 16px; height: 16px; }
+.btn.danger { background: var(--semantic-error); color: #fff; }
+.btn.danger:hover { filter: brightness(1.08); }
+.btn:disabled, .btn.disabled { opacity: .3; pointer-events: none; }
+.btn.busy { pointer-events: none; }
+.btn.full { width: 100%; }
+.btn.round { width: 28px; height: 28px; padding: 0; border-radius: 999px; }
+.btn.round svg { width: 16px; height: 16px; }
+.spin { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 999px; display: inline-block; animation: spin .8s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.input { height: 40px; width: 100%; border: 1px solid var(--slate-300); background: var(--card); border-radius: 8px; padding: 0 12px; display: flex; align-items: center; gap: 8px; font-size: var(--text-s); color: var(--foreground); }
+.input input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: inherit; height: 100%; padding: 0; font-size: var(--text-s); }
+.input input::placeholder { color: var(--slate-400); }
+.input.muted { background: var(--slate-100); border-color: transparent; }
+.input.mono, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.input.mono input { font-family: inherit; font-size: 13px; }
+.input .pre { color: var(--slate-500); font-size: var(--text-s); flex: none; }
+.input .ad { margin-left: auto; color: var(--slate-500); display: inline-flex; width: 28px; height: 28px; align-items: center; justify-content: center; border-radius: 999px; flex: none; }
+.input .ad:hover { background: var(--slate-100); color: var(--foreground); }
+.input .ad svg { width: 16px; height: 16px; }
+.input:focus-within { border-color: var(--primary-light); }
+.input.bad { border-color: var(--semantic-error); }
+.input.ro { background: var(--slate-50); }
+.label { font-size: var(--text-s); font-weight: 500; color: var(--slate-700); line-height: 20px; }
+.hint { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500); }
+.err { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--semantic-error); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.sep { height: 1px; background: var(--border); }
+.row { display: flex; align-items: center; gap: 8px; }
+.grow { flex: 1; min-width: 0; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-size: var(--text-xs); line-height: 16px; font-weight: 500; white-space: nowrap; border: 1px solid transparent; flex: none; }
+.badge.neutral { background: var(--slate-100); color: var(--slate-600); border-color: var(--slate-200); }
+.badge.success { background: color-mix(in oklab, var(--semantic-success) 10%, transparent); color: var(--semantic-success); border-color: color-mix(in oklab, var(--semantic-success) 25%, transparent); }
+.badge.info { background: color-mix(in oklab, var(--semantic-info) 10%, transparent); color: var(--semantic-info); border-color: color-mix(in oklab, var(--semantic-info) 25%, transparent); }
+.badge.warning { background: color-mix(in oklab, var(--semantic-warning) 10%, transparent); color: var(--semantic-warning); border-color: color-mix(in oklab, var(--semantic-warning) 25%, transparent); }
+.badge.error { background: color-mix(in oklab, var(--semantic-error) 10%, transparent); color: var(--semantic-error); border-color: color-mix(in oklab, var(--semantic-error) 25%, transparent); }
+.badge.gray { background: var(--slate-100); color: var(--slate-500); font-weight: 400; padding: 2px 8px; }
+.badge.gray svg { width: 12px; height: 12px; }
+
+.chk { width: 16px; height: 16px; border: 1.5px solid var(--slate-400); border-radius: 4px; flex: none; display: inline-flex; align-items: center; justify-content: center; background: var(--card); color: var(--primary-foreground); }
+.chk svg { width: 12px; height: 12px; opacity: 0; }
+.chk.on { background: var(--primary); border-color: var(--primary); }
+.chk.on svg { opacity: 1; }
+.chk.mix::after { content: ""; width: 8px; height: 2px; background: var(--primary-foreground); }
+.chk.mix { background: var(--primary); border-color: var(--primary); }
+
+/* tooltip nhỏ bằng data-tip */
+[data-tip] { position: relative; }
+[data-tip]::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-50%); background: var(--slate-800); color: #fff; font-size: var(--text-xs); line-height: 16px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s; z-index: 20; }
+.dark [data-tip]::after { background: var(--slate-700); color: var(--slate-50); }
+[data-tip]:hover::after { opacity: 1; }
+[data-tip].tip-left::after { left: auto; right: 0; transform: none; }
+
+/* ============ Danh sách ============ */
+.tools { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.tools .filters { display: flex; align-items: center; gap: 8px; }
+.tools .search { width: 250px; }
+.sq { width: 40px; height: 40px; border: 1px solid var(--slate-300); border-radius: 6px; background: var(--card); display: inline-flex; align-items: center; justify-content: center; color: var(--slate-600); }
+.sq svg { width: 18px; height: 18px; }
+.sq.off { opacity: .5; cursor: not-allowed; }
+.thead { display: flex; align-items: center; gap: 8px; padding: 6px 8px 6px 10px; border-bottom: 2px solid var(--slate-100); font-size: var(--text-s); color: var(--slate-500); font-weight: 500; margin-top: 16px; min-height: 40px; }
+.thead .bulk { display: inline-flex; align-items: center; gap: 8px; }
+.rows { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.row-card { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--slate-300); border-radius: var(--r-card); padding: 16px 16px 16px 8px; position: relative; cursor: pointer; transition: border-color .15s; width: 100%; min-width: 0; }
+.row-card:hover { border-color: var(--primary); }
+.row-card.sel { background: var(--slate-50); }
+.row-card.removed { opacity: .92; }
+.row-card .chkwrap { padding: 0 8px; display: flex; align-items: center; flex: none; }
+.qr { width: 90px; height: 90px; border-radius: var(--r-qr); background: #fff; padding: 8px; flex: none; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.qr svg { width: 100%; height: 100%; }
+.qr.ph { background: var(--slate-50); color: var(--slate-300); border: 1px dashed var(--slate-300); }
+.qr.ph svg { width: 36px; height: 36px; }
+.row-card .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 0 8px; }
+.row-card .top { display: flex; gap: 8px; min-width: 0; align-items: flex-start; }
+.row-card .lines { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.row-card .name { font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; color: var(--foreground); }
+.short { color: var(--secondary-blue); font-weight: 500; font-size: var(--text-s); max-width: 300px; }
+.icobtn { width: 28px; height: 28px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; color: var(--secondary); flex: none; }
+.icobtn svg { width: 16px; height: 16px; }
+.icobtn:hover { background: var(--slate-100); }
+.icobtn.blue { color: var(--secondary-blue); }
+.dest { display: flex; align-items: center; gap: 4px; min-width: 0; flex: 1; color: var(--slate-500); font-size: var(--text-s); }
+.dest svg { width: 12px; height: 12px; color: var(--slate-400); flex: none; }
+.statbar { display: inline-flex; align-items: center; gap: 6px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 6px; padding: 4px 12px; font-size: var(--text-xs); color: var(--slate-600); height: 32px; }
+.statbar svg { width: 14px; height: 14px; color: var(--secondary-blue); }
+.statbar.lg { height: 36px; font-size: var(--text-s); font-weight: 500; }
+.statbar.lg svg { width: 18px; height: 18px; }
+.sqbtn { width: 36px; height: 36px; border: 1px solid var(--slate-200); border-radius: 6px; background: var(--card); display: inline-flex; align-items: center; justify-content: center; color: var(--slate-600); flex: none; }
+.sqbtn svg { width: 18px; height: 18px; }
+.sqbtn:hover { background: var(--slate-50); }
+.row-card .acts { display: flex; align-items: center; gap: 12px; flex: none; }
+.meta { display: flex; align-items: center; gap: 16px; font-size: var(--text-xs); color: var(--slate-600); flex-wrap: wrap; padding: 4px 0; }
+.meta .kind { display: inline-flex; align-items: center; gap: 6px; }
+.meta .kind svg { width: 14px; height: 14px; color: var(--slate-500); }
+.meta .sp { flex: 1; }
+.meta .av { width: 16px; height: 16px; border-radius: 999px; background: var(--secondary-orange); display: inline-flex; align-items: center; justify-content: center; font-size: 8px; color: #fff; font-weight: 600; margin-right: 6px; vertical-align: -3px; }
+.pager { display: flex; justify-content: flex-end; gap: 6px; margin-top: 14px; font-size: var(--text-xs); color: var(--slate-500); align-items: center; }
+.pager b { display: inline-flex; min-width: 28px; height: 28px; padding: 0 6px; align-items: center; justify-content: center; border: 1px solid var(--slate-200); border-radius: 6px; background: var(--card); color: var(--slate-700); font-weight: 500; cursor: pointer; }
+.pager b.on { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+.pager b.off { opacity: .4; pointer-events: none; }
+
+/* menu ⋮ */
+.menu { position: absolute; width: 224px; background: var(--popover); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-xl); padding: 4px; z-index: 30; font-size: var(--text-s); }
+.menu .mi { padding: 6px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--slate-700); width: 100%; text-align: left; }
+.menu .mi svg { width: 16px; height: 16px; flex: none; }
+.menu .mi:hover { background: var(--slate-100); }
+.menu .mi.danger { color: var(--semantic-error); }
+.menu .mi.locked { opacity: .55; flex-direction: column; align-items: flex-start; gap: 0; cursor: not-allowed; }
+.menu .mi.locked .sub { font-size: var(--text-xs); color: var(--slate-500); }
+.menu .sep { margin: 4px 0; }
+
+/* trạng thái rỗng (short-link-empty-state.tsx:30-88) */
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 0 56px; }
+.empty .illu { width: 480px; max-width: 100%; border: 1px solid var(--slate-200); background: var(--card); border-radius: 16px; box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 32px; }
+.empty .illu .bar { height: 44px; border-bottom: 1px solid var(--slate-100); background: var(--slate-50); display: flex; align-items: center; gap: 6px; padding: 0 16px; }
+.empty .illu .bar i { width: 10px; height: 10px; border-radius: 999px; background: var(--slate-200); }
+.empty .illu .bar .url { flex: 1; margin: 0 12px; height: 20px; border-radius: 6px; background: var(--slate-100); }
+.empty .illu .mk { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid var(--slate-100); border-radius: 12px; margin: 10px 16px; }
+.empty .illu .mk .ic { width: 32px; height: 32px; border-radius: 8px; background: color-mix(in oklab, var(--primary) 8%, transparent); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+.empty .illu .mk .ln { flex: 1; }
+.empty .illu .mk .ln i { display: block; height: 8px; width: 96px; background: var(--slate-700); opacity: .7; border-radius: 4px; margin-bottom: 6px; }
+.empty .illu .mk .ln i + i { height: 6px; width: 128px; background: var(--slate-300); margin: 0; }
+.empty .illu .mk .hint { display: inline-flex; align-items: center; gap: 4px; }
+.empty .illu .mk .hint svg { width: 12px; height: 12px; color: var(--secondary-blue); }
+.empty h2 { margin: 0 0 8px; font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; color: var(--foreground); }
+.empty p { margin: 0 0 24px; color: var(--slate-500); font-size: var(--text-s); max-width: 384px; line-height: 1.6; }
+
+/* ============ Tạo / Chi tiết ============ */
+.formgrid { display: flex; gap: 20px; width: 100%; }
+.formside { width: var(--w-formside); flex: none; }
+.formside .box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+.formside .ti { display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 8px; font-size: var(--text-s); color: var(--slate-600); width: 100%; text-align: left; }
+.formside .ti svg { width: 18px; height: 18px; color: var(--slate-400); flex: none; }
+.formside .ti:hover { background: var(--slate-100); color: var(--foreground); }
+.formside .ti.on { color: var(--primary); background: color-mix(in oklab, var(--primary) 5%, transparent); font-weight: 500; }
+.formside .ti.on svg { color: var(--primary); }
+.formside .sep { margin: 8px 16px; }
+.merged { flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; }
+.center { flex: 1; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.rpanel { width: var(--w-formside); flex: none; border-left: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.sechead h2 { margin: 0; font-size: var(--text-l); line-height: var(--lh-l); font-weight: 600; color: var(--slate-700); }
+.sechead p { margin: 2px 0 0; font-size: var(--text-s); color: var(--slate-500); }
+
+.qrcard { display: flex; flex-direction: column; gap: 8px; }
+.qrcard .hd { display: flex; align-items: center; justify-content: space-between; }
+.qrcard .hd .lb { display: inline-flex; align-items: center; gap: 6px; }
+.qrcard .hd .lb svg { width: 14px; height: 14px; color: var(--secondary-blue); }
+.qrcard .hd .acts { display: flex; gap: 4px; }
+.qrcard .box { border: 1px solid var(--border); border-radius: 8px; position: relative; padding: 16px; display: flex; justify-content: center; background-image: linear-gradient(var(--slate-100) 1px, transparent 1px), linear-gradient(90deg, var(--slate-100) 1px, transparent 1px); background-size: 28px 28px; }
+.qrcard .box .qr { box-shadow: var(--shadow-sm); border: 1px solid var(--border); border-radius: 12px; width: 140px; height: 140px; }
+.qrcard .box .qr.dim { opacity: .35; }
+.metarow { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--slate-100); font-size: var(--text-s); color: var(--slate-700); }
+.metarow:last-child { border: 0; }
+.metarow span:first-child { font-size: var(--text-xs); color: var(--slate-500); flex: none; }
+.metarow span:last-child { text-align: right; min-width: 0; }
+
+.dropzone { border: 1px dashed var(--slate-300); border-radius: 16px; background: var(--card); padding: 40px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.dropzone.has { padding: 24px; }
+.dropzone .cloud { width: 40px; height: 40px; border-radius: 999px; background: var(--slate-100); color: var(--slate-500); display: inline-flex; align-items: center; justify-content: center; }
+.dropzone .cloud svg { width: 20px; height: 20px; }
+.dropzone .t { font-size: var(--text-s); font-weight: 500; color: var(--foreground); }
+.dropzone .link { color: var(--secondary-blue); text-decoration: underline; font-size: var(--text-xs); }
+.dropzone.bad { border-color: var(--semantic-error); }
+.samples { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+
+.radio-card { display: flex; gap: 12px; border: 1px solid var(--slate-200); border-radius: 12px; padding: 12px; align-items: flex-start; cursor: pointer; text-align: left; width: 100%; background: transparent; }
+.radio-card:hover { border-color: var(--slate-400); }
+.radio-card.on { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 5%, var(--card)); }
+.radio-card .rd { width: 16px; height: 16px; border-radius: 999px; border: 1.5px solid var(--slate-400); margin-top: 2px; flex: none; background: var(--card); }
+.radio-card.on .rd { border: 5px solid var(--primary); }
+.radio-card .t { font-size: var(--text-s); font-weight: 500; color: var(--foreground); display: flex; align-items: center; gap: 6px; }
+.radio-card .t svg { width: 14px; height: 14px; color: var(--slate-500); }
+.radio-card .d { font-size: var(--text-xs); color: var(--slate-500); margin-top: 2px; }
+.pwbox { margin: -4px 0 4px 28px; display: flex; flex-direction: column; gap: 6px; }
+
+.preview { border: 1px solid var(--slate-300); border-radius: 16px; height: 360px; background: #fff; overflow: hidden; }
+.preview iframe { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+.preview.doc { display: flex; align-items: center; justify-content: center; color: var(--slate-400); font-size: var(--text-s); flex-direction: column; gap: 8px; }
+.preview.doc svg { width: 40px; height: 40px; color: var(--slate-300); }
+.tomb { background: var(--card); border: 1px solid var(--slate-300); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; max-width: 640px; margin: 24px auto; }
+.section { display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 1px solid var(--slate-200); }
+.section:first-child { padding-top: 0; border-top: 0; }
+.section .sechead { margin: 0; }
+.tomb > .ic { width: 56px; height: 56px; border-radius: 999px; background: var(--slate-100); color: var(--slate-400); display: inline-flex; align-items: center; justify-content: center; }
+.tomb > .ic svg { width: 26px; height: 26px; }
+.tomb h2 { margin: 0; font-size: var(--text-l); font-weight: 600; color: var(--foreground); }
+.tomb p { margin: 0; color: var(--slate-500); font-size: var(--text-s); max-width: 440px; }
+
+/* analytics */
+.stats { display: flex; gap: 12px; }
+.stat { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; }
+.stat .n { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; color: var(--foreground); margin-top: 2px; }
+.chart { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.chart svg { width: 100%; height: 220px; display: block; }
+.chart .bar { fill: color-mix(in oklab, var(--secondary) 55%, transparent); }
+.chart .bar:hover { fill: var(--secondary); }
+.chart .axis { stroke: var(--slate-200); }
+.chart text { fill: var(--slate-500); font-size: 10px; font-family: inherit; }
+
+/* notice, diff, bar (artifact-replace-dialog) */
+.notice { display: flex; gap: 12px; border-radius: 8px; border: 1px solid; padding: 12px; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-600); }
+.notice b { display: block; font-size: var(--text-s); line-height: var(--lh-s); color: var(--slate-700); margin-bottom: 4px; font-weight: 500; }
+.notice .ni { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.notice .ni svg { width: 16px; height: 16px; }
+.notice.success { border-color: color-mix(in oklab, var(--semantic-success) 25%, transparent); background: color-mix(in oklab, var(--semantic-success) 5%, var(--card)); }
+.notice.success .ni { color: var(--semantic-success); }
+.notice.warning { border-color: color-mix(in oklab, var(--semantic-warning) 40%, transparent); background: color-mix(in oklab, var(--semantic-warning) 10%, var(--card)); }
+.notice.warning .ni { color: var(--semantic-warning); }
+.notice.neutral { border-color: var(--slate-200); background: var(--slate-50); }
+.notice.neutral .ni { color: var(--slate-400); }
+.notice.info { border: 0; background: color-mix(in oklab, var(--secondary-blue) 10%, var(--card)); border-radius: 12px; }
+.notice.info .ni { color: var(--secondary-blue); }
+.notice.error { border-color: color-mix(in oklab, var(--semantic-error) 30%, transparent); background: color-mix(in oklab, var(--semantic-error) 6%, var(--card)); }
+.notice.error .ni { color: var(--semantic-error); }
+.notice .lnk { margin-top: 4px; color: var(--secondary-blue); text-decoration: underline; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+.notice .lnk svg { width: 14px; height: 14px; }
+.diff { border: 1px solid var(--slate-200); border-radius: 8px; }
+.diff .r { display: grid; grid-template-columns: 96px 1fr auto auto; gap: 12px; align-items: center; padding: 8px 12px; font-size: var(--text-s); color: var(--slate-700); }
+.diff .r + .r { border-top: 1px solid var(--slate-100); }
+.diff .r .l { font-size: var(--text-xs); color: var(--slate-500); }
+.qbar { height: 6px; border-radius: 999px; background: var(--slate-100); position: relative; overflow: hidden; margin: 6px 0; }
+.qbar i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--primary); border-radius: 999px; transition: width .3s; }
+.qbar i.add { background: color-mix(in oklab, var(--primary) 40%, transparent); }
+.done-title { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--foreground); font-size: var(--text-base); }
+.done-title svg { width: 20px; height: 20px; color: var(--semantic-success); }
+
+/* ============ Dialog / overlay / toast ============ */
+.overlay { position: fixed; inset: 0; background: rgb(0 0 0 / .5); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 100; }
+.dialog { background: var(--card); border-radius: var(--r-panel); padding: 24px 20px; width: 480px; max-width: calc(100vw - 32px); max-height: calc(100vh - 32px); overflow-y: auto; box-shadow: var(--shadow-xl); color: var(--foreground); position: relative; }
+.dialog.sm { width: 640px; }
+.dialog h4 { margin: 0; font-size: var(--text-base); line-height: var(--lh-base); font-weight: 600; padding-right: 28px; }
+.dialog .desc { color: var(--slate-500); font-size: var(--text-s); margin: 4px 0 0; }
+.dialog .x { position: absolute; right: 16px; top: 20px; width: 24px; height: 24px; border-radius: 999px; color: var(--slate-500); display: inline-flex; align-items: center; justify-content: center; }
+.dialog .x svg { width: 16px; height: 16px; }
+.dialog .x:hover { background: var(--slate-100); }
+.dialog .hr { height: 1px; background: var(--border); margin: 12px 0 0; }
+.dialog .body { display: flex; flex-direction: column; gap: 20px; padding: 12px 0 0; }
+.dialog .foot { display: flex; justify-content: flex-end; gap: 8px; align-items: center; flex-wrap: wrap; }
+.dialog .foot .reason { width: 100%; text-align: right; font-size: var(--text-xs); color: var(--slate-500); margin-top: -2px; }
+.qrbig { width: 160px; height: 160px; border: 1px solid var(--border); border-radius: 12px; background: #fff; padding: 10px; }
+.qrbig svg { width: 100%; height: 100%; }
+
+#toasts { position: fixed; right: 24px; bottom: 64px; display: flex; flex-direction: column; gap: 8px; z-index: 200; }
+.toast { background: var(--popover); color: var(--foreground); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: var(--text-s); box-shadow: var(--shadow-xl); display: flex; align-items: center; gap: 8px; animation: tin .18s ease-out; }
+.toast svg { width: 16px; height: 16px; color: var(--semantic-success); }
+.toast.err svg { color: var(--semantic-error); }
+@keyframes tin { from { opacity: 0; transform: translateY(6px); } }
+
+/* ============ Thanh prototype ============ */
+#protobar { position: fixed; left: 12px; bottom: 12px; z-index: 300; display: flex; align-items: center; gap: 8px; background: rgb(15 23 42 / .92); color: #e2e8f0; border-radius: 999px; padding: 6px 8px 6px 12px; font-size: 11px; line-height: 16px; font-family: ui-monospace, Menlo, monospace; box-shadow: var(--shadow-xl); }
+#protobar b { color: #fff; font-weight: 600; }
+#protobar button { height: 22px; padding: 0 8px; border-radius: 999px; background: rgb(255 255 255 / .12); color: #fff; font-size: 11px; font-family: inherit; }
+#protobar button:hover { background: rgb(255 255 255 / .22); }
+
+/* ============ Trang công khai /a/<token> — hex cứng vì CSP default-src 'none' ============ */
+.pub { position: absolute; inset: 0; background: #fff; color: #111; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: auto; z-index: 50; }
+.pub.dark-shell { background: #111; color: #eee; }
+.pub .wrap { max-width: 560px; margin: 0 auto; padding: 32px 20px 40px; min-height: 100%; display: flex; flex-direction: column; }
+.pub .brand { display: flex; align-items: center; gap: 6px; color: #2563eb; font-weight: 600; margin-bottom: 24px; font-size: 15px; }
+.pub .brand svg { width: 18px; height: 18px; }
+.pub .gicon { color: #94a3b8; margin-bottom: 10px; width: 24px; height: 24px; }
+.pub h1 { font-size: 1.125rem; font-weight: 600; margin: 0 0 12px; }
+.pub .lead { font-size: .9375rem; line-height: 1.5; margin: 0 0 16px; }
+.pub label { display: block; font-size: .8125rem; font-weight: 600; margin: 0 0 6px; }
+.pub .gin { width: 100%; height: 44px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #111; padding: 0 12px; font-size: 16px; outline: none; }
+.pub .gin:focus { border-color: #2563eb; }
+.pub .gin.bad { border-color: #dc2626; }
+.pub.dark-shell .gin { background: #1e293b; border-color: #334155; color: #eee; }
+.pub .gerr { margin: 8px 0 0; font-size: .8125rem; color: #dc2626; }
+.pub .ghint { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px; background: #f1f5f9; font-size: .8125rem; }
+.pub.dark-shell .ghint { background: #1e293b; }
+.pub .gbtn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 16px; padding: 12px 16px; border-radius: 8px; background: #111; color: #fff; font-size: 16px; font-weight: 600; }
+.pub.dark-shell .gbtn { background: #eee; color: #111; }
+.pub .gbtn.li2 { background: #0b1a33; color: #fff; }   /* hex của --color-primary oklch(0.165 0.059 257.19) ≈ #0b1a33, globals.css:56 */
+.pub .gbtn.google { background: #fff; color: #111; border: 1px solid #cbd5e1; }
+.pub .gemail { font-size: .8125rem; color: #94a3b8; margin: -6px 0 14px; }
+.pub .reassure { margin: 16px 0 0; padding: 12px 14px; border-radius: 8px; background: #f1f5f9; font-size: .9375rem; line-height: 1.5; }
+.pub.dark-shell .reassure { background: #1e293b; }
+.pub .foot { font-size: .8125rem; color: #94a3b8; margin: auto 0 0; padding-top: 28px; }
+.pub .foot a { color: inherit; }
+.pub .viewer { width: 100%; aspect-ratio: 16/10; border-radius: 8px; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; }
+.pub .dl { display: inline-block; margin-top: 16px; padding: 10px 16px; border-radius: 8px; background: #0b1a33; color: #fff; font-weight: 600; font-size: 14px; }
+.pub .note { font-size: .8125rem; opacity: .7; margin: 12px 0 0; }
+.pub .fullhtml { position: absolute; inset: 0; }
+.pub .fullhtml iframe { width: 100%; height: 100%; border: 0; display: block; }
+.pub .httptag { position: fixed; top: 10px; right: 12px; font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: #f1f5f9; color: #334155; border-radius: 4px; padding: 2px 8px; }
+.pub.dark-shell .httptag { background: #1e293b; color: #cbd5e1; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="pub" hidden></div>
+<div id="layer"></div>
+<div id="toasts"></div>
+<div id="protobar">
+  <span>Prototype · màn: <b id="pb-screen">—</b></span>
+  <button type="button" data-act="toggle-theme" id="pb-theme">dark</button>
+  <button type="button" data-act="toggle-empty" id="pb-empty">Xem trạng thái rỗng</button>
+  <button type="button" data-act="reset">reset dữ liệu</button>
+</div>
+
+<script>
+(function () {
+'use strict';
+
+/* ===================================================== ICONS (lucide-like, stroke 2, 24 viewBox) */
+const ico = (path, extra) => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${extra || ''}>${path}</svg>`;
+const I = {
+  plus: ico('<path d="M5 12h14M12 5v14"/>'),
+  copy: ico('<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>'),
+  ext: ico('<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>'),
+  sqext: ico('<path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6M21 3h-6M21 3v6M21 3l-9 9"/>'),
+  download: ico('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>'),
+  morev: ico('<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>'),
+  moreh: ico('<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>'),
+  back: ico('<path d="m12 19-7-7 7-7M19 12H5"/>'),
+  qr: ico('<rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3M21 21v.01M12 7v3a2 2 0 0 1-2 2H7M3 12h.01M12 3h.01M12 16v.01M16 12h1M21 12v.01M12 21v-1"/>'),
+  lock: ico('<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'),
+  globe: ico('<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>'),
+  users: ico('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>'),
+  eye: ico('<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>'),
+  scaneye: ico('<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="1"/><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"/>'),
+  trash: ico('<path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>'),
+  upload: ico('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>'),
+  filecode: ico('<path d="M10 12.5 8 15l2 2.5M14 12.5l2 2.5-2 2.5M14 2v4a2 2 0 0 0 2 2h4"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>'),
+  filetext: ico('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/>'),
+  present: ico('<path d="M2 3h20M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3M7 21l5-5 5 5"/>'),
+  video: ico('<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>'),
+  check: ico('<path d="M20 6 9 17l-5-5"/>'),
+  x: ico('<path d="M18 6 6 18M6 6l12 12"/>'),
+  search: ico('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
+  chevd: ico('<path d="m6 9 6 6 6-6"/>'),
+  chevl: ico('<path d="m15 18-6-6 6-6"/>'),
+  chevr: ico('<path d="m9 18 6-6-6-6"/>'),
+  key: ico('<path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>'),
+  mail: ico('<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>'),
+  chart: ico('<path d="M12 16v5M16 14v7M20 10v11M22 3l-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.708 0L2 15M4 18v3M8 14v7"/>'),
+  refresh: ico('<path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>'),
+  share: ico('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>'),
+  help: ico('<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>'),
+  calendar: ico('<path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>'),
+  filter: ico('<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>'),
+  info: ico('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'),
+  warn: ico('<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/>'),
+  checkc: ico('<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>'),
+  archive: ico('<rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/>'),
+  house: ico('<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),
+  link2: ico('<path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 1 1 0 10h-2M8 12h8"/>'),
+  activity: ico('<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>'),
+  folder: ico('<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>'),
+  bell: ico('<path d="M10.268 21a2 2 0 0 0 3.464 0M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>'),
+  panelL: ico('<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/>'),
+  keyIcon: ico('<path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/>'),
+  move: ico('<path d="M5 12h14M12 5l7 7-7 7"/>'),
+  shieldx: ico('<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m14.5 9.5-5 5M9.5 9.5l5 5"/>'),
+  pen: ico('<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>'),
+  google: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2.5 24 .5 14.6.5 6.5 5.8 2.6 13.6l7.8 6.1C12.3 13.2 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-2.8-.4-4.1H24v8.2h12.6c-.3 2.1-1.6 5.2-4.6 7.3l7.6 5.9c4.5-4.2 6.5-10.2 6.5-17.3z"/><path fill="#FBBC05" d="M10.4 28.3A14.6 14.6 0 0 1 9.6 24c0-1.5.3-3 .7-4.3l-7.8-6.1A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.8-6.4z"/><path fill="#34A853" d="M24 47.5c6.2 0 11.5-2 15.6-5.6l-7.6-5.9c-2 1.4-4.7 2.4-8 2.4-6.4 0-11.7-3.7-13.6-9.1l-7.8 6.4C6.5 42.2 14.6 47.5 24 47.5z"/></svg>',
+};
+const KIND_ICON = { html: I.filecode, pdf: I.filetext, slides: I.present, video: I.video };
+const ACCESS_ICON = { public: I.globe, private: I.lock, password: I.key, google: I.mail };
+
+/* ===================================================== COPY (artifact.json nguyên văn) */
+const T = {
+  status: {
+    draft: { badge: 'Chưa xuất bản', note: 'Chưa có link công khai. Bấm Xuất bản để lấy link và mã QR.', tone: 'neutral' },
+    live: { badge: 'Đang chạy', note: null, tone: 'success' },
+    removed: { badge: 'Đã gỡ', note: 'Nội dung đã xoá khỏi kho. Link rút gọn và mã QR vẫn hoạt động — người quét thấy trang thông báo đã gỡ.', tone: 'neutral' },
+  },
+  kind: { html: 'Trang HTML', pdf: 'PDF', slides: 'PowerPoint', video: 'Video' },
+  viewer: { html: 'trang HTML', pdf: 'trang xem PDF', slides: 'bản xem trước slide', video: 'một trình phát video' },
+  access: {
+    public: { label: 'Công khai', description: 'Bất kỳ ai có link đều xem được.' },
+    private: { label: 'Riêng tư', description: 'Chỉ thành viên tổ chức của bạn, sau khi đăng nhập li2.' },
+    password: { label: 'Mật khẩu', description: 'Ai biết mật khẩu đều xem được. Bạn tự gửi mật khẩu cho họ.' },
+    google: { label: 'Đăng nhập Google', description: 'Ai có tài khoản Google đều xem được. Email của họ được ghi lại.' },
+  },
+  actions: { publish: 'Xuất bản', open: 'Mở link', copy_link: 'Sao chép link', download: 'Tải về', open_new_tab: 'Mở trong tab mới', delete: 'Xoá', update_content: 'Cập nhật nội dung', copy_link_locked: 'Chưa xuất bản nên chưa có link.', more: 'Thêm hành động', download_qr: 'Tải mã QR', share: 'Chia sẻ' },
+  landing: {
+    gate_password_title: 'Nội dung này cần mật khẩu',
+    gate_password_lead: 'Người gửi link đã đặt mật khẩu. Nhập mật khẩu để xem.',
+    gate_password_label: 'Mật khẩu',
+    gate_password_submit: 'Xem nội dung',
+    gate_password_wrong: 'Mật khẩu không đúng. Còn {n} lần thử.',
+    gate_password_changed: 'Mật khẩu đã được đổi. Nhập mật khẩu mới.',
+    gate_locked_title: 'Đã thử quá nhiều lần',
+    gate_locked_lead: 'Thử lại sau {m} phút, hoặc hỏi người gửi link mật khẩu đúng.',
+    gate_private_title: 'Nội dung này dành cho thành viên',
+    gate_private_lead: 'Đăng nhập li2 để xem. Nếu bạn không có tài khoản li2, hỏi người gửi link.',
+    gate_private_button: 'Đăng nhập li2',
+    denied_title: 'Tài khoản của bạn không mở được nội dung này',
+    denied_signed_in_as: 'Đang đăng nhập: {email}',
+    denied_lead: 'Nội dung này chỉ dành cho thành viên của tổ chức đã đăng nó. Hỏi người gửi link, hoặc đăng nhập bằng tài khoản khác.',
+    denied_switch_button: 'Đăng nhập bằng tài khoản khác',
+    gate_google_title: 'Đăng nhập để xem nội dung này',
+    gate_google_lead: 'Người gửi link yêu cầu đăng nhập. Email của bạn được ghi lại cho người gửi.',
+    gate_google_button: 'Tiếp tục với Google',
+    removed_title: 'Nội dung này đã được gỡ',
+    removed_body: 'Người đăng đã gỡ nội dung ở đường dẫn này xuống.',
+    removed_reassure_strong: 'Mã QR của bạn không hỏng.',
+    removed_reassure_body: 'Bạn đã quét đúng. Hãy liên hệ nơi đặt mã này để nhận nội dung mới nhất.',
+    removed_footer: 'Đường dẫn này chạy trên',
+    download: 'Tải về',
+  },
+};
+const GATE_MAX_TRIES = 3;          // ARTIFACT_GATE_MAX_TRIES (artifact.type.ts:80)
+const GATE_LOCK_MINUTES = 10;      // theo yêu cầu prototype
+const MAX_BYTES = 10 * 1024 * 1024;        // ARTIFACT_MAX_BYTES (:18)
+const QUOTA_BYTES = 30 * 1024 * 1024;      // ARTIFACT_QUOTA_FREE_BYTES (:305)
+const QUOTA_LIVE = 3;                      // ARTIFACT_QUOTA_FREE_LIVE (:304)
+const DOMAIN = 'example.com';
+const ORG = 'khanhqns-organization';
+const NOW = Date.now();
+const H = 3600e3, D = 24 * H;
+
+/* ===================================================== MOCK DATA */
+const SAMPLE_FILES = [
+  { name: 'bang-gia-thang-11.html', kind: 'html', size: 212 * 1024 },
+  { name: 'catalogue-mua-thu.pdf', kind: 'pdf', size: Math.round(2.3 * 1024 * 1024) },
+  { name: 'gioi-thieu-san-pham.pptx', kind: 'slides', size: Math.round(6.8 * 1024 * 1024) },
+];
+function seedArtifacts() {
+  return [
+    { id: 'a1', name: 'Bảng giá tháng 10', kind: 'html', status: 'live', access_mode: 'password', password: 'k7p2m9qx4z1wnb3c', password_set_at: NOW - 3 * D, slug: 'bang-gia-thang-10', token: 'x7Qm2pL9', file_name: 'bang-gia-thang-10.html', size_bytes: 184 * 1024, created_at: NOW - 3 * D, updated_at: NOW - 2 * H, published_at: NOW - 3 * D, visits: 47, viewers: 0, creator: 'KQ' },
+    { id: 'a2', name: 'Landing khuyến mãi Tết', kind: 'html', status: 'live', access_mode: 'google', slug: 'khuyen-mai-tet', token: 'bR4tZ8kW', file_name: 'khuyen-mai-tet.html', size_bytes: 612 * 1024, created_at: NOW - 9 * D, updated_at: NOW - 7 * D, published_at: NOW - 9 * D, visits: 1204, viewers: 12, creator: 'KQ' },
+    { id: 'a3', name: 'Catalogue mùa thu', kind: 'pdf', status: 'draft', access_mode: 'private', slug: 'catalogue-mua-thu', token: null, file_name: 'catalogue-mua-thu.pdf', size_bytes: Math.round(8.1 * 1024 * 1024), created_at: NOW - 3 * D - 5 * H, updated_at: NOW - 3 * D - 5 * H, published_at: null, visits: 0, viewers: 0, creator: 'HT' },
+    { id: 'a4', name: 'Hướng dẫn lắp ráp', kind: 'html', status: 'removed', access_mode: 'public', slug: 'huong-dan-lap', token: 'nM3vC6yJ', file_name: 'huong-dan-lap.html', size_bytes: 0, created_at: NOW - 21 * D, updated_at: NOW - 1 * D, published_at: NOW - 21 * D, visits: 327, viewers: 0, creator: 'KQ' },
+  ];
+}
+let S;   // state
+function reset() {
+  S = {
+    artifacts: seedArtifacts(),
+    selected: new Set(),
+    search: '',
+    page: 1,
+    pageSize: 5,
+    emptyDemo: false,
+    menu: null,                       // {id, x, y} hoặc {kind:'detail'}
+    create: null,                     // form state trang tạo
+    gate: {},                         // token → { tries, lockedUntil, unlocked, signedIn, identity }
+    rp: null,                         // state khối Cập nhật nội dung inline trên trang chi tiết
+    ac: null,                         // state khối Quyền xem inline trên trang chi tiết
+    applying: false,                  // nút Cập nhật nội dung trên header đang chạy
+    lk: null,                         // state khối Link (slug) inline trên trang chi tiết
+    dialog: null,
+    dark: document.documentElement.classList.contains('dark'),
+  };
+}
+reset();
+
+/* ===================================================== HELPERS */
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function fmtBytes(b) {
+  if (!b) return '0 B';
+  if (b < 1024 * 1024) return (b / 1024).toFixed(0).replace('.', ',') + ' KB';
+  return (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB';
+}
+function fmtN(n) { return Number(n).toLocaleString('vi-VN'); }
+function rel(ts) {
+  const d = NOW - ts;
+  if (d < H) return `${Math.max(1, Math.round(d / 60000))} phút trước`;
+  if (d < D) return `${Math.round(d / H)} giờ trước`;
+  if (d < 7 * D) return `${Math.round(d / D)} ngày trước`;
+  if (d < 30 * D) return `${Math.round(d / (7 * D))} tuần trước`;
+  return `${Math.round(d / (30 * D))} tháng trước`;
+}
+const shortUrl = (a) => a.slug ? `https://${DOMAIN}/${a.slug}` : null;
+const byId = (id) => S.artifacts.find((a) => a.id === id);
+const byToken = (t) => S.artifacts.find((a) => a.token === t);
+const liveCount = () => S.artifacts.filter((a) => a.status === 'live').length;
+const usedBytes = () => S.artifacts.filter((a) => a.status !== 'removed').reduce((s, a) => s + a.size_bytes, 0);
+function slugify(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48); }
+function randPw() { const c = 'abcdefghjkmnpqrstuvwxyz23456789'; let o = ''; for (let i = 0; i < 16; i++) o += c[Math.floor(Math.random() * c.length)]; return o; }
+function randToken() { const c = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; let o = ''; for (let i = 0; i < 8; i++) o += c[Math.floor(Math.random() * c.length)]; return o; }
+function copyText(text, msg) {
+  const done = () => toast(msg || 'Đã sao chép');
+  try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done); else done(); } catch (e) { done(); }
+}
+function toast(msg, kind) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (kind === 'err' ? ' err' : '');
+  el.innerHTML = (kind === 'err' ? I.x : I.checkc) + '<span>' + esc(msg) + '</span>';
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+}
+/* QR giả: finder pattern + module theo seed, deterministic */
+function qrSvg(seed, color) {
+  const n = 25; let h = 0; for (const ch of String(seed || 'x')) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const rnd = () => { h ^= h << 13; h >>>= 0; h ^= h >> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; };
+  const cells = [];
+  const finder = (x, y) => { for (let i = 0; i < 7; i++) for (let j = 0; j < 7; j++) { const edge = i === 0 || j === 0 || i === 6 || j === 6; const core = i >= 2 && i <= 4 && j >= 2 && j <= 4; if (edge || core) cells.push([x + j, y + i]); } };
+  finder(0, 0); finder(n - 7, 0); finder(0, n - 7);
+  const inFinder = (x, y) => (x < 8 && y < 8) || (x >= n - 8 && y < 8) || (x < 8 && y >= n - 8);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { if (inFinder(x, y)) continue; if ((x === 6 || y === 6) ? ((x + y) % 2 === 0) : rnd() < 0.42) cells.push([x, y]); }
+  return `<svg viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges" fill="${color || '#1a1a2e'}" aria-hidden="true">${cells.map(([x, y]) => `<rect x="${x}" y="${y}" width="1" height="1"/>`).join('')}</svg>`;
+}
+function demoHtml(a) {
+  return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>body{margin:0;font-family:system-ui,sans-serif;background:#fafafa;color:#111}header{background:#0b1a33;color:#fff;padding:28px 32px}h1{margin:0;font-size:22px}p.l{margin:6px 0 0;opacity:.8;font-size:14px}main{padding:24px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.c{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px}.c b{display:block;font-size:15px}.c span{font-size:22px;font-weight:700;color:#4c38c7;display:block;margin:8px 0}.c small{color:#64748b}footer{padding:16px 32px;color:#64748b;font-size:12px}</style></head><body><header><h1>${esc(a.name)}</h1><p class="l">Nội dung demo do người dùng đăng · ${esc(a.file_name)}</p></header><main><div class="c"><b>Gói Cơ bản</b><span>199.000₫</span><small>/ tháng · 1 người dùng</small></div><div class="c"><b>Gói Nhóm</b><span>499.000₫</span><small>/ tháng · 5 người dùng</small></div><div class="c"><b>Gói Doanh nghiệp</b><span>Liên hệ</span><small>SLA riêng</small></div></main><footer>Giá áp dụng từ 01/10/2026. Đã gồm VAT.</footer></body></html>`;
+}
+const srcdoc = (html) => esc(html);
+
+/* ===================================================== ROUTER */
+function parseHash() {
+  const h = location.hash || '#/artifacts';
+  const [path, qs] = h.slice(1).split('?');
+  const q = Object.fromEntries(new URLSearchParams(qs || ''));
+  const p = path.split('/').filter(Boolean);
+  if (p[0] === 'a' && p[1]) return { name: 'public', token: p[1], q };
+  if (p[0] === 'artifacts' && p[1] === 'new') return { name: 'create', q };
+  if (p[0] === 'artifacts' && p[1]) return { name: 'detail', id: p[1], tab: q.tab || 'content', q };
+  return { name: 'list', q };
+}
+function go(hash) { if (location.hash === hash) render(); else location.hash = hash; }
+window.addEventListener('hashchange', () => { S.menu = null; render(); });
+
+/* ===================================================== SHELL */
+function shell(route, inner) {
+  const nav = [
+    ['Tổng quan', I.house, false], ['Short Links', I.link2, false], ['Artifact', I.filecode, true], ['Realtime', I.activity, false], ['Analytics', I.chart, false], ['Khách hàng', I.users, false],
+  ];
+  return `
+  <div class="navbar">
+    <div class="logo"><i>${I.qr}</i>Li2</div>
+    <div class="org"><span class="ob">${I.keyIcon}</span><span>${ORG}</span>${I.chevd}</div>
+    <div class="right">
+      <span class="lang">${I.globe} VI ${I.chevd}</span>
+      <span class="bell">${I.bell}</span>
+      <span class="user"><span class="av">KQ</span><span>Khánh<br><span style="opacity:.7">Chủ sở hữu</span></span>${I.chevd}</span>
+    </div>
+  </div>
+  <div class="shell">
+    <aside class="sidebar">
+      <span class="collapse">${I.panelL}</span>
+      ${nav.map(([l, ic, on]) => `<button type="button" class="mi${on ? ' on' : ''}" data-act="nav" data-to="${on ? '#/artifacts' : ''}">${ic}<span>${l}</span></button>`).join('')}
+      <div class="grp">Organize</div>
+      <button type="button" class="mi" data-act="nav">${I.folder}<span>Spaces</span></button>
+    </aside>
+    <div class="main">${inner}</div>
+  </div>`;
+}
+
+/* ===================================================== LIST */
+function statusBadge(a) { const s = T.status[a.status]; return `<span class="badge ${s.tone}">${s.badge}</span>`; }
+function accessBadge(mode) { if (mode === 'public') return ''; return `<span class="badge gray">${ACCESS_ICON[mode]}${T.access[mode].label}</span>`; }
+
+function visibleArtifacts() {
+  if (S.emptyDemo) return [];
+  const q = S.search.trim().toLowerCase();
+  return S.artifacts.filter((a) => !q || a.name.toLowerCase().includes(q) || (a.slug || '').includes(q));
+}
+function listScreen() {
+  const all = visibleArtifacts();
+  const pages = Math.max(1, Math.ceil(all.length / S.pageSize));
+  if (S.page > pages) S.page = pages;
+  const rows = all.slice((S.page - 1) * S.pageSize, S.page * S.pageSize);
+  const pageIds = rows.map((a) => a.id);
+  const selOnPage = pageIds.filter((id) => S.selected.has(id)).length;
+  const allSel = rows.length > 0 && selOnPage === rows.length;
+  const nSel = S.selected.size;
+
+  const header = `
+    <div class="pagenav"><div class="inner">
+      <h3>Artifact</h3>
+      <div class="extra">
+        <button type="button" class="btn secondary" data-act="go" data-to="#/artifacts/new">${I.plus}Tạo artifact</button>
+      </div>
+    </div></div>`;
+
+  if (S.artifacts.length === 0 || S.emptyDemo) {
+    return header + `<div class="pagebody"><div class="inner">
+      <div class="empty">
+        <div class="illu">
+          <div class="bar"><i></i><i></i><i></i><span class="url"></span></div>
+          <div class="mk"><span class="ic">HTML</span><span class="ln"><i></i><i></i></span><span class="hint">${I.eye} 1.2k</span></div>
+          <div class="mk"><span class="ic">PDF</span><span class="ln"><i></i><i></i></span><span class="hint">${I.eye} 843</span></div>
+          <div class="mk"><span class="ic">MP4</span><span class="ln"><i></i><i></i></span><span class="hint">${I.eye} 327</span></div>
+        </div>
+        <h2>Chưa có artifact nào</h2>
+        <p>Tải lên trang HTML, PDF, bản trình chiếu hay video — lấy link và mã QR để dán lên bao bì, standee hay tờ rơi.</p>
+        <button type="button" class="btn default" data-act="go" data-to="#/artifacts/new">${I.plus}Tạo artifact đầu tiên</button>
+      </div></div></div>`;
+  }
+
+  const rowHtml = (a) => {
+    const url = shortUrl(a);
+    const sel = S.selected.has(a.id);
+    const isLive = a.status === 'live';
+    const isRemoved = a.status === 'removed';
+    const line2 = isLive
+      ? `<div class="row" style="min-width:0">
+          <span class="short truncate">${esc(url.replace(/^https?:\/\//, ''))}</span>
+          <span class="row" style="gap:4px" data-stop>
+            <button type="button" class="icobtn" data-act="copy" data-text="${esc(url)}" data-tip="Sao chép link">${I.copy}</button>
+            <button type="button" class="icobtn blue" data-act="open-public" data-token="${a.token}" data-tip="Mở link">${I.sqext}</button>
+          </span>
+          <span class="dest">${I.move}<span class="truncate">${esc(a.file_name)} · ${fmtBytes(a.size_bytes)}</span></span>
+        </div>`
+      : `<span class="hint">${esc(T.status[a.status].note)}</span>`;
+    return `
+    <div class="row-card${sel ? ' sel' : ''}${isRemoved ? ' removed' : ''}" data-act="open-detail" data-id="${a.id}">
+      <span class="chkwrap" data-stop><button type="button" class="chk${sel ? ' on' : ''}" data-act="sel" data-id="${a.id}" aria-label="Chọn">${I.check}</button></span>
+      ${isLive ? `<div class="qr">${qrSvg(a.token)}</div>` : isRemoved ? `<div class="qr">${qrSvg(a.token, '#94a3b8')}</div>` : `<div class="qr ph">${KIND_ICON[a.kind]}</div>`}
+      <div class="body">
+        <div class="top">
+          <div class="lines">
+            <div class="row"><span class="name truncate">${esc(a.name)}</span>${statusBadge(a)}</div>
+            ${line2}
+          </div>
+          <div class="acts" data-stop>
+            ${isLive ? `<span class="statbar">${I.eye} ${fmtN(a.visits)}</span><button type="button" class="sqbtn" data-act="go" data-to="#/artifacts/${a.id}?tab=analytics" data-tip="Phân tích">${I.chart}</button>` : ''}
+            ${isRemoved ? '' : `<button type="button" class="sqbtn" data-act="menu" data-id="${a.id}" data-tip="Thêm hành động" aria-label="Thêm hành động">${I.moreh}</button>`}
+          </div>
+        </div>
+        <div class="meta">
+          <span class="kind">${KIND_ICON[a.kind]}${T.kind[a.kind]}</span>
+          ${accessBadge(a.access_mode)}
+          ${isRemoved ? '' : `<span>${fmtBytes(a.size_bytes)}</span>`}
+          <span class="sp"></span>
+          <span><span class="av">${a.creator}</span>${a.published_at ? 'Cập nhật' : 'Tạo'} ${rel(a.updated_at)}</span>
+        </div>
+      </div>
+      ${S.menu && S.menu.id === a.id ? rowMenu(a) : ''}
+    </div>`;
+  };
+
+  const body = `
+    <div class="pagebody"><div class="inner">
+      <div class="tools">
+        <span class="hint" style="max-width:420px">Artifact cần một file, không tạo nhanh từ ô dán link như Short link.</span>
+        <div class="filters">
+          <div class="input search">${I.search}<input type="search" placeholder="Tìm theo tên hoặc đường dẫn" value="${esc(S.search)}" data-act="search" /></div>
+          <span class="sq off" data-tip="Sắp có" aria-disabled="true">${I.calendar}</span>
+          <span class="sq off" data-tip="Sắp có" aria-disabled="true">${I.filter}</span>
+        </div>
+      </div>
+      <div class="thead">
+        <button type="button" class="chk${allSel ? ' on' : selOnPage ? ' mix' : ''}" data-act="sel-all" aria-label="Chọn tất cả">${allSel ? I.check : ''}</button>
+        ${nSel ? `<span class="bulk"><button type="button" class="icobtn" style="color:var(--semantic-error)" data-act="bulk-delete" data-tip="Xoá đã chọn">${I.trash}</button><span>Đã chọn ${nSel}</span></span>` : `<span>Chọn tất cả</span>`}
+        <span style="margin-left:auto">${all.length} artifact · ${liveCount()}/${QUOTA_LIVE} đã xuất bản · ${fmtBytes(usedBytes())}/${fmtBytes(QUOTA_BYTES)}</span>
+      </div>
+      <div class="rows">${rows.length ? rows.map(rowHtml).join('') : `<div class="hint" style="padding:24px;text-align:center">Không có artifact nào khớp “${esc(S.search)}”.</div>`}</div>
+      <div class="pager">
+        ${all.length ? `${(S.page - 1) * S.pageSize + 1}–${Math.min(all.length, S.page * S.pageSize)} / ${all.length}` : ''}
+        <b class="${S.page <= 1 ? 'off' : ''}" data-act="page" data-p="${S.page - 1}">${I.chevl}</b>
+        ${Array.from({ length: pages }, (_, i) => `<b class="${i + 1 === S.page ? 'on' : ''}" data-act="page" data-p="${i + 1}">${i + 1}</b>`).join('')}
+        <b class="${S.page >= pages ? 'off' : ''}" data-act="page" data-p="${S.page + 1}">${I.chevr}</b>
+      </div>
+    </div></div>`;
+  return header + body;
+}
+function rowMenu(a) {
+  const isLive = a.status === 'live';
+  return `<div class="menu" style="right:16px;top:54px" data-stop>
+    <button type="button" class="mi" data-act="go" data-to="#/artifacts/${a.id}">${T.actions.update_content} ${I.refresh}</button>
+    ${a.access_mode === 'public' ? `<div class="mi locked" style="opacity:1"><span>Công khai <span style="color:var(--semantic-success)">${I.checkc}</span></span><span class="sub">Ai có link đều xem được</span></div>` : `<button type="button" class="mi" data-act="set-public" data-id="${a.id}" data-tip="Đang ${T.access[a.access_mode].label}. Bấm để ai có link cũng xem được.">Công khai ${I.globe}</button>`}
+    <div class="sep"></div>
+    <button type="button" class="mi danger" data-act="dlg-delete" data-id="${a.id}">${T.actions.delete} ${I.trash}</button>
+  </div>`;
+}
+
+/* ===================================================== CREATE */
+function newCreateState() { return { file: null, name: '', slug: '', slugTouched: false, access: 'public', password: '', showPw: false, busy: false, progress: 0 }; }
+function createScreen() {
+  if (!S.create) S.create = newCreateState();
+  const c = S.create;
+  const slugOk = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(c.slug) && c.slug.length >= 6 && c.slug.length <= 64 && !c.slug.startsWith('f-');
+  const slugErr = c.slug && !slugOk ? 'Đường dẫn phải dài 6–64 ký tự, chỉ gồm chữ thường, số và dấu gạch đơn; không bắt đầu bằng "f-".' : '';
+  const pwShort = c.access === 'password' && c.password && c.password.length < 8;
+  const quotaFull = liveCount() >= QUOTA_LIVE;
+  let reason = '';
+  if (!c.file) reason = 'Chọn một file trước đã';
+  else if (!c.name.trim()) reason = 'Đặt tên trước đã';
+  else if (!slugOk) reason = 'Sửa đường dẫn trước đã';
+  else if (c.access === 'password' && !c.password) reason = 'Đặt mật khẩu trước đã';
+  else if (pwShort) reason = 'Mật khẩu cần ít nhất 8 ký tự.';
+  else if (quotaFull) reason = `Bạn đang có ${QUOTA_LIVE} artifact đã xuất bản, là mức tối đa. Gỡ bớt một cái rồi thử lại.`;
+  const canSubmit = !reason && !c.busy;
+  const free = QUOTA_BYTES - usedBytes();
+
+  const radio = (m) => `<button type="button" class="radio-card${c.access === m ? ' on' : ''}" data-act="c-access" data-m="${m}" role="radio" aria-checked="${c.access === m}"><span class="rd"></span><div><div class="t">${ACCESS_ICON[m]}${T.access[m].label}</div><div class="d">${T.access[m].description}</div></div></button>`;
+
+  return `
+  <div class="pagenav"><div class="inner">
+    <button type="button" class="back" data-act="go" data-to="#/artifacts" aria-label="Quay lại">${I.back}</button>
+    <h3>Tạo artifact</h3>
+  </div></div>
+  <div class="pagebody"><div class="inner">
+    <div class="formgrid">
+      <div class="merged">
+        <div class="center">
+          <div class="row" style="margin-bottom:-4px">
+            <span class="badge neutral" style="font-weight:600">Tải file lên</span>
+            <span class="badge gray" data-tip="Sắp có" style="cursor:not-allowed">Dán HTML</span>
+            <span class="hint" style="margin-left:auto">Hoặc đăng từ Claude qua MCP <span class="mono">publish_artifact</span></span>
+          </div>
+          ${c.file ? `
+          <div class="dropzone has">
+            <span class="cloud">${KIND_ICON[c.file.kind]}</span>
+            <span class="t">${esc(c.file.name)} · ${fmtBytes(c.file.size)}</span>
+            <span class="badge gray">${T.kind[c.file.kind]}</span>
+            <button type="button" class="link" data-act="c-clear-file">Chọn file khác</button>
+          </div>` : `
+          <div class="dropzone" data-act="c-sample" data-i="0">
+            <span class="cloud">${I.upload}</span>
+            <span class="t">Thả file vào đây hoặc bấm để chọn</span>
+            <span class="hint">HTML, PDF, PowerPoint hoặc video — tối đa ${fmtBytes(MAX_BYTES)}</span>
+            <div class="samples" data-stop>
+              <span class="hint" style="align-self:center">Prototype · dùng file mẫu:</span>
+              ${SAMPLE_FILES.map((f, i) => `<button type="button" class="btn secondary xs" data-act="c-sample" data-i="${i}">${KIND_ICON[f.kind]}${esc(f.name)}</button>`).join('')}
+            </div>
+          </div>`}
+          ${c.file && c.file.kind === 'slides' ? `<span class="hint">File PowerPoint được Microsoft tải về để hiển thị bản xem trước.</span>` : ''}
+          <div class="sep"></div>
+          <div class="field"><label class="label" for="c-name">Tên</label><div class="input muted"><input id="c-name" placeholder="Đặt tên để dễ tìm lại" value="${esc(c.name)}" data-act="c-name" /></div><span class="hint">Chỉ bạn và đồng đội thấy tên này.</span></div>
+          <div class="field"><label class="label" for="c-slug">Đường dẫn</label><div class="input muted${slugErr ? ' bad' : ''}"><span class="pre">${DOMAIN}/</span><input id="c-slug" class="mono" placeholder="vi-du-duong-dan" value="${esc(c.slug)}" data-act="c-slug" /></div>${slugErr ? `<span class="err">${slugErr}</span>` : `<span class="hint">Sửa được sau này ở trang chi tiết; đường dẫn cũ vẫn chuyển hướng.</span>`}</div>
+          <div class="sep"></div>
+          <div class="field" role="radiogroup" aria-label="Ai xem được">
+            <span class="label">Ai xem được</span>
+            ${radio('public')}${radio('private')}${radio('password')}
+            ${c.access === 'password' ? `
+            <div class="pwbox">
+              <label class="label" for="c-pw">Mật khẩu</label>
+              <div class="row"><div class="input mono grow${pwShort ? ' bad' : ''}"><input id="c-pw" type="${c.showPw ? 'text' : 'password'}" placeholder="Ít nhất 8 ký tự" value="${esc(c.password)}" data-act="c-pw" autocomplete="new-password" /><button type="button" class="ad" data-act="c-showpw" data-tip="${c.showPw ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}">${I.eye}</button></div><button type="button" class="btn secondary" data-act="c-genpw">${I.refresh}Tạo ngẫu nhiên</button></div>
+              ${pwShort ? `<span class="err">Mật khẩu cần ít nhất 8 ký tự.</span>` : `<span class="hint">Người xem nhập mật khẩu này một lần rồi xem được trong một tuần.</span>`}
+            </div>` : ''}
+            ${radio('google')}
+          </div>
+        </div>
+        <div class="rpanel">
+          <div class="qrcard">
+            <div class="hd"><span class="lb label">Mã QR ${I.help}</span><div class="acts"><span data-tip="Xuất bản trước đã" class="tip-left"><button type="button" class="btn tertiary round" disabled>${I.download}</button></span><span data-tip="Xuất bản trước đã" class="tip-left"><button type="button" class="btn tertiary round" disabled>${I.copy}</button></span></div></div>
+            <div class="box"><div class="qr dim">${qrSvg('placeholder')}</div></div>
+            <span class="hint">Xuất bản trước đã — mã QR sinh theo link rút gọn.</span>
+          </div>
+          <div class="qrcard">
+            <span class="label">File sẽ xuất bản</span>
+            <div class="metarow"><span>Loại</span><span>${c.file ? T.kind[c.file.kind] : '—'}</span></div>
+            <div class="metarow"><span>Dung lượng</span><span>${c.file ? `${fmtBytes(c.file.size)} / còn trống ${fmtBytes(free)}` : `còn trống ${fmtBytes(free)}`}</span></div>
+            <div class="metarow"><span>Người xem thấy</span><span>${c.file ? T.viewer[c.file.kind] : '—'}</span></div>
+            <div class="metarow"><span>Đã xuất bản</span><span>${liveCount()} / ${QUOTA_LIVE}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <div class="pagefoot">
+    <button type="button" class="btn tertiary" data-act="go" data-to="#/artifacts">Huỷ</button>
+    <div style="display:flex;flex-direction:column;align-items:center;position:relative">
+      <button type="button" class="btn default${c.busy ? ' busy' : ''}" ${canSubmit ? '' : (c.busy ? '' : 'disabled')} data-act="c-submit" aria-describedby="c-reason">${c.busy ? `<span class="spin"></span>Đang tải lên ${c.progress}%` : 'Xuất bản'}</button>
+      ${reason && !c.busy ? `<span class="reason" id="c-reason">${esc(reason)}</span>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ===================================================== DETAIL */
+function detailScreen(id, tab) {
+  const a = byId(id);
+  if (!a) return `<div class="pagenav"><div class="inner"><button type="button" class="back" data-act="go" data-to="#/artifacts">${I.back}</button><h3>Artifact</h3></div></div><div class="pagebody"><div class="inner"><div class="tomb"><span class="ic">${I.shieldx}</span><h2>Không tìm thấy artifact này, hoặc nó không thuộc tổ chức của bạn.</h2><button type="button" class="btn secondary sm" data-act="go" data-to="#/artifacts">Quay lại danh sách</button></div></div></div>`;
+  const url = shortUrl(a);
+  const isLive = a.status === 'live', isDraft = a.status === 'draft', isRemoved = a.status === 'removed';
+  if (isRemoved && tab !== 'content') tab = 'content';
+  if (isDraft && tab === 'analytics') tab = 'content';
+
+  if (!S.rp || S.rp.id !== a.id) S.rp = { id: a.id, phase: 'select', file: null, progress: 0 };
+  if (!S.ac || S.ac.id !== a.id) S.ac = { id: a.id, phase: 'edit', form: { mode: a.access_mode, password: '', show: false }, busy: false, password: null };
+  if (!S.lk || S.lk.id !== a.id) S.lk = { id: a.id, slug: a.slug || '' };
+  const header = `
+  <div class="pagenav"><div class="inner">
+    <button type="button" class="back" data-act="go" data-to="#/artifacts" aria-label="Quay lại">${I.back}</button>
+    ${isLive ? `<span class="truncate" style="font-size:var(--text-s);font-weight:500">${esc(url)}</span><button type="button" class="btn table" style="color:var(--secondary-purple)" data-act="copy" data-text="${esc(url)}" data-tip="Sao chép">${I.copy}</button>`
+             : `<span class="truncate" style="font-size:var(--text-s);font-weight:500">${esc(a.name)}</span>${statusBadge(a)}`}
+    <div class="extra">
+      ${isLive || isRemoved ? `<span class="statbar lg">${I.scaneye} ${fmtN(a.visits)}</span>` : ''}
+      ${isLive ? `<button type="button" class="btn default sm${S.applying ? ' busy' : ''}" data-act="apply-all" data-id="${a.id}" data-tip="${pendingTip(a)}">${S.applying ? '<span class="spin"></span>Đang cập nhật…' : `${I.refresh}${T.actions.update_content}${pendingCount(a) ? ` (${pendingCount(a)})` : ''}`}</button>` : ''}
+      ${isDraft ? `<button type="button" class="btn default sm" data-act="publish-draft" data-id="${a.id}">${T.actions.publish}</button>` : ''}
+      ${isRemoved ? '' : `<button type="button" class="btn secondary icon" data-act="menu-detail" aria-label="Thêm hành động">${I.moreh}</button>`}
+      ${S.menu && S.menu.kind === 'detail' ? `<div class="menu" style="right:0;top:44px" data-stop>
+        ${isLive ? `<button type="button" class="mi" data-act="dlg-share" data-id="${a.id}">${T.actions.share} ${I.share}</button><button type="button" class="mi" data-act="open-public" data-token="${a.token}">${T.actions.open_new_tab} ${I.ext}</button>` : `<div class="mi locked"><span>${T.actions.share}</span><span class="sub">${T.actions.copy_link_locked}</span></div>`}
+        <button type="button" class="mi" data-act="toast" data-msg="Đang tải ${esc(a.file_name)}…">${T.actions.download} ${I.download}</button>
+        <div class="sep"></div>
+        <button type="button" class="mi danger" data-act="dlg-delete" data-id="${a.id}">${T.actions.delete} ${I.trash}</button>
+      </div>` : ''}
+    </div>
+  </div></div>`;
+
+  if (isRemoved) {
+    return `<div class="pagenav"><div class="inner"><button type="button" class="back" data-act="go" data-to="#/artifacts">${I.back}</button><h3>Artifact</h3></div></div><div class="pagebody"><div class="inner"><div class="tomb"><span class="ic">${I.shieldx}</span><h2>Không tìm thấy artifact này.</h2><p>Nội dung đã được gỡ. Link rút gọn và mã QR đã in vẫn hoạt động — người quét thấy trang thông báo đã gỡ.</p><button type="button" class="btn secondary sm" data-act="go" data-to="#/artifacts">Quay lại danh sách</button></div></div></div>`;
+  }
+
+  // Trang chi tiết = MỘT trang cuộn, không sidebar: Cập nhật nội dung → Xem trước → Quyền xem → Phân tích
+  if (!S.rp || S.rp.id !== a.id) S.rp = { id: a.id, phase: 'select', file: null, progress: 0 };
+  const lk = lkCheck(S.lk, a);
+  const serveUrl = a.token ? `https://app.${DOMAIN}/a/${a.token}` : null;
+  const linkSec = `<div class="section" id="sec-link">
+      <div class="sechead"><h2>Link</h2><p>${isLive ? 'Link rút gọn là thứ in lên mã QR. Link gốc là trang người quét được chuyển tới.' : 'Chưa xuất bản nên chưa có link. Đường dẫn dưới đây sẽ dùng khi bạn xuất bản.'}</p></div>
+      <div class="field"><label class="label" for="lk-slug">Link rút gọn</label>
+        <div class="row">
+          <div class="input muted grow${lk.changed && lk.reason ? ' bad' : ''}"><span class="pre">${DOMAIN}/</span><input id="lk-slug" class="mono" placeholder="duong-dan" value="${esc(S.lk.slug)}" data-act="lk-slug" /></div>
+          ${isLive && !lk.changed ? `<button type="button" class="btn secondary" data-act="copy" data-text="${esc(url)}" data-tip="Sao chép">${I.copy}Sao chép</button><button type="button" class="btn secondary" data-act="open-public" data-token="${a.token}" data-tip="Mở như người quét">${I.ext}Mở</button>` : ''}
+        </div>
+        ${lk.changed && lk.reason ? `<span class="err">${esc(lk.reason)}</span>`
+          : lk.changed && isLive ? `<div class="notice success"><span class="ni">${I.checkc}</span><div><b>QR đã in vẫn chạy</b>Đường dẫn cũ <span class="mono">${esc(a.slug)}</span> vẫn chuyển hướng tới nội dung này. Mã QR mới sẽ sinh theo đường dẫn mới.</div></div>`
+          : lk.changed ? `<span class="hint">Đường dẫn mới sẽ dùng khi xuất bản.</span>`
+          : `<span class="hint">${isLive ? 'Đổi đường dẫn rồi bấm Cập nhật nội dung. Đường dẫn cũ vẫn chuyển hướng, mã QR sinh lại theo đường dẫn mới.' : '6–64 ký tự, chỉ gồm chữ thường, số và dấu gạch đơn.'}</span>`}
+      </div>
+      ${isLive ? `<div class="field"><span class="label" style="color:var(--slate-600)">Link gốc</span><div class="input mono ro"><input readonly value="${esc(serveUrl)}" /><button type="button" class="ad" data-act="copy" data-text="${esc(serveUrl)}" data-tip="Sao chép">${I.copy}</button></div><span class="hint">Không đổi khi đổi đường dẫn hay thay file. Dùng khi cần nhúng trực tiếp.</span></div>` : ''}
+    </div>`;
+  const replaceSec = `<div class="section" id="sec-replace">
+      <div class="sechead"><h2>Cập nhật nội dung</h2><p>Thay file của “${esc(a.name)}”. ${isDraft ? 'Chưa xuất bản nên chưa ảnh hưởng gì bên ngoài.' : 'Mã QR và link ngắn giữ nguyên.'}</p></div>
+      ${replaceBody(S.rp, a, true)}</div>`;
+  const previewSec = `<div class="section" id="sec-preview">
+      <div class="sechead"><h2>Xem trước nội dung</h2></div>
+      <div class="row"><span>${statusBadge(a)}</span><span class="badge gray">${T.kind[a.kind]}</span><span class="hint">${a.published_at ? `Xuất bản ${rel(a.published_at)} · cập nhật ${rel(a.updated_at)}` : `Tạo ${rel(a.created_at)}`}</span></div>
+      <div class="row" style="justify-content:space-between"><span class="hint">${a.kind === 'html' ? 'Bản đang phục vụ cho người quét.' : ''}</span><div class="row">${isLive ? `<button type="button" class="btn secondary sm" data-act="open-public" data-token="${a.token}">${I.ext}Mở trong tab mới</button>` : ''}<button type="button" class="btn secondary sm" data-act="toast" data-msg="Đang tải ${esc(a.file_name)}…">${I.download}Tải về</button></div></div>
+      ${a.kind === 'html' ? `<div class="preview"><iframe sandbox="" title="Xem trước" srcdoc="${srcdoc(demoHtml(a))}"></iframe></div>` : `<div class="preview doc">${KIND_ICON[a.kind]}<span>${isDraft ? 'Xuất bản rồi mới xem trước được.' : `${T.viewer[a.kind]} · ${esc(a.file_name)}`}</span></div>`}
+      <span class="hint">Không hiện ở đây? Mở trong tab mới.</span>
+      <span class="hint">Nội dung do người dùng đăng. Li2 không kiểm duyệt trước và không chịu trách nhiệm về nội dung này.</span>
+    </div>`;
+    const m = a.access_mode;
+    if (!S.ac || S.ac.id !== a.id) S.ac = { id: a.id, phase: 'edit', form: { mode: a.access_mode, password: '', show: false }, busy: false, password: null };
+    const whoViewed = m === 'google' && isLive ? `
+      <div>
+        <span class="label">Ai đã xem</span>
+        <div class="row" style="margin-top:6px"><button type="button" class="short" data-act="toast" data-msg="Prototype: dẫn tới Khách hàng (lọc theo artifact này)">${fmtN(a.viewers)} người đã mở</button><span class="hint">· dẫn tới Khách hàng</span></div>
+        <div class="diff" style="margin-top:8px">
+          ${['minh.tran@gmail.com', 'lan.nguyen@gmail.com', 'hoang.le@gmail.com'].map((e, i) => `<div class="r" style="grid-template-columns:1fr auto"><span>${e}</span><span class="hint">${rel(NOW - (i + 1) * 5 * H)}</span></div>`).join('')}
+        </div>
+      </div>` : '';
+    const accessSec = `<div class="section" id="sec-access">
+      <div class="sechead"><h2>Quyền xem</h2><p>Đang là <b>${T.access[m].label}</b>${m === 'password' ? ` · đặt ${rel(a.password_set_at || a.created_at)}` : ''}. ${isDraft ? 'Chế độ này áp dụng ngay khi bạn xuất bản.' : 'Đổi chế độ có hiệu lực ngay, không sinh link mới.'}</p></div>
+      ${accessBody(S.ac, a, true)}
+      ${whoViewed}</div>`;
+  let analyticsSec = '';
+  if (isLive) {
+    const days = 14; let h = 7;
+    const vals = Array.from({ length: days }, (_, i) => { h = (h * 1103515245 + 12345 + a.visits * (i + 1)) % 2147483648; return 1 + (h % Math.max(2, Math.round(a.visits / days * 1.6))); });
+    const max = Math.max(...vals);
+    const W = 760, Hh = 200, pad = 28, bw = (W - pad * 2) / days;
+    const bars = vals.map((v, i) => { const bh = (v / max) * (Hh - pad - 10); const x = pad + i * bw + 4; const y = Hh - pad - bh; const d = new Date(NOW - (days - 1 - i) * D); return `<rect class="bar" x="${x}" y="${y}" width="${bw - 8}" height="${bh}" rx="3"><title>${d.getDate()}/${d.getMonth() + 1}: ${v} lượt</title></rect><text x="${x + (bw - 8) / 2}" y="${Hh - 10}" text-anchor="middle">${d.getDate()}/${d.getMonth() + 1}</text>`; }).join('');
+    analyticsSec = `<div class="section" id="sec-analytics">
+      <div class="sechead"><h2>Phân tích</h2><p>Lượt quét theo ngày trong 14 ngày gần nhất, ghi từ bảng visits qua touch point của artifact.</p></div>
+      <div class="stats">
+        <div class="stat"><span class="hint">Lượt quét</span><div class="n">${fmtN(a.visits)}</div></div>
+        <div class="stat"><span class="hint">Người xem riêng</span><div class="n">${fmtN(Math.round(a.visits * 0.66))}</div></div>
+        <div class="stat"><span class="hint">Thiết bị</span><div class="n">iOS 62%</div></div>
+      </div>
+      <div class="chart"><svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Lượt quét theo ngày"><line class="axis" x1="${pad}" x2="${W - pad}" y1="${Hh - pad}" y2="${Hh - pad}"/>${bars}</svg></div></div>`;
+  }
+  const rpanel = `
+      <div class="rpanel">
+        <div class="qrcard">
+          <div class="hd"><span class="lb label">Mã QR ${I.help}</span><div class="acts">
+            ${isLive ? `<button type="button" class="btn tertiary round" data-act="dl-qr" data-id="${a.id}" data-tip="Tải QR">${I.download}</button><button type="button" class="btn tertiary round" data-act="toast" data-msg="Đã sao chép mã QR" data-tip="Sao chép">${I.copy}</button>`
+                     : `<span data-tip="Xuất bản trước đã" class="tip-left"><button type="button" class="btn tertiary round" disabled>${I.download}</button></span><span data-tip="Xuất bản trước đã" class="tip-left"><button type="button" class="btn tertiary round" disabled>${I.copy}</button></span>`}
+          </div></div>
+          <div class="box"><div class="qr${isLive ? '' : ' dim'}">${qrSvg(a.token || 'placeholder')}</div></div>
+          ${isDraft ? `<span class="hint">Xuất bản trước đã — mã QR sinh theo link rút gọn.</span>` : ''}
+        </div>
+        <div class="qrcard">
+          <span class="label">Thông tin file</span>
+          <div class="metarow"><span>Tên</span><span class="truncate">${esc(a.name)}</span></div>
+          <div class="metarow"><span>Loại</span><span>${T.kind[a.kind]}</span></div>
+          <div class="metarow"><span>Dung lượng</span><span>${fmtBytes(a.size_bytes)}</span></div>
+          <div class="metarow"><span>Tạo lúc</span><span>${rel(a.created_at)}</span></div>
+          <div class="metarow"><span>Cập nhật lúc</span><span>${rel(a.updated_at)}</span></div>
+        </div>
+      </div>`;
+  const center = linkSec + replaceSec + previewSec + accessSec + analyticsSec;
+  return header + `<div class="pagebody"><div class="inner"><div class="formgrid"><div class="merged"><div class="center">${center}</div>${rpanel}</div></div></div></div>`;
+}
+
+/* ===================================================== DIALOGS */
+function dialogHtml() {
+  const d = S.dialog; if (!d) return '';
+  const a = d.id ? byId(d.id) : null;
+  const wrap = (inner, size) => `<div class="overlay" data-act="overlay-close"><div class="dialog${size === 'sm' ? ' sm' : ''}" role="dialog" aria-modal="true" data-stop>${inner}</div></div>`;
+  const X = `<button type="button" class="x" data-act="dlg-close" aria-label="Đóng">${I.x}</button>`;
+
+  if (d.type === 'created') {
+    const url = shortUrl(a);
+    return wrap(`${X}<h4>Đã xuất bản</h4><p class="desc">Link và mã QR đã sẵn sàng để in hoặc chia sẻ.</p><div class="hr"></div>
+      <div class="body">
+        <div class="field"><span class="label" style="color:var(--slate-600)">Link rút gọn</span><div class="input mono ro"><input readonly value="${esc(url)}" /><button type="button" class="ad" data-act="copy" data-text="${esc(url)}" data-tip="Sao chép">${I.copy}</button></div></div>
+        <span class="hint">Quyền xem: ${T.access[a.access_mode].label}</span>
+        ${a.access_mode === 'password' && d.password ? `<div class="field"><span class="label" style="color:var(--slate-600)">Mật khẩu</span><div class="input mono ro"><input readonly value="${esc(d.password)}" /><button type="button" class="ad" data-act="copy" data-text="${esc(d.password)}" data-msg="Đã sao chép mật khẩu" data-tip="Sao chép mật khẩu">${I.copy}</button></div><span class="hint">Đây là lần duy nhất mật khẩu hiện ra. Sao chép và gửi cho người cần xem.</span></div>` : ''}
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+          <div class="qrbig">${qrSvg(a.token)}</div>
+          <div class="row" style="width:100%"><button type="button" class="btn secondary sm grow" data-act="toast" data-msg="Đã sao chép mã QR">${I.copy}Sao chép QR</button><button type="button" class="btn secondary sm grow" data-act="dl-qr" data-id="${a.id}">${I.download}Tải QR</button></div>
+        </div>
+        <button type="button" class="btn default full" data-act="dlg-close">Xem artifact</button>
+      </div>`);
+  }
+
+  if (d.type === 'delete') {
+    const n = d.ids ? d.ids.length : 1;
+    const title = d.ids ? `Xoá ${n} artifact đã chọn?` : 'Xoá artifact này?';
+    return wrap(`<h4>${title}</h4><p class="desc">File sẽ bị xoá khỏi kho và không khôi phục lại được. Link rút gọn và mã QR đã in vẫn hoạt động — người quét sẽ thấy trang thông báo nội dung đã được gỡ.</p>
+      <div class="body"><div class="foot"><button type="button" class="btn secondary sm" data-act="dlg-close">Huỷ</button><button type="button" class="btn danger sm${d.busy ? ' busy' : ''}" data-act="delete-confirm">${d.busy ? '<span class="spin"></span>' : ''}Xoá vĩnh viễn</button></div></div>`);
+  }
+
+  if (d.type === 'share') {
+    const url = shortUrl(a);
+    return wrap(`${X}<h4>Chia sẻ</h4><p class="desc">${esc(a.name)}</p><div class="hr"></div><div class="body">
+      <div class="input mono ro"><input readonly value="${esc(url)}" /><button type="button" class="ad" data-act="copy" data-text="${esc(url)}">${I.copy}</button></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap">${['Zalo', 'Facebook', 'Email', 'Messenger'].map((n) => `<button type="button" class="btn secondary sm" data-act="toast" data-msg="Prototype: mở ${n}">${n}</button>`).join('')}</div>
+    </div>`);
+  }
+
+  if (d.type === 'access') return wrap(accessBody(d, a, false));
+
+  if (d.type === 'password') {
+    const f = d.form;
+    const pwShort = f.password && f.password.length < 8;
+    const reason = !f.password ? 'Nhập mật khẩu mới trước đã' : pwShort ? 'Mật khẩu cần ít nhất 8 ký tự.' : '';
+    if (d.phase === 'done') {
+      return wrap(`<h4>Đã đổi mật khẩu</h4><div class="hr"></div><div class="body">
+        <div class="field"><span class="label" style="color:var(--slate-600)">Mật khẩu</span><div class="input mono ro"><input readonly value="${esc(d.password)}" /><span class="ad" style="color:var(--semantic-success)">${I.check}</span><button type="button" class="ad" data-act="copy" data-text="${esc(d.password)}" data-msg="Đã sao chép mật khẩu" data-tip="Sao chép mật khẩu">${I.copy}</button></div><span class="hint">Đây là lần duy nhất mật khẩu hiện ra. Sao chép và gửi cho người cần xem.</span></div>
+        <div class="foot"><button type="button" class="btn default sm" data-act="dlg-close">Xong</button></div>
+      </div>`);
+    }
+    return wrap(`${X}<h4>Đổi mật khẩu</h4><div class="hr"></div><div class="body">
+      <div class="field"><label class="label" for="pw-new">Mật khẩu mới</label><div class="row"><div class="input mono grow${pwShort ? ' bad' : ''}"><input id="pw-new" type="${f.show ? 'text' : 'password'}" placeholder="Ít nhất 8 ký tự" value="${esc(f.password)}" data-act="pw-input" autocomplete="new-password" /><button type="button" class="ad" data-act="pw-showpw" data-tip="${f.show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}">${I.eye}</button></div><button type="button" class="btn secondary" data-act="pw-genpw">${I.refresh}Tạo ngẫu nhiên</button></div>${pwShort ? `<span class="err">Mật khẩu cần ít nhất 8 ký tự.</span>` : `<span class="hint">Đặt lúc ${rel(a.password_set_at || a.created_at)}</span>`}</div>
+      <div class="notice warning"><span class="ni">${I.warn}</span><div>Mọi người đang xem sẽ phải nhập lại mật khẩu mới. Mã QR và link ngắn không đổi.</div></div>
+      <div class="foot"><button type="button" class="btn tertiary sm" data-act="dlg-close">Huỷ</button><button type="button" class="btn default sm${d.busy ? ' busy' : ''}" ${!reason || d.busy ? '' : 'disabled'} data-act="pw-save" aria-describedby="pw-reason">${d.busy ? '<span class="spin"></span>Đang lưu…' : 'Lưu'}</button>${reason ? `<span class="reason" id="pw-reason">${esc(reason)}</span>` : ''}</div>
+    </div>`);
+  }
+
+  if (d.type === 'replace') return wrap(replaceBody(d, a, false), 'sm');
+  return '';
+}
+
+function acCheck(d, a) {
+  const f = d.form;
+  const changed = f.mode !== a.access_mode || (f.mode === 'password' && !!f.password);
+  const pwShort = f.mode === 'password' && f.password && f.password.length < 8;
+  let reason = '';
+  if (!changed) reason = 'Chưa đổi gì';
+  else if (f.mode === 'password' && !f.password) reason = 'Đặt mật khẩu trước đã';
+  else if (pwShort) reason = 'Mật khẩu cần ít nhất 8 ký tự.';
+  return { changed, pwShort, reason, can: !reason && !d.busy };
+}
+function lkCheck(d, a) {
+  const slug = d.slug.trim();
+  const changed = slug !== (a.slug || '');
+  const ok = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) && slug.length >= 6 && slug.length <= 64 && !slug.startsWith('f-');
+  const taken = changed && S.artifacts.some((x) => x.id !== a.id && x.slug === slug && x.status !== 'removed');
+  let reason = '';
+  if (!changed) reason = 'Chưa đổi gì';
+  else if (!slug) reason = 'Đường dẫn không được để trống';
+  else if (!ok) reason = 'Đường dẫn phải dài 6–64 ký tự, chỉ gồm chữ thường, số và dấu gạch đơn; không bắt đầu bằng "f-".';
+  else if (taken) reason = `Đường dẫn "${slug}" đã có artifact khác dùng.`;
+  return { slug, changed, reason, can: changed && !reason };
+}
+function rpCheck(d, a) {
+  const f = d.file;
+  const used = usedBytes();
+  const delta = f ? f.size - a.size_bytes : 0;
+  const free = QUOTA_BYTES - used;
+  const quotaIssue = f && delta > free ? `Đổi file này cần thêm ${fmtBytes(delta)} nhưng chỉ còn ${fmtBytes(free)}. Gỡ một nội dung khác xuống là đủ chỗ.` : '';
+  const fileIssue = f && f.size > MAX_BYTES ? `File này ${fmtBytes(f.size)}, vượt mức ${fmtBytes(MAX_BYTES)}. Chọn file nhỏ hơn giúp nhé.` : '';
+  return { quotaIssue, fileIssue, can: !!f && !quotaIssue && !fileIssue, pending: !!f };
+}
+function accessBody(d, a, inline) {
+  const X = inline ? '' : `<button type="button" class="x" data-act="dlg-close" aria-label="Đóng">${I.x}</button>`;
+  const closeAct = inline ? 'ac-reset' : 'dlg-close';
+    const f = d.form;
+    const { changed, pwShort, reason, can } = acCheck(d, a);
+    const radio = (m) => `<button type="button" class="radio-card${f.mode === m ? ' on' : ''}" data-act="ac-mode" data-m="${m}" role="radio" aria-checked="${f.mode === m}"><span class="rd"></span><div><div class="t">${ACCESS_ICON[m]}${T.access[m].label}${m === a.access_mode ? ` <span class="badge gray" style="margin-left:4px">hiện tại</span>` : ''}</div><div class="d">${T.access[m].description}</div></div></button>`;
+    if (d.phase === 'done') {
+      return `${inline ? '' : `<h4>Đổi quyền xem</h4><div class="hr"></div>`}<div class="body">
+        <div class="done-title">${I.checkc}<span>Quyền xem giờ là ${T.access[a.access_mode].label}. Mã QR và link ngắn không đổi.</span></div>
+        ${d.password ? `<div class="field"><span class="label" style="color:var(--slate-600)">Mật khẩu</span><div class="input mono ro"><input readonly value="${esc(d.password)}" /><button type="button" class="ad" data-act="copy" data-text="${esc(d.password)}" data-msg="Đã sao chép mật khẩu" data-tip="Sao chép mật khẩu">${I.copy}</button></div><span class="hint">Đây là lần duy nhất mật khẩu hiện ra. Sao chép và gửi cho người cần xem.</span></div>` : ''}
+        <div class="foot"><button type="button" class="btn default sm" data-act="${closeAct}">Xong</button></div>
+      </div>`;
+    }
+    return `${inline ? '' : `${X}<h4>Đổi quyền xem</h4><div class="hr"></div>`}<div class="body" role="radiogroup">
+      ${radio('public')}${radio('private')}${radio('password')}
+      ${f.mode === 'password' ? `<div class="pwbox"><label class="label" for="ac-pw">${a.access_mode === 'password' ? 'Mật khẩu mới' : 'Mật khẩu'}</label><div class="row"><div class="input mono grow${pwShort ? ' bad' : ''}"><input id="ac-pw" type="${f.show ? 'text' : 'password'}" placeholder="Ít nhất 8 ký tự" value="${esc(f.password)}" data-act="ac-pw" autocomplete="new-password" /><button type="button" class="ad" data-act="ac-showpw" data-tip="${f.show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}">${I.eye}</button></div><button type="button" class="btn secondary" data-act="ac-genpw">${I.refresh}Tạo ngẫu nhiên</button></div>${pwShort ? `<span class="err">Mật khẩu cần ít nhất 8 ký tự.</span>` : `<span class="hint">Người xem nhập mật khẩu này một lần rồi xem được trong một tuần.</span>`}</div>` : ''}
+      ${radio('google')}
+      ${a.access_mode === 'password' && f.mode !== 'password' ? `<div class="notice warning"><span class="ni">${I.warn}</span><div>Mọi người đang xem bằng mật khẩu cũ sẽ phải xác thực lại.</div></div>` : ''}
+      <div class="notice info"><span class="ni">${I.info}</span><div><b>Mã QR và link ngắn không đổi</b>Đổi chế độ xem có hiệu lực ngay, không sinh link mới.</div></div>
+      ${inline ? (reason && changed ? `<span class="err">${esc(reason)}</span>` : '') : `<div class="foot"><button type="button" class="btn tertiary sm" data-act="dlg-close">Huỷ</button><button type="button" class="btn default sm${d.busy ? ' busy' : ''}" ${can || d.busy ? '' : 'disabled'} data-act="ac-save" aria-describedby="ac-reason">${d.busy ? '<span class="spin"></span>Đang lưu…' : 'Lưu'}</button>${reason && changed ? `<span class="reason" id="ac-reason">${esc(reason)}</span>` : ''}</div>`}
+    </div>`;
+}
+
+function replaceBody(d, a, inline) {
+  const X = inline ? '' : `<button type="button" class="x" data-act="dlg-close" aria-label="Đóng">${I.x}</button>`;
+  const closeAct = inline ? 'rp-reset' : 'dlg-close';
+  const isDraft = a.status === 'draft';
+  const url = shortUrl(a);
+  const head = inline ? '' : `${d.phase === 'uploading' ? '' : X}<h4>Cập nhật nội dung</h4><p class="desc">Thay file của “${esc(a.name)}”.</p><div class="hr"></div>`;
+  const f = d.file;
+  const used = usedBytes();
+  const after = used - a.size_bytes + (f ? f.size : 0);
+  const delta = f ? f.size - a.size_bytes : 0;
+  const free = QUOTA_BYTES - used;
+
+  if (a.status === 'removed' || d.phase === 'gone') {
+    return `${head}<div class="body"><div class="notice error"><span class="ni">${I.shieldx}</span><div><b>Nội dung này đã được gỡ</b>Có ai đó đã gỡ nó xuống trong lúc bạn đang mở hộp thoại này. Mã QR đã in giờ dẫn tới trang thông báo đã gỡ. Tạo một artifact mới nếu bạn cần đăng lại.</div></div><div class="foot"><button type="button" class="btn tertiary sm" data-act="${closeAct}">Đóng</button><button type="button" class="btn default sm" data-act="go" data-to="#/artifacts/new">Tạo artifact mới</button></div></div>`;
+  }
+  if (d.phase === 'uploading') {
+    const sent = Math.round(f.size * d.progress / 100);
+    return `${head}<div class="body">
+      <div><div class="row hint" style="justify-content:space-between"><b style="color:var(--slate-600)">Đang tải lên</b><span>${d.progress}%</span></div><div class="qbar"><i style="width:${d.progress}%"></i></div><span class="hint">Đã gửi ${fmtBytes(sent)} / ${fmtBytes(f.size)}. ${isDraft ? 'Đóng tab lúc này thì không có gì hỏng — bản cũ vẫn còn, chỉ là chưa đổi.' : `Đóng tab lúc này thì ${esc(url.replace(/^https?:\/\//, ''))} vẫn mở ra bản cũ — không hỏng gì, chỉ là chưa đổi.`}</span></div>
+      <div class="foot"><button type="button" class="btn tertiary sm" disabled>Huỷ</button><button type="button" class="btn default sm busy"><span class="spin"></span>Đang cập nhật…</button></div></div>`;
+  }
+  if (d.phase === 'done') {
+    return `${inline ? '' : `${X}<h4>Cập nhật nội dung</h4><div class="hr"></div>`}<div class="body">
+      <div class="done-title">${I.checkc}<span>Đã thay nội dung</span></div>
+      <div class="notice neutral"><span class="ni">${I.info}</span><div><b>Đã đổi</b>${isDraft ? `Nội dung giờ là ${esc(a.file_name)} (${fmtBytes(a.size_bytes)}).` : `${esc(url.replace(/^https?:\/\//, ''))} giờ mở ra ${esc(a.file_name)} (${fmtBytes(a.size_bytes)}).`} Dung lượng còn dùng: ${fmtBytes(usedBytes())} / ${fmtBytes(QUOTA_BYTES)}.</div></div>
+      <div class="notice success"><span class="ni">${I.checkc}</span><div><b>Không đổi</b>${isDraft ? 'Tên và trạng thái chưa xuất bản. Link và mã QR sẽ có khi bạn xuất bản.' : 'Mã QR, link ngắn và lượt quét đã ghi. Standee và tờ rơi đã in vẫn mở ra bản mới.'}</div></div>
+      <div class="foot">${isDraft ? '' : `<button type="button" class="btn secondary sm" data-act="open-public" data-token="${a.token}">Mở link kiểm tra</button>`}<button type="button" class="btn default sm" data-act="${closeAct}">Xong</button></div></div>`;
+  }
+  // phase select
+  const { quotaIssue, fileIssue, can } = rpCheck(d, a);
+  const kindChange = f && f.kind !== a.kind;
+  return `${head}<div class="body">
+    ${f ? `<div class="dropzone has${fileIssue ? ' bad' : ''}" style="padding:20px"><span class="cloud">${KIND_ICON[f.kind]}</span><span class="t">${esc(f.name)} · ${fmtBytes(f.size)}</span><span class="badge gray">${T.kind[f.kind]}</span><button type="button" class="link" data-act="rp-clear">Chọn file khác</button></div>${fileIssue ? `<span class="err" style="margin-top:-12px">${fileIssue}</span>` : ''}`
+        : `<div class="dropzone" style="padding:24px" data-act="rp-sample" data-i="2"><span class="cloud">${I.upload}</span><span class="t">Thả file vào đây hoặc bấm để chọn</span><span class="hint">HTML, PDF, PowerPoint hoặc video — tối đa ${fmtBytes(MAX_BYTES)}</span><div class="samples" data-stop><span class="hint" style="align-self:center">Prototype · dùng file mẫu:</span>${SAMPLE_FILES.map((s, i) => `<button type="button" class="btn secondary xs" data-act="rp-sample" data-i="${i}">${KIND_ICON[s.kind]}${esc(s.name)}</button>`).join('')}<button type="button" class="btn secondary xs" data-act="rp-sample" data-i="big">${I.video}video-12mb.mp4 (quá cỡ)</button></div></div>`}
+    ${f && f.kind === 'slides' ? `<span class="hint" style="margin-top:-12px">File PowerPoint được Microsoft tải về để hiển thị bản xem trước.</span>` : ''}
+    ${f ? `<div class="diff">
+      <div class="r"><span class="l">Đang phục vụ</span><span class="truncate">${esc(a.name)}</span><span class="badge gray">${T.kind[a.kind]}</span><span class="hint">${fmtBytes(a.size_bytes)}</span></div>
+      <div class="r"><span class="l">Sẽ thay bằng</span><span class="truncate">${esc(f.name)}</span><span class="badge gray">${T.kind[f.kind]}</span><span class="hint">${fmtBytes(f.size)}</span></div>
+    </div>` : ''}
+    ${kindChange ? `<div class="notice warning"><span class="ni">${I.warn}</span><div><b>Loại nội dung đổi từ ${T.kind[a.kind]} sang ${T.kind[f.kind]}</b>${isDraft ? `Khi xuất bản, người quét sẽ thấy ${T.viewer[f.kind]}.` : `Người quét sẽ thấy ${T.viewer[f.kind]} thay vì ${T.viewer[a.kind]} như trước. Mã QR và link ngắn vẫn giữ nguyên.`}</div></div>` : ''}
+    ${f ? `<div>
+      <div class="row hint" style="justify-content:space-between"><b style="color:var(--slate-600)">Dung lượng sau khi đổi</b><span>${fmtBytes(used)} → ${fmtBytes(after)} / ${fmtBytes(QUOTA_BYTES)}</span></div>
+      <div class="qbar"><i style="width:${Math.min(100, (used - a.size_bytes) / QUOTA_BYTES * 100)}%"></i><i class="add" style="left:${Math.min(100, (used - a.size_bytes) / QUOTA_BYTES * 100)}%;width:${Math.min(100, f.size / QUOTA_BYTES * 100)}%;background:${quotaIssue ? 'var(--semantic-error)' : ''}"></i></div>
+      ${quotaIssue ? `<span class="err">${quotaIssue} <button type="button" class="short" style="font-size:inherit" data-act="go" data-to="#/artifacts">Xem nội dung đang chiếm chỗ</button></span>`
+        : `<span class="hint">${delta > 0 ? `File mới nặng hơn file cũ ${fmtBytes(delta)} — chỉ phần chênh đó tính thêm.` : delta < 0 ? `File mới nhẹ hơn file cũ ${fmtBytes(-delta)} — phần chênh đó được trả lại.` : 'File mới nặng bằng file cũ — dung lượng không đổi.'} Số nội dung đã xuất bản không đổi: vẫn ${liveCount()} / ${QUOTA_LIVE}. Còn trống ${fmtBytes(QUOTA_BYTES - after)}.</span>`}
+    </div>` : ''}
+    ${inline && !f ? '' : isDraft ? `<div class="notice neutral"><span class="ni">${I.info}</span><div><b>Chưa xuất bản nên chưa có link hay mã QR</b>Thay file lúc này không ảnh hưởng gì ở bên ngoài.</div></div>`
+              : `<div class="notice success"><span class="ni">${I.checkc}</span><div><b>Mã QR và link ngắn giữ nguyên</b>Standee, tờ rơi và bao bì đã in vẫn mở ra nội dung mới. Lượt quét đã ghi vẫn còn.</div></div>`}
+    ${inline && !f ? '' : `<div class="notice neutral"><span class="ni">${I.info}</span><div><b>File cũ bị thay hẳn</b>Sau khi bấm Cập nhật, ${esc(a.name)} không lấy lại được. Nếu còn cần, tải nó về trước.<br><button type="button" class="lnk" data-act="toast" data-msg="Đang tải ${esc(a.file_name)}…">${I.download}Tải bản đang chạy về</button></div></div>`}
+    ${inline ? '' : `<div class="foot"><button type="button" class="btn tertiary sm" data-act="dlg-close">Huỷ</button><button type="button" class="btn default sm" ${can ? '' : 'disabled'} data-act="rp-submit" aria-describedby="rp-reason">Cập nhật</button>${!f ? `<span class="reason" id="rp-reason">Chọn một file trước đã</span>` : ''}</div>`}
+  </div>`;
+}
+
+/* ===================================================== PUBLIC /a/<token> */
+function gateState(token) { if (!S.gate[token]) S.gate[token] = { tries: 0, lockedUntil: 0, unlocked: false, signedIn: null, wrong: false, pwChanged: false }; return S.gate[token]; }
+function publicScreen(token) {
+  const a = byToken(token);
+  const dark = S.dark;
+  const shellCls = `pub${dark ? ' dark-shell' : ''}`;
+  const brand = `<div class="brand">${I.qr}<span>li2</span></div>`;
+  const foot = `<p class="foot">${T.landing.removed_footer} <a href="#/artifacts" data-act="go" data-to="#/artifacts">Li2</a></p>`;
+  const page = (inner, http) => `<div class="${shellCls}"><span class="httptag">HTTP ${http} · /a/${esc(token)}</span><div class="wrap">${brand}${inner}${foot}</div></div>`;
+
+  if (!a) return page(`<svg class="gicon ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg><h1>Không tìm thấy</h1><p class="lead">Đường dẫn này không tồn tại.</p>`, 404);
+  if (a.status === 'removed') return page(`<svg class="gicon ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg><h1>${T.landing.removed_title}</h1><p class="lead">${T.landing.removed_body}</p><div class="reassure"><b>${T.landing.removed_reassure_strong}</b> ${T.landing.removed_reassure_body}</div>`, 410);
+  if (a.status !== 'live') return page(`<h1>Không tìm thấy</h1><p class="lead">Đường dẫn này chưa được xuất bản.</p>`, 404);
+
+  const g = gateState(token);
+  const content = () => {
+    if (a.kind === 'html') return `<div class="${shellCls}"><span class="httptag">HTTP 200 · /a/${esc(token)} · HTML sandbox</span><div class="fullhtml"><iframe sandbox="" title="${esc(a.name)}" srcdoc="${srcdoc(demoHtml(a))}"></iframe></div></div>`;
+    return page(`<h1>${esc(a.name)}</h1><div class="viewer">${a.kind === 'pdf' ? 'PDF viewer của trình duyệt' : a.kind === 'video' ? '▶ video · poster' : 'Office viewer'}</div><span class="dl">${T.landing.download}</span><p class="note">Không hiện ở đây? Mở trong tab mới.</p>`, 200);
+  };
+
+  if (a.access_mode === 'public' || g.unlocked) return content();
+
+  if (a.access_mode === 'password') {
+    if (g.lockedUntil > Date.now()) {
+      const m = Math.max(1, Math.ceil((g.lockedUntil - Date.now()) / 60000));
+      return page(`<svg class="gicon ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><h1>${T.landing.gate_locked_title}</h1><p class="lead">${T.landing.gate_locked_lead.replace('{m}', m)}</p><p class="note"><button type="button" class="gbtn" style="margin-top:8px" data-act="gate-unlock-demo" data-token="${token}">Prototype: giả lập đã hết ${GATE_LOCK_MINUTES} phút</button></p>`, 429);
+    }
+    const left = GATE_MAX_TRIES - g.tries;
+    return page(`<svg class="gicon ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><h1>${T.landing.gate_password_title}</h1><p class="lead">${T.landing.gate_password_lead}</p>
+      <form data-act="gate-pw" data-token="${token}" method="post" action="#">
+        <label for="g-pw">${T.landing.gate_password_label}</label>
+        <input id="g-pw" class="gin${g.wrong ? ' bad' : ''}" type="password" name="password" autocomplete="current-password" autofocus />
+        ${g.wrong ? `<p class="gerr">${T.landing.gate_password_wrong.replace('{n}', left)}</p>` : ''}
+        ${g.pwChanged ? `<p class="ghint">${T.landing.gate_password_changed}</p>` : ''}
+        <button type="submit" class="gbtn">${T.landing.gate_password_submit}</button>
+      </form>
+      <p class="note">Prototype: mật khẩu đúng là <code>${esc(a.password)}</code> (xem ở tab Quyền xem của chủ sở hữu).</p>`, 401);
+  }
+  if (a.access_mode === 'private') {
+    if (!g.signedIn) return page(`<svg class="gicon ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><h1>${T.landing.gate_private_title}</h1><p class="lead">${T.landing.gate_private_lead}</p><button type="button" class="gbtn li2" data-act="gate-login" data-token="${token}" data-as="outsider">${T.landing.gate_private_button}</button><p class="note">Prototype: lần đầu đăng nhập bằng tài khoản ngoài org để thấy 403.</p>`, 401);
+    return page(`<svg class="gicon ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m14.5 9.5-5 5M9.5 9.5l5 5"/></svg><h1>${T.landing.denied_title}</h1><p class="gemail">${T.landing.denied_signed_in_as.replace('{email}', esc(g.signedIn))}</p><p class="lead">${T.landing.denied_lead}</p><form data-act="gate-switch" data-token="${token}" method="post" action="#"><button type="submit" class="gbtn">${T.landing.denied_switch_button}</button></form><p class="note">Prototype: đổi tài khoản sẽ đăng nhập thành thành viên ${ORG}.</p>`, 403);
+  }
+  if (a.access_mode === 'google') {
+    return page(`<svg class="gicon ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><h1>${T.landing.gate_google_title}</h1><p class="lead">${T.landing.gate_google_lead}</p>${g.cancelled ? `<p class="ghint">Bạn đã dừng việc đăng nhập. Nội dung này chỉ xem được sau khi đăng nhập.</p>` : ''}<button type="button" class="gbtn google" data-act="gate-google" data-token="${token}">${I.google}${T.landing.gate_google_button}</button><p class="note"><button type="button" style="text-decoration:underline" data-act="gate-google-cancel" data-token="${token}">Prototype: giả lập huỷ ở Google</button></p>`, 401);
+  }
+  return content();
+}
+
+/* ===================================================== RENDER */
+function render() {
+  const r = parseHash();
+  const scroller = document.querySelector('.pagebody');
+  const scrollY = scroller ? scroller.scrollTop : 0;
+  const app = document.getElementById('app');
+  const pub = document.getElementById('pub');
+  const layer = document.getElementById('layer');
+  let label = '';
+  if (r.name === 'public') {
+    app.hidden = true; pub.hidden = false;
+    pub.innerHTML = publicScreen(r.token);
+    const a = byToken(r.token);
+    label = `/a/${r.token} · ${a ? (a.status === 'removed' ? '410' : a.access_mode) : '404'}`;
+  } else {
+    pub.hidden = true; app.hidden = false;
+    let inner = '';
+    if (r.name === 'list') { inner = listScreen(); label = 'Danh sách'; }
+    else if (r.name === 'create') { inner = createScreen(); label = 'Tạo artifact'; }
+    else { inner = detailScreen(r.id, r.tab); label = `Chi tiết · ${r.tab}`; }
+    app.innerHTML = shell(r, inner);
+    if (r.name !== 'create') S.create = null;
+  }
+  layer.innerHTML = dialogHtml();
+  document.getElementById('pb-screen').textContent = label;
+  document.getElementById('pb-theme').textContent = S.dark ? 'light' : 'dark';
+  document.getElementById('pb-empty').textContent = S.emptyDemo ? 'Thoát trạng thái rỗng' : 'Xem trạng thái rỗng';
+  const af = document.querySelector('[autofocus]'); if (af) af.focus({ preventScroll: true });
+  const nowScroller = document.querySelector('.pagebody');
+  if (nowScroller) nowScroller.scrollTop = r.name + ':' + (r.id || r.token || '') === S.lastRoute ? scrollY : 0;
+  S.lastRoute = r.name + ':' + (r.id || r.token || '');
+}
+
+/* ===================================================== ACTIONS */
+function openDialog(d) { S.dialog = d; S.menu = null; render(); }
+function closeDialog() {
+  const d = S.dialog; S.dialog = null;
+  if (d && d.type === 'created') { go(`#/artifacts/${d.id}`); return; }
+  render();
+}
+function publish(a, password) {
+  a.status = 'live'; a.token = a.token || randToken(); a.published_at = Date.now(); a.updated_at = Date.now();
+  if (a.access_mode === 'password') { a.password = password || a.password || randPw(); a.password_set_at = Date.now(); }
+  return a;
+}
+function doCreateSubmit() {
+  const c = S.create; if (!c || c.busy) return;
+  c.busy = true; c.progress = 0; render();
+  const tick = () => {
+    c.progress = Math.min(100, c.progress + 9 + Math.round(Math.random() * 14));
+    if (c.progress < 100) { render(); setTimeout(tick, 120); return; }
+    const id = 'a' + (S.artifacts.length + 1 + Math.floor(Math.random() * 1000));
+    const a = { id, name: c.name.trim(), kind: c.file.kind, status: 'draft', access_mode: c.access, slug: c.slug, token: null, file_name: c.file.name, size_bytes: c.file.size, created_at: Date.now(), updated_at: Date.now(), published_at: null, visits: 0, viewers: 0, creator: 'KQ' };
+    publish(a, c.password);
+    S.artifacts.unshift(a);
+    S.create = null; S.page = 1;
+    S.dialog = { type: 'created', id, password: a.access_mode === 'password' ? a.password : null };
+    toast('Đã xuất bản');
+    render();
+  };
+  setTimeout(tick, 150);
+}
+
+document.addEventListener('click', (e) => {
+  const stop = e.target.closest('[data-stop]');
+  const el = e.target.closest('[data-act]');
+  if (!el) { if (!stop && S.menu) { S.menu = null; render(); } return; }
+  const act = el.dataset.act;
+  // bấm vào vùng bên trong row (có data-stop) không mở detail
+  if (act === 'open-detail' && stop && stop !== el) return;
+  const id = el.dataset.id;
+  switch (act) {
+    case 'nav': if (el.dataset.to) go(el.dataset.to); else toast('Prototype: chỉ có màn Artifact'); break;
+    case 'go': go(el.dataset.to); break;
+    case 'toggle-theme': S.dark = !S.dark; document.documentElement.classList.toggle('dark', S.dark); render(); break;
+    case 'toggle-empty': S.emptyDemo = !S.emptyDemo; S.selected.clear(); go('#/artifacts'); render(); break;
+    case 'reset': { const dark = S.dark; reset(); S.dark = dark; location.hash = '#/artifacts'; render(); toast('Đã đặt lại dữ liệu mẫu'); break; }
+    case 'copy': copyText(el.dataset.text, el.dataset.msg || 'Đã sao chép link'); break;
+    case 'toast': toast(el.dataset.msg); break;
+    case 'open-public': go(`#/a/${el.dataset.token}`); break;
+    case 'open-detail': { const a = byId(id); if (a && a.status === 'removed') { toast('Artifact đã gỡ, không còn trang chi tiết. Link và QR đã in vẫn dẫn tới trang thông báo đã gỡ.'); break; } go(`#/artifacts/${id}`); break; }
+    case 'sel': if (S.selected.has(id)) S.selected.delete(id); else S.selected.add(id); render(); break;
+    case 'sel-all': { const rows = visibleArtifacts().slice((S.page - 1) * S.pageSize, S.page * S.pageSize); const all = rows.every((a) => S.selected.has(a.id)); rows.forEach((a) => all ? S.selected.delete(a.id) : S.selected.add(a.id)); render(); break; }
+    case 'page': { const p = +el.dataset.p; if (p >= 1) { S.page = p; render(); } break; }
+    case 'menu': S.menu = S.menu && S.menu.id === id ? null : { id }; render(); break;
+    case 'menu-detail': S.menu = S.menu && S.menu.kind === 'detail' ? null : { kind: 'detail' }; render(); break;
+    case 'dl-qr': toast('Đang tải QR (PNG 1024px)…'); S.menu = null; render(); break;
+    case 'dlg-close': closeDialog(); break;
+    case 'overlay-close': if (e.target === el && !(S.dialog && (S.dialog.busy || S.dialog.phase === 'uploading'))) closeDialog(); break;
+    case 'dlg-delete': openDialog({ type: 'delete', id }); break;
+    case 'bulk-delete': openDialog({ type: 'delete', ids: [...S.selected] }); break;
+    case 'delete-confirm': { const d = S.dialog; d.busy = true; render(); setTimeout(() => { const ids = d.ids || [d.id]; ids.forEach((x) => { const a = byId(x); if (a) { a.status = 'removed'; a.size_bytes = 0; a.updated_at = Date.now(); } }); S.selected.clear(); S.dialog = null; toast(ids.length > 1 ? `Đã xoá ${ids.length} artifact.` : 'Đã xoá artifact.'); go('#/artifacts'); render(); }, 600); break; }
+    case 'dlg-share': openDialog({ type: 'share', id }); break;
+    case 'dlg-replace': openDialog({ type: 'replace', id, phase: 'select', file: null }); break;
+    case 'rp-sample': { const i = el.dataset.i; rpState().file = i === 'big' ? { name: 'video-12mb.mp4', kind: 'video', size: 12 * 1024 * 1024 } : { ...SAMPLE_FILES[+i] }; render(); break; }
+    case 'rp-clear': rpState().file = null; render(); break;
+    case 'rp-reset': S.rp = null; render(); break;
+    case 'scroll-to': { const t = document.getElementById(el.dataset.to); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; }
+    case 'rp-submit': { const d = rpState(); d.phase = 'uploading'; d.progress = 0; render(); const tick = () => { d.progress = Math.min(100, d.progress + 8 + Math.round(Math.random() * 12)); if (d.progress < 100) { render(); setTimeout(tick, 140); return; } const a = byId(d.id); a.kind = d.file.kind; a.file_name = d.file.name; a.size_bytes = d.file.size; a.updated_at = Date.now(); d.phase = 'done'; render(); }; setTimeout(tick, 150); break; }
+    case 'dlg-access': { const a = byId(id); openDialog({ type: 'access', id, phase: 'edit', form: { mode: a.access_mode, password: '', show: false } }); break; }
+    case 'ac-mode': acState().form.mode = el.dataset.m; render(); break;
+    case 'ac-reset': S.ac = null; render(); break;
+    case 'set-public': { const a = byId(id); if (!a || a.access_mode === 'public') break; a.access_mode = 'public'; a.updated_at = Date.now(); if (a.token) { const g = gateState(a.token); g.unlocked = false; g.tries = 0; g.wrong = false; } if (S.ac && S.ac.id === a.id) S.ac = null; S.menu = null; toast(`${a.name}: ai có link đều xem được. Mã QR và link ngắn không đổi.`); render(); break; }
+    case 'apply-all': {
+      const a = byId(id); if (!a || S.applying) break;
+      const rp = S.rp && S.rp.id === a.id && S.rp.phase === 'select' ? S.rp : null;
+      const ac = S.ac && S.ac.id === a.id && S.ac.phase === 'edit' ? S.ac : null;
+      const rpc = rp ? rpCheck(rp, a) : { pending: false, can: false };
+      const acc = ac ? acCheck(ac, a) : { changed: false, can: false };
+      const lkc = S.lk && S.lk.id === a.id ? lkCheck(S.lk, a) : { changed: false, can: false };
+      if (!rpc.pending && !acc.changed && !lkc.changed) { const t = document.getElementById('sec-replace'); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); toast('Chọn file mới hoặc đổi quyền xem bên dưới, rồi bấm Cập nhật nội dung.'); break; }
+      if (rpc.pending && !rpc.can) { toast(rpc.fileIssue || rpc.quotaIssue, 'err'); break; }
+      if (acc.changed && !acc.can) { toast(acc.reason, 'err'); break; }
+      if (lkc.changed && !lkc.can) { toast(lkc.reason, 'err'); break; }
+      S.applying = true;
+      const finish = () => { S.applying = false; const parts = []; if (rpc.pending) parts.push('nội dung'); if (acc.changed) parts.push(`quyền xem (${T.access[a.access_mode].label})`); if (lkc.changed) { a.slug = lkc.slug; a.updated_at = Date.now(); S.lk = null; parts.push(`đường dẫn (${DOMAIN}/${lkc.slug})`); } toast(`Đã cập nhật ${parts.join(', ')}. ${lkc.changed ? 'Mã QR sinh lại theo đường dẫn mới; đường dẫn cũ vẫn chuyển hướng.' : 'Mã QR và link ngắn không đổi.'}`); render(); };
+      const doAccess = () => { if (acc.changed) applyAccess(ac, a, finish); else finish(); };
+      if (rpc.pending) { rp.phase = 'uploading'; rp.progress = 0; render(); const tick = () => { rp.progress = Math.min(100, rp.progress + 8 + Math.round(Math.random() * 12)); if (rp.progress < 100) { render(); setTimeout(tick, 140); return; } a.kind = rp.file.kind; a.file_name = rp.file.name; a.size_bytes = rp.file.size; a.updated_at = Date.now(); rp.phase = 'done'; doAccess(); }; setTimeout(tick, 150); }
+      else { render(); setTimeout(doAccess, 600); }
+      break;
+    }
+    case 'ac-genpw': { const d = acState(); d.form.password = randPw(); d.form.show = true; render(); break; }
+    case 'ac-showpw': { const d = acState(); d.form.show = !d.form.show; render(); break; }
+    case 'ac-save': { const d = acState(); const inline = d === S.ac; d.busy = true; render(); setTimeout(() => { const a = byId(d.id); const f = d.form; const was = a.access_mode; a.access_mode = f.mode; a.updated_at = Date.now(); if (f.mode === 'password') { a.password = f.password; a.password_set_at = Date.now(); Object.values(S.gate).forEach((g) => { g.unlocked = false; g.tries = 0; g.wrong = false; g.pwChanged = was === 'password'; }); d.phase = 'done'; d.password = f.password; d.busy = false; render(); } else { if (a.token) { const g = gateState(a.token); g.unlocked = false; g.tries = 0; g.wrong = false; } if (inline) S.ac = null; else S.dialog = null; toast(`Quyền xem giờ là ${T.access[f.mode].label}. Mã QR và link ngắn không đổi.`); render(); } }, 600); break; }
+    case 'dlg-password': openDialog({ type: 'password', id, phase: 'edit', form: { password: '', show: false } }); break;
+    case 'pw-genpw': S.dialog.form.password = randPw(); S.dialog.form.show = true; render(); break;
+    case 'pw-showpw': S.dialog.form.show = !S.dialog.form.show; render(); break;
+    case 'pw-save': { const d = S.dialog; d.busy = true; render(); setTimeout(() => { const a = byId(d.id); a.password = d.form.password; a.password_set_at = Date.now(); a.updated_at = Date.now(); if (a.token) { const g = gateState(a.token); g.unlocked = false; g.tries = 0; g.wrong = false; g.pwChanged = true; } d.phase = 'done'; d.password = d.form.password; d.busy = false; render(); }, 600); break; }
+    case 'publish-draft': { const a = byId(id); if (liveCount() >= QUOTA_LIVE) { toast(`Bạn đang có ${QUOTA_LIVE} artifact đã xuất bản, là mức tối đa. Gỡ bớt một cái rồi thử lại.`, 'err'); break; } publish(a); openDialog({ type: 'created', id, password: a.access_mode === 'password' ? a.password : null }); break; }
+    // create
+    case 'c-sample': { if (stop && stop !== el && el.classList.contains('dropzone')) break; const f = { ...SAMPLE_FILES[+el.dataset.i] }; const c = S.create; c.file = f; if (!c.name) c.name = f.name.replace(/\.[^.]+$/, '').replace(/-/g, ' ').replace(/^./, (ch) => ch.toUpperCase()); if (!c.slugTouched) c.slug = slugify(c.name); render(); break; }
+    case 'c-clear-file': S.create.file = null; render(); break;
+    case 'c-access': S.create.access = el.dataset.m; render(); break;
+    case 'c-genpw': S.create.password = randPw(); S.create.showPw = true; render(); break;
+    case 'c-showpw': S.create.showPw = !S.create.showPw; render(); break;
+    case 'c-submit': doCreateSubmit(); break;
+    // gate
+    case 'gate-login': gateState(el.dataset.token).signedIn = 'ban@congty-khac.vn'; render(); break;
+    case 'gate-google': { const g = gateState(el.dataset.token); g.unlocked = true; g.cancelled = false; const a = byToken(el.dataset.token); if (a) a.viewers += 1; render(); break; }
+    case 'gate-google-cancel': gateState(el.dataset.token).cancelled = true; render(); break;
+    case 'gate-unlock-demo': { const g = gateState(el.dataset.token); g.lockedUntil = 0; g.tries = 0; g.wrong = false; render(); break; }
+  }
+});
+document.addEventListener('input', (e) => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const v = el.value;
+  switch (el.dataset.act) {
+    case 'search': S.search = v; S.page = 1; rerenderKeepFocus(el); break;
+    case 'c-name': S.create.name = v; if (!S.create.slugTouched) S.create.slug = slugify(v); rerenderKeepFocus(el); break;
+    case 'c-slug': S.create.slug = v; S.create.slugTouched = true; rerenderKeepFocus(el); break;
+    case 'lk-slug': if (S.lk) { S.lk.slug = v; rerenderKeepFocus(el); } break;
+    case 'c-pw': S.create.password = v; rerenderKeepFocus(el); break;
+    case 'ac-pw': acState().form.password = v; rerenderKeepFocus(el); break;
+    case 'pw-input': S.dialog.form.password = v; rerenderKeepFocus(el); break;
+  }
+});
+function pendingCount(a) {
+  let n = 0;
+  if (S.rp && S.rp.id === a.id && S.rp.phase === 'select' && rpCheck(S.rp, a).pending) n++;
+  if (S.ac && S.ac.id === a.id && S.ac.phase === 'edit' && acCheck(S.ac, a).changed) n++;
+  if (S.lk && S.lk.id === a.id && lkCheck(S.lk, a).changed) n++;
+  return n;
+}
+function pendingTip(a) {
+  const parts = [];
+  if (S.rp && S.rp.id === a.id && S.rp.phase === 'select' && rpCheck(S.rp, a).pending) parts.push('thay file');
+  if (S.ac && S.ac.id === a.id && S.ac.phase === 'edit' && acCheck(S.ac, a).changed) parts.push('đổi quyền xem');
+  if (S.lk && S.lk.id === a.id && lkCheck(S.lk, a).changed) parts.push('đổi đường dẫn');
+  return parts.length ? `Áp dụng: ${parts.join(' + ')}` : 'Chọn file hoặc đổi quyền xem bên dưới rồi bấm nút này';
+}
+function applyAccess(d, a, done) {
+  const f = d.form; const was = a.access_mode;
+  a.access_mode = f.mode; a.updated_at = Date.now();
+  if (f.mode === 'password') {
+    a.password = f.password; a.password_set_at = Date.now();
+    Object.values(S.gate).forEach((g) => { g.unlocked = false; g.tries = 0; g.wrong = false; g.pwChanged = was === 'password'; });
+    d.phase = 'done'; d.password = f.password; d.busy = false;
+  } else {
+    if (a.token) { const g = gateState(a.token); g.unlocked = false; g.tries = 0; g.wrong = false; }
+    d.phase = 'edit'; d.form = { mode: a.access_mode, password: '', show: false }; d.busy = false;
+  }
+  done && done();
+}
+function acState() { return S.dialog && S.dialog.type === 'access' ? S.dialog : S.ac; }
+function rpState() { return S.dialog && S.dialog.type === 'replace' ? S.dialog : S.rp; }
+function rerenderKeepFocus(el) {
+  const id = el.id, act = el.dataset.act, pos = el.selectionStart;
+  render();
+  const n = id ? document.getElementById(id) : document.querySelector(`[data-act="${act}"]`);
+  if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (_) {} }
+}
+document.addEventListener('submit', (e) => {
+  const f = e.target.closest('form[data-act]'); if (!f) return;
+  e.preventDefault();
+  const token = f.dataset.token; const a = byToken(token); const g = gateState(token);
+  if (f.dataset.act === 'gate-pw') {
+    const val = f.querySelector('input[name=password]').value;
+    if (val === a.password) { g.unlocked = true; g.tries = 0; g.wrong = false; g.pwChanged = false; render(); return; }
+    g.tries += 1; g.wrong = true; g.pwChanged = false;
+    if (g.tries >= GATE_MAX_TRIES) { g.lockedUntil = Date.now() + GATE_LOCK_MINUTES * 60000; g.tries = 0; g.wrong = false; }
+    render();
+  }
+  if (f.dataset.act === 'gate-switch') { g.signedIn = 'khanh.qn@gmail.com'; g.unlocked = true; render(); }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (S.dialog && !(S.dialog.busy || S.dialog.phase === 'uploading')) closeDialog(); else if (S.menu) { S.menu = null; render(); } } });
+
+render();
+})();
+</script>
+</body>
+</html>

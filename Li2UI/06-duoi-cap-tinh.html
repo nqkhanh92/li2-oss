@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>By Location — mức dưới cấp tỉnh, ba phương án</title>
+<style>
+  :root{--ink:#0f172a;--muted:#64748b;--faint:#94a3b8;--line:#e2e8f0;--card:#fff;--accent:#4125b9;
+        --green:#34a853;--warn:#92400e}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);
+       font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 22px 80px}
+  h1{font-size:25px;margin:0 0 8px;letter-spacing:-.02em}
+  h2{font-size:19px;margin:34px 0 4px;letter-spacing:-.01em}
+  p.lede{color:var(--muted);margin:0;max-width:74ch}
+  p.sub{color:var(--muted);margin:0 0 14px;max-width:80ch;font-size:14px}
+  .warn{color:var(--warn);background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+        padding:9px 13px;font-size:13px;margin-top:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-top:14px}
+  .card-title{font-size:16px;font-weight:600;color:#334155;margin:0 0 12px}
+  .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;
+       padding:2px 8px;border-radius:999px;vertical-align:3px;margin-left:8px}
+  .tag.now{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+  .tag.need{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+  .tag.no{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+  .crumbs{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px;min-height:24px;flex-wrap:wrap}
+  .crumbs button{border:0;background:0;padding:0;cursor:pointer;color:var(--accent);font:inherit;
+                 font-size:14px;text-decoration:underline;text-underline-offset:3px}
+  .crumbs .sep{color:var(--faint)}
+  .crumbs .here{font-weight:600}
+  .crumbs .lv{color:var(--faint);font-size:12px;margin-left:4px}
+  .row{display:grid;grid-template-columns:5fr 6fr;gap:22px;align-items:start}
+  @media(max-width:900px){.row{grid-template-columns:1fr}}
+  .mapbox{position:relative;background:#fcfcfd;border:1px solid #f1f5f9;border-radius:10px;overflow:hidden}
+  svg{display:block;width:100%;height:auto}
+  .prov{fill:#eef2f7;stroke:#cbd5e1;stroke-width:1;vector-effect:non-scaling-stroke}
+  .dot{cursor:pointer}
+  .dot circle.core{fill:var(--green);fill-opacity:.85;stroke:#fff;stroke-width:1.5}
+  .dot circle.halo{fill:var(--green);fill-opacity:.12;stroke:var(--green);stroke-opacity:.35;
+                   stroke-width:1;stroke-dasharray:3 3}
+  .dot.fb circle.core{fill:#94a3b8;fill-opacity:.55;stroke-dasharray:3 2;stroke:#64748b;stroke-width:1.2}
+  .dot.fb circle.halo{fill:#94a3b8;fill-opacity:.1;stroke:#94a3b8;stroke-dasharray:2 3}
+  .dot.hot circle.core{fill:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:7px 10px 7px 0;
+     border-bottom:1px solid var(--line)}
+  td{padding:9px 10px 9px 0;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+  tr.go{cursor:zoom-in}
+  tr.go:hover td,tr.hl td{background:#f6f4ff}
+  tr.dim td{color:var(--faint)}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{position:relative;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;min-width:64px}
+  .bar i{position:absolute;inset:0 auto 0 0;background:var(--green);border-radius:4px}
+  .bar.g i{background:var(--faint)}
+  .bar b{position:absolute;right:5px;top:0;line-height:16px;font-size:11px;font-weight:600;color:#334155}
+  .pin{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:-1px;
+       background:var(--green)}
+  .pin.fb{background:#fff;border:1.5px dashed #64748b;width:8px;height:8px}
+  .foot{color:var(--faint);font-size:12.5px;margin-top:12px}
+  .foot b{color:var(--muted);font-weight:600}
+  .tip{position:absolute;top:8px;left:8px;background:#fff;border:1px solid var(--line);border-radius:8px;
+       padding:8px 12px;font-size:13px;box-shadow:0 4px 14px rgba(15,23,42,.1);pointer-events:none;max-width:230px}
+  .tip b{display:block}.tip span{color:var(--muted);font-size:12px;display:block}
+  .box{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+       border-radius:0 10px 10px 0;padding:13px 17px;margin-top:16px}
+  .box.red{border-left-color:#dc2626}
+  .box.amber{border-left-color:#d97706}
+  .box b{font-size:14px}.box p{margin:5px 0 0;color:var(--muted);font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+  pre.ascii{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:16px 18px;overflow-x:auto;
+            font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;margin:12px 0 0}
+  .names{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .names span{font-size:12.5px;padding:3px 9px;border-radius:6px;border:1px solid var(--line);background:#fff}
+  .names span.q{border-color:#bfdbfe;background:#eff6ff}
+  .names span.t{border-color:#fde68a;background:#fffbeb}
+  .names span.x{border-color:#fecaca;background:#fef2f2}
+  .names span.p{border-color:#cbd5e1;background:#f1f5f9;color:var(--muted)}
+  .key{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:9px}
+  .scale{display:flex;gap:2px;margin:6px 0 2px}
+  .scale i{flex:1;height:22px;border-radius:2px;display:block;border:1px solid rgba(0,0,0,.05)}
+  .q{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin-top:10px;font-size:14px}
+  .q dt{font-weight:600;color:var(--accent)}
+  .q dd{margin:0;color:#334155}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>By Location — đi sâu hơn cấp tỉnh</h1>
+  <p class="lede">Ba phương án cho mức thứ ba, dựng trên <b>số thật</b> của tổ chức khanh.qn (137 lượt,
+     toàn bộ thời gian) và trên <b>tệp GeoIP thật</b> đang chạy ở LiHi
+     (<span class="mono">~/lihi/geoip/city.csv</span>, 29 909 dải IPv4 Việt Nam).</p>
+  <div class="warn">Đường nét bản đồ đã được làm thô bớt để nhét vừa một tệp HTML đứng một mình.
+     Bản chạy thật trong app dùng <span class="mono">vietnam.json</span> nguyên gốc.</div>
+
+  <!-- ─────────────────────────── Phương án 1 ─────────────────────────── -->
+  <h2>PA1 — Bản đồ-điểm trong lòng tỉnh <span class="tag need">cần worker ghi thêm 3 cột</span></h2>
+  <p class="sub">Mức 3 không tô vùng mà đặt chốt theo <b>toạ độ</b> GeoIP trả về. Lý do ở mục “Vì sao
+     không vẽ bản đồ quận” bên dưới. Chốt nét liền = GeoIP biết tới một địa phương cụ thể; chốt nét
+     gạch = GeoIP chỉ biết tới tỉnh và trả về toạ độ trung tâm tỉnh, nên vòng nhoè bao cả vùng bất định.</p>
+
+  <div class="card">
+    <div class="crumbs" id="cr"></div>
+    <div class="row">
+      <div class="mapbox" id="mapbox">
+        <svg id="svg" viewBox="0 0 560 540" role="img" aria-label="TP. Hồ Chí Minh">
+          <g id="shape"></g>
+          <g id="dots"></g>
+        </svg>
+        <div class="tip" id="tip" style="display:none"></div>
+      </div>
+      <div>
+        <table>
+          <thead><tr><th>Địa điểm</th><th class="num">Lượt</th><th>Tỷ lệ trong tỉnh</th></tr></thead>
+          <tbody id="tb"></tbody>
+        </table>
+        <p class="foot" id="ft"></p>
+        <div class="key">
+          <span><span class="pin"></span>biết tới địa phương</span>
+          <span><span class="pin fb"></span>chỉ biết tới tỉnh — chốt ở trung tâm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <b>Chốt nét gạch không phải tiểu tiết thẩm mỹ.</b>
+    <p>Trong GeoIP đang chạy, 1 838/5 572 dải IP của TP.HCM (33%) ghi địa phương đúng bằng tên tỉnh và
+       1 506 dải trong đó dùng chung một toạ độ <span class="mono">10.8231, 106.63</span> — tức “tôi
+       không biết, đây là trung tâm thành phố”. Toàn Việt Nam con số này là 11 115/29 909 dải, <b>37,2%</b>.
+       Nếu vẽ chúng như chốt bình thường thì người xem đọc ra một cụm khách ở Quận 1 không hề tồn tại.</p>
+  </div>
+
+  <!-- ─────────────────────────── Phương án 2 ─────────────────────────── -->
+  <h2>PA2 — Chỉ bảng địa điểm, không bản đồ <span class="tag need">cần worker ghi thêm 1 cột</span></h2>
+  <p class="sub">Bỏ hình, mức 3 chỉ là một bảng. Rẻ nhất, không cần toạ độ, không cần tệp bản đồ nào.
+     Đổi lại mất khả năng thấy cụm khách tập trung ở đâu trong tỉnh.</p>
+  <div class="card">
+    <div class="crumbs">
+      <button type="button">Thế giới</button><span class="sep">›</span>
+      <button type="button">Việt Nam</button><span class="sep">›</span>
+      <span class="here">TP. Hồ Chí Minh</span><span class="lv">110 lượt</span>
+    </div>
+    <div style="max-width:560px">
+      <table>
+        <thead><tr><th>Địa điểm</th><th class="num">Lượt</th><th>Tỷ lệ trong tỉnh</th></tr></thead>
+        <tbody id="tb2"></tbody>
+      </table>
+      <p class="foot" id="ft2"></p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────── Phương án 3 ─────────────────────────── -->
+  <h2>PA3 — Choropleth cấp phường/xã <span class="tag no">không làm được</span></h2>
+  <p class="sub">Phương án trực giác nhất — tô màu các ô nhỏ bên trong tỉnh y như đang tô 34 tỉnh — lại
+     là phương án duy nhất không dựng nổi. Ba lý do, theo thứ tự nặng dần:</p>
+
+  <div class="card">
+    <p class="card-title">1. Cột địa phương của GeoIP không phải một cấp hành chính</p>
+    <p class="sub" style="margin-bottom:0">102 tên khác nhau GeoIP trả về cho TP.HCM, trộn lẫn bốn cấp
+       và hai lối phiên âm. Không có bảng ánh xạ nào biến đống này thành một lớp ô đóng kín:</p>
+    <div class="names">
+      <span class="p">Ho Chi Minh City <b>1838</b></span>
+      <span class="q">Quận Một <b>289</b></span>
+      <span class="q">Quận Tân Phú <b>266</b></span>
+      <span class="q">Go Vap <b>196</b></span>
+      <span class="q">Quận Hai <b>175</b></span>
+      <span class="q">Hóc Môn <b>151</b></span>
+      <span class="q">Thủ Đức <b>101</b></span>
+      <span class="q">Quận Bảy <b>81</b></span>
+      <span class="t">Thị Trấn Phú Mỹ <b>50</b></span>
+      <span class="t">Thị Trấn Ngải Giao <b>25</b></span>
+      <span class="x">Ấp Phước Tĩnh <b>18</b></span>
+      <span class="x">Xóm Mỹ Xuân <b>11</b></span>
+      <span class="q">Quận Một (Bến Nghé) <b>15</b></span>
+      <span class="t">Xã Long Hải <b>13</b></span>
+    </div>
+    <div class="key">
+      <span><span class="names" style="display:inline"><span class="p">xám</span></span> = trùng tên tỉnh, không có cấp dưới</span>
+      <span><span class="names" style="display:inline"><span class="q">xanh</span></span> = cấp quận cũ</span>
+      <span><span class="names" style="display:inline"><span class="t">vàng</span></span> = cấp xã/thị trấn</span>
+      <span><span class="names" style="display:inline"><span class="x">đỏ</span></span> = cấp ấp/xóm</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">2. Cấp quận đã bị bỏ từ 01/07/2025</p>
+    <p class="sub" style="margin-bottom:0">Cùng lần sáp nhập đã gộp 63 tỉnh thành 34 cũng xoá luôn cấp
+       huyện/quận: hành chính giờ là tỉnh → phường/xã. Tên GeoIP trả về (“Quận Bảy”, “Go Vap”) là đơn vị
+       <b>không còn tồn tại</b>. Vẽ bản đồ quận năm 2026 là vẽ một tấm bản đồ đã hết hiệu lực — đúng
+       cái bẫy mà <span class="mono">src/shared/constants/vietnam-provinces.ts:5-8</span> vừa phải
+       gỡ cho cấp tỉnh.</p>
+  </div>
+
+  <div class="card">
+    <p class="card-title">3. Chi phí tệp bản đồ</p>
+    <p class="sub" style="margin-bottom:0">Bản đồ 63 tỉnh nặng 352 KB
+       (<span class="mono">src/public/json/vietnam.json</span>) và đã phải lazy-load vì lý do đó
+       (<span class="mono">vietnam-map-chart.tsx:63-79</span>). Lớp 3 321 phường/xã đông hơn 50 lần.</p>
+  </div>
+
+  <div class="box red">
+    <b>Và nếu bật hôm nay thì hình trông thế nào.</b>
+    <p>Tra 16 IP Việt Nam thật của tổ chức test vào GeoIP đang chạy: 83 lượt rơi vào “Quận Bảy”, 4 lượt
+       rơi vào chốt mặc định, 23 lượt không tra được (IPv6 Apple Private Relay), 8 lượt ở Hà Nội cũng
+       chỉ tới mức tỉnh. Bản đồ phường của TP.HCM sẽ có <b>đúng một ô</b> được tô trên 168 ô.</p>
+  </div>
+
+  <!-- ─────────────────────────── Câu hỏi 2 ─────────────────────────── -->
+  <h2>Khi một tỉnh chỉ có 1–2 lượt</h2>
+  <p class="sub">Một bản đồ với một chốt không nói gì hơn một câu văn, mà lại tốn một lần tải tệp bản đồ
+     và một khoảng trống to trên trang. Quy tắc: <b>mức 3 chỉ vẽ hình khi có từ 2 địa điểm riêng biệt
+     trở lên</b>; dưới ngưỡng đó thay hình bằng một dòng chữ.</p>
+  <pre class="ascii">Thế giới › Việt Nam › Hà Nội                              8 lượt
+
+  Cả 8 lượt đều chỉ xác định được tới cấp tỉnh — GeoIP không
+  tách nhỏ hơn cho các dải IP này.                    [Về Việt Nam]
+
+
+Thế giới › Việt Nam › Lai Châu                            1 lượt
+
+  1 lượt, ở Thành phố Lai Châu.                       [Về Việt Nam]
+  Quá ít để tách nhỏ hơn.</pre>
+  <div class="box">
+    <b>Không làm mờ dòng rồi khoá bấm.</b>
+    <p>Dòng xám không bấm được là cách nói “chỗ này hỏng”. Cho bấm vào, rồi trả lời thẳng bằng một câu —
+       người xem biết mình đã nhìn hết dữ liệu chứ không phải đang bị chặn.</p>
+  </div>
+
+  <!-- ─────────────────────────── Câu hỏi 4 ─────────────────────────── -->
+  <h2>32 tỉnh trắng trơn</h2>
+  <p class="sub">Vấn đề không phải thiếu chú thích — dòng “32 tỉnh chưa có lượt nào” đã có ở
+     <span class="mono">analytic-map-chart.tsx:180-184</span>. Vấn đề là
+     <span class="mono">EMPTY_FILL = '#F8F9FB'</span> (<span class="mono">vietnam-map-chart.tsx:28</span>)
+     gần như trùng nền trắng, nên “0 lượt” và “bậc màu thấp nhất” nhìn như nhau và cả tấm bản đồ
+     trông như chưa tải xong.</p>
+  <div class="card">
+    <p class="card-title">Ba lớp sửa, nhẹ tới nặng</p>
+    <table style="max-width:none">
+      <thead><tr><th style="width:170px">Sửa</th><th>Nội dung</th><th style="width:120px">Chi phí</th></tr></thead>
+      <tbody>
+        <tr><td><b>Tô nền có vân</b></td>
+            <td>Tỉnh 0 lượt dùng nền gạch chéo rất nhạt thay vì màu đặc, kèm một ô “0 lượt” riêng trong
+                chú giải. Mắt phân biệt ngay “không có dữ liệu” với “ít dữ liệu”.</td>
+            <td>CSS + 1 ô legend</td></tr>
+        <tr><td><b>Đảo tỷ lệ khi thưa</b></td>
+            <td>Khi ≤ 3 tỉnh có lượt, choropleth là công cụ sai: cho bản đồ lùi về cột hẹp, bảng thành
+                phần chính. Hiện mức tỉnh đã để bản đồ 3/10 và bảng 7/10
+                (<span class="mono">analytic-map-chart.tsx:119-144</span>) — giữ nguyên, chỉ bỏ 5 bậc màu
+                mà dùng hai bậc có/không.</td>
+            <td>điều kiện render</td></tr>
+        <tr><td><b>Bảng đủ 34 dòng</b></td>
+            <td>Thêm phần “Chưa có lượt (32)” gập lại được, liệt kê tên tỉnh. Trả lời được câu “khách
+                của tôi có ở Cần Thơ không” mà không phải dò màu trên hình.</td>
+            <td>1 khối gập</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─────────────────────────── Câu hỏi 5 ─────────────────────────── -->
+  <h2>Khi lưu lượng lớn — bố cục hiện tại gãy ở hai chỗ</h2>
+  <div class="card">
+    <p class="card-title">Gãy 1 — thang màu chia đều biến 32 tỉnh thành một màu</p>
+    <p class="sub"><span class="mono">buildScale</span> chia khoảng <span class="mono">[0, max]</span>
+       thành 5 bậc bằng nhau (<span class="mono">vietnam-map-chart.tsx:31-45</span>). Lưu lượng Việt Nam
+       luôn lệch nặng về Hà Nội và TP.HCM, nên mọi tỉnh khác rơi vào bậc 1. Dưới đây là 34 tỉnh của một
+       phân bố lệch điển hình, cùng dữ liệu, hai cách chia:</p>
+    <p class="foot" style="margin:14px 0 0"><b>Chia đều theo max (hiện tại)</b> — 31/34 tỉnh cùng một màu</p>
+    <div class="scale" id="sc-linear"></div>
+    <p class="foot" style="margin:14px 0 0"><b>Chia theo phân vị</b> — mỗi bậc khoảng 7 tỉnh, đọc ra được thứ bậc</p>
+    <div class="scale" id="sc-quant"></div>
+    <p class="foot">Chú giải phải đổi theo: không còn “0 · 200 · 400 · 600 · 800” mà là các mốc phân vị thật.</p>
+  </div>
+  <div class="card">
+    <p class="card-title">Gãy 2 — bảng cắt cứng ở 7 dòng</p>
+    <p class="sub" style="margin-bottom:0"><span class="mono">TOP_ROWS = 7</span>
+       (<span class="mono">analytic-map-chart.tsx:19</span>) hợp với 2 tỉnh có dữ liệu, nhưng với 34 tỉnh
+       thì che 27 tỉnh và không có cách nào xem được chúng ngoài hover trên hình. Mức tỉnh nên cho cuộn
+       đủ 34 dòng trong khung cao cố định, kèm một ô tìm tên khi &gt; 12 dòng. Mức quốc gia giữ 7 dòng
+       + “còn N nước khác” vì danh sách nước là mở, không đóng như 34.</p>
+  </div>
+
+  <!-- ─────────────────────────── Khuyến nghị ─────────────────────────── -->
+  <h2>Khuyến nghị</h2>
+  <div class="box">
+    <b>Làm PA2 trước, PA1 sau — cùng một lần sửa worker.</b>
+    <p>Cả hai cần worker ngừng bỏ <span class="mono">record.City</span>
+       (<span class="mono">li2-worker/src/internal/services/visit.service.go:99</span> hiện ghi
+       <span class="mono">city = record.Region</span>, tức cột <span class="mono">visits.city</span> đang
+       chứa tên TỈNH). PA2 cần một cột <span class="mono">place</span>; PA1 cần thêm
+       <span class="mono">place_lat</span> và <span class="mono">place_lng</span>. Thêm cả ba trong một
+       migration, bật PA2 ngay khi có dữ liệu, bật PA1 khi đã có đủ lượt để hình có nghĩa. Việc sửa
+       câu hỏi 4 và 5 không chờ dữ liệu nào, làm được ngay hôm nay.</p>
+  </div>
+  <div class="box amber">
+    <b>Dữ liệu cũ sẽ trống mức 3 vĩnh viễn.</b>
+    <p>137 lượt đang có không lưu địa phương, mà hồi tố thì phải tra lại từng IP qua GeoIP hiện tại —
+       làm được (đã tra 16 IP ở trên) nhưng GeoIP tháng 10/2026 không phải GeoIP lúc lượt đó xảy ra.
+       Cần chốt: hồi tố hay để mức 3 chỉ có dữ liệu từ ngày bật.</p>
+  </div>
+
+  <h2>Cần chủ sản phẩm quyết</h2>
+  <dl class="q">
+    <dt>1</dt><dd>Gọi mức 3 là gì? “Quận/huyện” thì sai từ 01/07/2025 và sai cả với dữ liệu (có cả ấp, xóm).
+                  Đề xuất <b>“Địa điểm”</b> — đúng với mọi mức GeoIP trả về.</dd>
+    <dt>2</dt><dd>PA1 hay PA2? Hay PA2 trước rồi PA1 sau như khuyến nghị?</dd>
+    <dt>3</dt><dd>Hồi tố 137 lượt cũ bằng GeoIP hiện tại, hay mức 3 chỉ có dữ liệu từ ngày bật?</dd>
+    <dt>4</dt><dd>Giữ nguyên tên GeoIP (“Quận Bảy”, “Go Vap”) hay dựng bảng chuẩn hoá về “Quận 7”,
+                  “Gò Vấp”? Bảng này phải nuôi tay như <span class="mono">vietnam-provinces.ts</span>,
+                  cỡ 100 tên cho riêng TP.HCM.</dd>
+    <dt>5</dt><dd>Nước ngoài có cần mức 3 không? Dữ liệu <span class="mono">countries[].cities[]</span>
+                  đã có sẵn cho mọi nước, PA2 chạy được cho tất cả mà không cần tệp bản đồ nào.</dd>
+  </dl>
+</div>
+
+<script>
+const HCM   = {"VN-74": "M275.3 103.5 271.2 122.7 272.7 129.1 264.9 129.8 266.0 141.7 260.1 143.6 262.8 151.2 273.6 153.0 287.0 169.9 282.6 172.6 282.8 180.1 286.7 186.8 279.2 195.4 279.9 207.4 272.9 205.4 265.5 214.6 263.9 222.8 257.1 221.1 248.1 224.1 234.4 215.7 228.1 205.2 218.9 207.3 222.4 221.0 214.2 223.7 207.7 229.4 207.5 233.5 215.9 243.5 209.7 248.1 202.4 247.7 202.4 252.8 222.4 267.1 225.0 273.4 234.0 274.2 221.0 286.2 209.5 288.2 209.7 282.7 205.1 277.6 200.8 283.0 202.1 288.1 196.3 290.2 194.9 283.5 183.8 276.6 181.3 289.6 171.7 283.0 173.8 274.3 170.0 266.0 162.8 266.4 155.5 260.4 154.5 241.0 148.6 242.3 141.2 236.6 143.3 229.6 135.3 226.7 132.8 220.7 135.0 213.7 127.3 216.5 122.6 209.6 121.3 213.3 112.5 212.3 103.2 202.1 106.4 193.7 99.7 190.9 103.6 188.3 104.0 181.5 93.3 173.1 84.0 172.4 80.7 167.6 73.9 165.1 74.6 173.1 71.1 175.2 64.6 170.6 66.8 165.3 63.6 161.0 55.6 159.1 46.5 154.0 41.9 133.0 34.5 131.3 31.1 127.1 36.0 123.0 31.2 121.5 33.1 111.7 26.7 111.5 24.4 106.5 28.3 96.4 20.7 88.0 34.1 62.8 39.2 40.8 54.5 33.9 61.8 22.9 65.4 20.0 87.5 21.1 112.0 33.9 116.9 27.1 123.9 39.2 111.7 49.4 111.9 64.7 109.4 67.9 115.0 74.1 120.0 75.3 140.3 68.0 141.5 78.5 166.1 82.2 170.2 65.3 178.0 64.1 187.3 49.4 193.5 48.4 199.8 40.1 197.8 31.2 216.7 24.1 221.2 37.1 213.4 49.3 205.6 51.8 205.0 59.6 211.7 71.0 223.4 73.2 228.7 69.4 240.2 72.8 241.5 84.2 244.4 87.6 241.2 93.0 242.0 99.5 249.1 102.2 247.2 95.1 253.9 87.6 260.3 87.8 266.3 81.7 275.1 82.9 280.0 87.3 280.7 96.7 275.3 103.5Z", "VN-79": "M234.0 274.2 239.0 284.9 237.4 290.3 240.9 298.8 251.0 310.3 250.7 316.8 245.3 321.2 248.8 331.1 244.1 332.2 235.1 328.7 229.9 334.1 227.0 325.8 217.3 335.0 203.8 342.8 197.8 352.4 199.4 361.9 206.8 369.5 221.7 379.1 228.5 390.3 237.2 385.8 243.3 386.6 248.7 381.8 260.7 391.6 264.6 399.0 285.1 405.3 294.4 411.2 293.0 418.5 296.0 421.5 296.7 432.3 306.7 434.5 300.4 443.6 298.7 456.6 289.7 453.2 279.4 474.9 290.2 479.7 289.1 484.1 261.5 495.8 250.6 496.7 245.3 511.3 229.3 517.3 217.9 483.2 203.4 467.2 191.0 446.0 196.4 434.4 194.1 416.6 191.5 408.3 188.1 410.6 184.7 403.1 189.0 389.1 181.5 381.1 170.1 378.6 163.0 385.5 156.8 385.9 151.5 391.7 146.9 391.0 146.8 384.6 137.0 377.2 135.3 380.8 128.2 379.1 116.8 381.3 113.3 377.5 115.2 370.2 113.4 365.3 107.8 365.9 101.3 349.9 96.9 352.4 88.4 348.1 78.6 335.4 93.3 323.7 97.0 315.0 107.9 274.3 73.5 257.4 56.0 243.7 40.1 245.7 33.2 236.2 33.9 234.4 49.4 232.3 56.4 229.3 55.7 221.1 60.6 216.3 62.0 194.1 63.6 193.4 71.1 175.2 74.6 173.1 73.9 165.1 80.7 167.6 84.0 172.4 93.3 173.1 104.0 181.5 103.6 188.3 99.7 190.9 106.4 193.7 103.2 202.1 112.5 212.3 121.3 213.3 122.6 209.6 127.3 216.5 135.0 213.7 132.8 220.7 135.3 226.7 143.3 229.6 141.2 236.6 148.6 242.3 154.5 241.0 155.5 260.4 162.8 266.4 170.0 266.0 173.8 274.3 171.7 283.0 181.3 289.6 183.8 276.6 194.9 283.5 196.3 290.2 202.1 288.1 200.8 283.0 205.1 277.6 209.7 282.7 209.5 288.2 221.0 286.2 234.0 274.2Z", "VN-77": "M511.8 329.5 510.9 339.8 521.6 348.8 527.5 360.1 527.4 371.5 537.6 394.3 539.3 415.2 533.0 419.2 516.2 442.1 513.2 444.1 499.5 444.7 495.5 446.6 485.7 458.1 456.5 458.5 443.1 460.7 420.8 480.0 408.2 495.3 401.7 496.4 392.4 485.2 376.5 487.0 379.8 483.0 378.9 474.6 367.4 491.7 354.4 498.1 345.5 505.9 336.3 519.6 331.7 515.7 331.8 509.8 327.0 506.3 324.4 498.2 325.9 492.5 331.6 498.1 336.1 491.0 344.1 489.5 346.1 484.2 359.7 481.0 363.4 477.2 364.6 468.7 370.4 467.5 365.0 458.4 354.9 458.1 353.5 461.5 349.2 453.9 344.7 454.5 349.7 460.7 350.0 468.3 335.6 474.1 322.4 465.8 318.7 455.4 298.7 456.6 300.4 443.6 306.7 434.5 312.4 428.1 305.9 422.4 311.3 411.3 312.0 405.8 308.2 399.7 301.4 394.4 300.0 389.2 308.2 388.3 307.0 383.8 318.1 378.4 341.0 380.1 356.5 366.2 359.0 356.4 358.0 340.4 365.1 341.1 379.6 329.4 387.1 327.9 387.3 334.8 397.3 332.8 410.2 336.4 426.2 336.8 428.7 354.3 425.7 365.5 434.4 373.2 441.1 368.9 447.7 369.3 446.0 358.1 452.3 346.9 457.0 344.6 461.4 337.7 471.4 328.7 475.8 329.5 485.9 316.0 489.3 315.9 501.0 327.8 506.0 330.9 511.8 329.5Z"};
+const PROJ  = {"minx": 106.27496850936008, "pymax": 11.628224295868337, "k": 416.37041933637886};
+const VB    = [560, 540];
+
+/* Số thật: tra 16 IP Việt Nam của tổ chức khanh.qn vào ~/lihi/geoip/city.csv ngày 22/10/2026 */
+const PROV_TOTAL = 110;              // 87 (city='Ho Chi Minh') + 23 (city='Ho Chi Minh City')
+const PLACES = [
+  {name:'Quận Bảy',          lat:10.7118, lon:106.736, n:83, fb:false,
+   note:'72 dải IP của GeoIP trỏ vào đúng toạ độ này'},
+  {name:'Ho Chi Minh City',  lat:10.8231, lon:106.63,  n:4,  fb:true,
+   note:'toạ độ trung tâm tỉnh — GeoIP dùng chung cho 1 506 dải IP'},
+];
+const NO_SUBPROVINCE = 23;           // IPv6 Apple Private Relay, không tra được dải
+
+const merc = la => Math.log(Math.tan(Math.PI/4 + la*Math.PI/360)) * 180/Math.PI;
+const toXY = (lon, lat) => [ (lon-PROJ.minx)*PROJ.k, (PROJ.pymax-merc(lat))*PROJ.k ];
+const pct  = n => (n/PROV_TOTAL*100).toFixed(1);
+
+/* ── hình tỉnh: ba geometry cũ gộp thành TP.HCM hiện hành ── */
+document.getElementById('shape').innerHTML =
+  Object.values(HCM).map(d => `<path class="prov" d="${d}"/>`).join('');
+
+/* ── chốt: bán kính theo căn bậc hai của lượt để diện tích tỷ lệ với số lượt ── */
+const maxN = Math.max(...PLACES.map(p => p.n));
+const rOf  = n => 6 + 16 * Math.sqrt(n/maxN);
+const dots = document.getElementById('dots');
+dots.innerHTML = PLACES.map((p, i) => {
+  const [x, y] = toXY(p.lon, p.lat), r = rOf(p.n);
+  const halo = p.fb ? r*3.4 : r*1.7;      // chốt mặc định: vòng bất định to hơn hẳn
+  return `<g class="dot${p.fb?' fb':''}" data-i="${i}">
+            <circle class="halo" cx="${x}" cy="${y}" r="${halo}"/>
+            <circle class="core" cx="${x}" cy="${y}" r="${r}"/>
+          </g>`;
+}).join('');
+
+/* ── bảng + chú thích đáy ── */
+const rows = PLACES.map((p, i) => `
+  <tr data-i="${i}">
+    <td><span class="pin${p.fb?' fb':''}"></span>${p.name}${p.fb?' <span style="color:#94a3b8">· chốt ở trung tâm tỉnh</span>':''}</td>
+    <td class="num">${p.n}</td>
+    <td><div class="bar${p.fb?' g':''}"><i style="width:${Math.max(3, p.n/maxN*100)}%"></i><b>${pct(p.n)}%</b></div></td>
+  </tr>`).join('') + `
+  <tr class="dim">
+    <td>⊘ Không rõ dưới cấp tỉnh</td>
+    <td class="num">${NO_SUBPROVINCE}</td>
+    <td><div class="bar g"><i style="width:${Math.max(3, NO_SUBPROVINCE/maxN*100)}%"></i><b>${pct(NO_SUBPROVINCE)}%</b></div></td>
+  </tr>`;
+document.getElementById('tb').innerHTML  = rows;
+document.getElementById('tb2').innerHTML = rows;
+const foot = `<b>${PROV_TOTAL}</b> lượt trong tỉnh. Độ chính xác dưới cấp tỉnh thấp hơn cấp tỉnh: `
+           + `toàn Việt Nam <b>37,2%</b> dải IP chỉ xác định được tới tỉnh.`;
+document.getElementById('ft').innerHTML  = foot;
+document.getElementById('ft2').innerHTML = foot;
+
+/* ── breadcrumb ── */
+document.getElementById('cr').innerHTML =
+  `<button type="button">Thế giới</button><span class="sep">›</span>`
++ `<button type="button">Việt Nam</button><span class="sep">›</span>`
++ `<span class="here">TP. Hồ Chí Minh</span><span class="lv">${PROV_TOTAL} lượt · 2 địa điểm</span>`;
+
+/* ── nối hình với bảng cả hai chiều ── */
+const tip = document.getElementById('tip');
+const hl = (i, on) => {
+  document.querySelectorAll(`#dots .dot`).forEach(g => g.classList.toggle('hot', on && +g.dataset.i === i));
+  document.querySelectorAll(`#tb tr[data-i]`).forEach(tr => tr.classList.toggle('hl', on && +tr.dataset.i === i));
+  if (!on || i == null) { tip.style.display = 'none'; return }
+  const p = PLACES[i];
+  tip.innerHTML = `<b>${p.name}</b><span>${p.n} lượt · ${pct(p.n)}% trong tỉnh</span><span>${p.note}</span>`;
+  tip.style.display = '';
+};
+document.querySelectorAll('#dots .dot').forEach(g => {
+  g.onmouseenter = () => hl(+g.dataset.i, true);
+  g.onmouseleave = () => hl(+g.dataset.i, false);
+});
+document.querySelectorAll('#tb tr[data-i]').forEach(tr => {
+  tr.onmouseenter = () => hl(+tr.dataset.i, true);
+  tr.onmouseleave = () => hl(+tr.dataset.i, false);
+});
+
+/* ── minh hoạ thang màu: 34 tỉnh, phân bố lệch điển hình ── */
+const STOPS = ['#e8f5e9','#a5d6a7','#66bb6a','#2e7d32','#1b5e20'];
+const SKEW = [8400, 6100, 980, 760, 640, 520, 470, 410, 360, 310, 280, 250, 230, 210, 190, 170,
+              155, 140, 125, 112, 100, 90, 80, 71, 62, 54, 47, 40, 34, 28, 23, 18, 13, 9];
+const linear = (() => {
+  const max = Math.max(...SKEW);
+  const th = STOPS.map((_, i) => Math.ceil(max*(i+1)/STOPS.length));
+  return n => STOPS[Math.max(0, th.findIndex(t => n <= t))];
+})();
+const quant = (() => {
+  const sorted = [...SKEW].sort((a,b) => a-b);
+  const th = STOPS.map((_, i) => sorted[Math.ceil(sorted.length*(i+1)/STOPS.length)-1]);
+  return n => STOPS[Math.max(0, th.findIndex(t => n <= t))];
+})();
+const paint = (id, fn) => document.getElementById(id).innerHTML =
+  SKEW.map(n => `<i style="background:${fn(n)}" title="${n} lượt"></i>`).join('');
+paint('sc-linear', linear);
+paint('sc-quant',  quant);
+</script>
+</body>
+</html>

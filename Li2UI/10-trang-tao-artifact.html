@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trang tạo Artifact — lấy mẫu từ Short link</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--navy:#0B1220;--blue:#4580F7;--ink:#1A2230;--mut:#64748B;
+        --line:#E2E8F0;--bg:#F7F8FA;--bad:#DC2F3E;--warn:#D9890B;--ok:#16A34A}
+  body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       color:var(--ink);background:var(--bg)}
+  .wrap{max-width:1240px;margin:0 auto;padding:26px 18px 80px}
+  h1{font-size:27px;letter-spacing:-.025em;margin-bottom:5px}
+  h2{font-size:20px;letter-spacing:-.02em;margin:0 0 3px}
+  .sub{color:var(--mut);font-size:13.5px}
+  header{border-bottom:3px solid var(--navy);padding-bottom:15px;margin-bottom:26px}
+  section{margin:40px 0 0}
+  .shead{display:flex;align-items:baseline;gap:11px;margin-bottom:16px;
+         border-bottom:1px solid var(--line);padding-bottom:9px}
+  .snum{width:28px;height:28px;flex:none;border-radius:50%;background:var(--navy);color:#fff;
+        font-size:13px;font-weight:600;display:grid;place-items:center}
+  .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);
+       font-weight:650;margin-bottom:8px}
+
+  /* khung app */
+  .app{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+       box-shadow:0 1px 3px rgba(16,24,40,.07)}
+  .topbar{border-bottom:1px solid var(--line);padding:11px 16px;display:flex;align-items:center;gap:12px;
+          background:#fff}
+  .back{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;
+        color:var(--mut);font-size:15px;flex:none}
+  .tabs{display:inline-flex;background:#F1F5F9;border-radius:9px;padding:3px;gap:2px}
+  .tab{padding:6px 18px;border-radius:7px;font-size:13px;font-weight:550;color:#64748B}
+  .tab.on{background:var(--navy);color:#fff}
+  .spacer{flex:1}
+  .topnote{font-size:11px;color:var(--mut)}
+
+  .cols{display:grid;grid-template-columns:214px 1fr 262px;gap:0;min-height:430px}
+  .cols.one{grid-template-columns:1fr}
+  .cols.two{grid-template-columns:214px 1fr}
+  .pane{padding:15px 14px}
+  .pane.l{border-right:1px solid var(--line);background:#FCFCFD}
+  .pane.r{border-left:1px solid var(--line);background:#FCFCFD}
+  .pane.c{background:#fff}
+
+  .nav{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:7px;
+       font-size:12.5px;color:#475569;margin-bottom:2px}
+  .nav.on{background:#EEF2F7;font-weight:600;color:var(--ink)}
+  .nav.off{opacity:.38}
+  .nav .ic{width:15px;text-align:center;font-size:12px;flex:none}
+  .nav .bdg{margin-left:auto;font-size:9px;background:#DCFCE7;color:#15803D;
+            padding:1px 6px;border-radius:9px;font-weight:650}
+  .nav.on .bdg{background:var(--navy);color:#fff}
+  .navsep{height:1px;background:var(--line);margin:9px 4px}
+  .navcap{font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;color:#94A3B8;
+          margin:3px 10px 6px;font-weight:650}
+
+  .fld{margin-bottom:14px}
+  .flabel{font-size:12px;font-weight:600;color:#334155;margin-bottom:5px;display:flex;
+          align-items:center;gap:5px}
+  .flabel .req{color:var(--bad)}
+  .input{background:#F1F5F9;border:1px solid transparent;border-radius:8px;padding:9px 11px;
+         font-size:12.5px;color:#94A3B8}
+  .input.fill{background:#fff;border-color:var(--line);color:#334155}
+  .hint{font-size:10.5px;color:var(--mut);margin-top:4px}
+  .inline2{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+
+  .drop{border:2px dashed #CBD5E1;border-radius:10px;padding:22px;text-align:center;background:#FAFBFC}
+  .drop .big{font-size:13px;font-weight:600;margin-bottom:3px}
+  .drop .sm{font-size:11px;color:var(--mut)}
+  .drop.has{border-style:solid;border-color:#BFDBFE;background:#F0F6FF;text-align:left;
+            display:flex;align-items:center;gap:11px;padding:13px}
+  .fico{width:38px;height:38px;border-radius:8px;background:#fff;border:1px solid #BFDBFE;
+        display:grid;place-items:center;font-size:17px;flex:none}
+
+  /* radio quyền xem */
+  .opt{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);
+       border-radius:9px;margin-bottom:7px;background:#fff}
+  .opt.on{border-color:var(--navy);background:#F8FAFC;box-shadow:inset 0 0 0 1px var(--navy)}
+  .rd{width:15px;height:15px;border-radius:50%;border:2px solid #CBD5E1;flex:none;margin-top:2px}
+  .opt.on .rd{border-color:var(--navy);background:var(--navy);box-shadow:inset 0 0 0 3px #fff}
+  .opt .t1{font-size:12.5px;font-weight:600;color:#334155;display:flex;align-items:center;gap:6px}
+  .opt .t2{font-size:10.5px;color:var(--mut);margin-top:2px;line-height:1.45}
+  .tagv{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:650}
+  .tv-eye{background:#DBEAFE;color:#1D4ED8}
+  .tv-warn{background:#FEF0C7;color:#92400E}
+
+  /* QR panel */
+  .qrbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px;margin-bottom:13px}
+  .qrhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+  .qrhead .t{font-size:12px;font-weight:650;color:#334155}
+  .qrhead .ac{display:flex;gap:6px;color:#94A3B8;font-size:12px}
+  .qrimg{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px;
+         display:grid;place-items:center}
+  .qr{width:92px;height:92px;background:repeating-conic-gradient(var(--navy) 0 25%,#fff 0 50%) 0 0/11px 11px;
+      border-radius:4px}
+  .prev{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+  .prevtop{height:62px;background:linear-gradient(120deg,#DBEAFE,#EEF2F7);display:grid;
+           place-items:center;font-size:21px}
+  .prevb{padding:9px 11px}
+  .prevb .u{font-size:9.5px;color:#94A3B8;text-transform:uppercase;letter-spacing:.05em}
+  .prevb .h{font-size:12px;font-weight:650;color:#334155;margin-top:2px}
+  .prevb .d{font-size:10.5px;color:var(--mut);margin-top:2px;line-height:1.4}
+
+  .foot{border-top:1px solid var(--line);padding:11px 16px;display:flex;justify-content:center;gap:10px;
+        background:#FCFCFD}
+  .btn{background:var(--navy);color:#fff;font-size:12.5px;padding:8px 20px;border-radius:8px;font-weight:550}
+  .btn.gh{background:#fff;color:#475569;border:1px solid var(--line)}
+
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);
+        border-radius:10px;overflow:hidden;font-size:13.5px}
+  th{background:#F3F5F8;padding:9px 12px;text-align:left;font-size:11px;
+     text-transform:uppercase;letter-spacing:.055em;color:#64748B;font-weight:600}
+  td{padding:9px 12px;border-top:1px solid #EDF0F4;vertical-align:top}
+  td code,.note code,footer code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:11.5px;
+          font-family:ui-monospace,Menlo,monospace}
+  .no{color:var(--bad);font-weight:600}.yes{color:var(--ok);font-weight:600}
+  .mid{color:var(--warn);font-weight:600}
+
+  .note{border-left:4px solid var(--navy);background:#fff;border-radius:0 9px 9px 0;
+        padding:12px 15px;margin:14px 0}
+  .note.bad{border-color:var(--bad);background:#FEF4F4}
+  .note.warn{border-color:var(--warn);background:#FFFBEB}
+  .note.ok{border-color:var(--ok);background:#F2FBF5}
+  .note b{font-weight:650}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  footer{margin-top:48px;padding-top:15px;border-top:1px solid var(--line);
+         color:var(--mut);font-size:12.5px}
+  @media(max-width:1000px){.cols,.cols.two{grid-template-columns:1fr}
+    .pane.l,.pane.r{border:0;border-bottom:1px solid var(--line)}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Trang tạo Artifact — lấy mẫu từ Short link</h1>
+  <div class="sub">02/11/2026 · tab căn giữa · "Ai được xem" vào cột trái · QR sang cột phải</div>
+</header>
+
+<!-- 1. HIỆN TRẠNG -->
+<section>
+  <div class="shead"><div class="snum">1</div><div><h2>Hiện trạng — hai trang, hai kiểu</h2>
+    <div class="sub">Cùng một nút "Tạo mới", nhưng bấm sang tab kia thì trang đổi hẳn hình</div></div></div>
+
+  <div class="two">
+    <div>
+      <div class="lbl">Tab <b>Short link</b> — ba cột</div>
+      <div class="app">
+        <div class="topbar">
+          <div class="back">←</div>
+          <div class="tabs"><div class="tab on">Short link</div><div class="tab">Artifact</div></div>
+          <div class="spacer"></div>
+        </div>
+        <div class="cols" style="min-height:250px;grid-template-columns:120px 1fr 110px">
+          <div class="pane l" style="padding:10px 8px">
+            <div class="nav on" style="font-size:10.5px;padding:5px 7px">Basic settings</div>
+            <div class="nav" style="font-size:10.5px;padding:5px 7px">Smart Targeting</div>
+            <div class="nav" style="font-size:10.5px;padding:5px 7px">UTM Builder</div>
+            <div class="nav off" style="font-size:10.5px;padding:5px 7px">Facebook Pixel</div>
+            <div class="nav off" style="font-size:10.5px;padding:5px 7px">Google Analytics</div>
+            <div class="nav" style="font-size:10.5px;padding:5px 7px">Password</div>
+            <div class="nav" style="font-size:10.5px;padding:5px 7px">Link Expiration</div>
+            <div style="font-size:9.5px;color:#94A3B8;padding:5px 7px">+ 7 mục nữa</div>
+          </div>
+          <div class="pane c" style="padding:11px">
+            <div class="fld"><div class="flabel" style="font-size:10.5px">Paste your link here</div>
+              <div class="input" style="font-size:10.5px;padding:7px 9px">https://example.com/…</div></div>
+            <div class="inline2" style="gap:7px">
+              <div><div class="flabel" style="font-size:10.5px">Domain</div>
+                <div class="input fill" style="font-size:10.5px;padding:7px 9px">LiHi</div></div>
+              <div><div class="flabel" style="font-size:10.5px">Custom Ending</div>
+                <div class="input" style="font-size:10.5px;padding:7px 9px">e.g summer-sale</div></div>
+            </div>
+          </div>
+          <div class="pane r" style="padding:10px 8px">
+            <div style="font-size:10px;font-weight:650;margin-bottom:6px">QR Code</div>
+            <div class="qrimg" style="padding:8px"><div class="qr" style="width:54px;height:54px"></div></div>
+            <div style="font-size:10px;font-weight:650;margin:10px 0 5px">Preview</div>
+            <div class="prev"><div class="prevtop" style="height:34px;font-size:14px">🖼</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="note ok" style="margin-top:11px">
+        <b>Trang này ổn.</b> <span style="font-size:13px">Cột trái gom cài đặt, cột giữa là việc
+        chính, cột phải cho thấy kết quả ngay.</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="lbl">Tab <b>Artifact</b> — một cột hẹp</div>
+      <div class="app">
+        <div class="topbar">
+          <div class="back">←</div>
+          <div class="tabs"><div class="tab">Short link</div><div class="tab on">Artifact</div></div>
+          <div class="spacer"></div>
+        </div>
+        <div class="cols one" style="min-height:250px">
+          <div class="pane c" style="padding:14px 70px">
+            <div class="drop" style="padding:14px"><div class="big" style="font-size:11.5px">Thả file vào đây</div>
+              <div class="sm" style="font-size:10px">PDF · Word · ảnh · 19 loại</div></div>
+            <div class="fld" style="margin-top:11px"><div class="flabel" style="font-size:10.5px">Tên</div>
+              <div class="input" style="font-size:10.5px;padding:7px 9px">Tự điền từ tên file</div></div>
+            <div class="fld"><div class="flabel" style="font-size:10.5px">Đường dẫn</div>
+              <div class="input" style="font-size:10.5px;padding:7px 9px">tự sinh</div></div>
+            <div style="border:1px solid var(--line);border-radius:7px;padding:8px;font-size:10px;color:#64748B">
+              Ai được xem · 4 lựa chọn xếp dọc ở đây
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="note bad" style="margin-top:11px">
+        <b>Ba chỗ lệch:</b><br>
+        <span style="font-size:13px">
+        · Cột trái và cột phải <b>trống</b> — không có QR, không có xem trước<br>
+        · "Ai được xem" nằm lẫn dưới cùng, trong khi nó là <b>điểm khác biệt của sản phẩm</b><br>
+        · Tab dính sát mũi tên back, lệch trái
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. ĐỀ XUẤT -->
+<section>
+  <div class="shead"><div class="snum">2</div><div><h2>Đề xuất — Artifact dùng đúng khung Short link</h2>
+    <div class="sub">Tab căn giữa · "Ai được xem" là một mục cột trái · QR cột phải</div></div></div>
+
+  <div class="app">
+    <div class="topbar">
+      <div class="back">←</div>
+      <div class="spacer"></div>
+      <div class="tabs"><div class="tab">Short link</div><div class="tab on">Artifact</div></div>
+      <div class="spacer"></div>
+      <div class="topnote">33/50 artifact · 5.3/30 MB</div>
+    </div>
+
+    <div class="cols">
+      <!-- CỘT TRÁI -->
+      <div class="pane l">
+        <div class="nav on"><span class="ic">⚙</span>Thông tin cơ bản</div>
+        <div class="nav"><span class="ic">🔒</span>Ai được xem<span class="bdg">quan trọng</span></div>
+        <div class="nav"><span class="ic">▦</span>Mã QR</div>
+        <div class="nav"><span class="ic">🏷</span>Thẻ</div>
+
+        <div class="navsep"></div>
+        <div class="navcap">Chỉ có ở Short link</div>
+        <div class="nav off"><span class="ic">◎</span>Smart Targeting</div>
+        <div class="nav off"><span class="ic">📊</span>UTM Builder</div>
+        <div class="nav off"><span class="ic">⏱</span>Link Expiration</div>
+        <div class="nav off"><span class="ic">👆</span>Click Limitation</div>
+      </div>
+
+      <!-- CỘT GIỮA -->
+      <div class="pane c">
+        <div class="drop has">
+          <div class="fico">📕</div>
+          <div style="flex:1">
+            <div style="font-size:12.5px;font-weight:600">Bao-gia-thang-11.pdf</div>
+            <div style="font-size:10.5px;color:var(--mut);margin-top:1px">2,4 MB · 12 trang · đã quét virus ✓</div>
+          </div>
+          <div style="color:#94A3B8;font-size:13px">✕</div>
+        </div>
+
+        <div class="fld" style="margin-top:14px">
+          <div class="flabel">Tên hiển thị <span class="req">*</span></div>
+          <div class="input fill">Báo giá tháng 11 — Công ty ABC</div>
+          <div class="hint">Tự điền từ tên file. Người xem không thấy tên này.</div>
+        </div>
+
+        <div class="fld">
+          <div class="flabel">Đường dẫn</div>
+          <div class="inline2">
+            <div class="input fill">LiHi</div>
+            <div class="input fill">bao-gia-11 &nbsp;&nbsp;<span style="color:#94A3B8">✦</span></div>
+          </div>
+          <div class="hint">Chữ thường, số và dấu gạch ngang. <b>Không đổi được sau khi in QR.</b></div>
+        </div>
+
+        <div class="fld">
+          <div class="flabel">Thẻ</div>
+          <div class="input">Chọn hoặc gõ để tạo thẻ…</div>
+        </div>
+      </div>
+
+      <!-- CỘT PHẢI -->
+      <div class="pane r">
+        <div class="qrbox">
+          <div class="qrhead"><div class="t">Mã QR</div><div class="ac">⤓ ⧉ ✎</div></div>
+          <div class="qrimg"><div class="qr"></div></div>
+          <div style="font-size:10px;color:var(--mut);text-align:center;margin-top:7px">
+            lihi.cyb/bao-gia-11</div>
+        </div>
+        <div class="qrbox" style="margin-bottom:0">
+          <div class="qrhead"><div class="t">Người xem thấy gì</div><div class="ac">✎</div></div>
+          <div class="prev">
+            <div class="prevtop">📕</div>
+            <div class="prevb">
+              <div class="u">example.com</div>
+              <div class="h">Báo giá tháng 11 — ABC</div>
+              <div class="d">PDF · 12 trang · cần mật khẩu để mở</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot"><span class="btn gh">Huỷ</span><span class="btn">Xuất bản</span></div>
+  </div>
+
+  <div class="note warn" style="margin-top:14px">
+    <b>Cột trái không bịa thêm mục cho đủ dài.</b><br>
+    <span style="font-size:13px">Bảng <code>artifacts</code> chỉ có <code>name</code>,
+    <code>kind</code>, <code>access_mode</code>, <code>password_hash</code> — không có hạn dùng,
+    không có giới hạn lượt. Bốn mục mờ bên dưới là của Short link, để nguyên cho người dùng hiểu
+    <b>vì sao tab kia dài hơn</b>, chứ không phải để trang trí.</span>
+  </div>
+</section>
+
+<!-- 3. AI ĐƯỢC XEM -->
+<section>
+  <div class="shead"><div class="snum">3</div><div><h2>Bấm "Ai được xem" ở cột trái</h2>
+    <div class="sub">Đây là màn hình đáng được chăm nhất — nó là điểm khác biệt của sản phẩm</div></div></div>
+
+  <div class="app">
+    <div class="topbar">
+      <div class="back">←</div><div class="spacer"></div>
+      <div class="tabs"><div class="tab">Short link</div><div class="tab on">Artifact</div></div>
+      <div class="spacer"></div><div class="topnote">33/50 artifact</div>
+    </div>
+    <div class="cols">
+      <div class="pane l">
+        <div class="nav"><span class="ic">⚙</span>Thông tin cơ bản</div>
+        <div class="nav on"><span class="ic">🔒</span>Ai được xem<span class="bdg">quan trọng</span></div>
+        <div class="nav"><span class="ic">▦</span>Mã QR</div>
+        <div class="nav"><span class="ic">🏷</span>Thẻ</div>
+        <div class="navsep"></div>
+        <div class="navcap">Chỉ có ở Short link</div>
+        <div class="nav off"><span class="ic">◎</span>Smart Targeting</div>
+        <div class="nav off"><span class="ic">⏱</span>Link Expiration</div>
+      </div>
+
+      <div class="pane c">
+        <div style="font-size:13.5px;font-weight:650;margin-bottom:3px">Ai được xem trang này?</div>
+        <div style="font-size:11.5px;color:var(--mut);margin-bottom:13px">
+          Đổi được bất cứ lúc nào sau khi xuất bản. Mã QR đã in vẫn chạy.</div>
+
+        <div class="opt on">
+          <span class="rd"></span>
+          <div><div class="t1">Ai có link cũng mở được</div>
+            <div class="t2">Không cần đăng nhập, không cần mật khẩu.
+              Hợp cho menu quán, poster dán tường.</div></div>
+        </div>
+
+        <div class="opt">
+          <span class="rd"></span>
+          <div style="flex:1"><div class="t1">Cần mật khẩu</div>
+            <div class="t2">Ai biết mật khẩu thì mở được. Mật khẩu
+              <b>chỉ hiện một lần</b> sau khi xuất bản — lưu lại ngay.</div>
+            <div style="display:flex;gap:7px;margin-top:8px">
+              <div class="input" style="flex:1;font-size:11.5px;padding:7px 10px">8–128 ký tự</div>
+              <div class="input fill" style="font-size:11.5px;padding:7px 11px;white-space:nowrap">✦ Tạo ngẫu nhiên</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="opt">
+          <span class="rd"></span>
+          <div><div class="t1">Đăng nhập Google <span class="tagv tv-eye">biết được ai đã mở</span></div>
+            <div class="t2">Người xem đăng nhập Google, và email của họ được ghi vào
+              <b>Khách hàng</b>. Đây là chế độ duy nhất cho bạn biết <b>ai</b> đã mở.</div></div>
+        </div>
+
+        <div class="opt">
+          <span class="rd"></span>
+          <div><div class="t1">Chỉ người trong tổ chức</div>
+            <div class="t2">Người ngoài thấy trang xin đăng nhập. Hợp cho tài liệu nội bộ.</div></div>
+        </div>
+      </div>
+
+      <div class="pane r">
+        <div class="qrbox">
+          <div class="qrhead"><div class="t">Người xem gặp gì</div></div>
+          <div style="border:1px solid var(--line);border-radius:8px;padding:13px;text-align:center;
+                      background:#fff">
+            <div style="font-size:26px">🌐</div>
+            <div style="font-size:11.5px;font-weight:600;margin-top:7px;color:#334155">Mở ngay</div>
+            <div style="font-size:10px;color:var(--mut);margin-top:3px;line-height:1.45">
+              Không có bước nào ở giữa</div>
+          </div>
+          <div style="margin-top:10px;padding:9px;background:#FFFBEB;border:1px solid #F6E3B4;
+                      border-radius:7px;font-size:10.5px;color:#92400E;line-height:1.45">
+            <b>⚠ Bạn sẽ không biết ai đã mở.</b> Muốn biết thì chọn "Đăng nhập Google".
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span class="btn gh">Huỷ</span><span class="btn">Xuất bản</span></div>
+  </div>
+
+  <div class="note ok">
+    <b>Cột phải đổi theo lựa chọn — đó là chỗ nó có ích nhất.</b><br>
+    <span style="font-size:13px">Chọn "ai có link cũng mở" thì cột phải nói thẳng
+    <i>bạn sẽ không biết ai đã mở</i>. Hiện nay <b>28/32 artifact đang ở chế độ này</b>, phần lớn
+    không phải vì người dùng cân nhắc — mà vì chưa ai nói cho họ biết đánh đổi là gì.</span>
+  </div>
+</section>
+
+<!-- 4. TAB CĂN GIỮA -->
+<section>
+  <div class="shead"><div class="snum">4</div><div><h2>Tab căn giữa</h2>
+    <div class="sub">Việc nhỏ, nhưng đổi cảm giác hai tab là ngang hàng</div></div></div>
+
+  <div class="two">
+    <div>
+      <div class="lbl">Trước — dính sát mũi tên back</div>
+      <div class="app"><div class="topbar">
+        <div class="back">←</div>
+        <div class="tabs"><div class="tab on">Short link</div><div class="tab">Artifact</div></div>
+        <div class="spacer"></div>
+      </div></div>
+      <div style="font-size:12.5px;color:var(--mut);margin-top:8px">
+        Tab đứng ở vị trí <b>tiêu đề trang</b>, nên nó đọc như "bạn đang ở trang Short link",
+        chứ không như "chọn một trong hai".
+      </div>
+    </div>
+    <div>
+      <div class="lbl">Sau — giữa thanh</div>
+      <div class="app"><div class="topbar">
+        <div class="back">←</div><div class="spacer"></div>
+        <div class="tabs"><div class="tab on">Short link</div><div class="tab">Artifact</div></div>
+        <div class="spacer"></div>
+        <div class="topnote">33/50 artifact</div>
+      </div></div>
+      <div style="font-size:12.5px;color:var(--mut);margin-top:8px">
+        Ở giữa thì nó đọc như <b>một công tắc hai chiều</b>. Và chỗ trống bên phải
+        vừa đủ để đặt hạn mức — thứ hiện chưa hiện ở đâu trong trang tạo.
+      </div>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b>Một chỗ phải cẩn thận khi làm:</b> tab đang được truyền qua
+    <code>titleSlot</code> vào <code>content-layout-nav.tsx:52</code> — chỗ đó là
+    <b>tiêu đề của MỌI trang</b> trong app. Căn giữa ở đó sẽ đẩy lệch tiêu đề của 70 trang khác.
+    Phải căn riêng cho trang tạo, không sửa chung.
+  </div>
+</section>
+
+<!-- 5. PHẠM VI -->
+<section>
+  <div class="shead"><div class="snum">5</div><div><h2>Phạm vi</h2></div></div>
+
+  <table>
+    <tr><th>Việc</th><th>File</th><th>Mức</th></tr>
+    <tr><td>Tab căn giữa</td>
+        <td><code>unified-create/index.tsx</code> + bọc riêng, không sửa <code>content-layout-nav</code></td>
+        <td class="yes">nhỏ</td></tr>
+    <tr><td>Đổi 1 cột → 3 cột</td>
+        <td><code>artifact-create/index.tsx:297</code> — thay <code>max-w-2xl mx-auto</code></td>
+        <td class="mid">vừa</td></tr>
+    <tr><td>Cột trái điều hướng</td>
+        <td>Mới · lấy mẫu từ sidebar của <code>short-link-create</code></td>
+        <td class="mid">vừa</td></tr>
+    <tr><td>"Ai được xem" thành một mục</td>
+        <td>Dùng lại <code>ArtifactAccessFields</code>, chỉ đổi chỗ đặt</td>
+        <td class="yes">nhỏ</td></tr>
+    <tr><td>Cột phải QR + xem trước</td>
+        <td>QR đã có sẵn ở <code>artifact-created-dialog</code> — chuyển lên</td>
+        <td class="mid">vừa</td></tr>
+    <tr><td>Cột phải đổi theo chế độ đang chọn</td>
+        <td>Mới · phần đáng giá nhất</td>
+        <td class="mid">vừa</td></tr>
+  </table>
+
+  <div class="note ok">
+    <b>Không migration, không API mới.</b>
+    <span style="font-size:13px">Mọi thứ cần đã có: <code>ArtifactAccessFields</code>,
+    <code>useArtifactAccessModes</code>, QR trong dialog. Đây là <b>sắp xếp lại</b>,
+    không phải xây mới.</span>
+  </div>
+
+  <div class="note bad">
+    <b>Và một thứ tôi thấy trong ảnh bạn gửi, không thuộc việc này:</b><br>
+    <span style="font-size:13px">Ô "Social Media Preview" ở trang Short link đang hiện
+    <i>"Li2.ai — Vietnam's #1 Link Shortener"</i>. Đó đúng là câu mà nghiên cứu thị trường đã nêu:
+    Li2 tự giới thiệu bằng <b>mặt trận đối thủ cho không</b>, không phải bằng điểm khác biệt.
+    Ghi lại để không quên, không làm trong đợt này.</span>
+  </div>
+</section>
+
+<footer>
+  Vẽ theo code thật: <code>artifact-create/index.tsx</code> ·
+  <code>short-link-create.tsx</code> · <code>unified-create/create-kind-switch.tsx</code> ·
+  <code>content-layout-nav.tsx</code> · bảng <code>artifacts</code> trên LiHi (17 cột).<br><br>
+  Số "28/32 artifact công khai" đo trên LiHi — <b>LiHi là bản thử nghiệm</b>, không phải production.
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+{
+  "common": {
+    "back": "Back",
+    "done": "Done",
+    "in_progress": "In progress",
+    "continue": "Continue",
+    "skip": "Skip",
+    "continue_anyway": "Continue anyway",
+    "coming_soon": "Coming soon",
+    "only_owner": "Only Owner"
+  },
+  "smart_setup": {
+    "no_script_title": "Make sure the tracking script is installed",
+    "no_script_desc": "The AI can suggest funnels and event rules based on your site, but they'll only collect data once the tracking script is active on your pages.",
+    "no_script_cta": "Installation Guide"
+  },
+  "goal_select": {
+    "title": "What would you like to set up?",
+    "subtitle": "Choose a goal and we'll guide you through the right setup steps.",
+    "goals": {
+      "installation": {
+        "title": "Install Tracking Script",
+        "description": "Set up the Li2 Analytics script on your website step by step."
+      },
+      "ai_setup": {
+        "title": "AI Funnel Setup",
+        "description": "Let AI analyze your site and suggest funnels & event rules automatically."
+      },
+      "heatmap_guide": {
+        "title": "Heatmap & Click Map",
+        "description": "Visualize where users click, move, and scroll on your pages."
+      },
+      "session_guide": {
+        "title": "Session Recording",
+        "description": "Record and replay full user sessions to spot friction points."
+      }
+    }
+  },
+  "wizard": {
+    "title": "Behavior Analytics Setup",
+    "subtitle": "Follow these steps to start tracking user behavior on your website.",
+    "steps": {
+      "site_url": "Add Your Website",
+      "install": "Install Script",
+      "verify": "Verify Installation",
+      "features": "Choose Features",
+      "test": "Test Your Setup"
+    },
+    "all_set_title": "You're all set!",
+    "all_set_description": "Behavior analytics is now active on your website. Start exploring your data.",
+    "redirect_countdown": "Redirecting to Site Analytics in {{count}}s…",
+    "go_to_site_analytics": "Go to Site Analytics"
+  },
+  "step_site_url": {
+    "title": "Add Your Website",
+    "subtitle": "Enter your site URL and choose how you'll install the tracking script.",
+    "input_label": "Site URL",
+    "invalid_url": "Please enter a valid URL (e.g. https://example.com)",
+    "detecting": "Detecting platform…",
+    "wordpress_detected": "WordPress detected",
+    "platform_hint": "Enter your site URL above to choose a platform",
+    "platform_html": "HTML / JavaScript",
+    "platform_html_desc": "Add a CDN script tag or install the npm package",
+    "platform_wordpress": "WordPress",
+    "platform_wordpress_desc": "Install the Li2 Analytics plugin on your site"
+  },
+  "step_script_install": {
+    "title": "Install Tracking Script",
+    "subtitle": "Add the script to your website. Choose the method that matches your stack.",
+    "tab_html": "HTML",
+    "tab_react": "React / Next.js",
+    "html_hint": "Paste the snippet inside the <head> tag of every page you want to track.",
+    "snippet_title": "HTML snippet",
+    "react_init_title": "Initialize in your app",
+    "next_btn": "Continue",
+    "wp_subtitle": "Install the Li2 Analytics plugin on your WordPress site to start tracking.",
+    "wp_method_upload": "Upload Plugin",
+    "wp_step_download": "Download the Li2 Analytics plugin (.zip)",
+    "wp_download_btn": "Download Plugin (.zip)",
+    "wp_step_goto_upload": "Go to WordPress Admin → Plugins → Add New → Upload Plugin",
+    "wp_step_choose": "Choose the downloaded .zip file and click Install Now",
+    "wp_step_activate": "Click Activate Plugin to finish",
+    "wp_configure": {
+      "title": "Configure Plugin",
+      "subtitle": "Configure the Li2 plugin with your Publishable Key to start tracking behavior.",
+      "tab_auto": "Auto Config",
+      "tab_manual": "Manual",
+      "auto_desc": "Click Auto Configure — we'll push your Publishable Key directly into the plugin.",
+      "auto_btn": "Auto Configure",
+      "applying": "Applying…",
+      "waiting": "Waiting for plugin to confirm…",
+      "success": "Configuration applied successfully",
+      "error": "Failed to apply configuration",
+      "popup_blocked": "Popup was blocked. Please allow popups and click Auto Configure again.",
+      "window_closed": "Window closed before configuration was applied",
+      "auto_fallback_prefix": "If auto config doesn't work (popup blocked or plugin not yet activated), switch to the",
+      "auto_fallback_suffix": "tab.",
+      "manual_step1_link": "Open Li2 Analytics Settings",
+      "manual_step1_suffix": "in your WordPress admin.",
+      "manual_step2": "Copy your Publishable Key and paste it into the plugin settings.",
+      "manual_step3": "Click Save Settings in the plugin.",
+      "done_btn": "Done — Plugin is configured"
+    }
+  },
+  "step_verify": {
+    "title": "Verify Installation",
+    "subtitle": "Open your site to confirm the script is correctly loaded.",
+    "cta_open": "Open My Site",
+    "cta_waiting": "Waiting for response…",
+    "waiting_hint": "Keep the site tab open — we'll detect the script automatically.",
+    "no_url_hint": "No site URL provided. Go back to step 1.",
+    "result_title": "Verification Result",
+    "check_script": "Script found on page",
+    "check_key": "Publishable key matches",
+    "script_not_found": "Script was not detected",
+    "key_mismatch": "Wrong key detected: {{key}}…",
+    "empty_key": "Key not set in the script",
+    "success_msg": "Script is active and correctly configured!",
+    "reverify": "Re-verify",
+    "skip_hint": "Skip for now — you can verify from settings later.",
+    "wp_subtitle": "Open your site to confirm the Li2 Analytics plugin is active."
+  },
+  "step_features": {
+    "title": "Choose Features to Track",
+    "subtitle": "Select which behavioral events you want to capture. You can change these settings at any time.",
+    "pageview_tracking": "Pageview Tracking",
+    "pageview_tracking_desc": "Automatically record each page visit and navigation event.",
+    "click_tracking": "Click Tracking",
+    "click_tracking_desc": "Capture clicks on buttons, links, and interactive elements.",
+    "scroll_tracking": "Scroll Tracking",
+    "scroll_tracking_desc": "Measure how far users scroll down your pages.",
+    "form_tracking": "Form Tracking",
+    "form_tracking_desc": "Track form submissions, field focus, and abandonment.",
+    "outbound_tracking": "Outbound Link Tracking",
+    "outbound_tracking_desc": "Automatically appends your click ID to outbound links so attribution carries through to the destination site.",
+    "outbound_domains_label": "Track clicks to these external domains",
+    "outbound_add_btn": "Add",
+    "outbound_empty": "No domains added yet. Add at least one domain to track.",
+    "session_recording": "Session Recording",
+    "session_recording_desc": "Replay user sessions to understand how they interact with your UI.",
+    "save_btn": "Save & Finish",
+    "tracking_options_title": "Tracking Options",
+    "tracking_cookie_path": "Cookie Path",
+    "tracking_cookie_path_desc": "Path scope for the tracking cookie. Use / for site-wide tracking.",
+    "tracking_cookie_domain": "Cookie Domain",
+    "tracking_cookie_domain_desc": "Domain for the cookie. Use .example.com to share across subdomains.",
+    "tracking_session_timeout": "Session Timeout (seconds)",
+    "tracking_session_timeout_desc": "Inactivity duration before a new session is started. Minimum 60s.",
+    "tracking_cookie_expires": "Cookie Expiry (days)",
+    "tracking_cookie_expires_desc": "How long the tracking cookie persists in the user's browser."
+  },
+  "step_test": {
+    "title": "Test Your Setup",
+    "subtitle": "Open your site and trigger a few actions to confirm events are being captured.",
+    "no_url_hint": "No site URL — go back to step 1 to add your website.",
+    "actions_title": "Try these actions on your site:",
+    "test_pageview": "Navigate to a few pages on your site",
+    "test_click": "Click on buttons, links, and interactive elements",
+    "test_scroll": "Scroll down a page past 50%",
+    "test_form": "Start filling out and submit a form",
+    "test_outbound": "Click an outbound link and verify the click ID is appended to the destination URL",
+    "test_session": "Browse the site for a few minutes to generate a session",
+    "not_seeing": "Not seeing events?",
+    "try_debug": "Try debug mode",
+    "back_to_test": "Back to test steps",
+    "debug_title": "Debug Mode",
+    "debug_on": "All SDK requests are being logged",
+    "debug_off": "Turn on to start capturing behavior events",
+    "debug_warning": "May contain sensitive data — disable in production",
+    "debug_empty": "Enable debug mode above to start capturing events",
+    "filter_pageview": "Page Views",
+    "filter_interaction": "Interactions",
+    "listening": "Listening for events…",
+    "events_received_from": "Events received from"
+  }
+}

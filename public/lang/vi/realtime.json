@@ -1,0 +1,45 @@
+{
+  "loading": "Đang tải dữ liệu trực tiếp...",
+  "last_24_hours": "24 giờ qua",
+  "time_window": {
+    "h24": "24 giờ",
+    "d3": "3 ngày",
+    "d7": "7 ngày"
+  },
+  "visualization_layers": "Lớp hiển thị bản đồ",
+  "country_outlines": "Viền quốc gia",
+  "interaction_clusters": "Cụm hoạt động",
+  "taller_hexagons": "Lục giác càng cao → hoạt động càng nhiều",
+  "recent_interactions": "Hoạt động gần đây",
+  "interactions_count": "{{count}} hoạt động trong {{window}}",
+  "no_interactions": "Chưa có hoạt động nào",
+  "page_title": "Hoạt động Link gần đây",
+  "auto_update": "Tự động cập nhật",
+  "auto_update_description": "Cập nhật mỗi 10 giây",
+  "hero": {
+    "active_now": "Đang hoạt động",
+    "engagements_1hr": "Lượt tương tác (1h)",
+    "engagements_24hr": "Lượt tương tác (24h)",
+    "top_channel": "Kênh phổ biến"
+  },
+  "top_links": {
+    "title": "Link nổi bật",
+    "empty_title": "Chưa có hoạt động",
+    "empty_description": "Chưa có lượt tương tác trong khoảng thời gian này"
+  },
+  "channel_breakdown": {
+    "title": "Kênh tương tác"
+  },
+  "feed": {
+    "title": "Hoạt động gần đây"
+  },
+  "table": {
+    "headers": {
+      "linkName": "Tên Link",
+      "action": "Hành động",
+      "country": "Quốc gia",
+      "platform": "Nền tảng",
+      "time": "Thời gian"
+    }
+  }
+}

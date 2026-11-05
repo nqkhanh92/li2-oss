@@ -1,0 +1,106 @@
+{
+  "form": {
+    "organization_name": "Organization Name",
+    "organization_slug": "Organization Slug",
+    "slug_placeholder": "organization-slug",
+    "slug_description": "URL-friendly identifier (lowercase, numbers, hyphens only)",
+    "slug_available": "This slug is available",
+    "slug_unavailable": "This slug is already taken",
+    "url_preview": "Your organization URL will be:",
+    "url_preview_description": "This is the URL where your organization will be accessible",
+    "default_currency": "Default Currency",
+    "default_currency_description": "Currency used for conversion tracking when not specified in sale events",
+    "select_currency": "Select currency"
+  },
+  "create": {
+    "title": "Create Organization",
+    "button": "Create Organization",
+    "cancel": "Cancel",
+    "setup_title": "Set up your Organization",
+    "setup_subtitle": "One last step to start managing your links and tracking performance.",
+    "org_url_label": "Org URL",
+    "org_url_hint": "(use for login, share)",
+    "slug_placeholder": "Your company or team name",
+    "hint_length": "3–64 characters",
+    "hint_format": "Use lowercase letters, numbers, or hyphens (-)",
+    "hint_available": "This URL is available",
+    "hint_unavailable": "This URL is not available",
+    "error_failed": "Failed to create organization. Please try again."
+  },
+  "setup": {
+    "title": "Complete Organization Setup",
+    "description": "Your organization needs a unique slug to continue. This will be used in your organization's URL.",
+    "button": "Complete Setup",
+    "welcome_title": "Complete Your Organization Setup",
+    "welcome_description": "You're almost there! Just one more step to get started with your organization.",
+    "getting_started": "Getting Started",
+    "migration_title": "Organization Setup Required",
+    "migration_description": "We've upgraded to a new version! Your organization needs to be set up with a unique slug to continue. This is a one-time setup that will only take a moment."
+  },
+  "onboarding": {
+    "title": {
+      "behavior_analytics_setup": "Behavior Analytics Setup",
+      "link_attribution_setup": "Link Attribution Setup"
+    },
+    "navigation": {
+      "change_product": "Change Product"
+    },
+    "welcome_title": "Welcome to Li2",
+    "welcome_description": "Let's create your organization and start building amazing experiences",
+    "product_type": {
+      "title": "What would you like to set up?",
+      "description": "Choose the product that fits your use case. You can explore both later.",
+      "link_attribution": {
+        "title": "Link Attribution",
+        "description": "Short links & QR codes for offline-to-online conversion tracking",
+        "badge": "Recommended",
+        "features": {
+          "short_link": "Short Links",
+          "qr_code": "Dynamic QR Codes",
+          "advanced": "Advanced Routing",
+          "conversion": "Conversion Tracking",
+          "link_journey": "Link Journey",
+          "customers": "Customer Profiles"
+        }
+      },
+      "behavior_activity": {
+        "title": "Behavior Activity",
+        "description": "Website analytics, heatmaps, funnels, and session tracking",
+        "features": {
+          "heatmap": "Heatmaps",
+          "funnel": "Conversion Funnels",
+          "event_rule": "Event Rules",
+          "form": "Data Forms",
+          "session": "Session Logs"
+        }
+      },
+      "included_features": "Included Features",
+      "select": "Select",
+      "getting_started": "Getting Started",
+      "try_demo_hint": "Not sure how data looks? Explore a live demo before committing.",
+      "try_now": "Try it now",
+      "mockup": {
+        "short_link_performance": "Short Link Performance",
+        "clicks": "Clicks",
+        "unique": "Unique",
+        "recent_conversions": "Recent Conversions",
+        "purchase": "Purchase",
+        "interaction_heatmap": "Interaction Heatmap",
+        "conversion_funnel": "Conversion Funnel",
+        "visited_landing_page": "Visited Landing Page",
+        "viewed_pricing": "Viewed Pricing",
+        "started_checkout": "Started Checkout",
+        "purchased": "Purchased"
+      }
+    }
+  },
+  "popover": {
+    "organization_label": "Organization",
+    "members_count": "{{count}} Members",
+    "settings": "Settings",
+    "invite_members": "Invite members",
+    "organizations_list": "Organizations",
+    "create_organization": "Create new",
+    "upgrade_plan": "Upgrade plan"
+  }
+}

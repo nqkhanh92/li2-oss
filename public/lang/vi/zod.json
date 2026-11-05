@@ -1,0 +1,125 @@
+{
+  "errors": {
+    "ab_testing_percentage": "Tổng phần trăm phải bằng 100",
+    "no_whitespace": "Không được chứa khoảng trắng.",
+    "invalid_url": "Liên kết không hợp lệ, vui lòng kiểm tra lại.",
+    "invalid_type": "Mong đợi {{expected}}, đã nhận được {{received}}",
+    "invalid_type_received_undefined": "Bắt buộc",
+    "invalid_type_received_null": "Bắt buộc",
+    "invalid_literal": "Giá trị lặp lại không hợp lệ, mong đợi {{expected}}",
+    "unrecognized_keys": "Khóa không được nhận trong đối tượng: {{- keys}}",
+    "invalid_union": "Đầu vào không hợp lệ",
+    "invalid_union_discriminator": "Giá trị discriminator không hợp lệ. Mong đợi {{- options}}",
+    "invalid_enum_value": "Giá trị enum không hợp lệ. Mong đợi {{- options}}, đã nhận được '{{received}}'",
+    "invalid_arguments": "Đối số hàm không hợp lệ",
+    "invalid_code": "Mã không hợp lệ",
+    "invalid_return_type": "Kiểu trả về của hàm không hợp lệ",
+    "invalid_date": "Ngày không hợp lệ",
+    "custom": "Đầu vào không hợp lệ",
+    "invalid_intersection_types": "Không thể hợp nhất kết quả giao điểm",
+    "not_multiple_of": "Số phải là bội số của {{multipleOf}}",
+    "not_finite": "Số phải hữu hạn",
+    "agree_policy": "Bạn phải đồng ý với chính sách",
+    "missing_field": "Thiếu mất {{field}}",
+    "names_did_not_match": "Tên vừa nhập không khớp",
+    "field_contain_blacklist": "Mục này chứa từ cấm: {{blackWords}}",
+    "field_startwith_blacklist": "Mục này không thể bắt đầu với từ: {{blackWords}}",
+    "field_only_contain_for_slug": "Slug chỉ được chứa chữ thường, số, và dấu gạch ngang. Không thể bắt đầu hoặc kết thúc với dấu gạch ngang.",
+    "subdomain_format_invalid": "Chỉ dùng chữ thường, số và dấu gạch ngang. Phải bắt đầu và kết thúc bằng chữ hoặc số.",
+    "invalid_string": {
+      "email": "Xác thực {{validation}} không hợp lệ",
+      "url": "Xác thực {{validation}} không hợp lệ",
+      "uuid": "Xác thực {{validation}} không hợp lệ",
+      "cuid": "Xác thực {{validation}} không hợp lệ",
+      "regex": "Không hợp lệ",
+      "datetime": "Xác thực {{validation}} không hợp lệ",
+      "startsWith": "Đầu vào không hợp lệ: phải bắt đầu bằng \"{{startsWith}}\"",
+      "endsWith": "Đầu vào không hợp lệ: phải kết thúc bằng \"{{endsWith}}\"",
+      "domain": "Tên miền không hợp lệ"
+    },
+    "too_small": {
+      "array": {
+        "exact": "Mảng phải chứa chính xác {{minimum}} phần tử",
+        "inclusive": "Mảng phải chứa ít nhất {{minimum}} phần tử",
+        "not_inclusive": "Mảng phải chứa nhiều hơn {{minimum}} phần tử"
+      },
+      "string": {
+        "exact": "Chuỗi phải chứa chính xác {{minimum}} ký tự",
+        "inclusive": "Chuỗi phải chứa ít nhất {{minimum}} ký tự",
+        "not_inclusive": "Chuỗi phải chứa hơn {{minimum}} ký tự"
+      },
+      "number": {
+        "exact": "Số phải chính xác {{minimum}}",
+        "inclusive": "Số phải lớn hơn hoặc bằng {{minimum}}",
+        "not_inclusive": "Số phải lớn hơn {{minimum}}"
+      },
+      "set": {
+        "exact": "Đầu vào không hợp lệ",
+        "inclusive": "Đầu vào không hợp lệ",
+        "not_inclusive": "Đầu vào không hợp lệ"
+      },
+      "date": {
+        "exact": "Ngày phải chính xác là {{- minimum, datetime}}",
+        "inclusive": "Ngày phải lớn hơn hoặc bằng {{- minimum, datetime}}",
+        "not_inclusive": "Ngày phải lớn hơn {{- minimum, datetime}}"
+      }
+    },
+    "too_big": {
+      "array": {
+        "exact": "Mảng phải chứa chính xác {{maximum}} phần tử",
+        "inclusive": "Mảng chỉ được phép chứa tối đa {{maximum}} phần tử",
+        "not_inclusive": "Mảng phải chứa ít hơn {{maximum}} phần tử"
+      },
+      "string": {
+        "exact": "Chuỗi phải chứa chính xác {{maximum}} ký tự",
+        "inclusive": "Chuỗi chỉ được phép chứa tối đa {{maximum}} ký tự",
+        "not_inclusive": "Chuỗi phải chứa dưới {{maximum}} ký tự"
+      },
+      "number": {
+        "exact": "Số phải chính xác là {{maximum}}",
+        "inclusive": "Số phải nhỏ hơn hoặc bằng {{maximum}}",
+        "not_inclusive": "Số phải nhỏ hơn {{maximum}}"
+      },
+      "set": {
+        "exact": "Đầu vào không hợp lệ",
+        "inclusive": "Đầu vào không hợp lệ",
+        "not_inclusive": "Đầu vào không hợp lệ"
+      },
+      "date": {
+        "exact": "Ngày phải chính xác là {{- maximum, datetime}}",
+        "inclusive": "Ngày phải nhỏ hơn hoặc bằng {{- maximum, datetime}}",
+        "not_inclusive": "Ngày phải nhỏ hơn {{- maximum, datetime}}"
+      }
+    }
+  },
+  "validations": {
+    "email": "email",
+    "url": "url",
+    "uuid": "uuid",
+    "cuid": "cuid",
+    "regex": "regex",
+    "datetime": "datetime"
+  },
+  "types": {
+    "function": "function",
+    "number": "number",
+    "string": "string",
+    "nan": "nan",
+    "integer": "integer",
+    "float": "float",
+    "boolean": "boolean",
+    "date": "date",
+    "bigint": "bigint",
+    "undefined": "undefined",
+    "symbol": "symbol",
+    "null": "null",
+    "array": "array",
+    "object": "object",
+    "unknown": "unknown",
+    "promise": "promise",
+    "void": "void",
+    "never": "never",
+    "map": "map",
+    "set": "set"
+  }
+}

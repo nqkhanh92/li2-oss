@@ -1,0 +1,374 @@
+{
+  "module": "Artifact",
+  "status": {
+    "draft": {
+      "badge": "Chưa xuất bản",
+      "note": "Chưa có link công khai. Bấm Xuất bản để lấy link và mã QR."
+    },
+    "scanning": {
+      "badge": "Đang kiểm tra an toàn",
+      "note": "Đang kiểm tra an toàn — thường 1–3 giây"
+    },
+    "live": {
+      "badge": "Đang chạy"
+    },
+    "blocked": {
+      "badge": "Không xuất bản được",
+      "note": "File này chưa từng có link công khai. Tải lên file khác để thử lại."
+    },
+    "expired": {
+      "badge": "Đã hết hạn",
+      "note": "Link đã ngừng phục vụ. Xuất bản lại để mã QR đã in sống lại."
+    },
+    "quarantined": {
+      "badge": "Đã gỡ khỏi lưu hành",
+      "note": "Link và mã QR đã in không còn hoạt động. Gửi kháng nghị nếu bạn cho là nhầm."
+    },
+    "removed": {
+      "badge": "Đã gỡ",
+      "note": "Nội dung đã xoá khỏi kho. Link rút gọn và mã QR vẫn hoạt động — người quét thấy trang thông báo đã gỡ."
+    }
+  },
+  "actions": {
+    "publish": "Xuất bản",
+    "reupload": "Tải lên file khác",
+    "republish": "Xuất bản lại",
+    "appeal": "Gửi kháng nghị",
+    "open": "Mở link",
+    "not_available_yet": "Bản này chưa làm được việc đó — liên hệ hỗ trợ giúp bạn",
+    "copy_link": "Sao chép link",
+    "download": "Tải về",
+    "open_new_tab": "Mở trong tab mới",
+    "delete": "Xoá",
+    "update_content": "Cập nhật nội dung",
+    "copy_link_locked": "Chưa xuất bản nên chưa có link.",
+    "more": "Thêm hành động"
+  },
+  "list": {
+    "title": "Artifact",
+    "create_cta": "Tạo artifact",
+    "link_deleted": "Liên kết đã bị xoá",
+    "empty": {
+      "title": "Chưa có artifact nào",
+      "description": "Tải lên trang HTML, PDF, bản trình chiếu hay video — lấy link và mã QR để dán lên bao bì, standee hay tờ rơi.",
+      "cta": "Tạo artifact đầu tiên"
+    },
+    "menu": {
+      "make_public": "Công khai",
+      "make_public_tip": "Đang {{mode}}. Bấm để ai có link cũng xem được.",
+      "public_now_sub": "Ai có link đều xem được"
+    },
+    "made_public": "{{name}}: ai có link đều xem được. Mã QR và link ngắn không đổi.",
+    "tools": {
+      "search_placeholder": "Tìm theo tên hoặc đường dẫn",
+      "filter": "Bộ lọc",
+      "status": "Trạng thái"
+    },
+    "select_all": "Chọn tất cả",
+    "selected_count": "Đã chọn {{count}}",
+    "bulk_delete": "Xoá đã chọn",
+    "bulk_delete_title": "Xoá {{count}} artifact đã chọn?",
+    "bulk_deleted": "Đã xoá {{count}} artifact.",
+    "summary": "{{total}} artifact · {{live}}/{{liveQuota}} đã xuất bản · {{used}}/{{quota}}",
+    "updated_rel": "Cập nhật {{time}}",
+    "created_rel": "Tạo {{time}}"
+  },
+  "create": {
+    "title": "Tạo artifact",
+    "dropzone": {
+      "label": "Thả file vào đây hoặc bấm để chọn",
+      "hint": "HTML, Markdown, PDF, Word, Excel, PowerPoint, ảnh hoặc video — tối đa {{max}}",
+      "change": "Chọn file khác",
+      "selected": "{{name}} · {{size}}"
+    },
+    "name": {
+      "label": "Tên",
+      "hint": "Chỉ bạn và đồng đội thấy tên này.",
+      "placeholder": "Đặt tên để dễ tìm lại"
+    },
+    "slug": {
+      "label": "Đường dẫn",
+      "hint": "Sửa được sau ở trang chi tiết; mã QR sẽ sinh lại theo đường dẫn mới.",
+      "placeholder": "vi-du-duong-dan",
+      "invalid": "Đường dẫn phải dài {{min}}–{{max}} ký tự, chỉ gồm chữ thường, số và dấu gạch đơn; không bắt đầu bằng \"f-\".",
+      "taken": "Đường dẫn này đã có người dùng. Hãy chọn đường dẫn khác.",
+      "available": "Đường dẫn dùng được",
+      "regenerate": "Sinh đường dẫn khác"
+    },
+    "submit": "Xuất bản",
+    "uploading": "Đang tải lên",
+    "no_file_reason": "Chọn một file trước đã",
+    "office_notice": "File Word, Excel và PowerPoint được Microsoft tải về để hiển thị bản xem trước.",
+    "too_large_video": "File nặng {{size}}, quá mức {{max}} — quay ở chất lượng thấp hơn hoặc cắt ngắn rồi thử lại.",
+    "sections": {
+      "basic": "Thông tin cơ bản",
+      "access": "Ai được xem",
+      "access_badge": "quan trọng",
+      "qr": "Mã QR",
+      "tags": "Thẻ",
+      "short_link_only": "Chỉ có ở Short link",
+      "short_link_only_hint": "Mục này chỉ có ở tab Short link, không áp dụng cho Artifact."
+    },
+    "quota_note": "{{live}}/{{liveQuota}} artifact · {{used}}/{{quota}}",
+    "access_lead": "Ai được xem trang này?",
+    "access_sub": "Đổi được bất cứ lúc nào sau khi xuất bản. Mã QR đã in vẫn chạy.",
+    "qr": {
+      "section_note": "Mã QR sinh từ đường dẫn bạn đang đặt. Đổi đường dẫn thì mã đổi theo.",
+      "publish_first": "Xuất bản trước đã — xong rồi mới tải và sao chép được mã QR."
+    },
+    "tags": {
+      "unavailable": "Artifact chưa gắn thẻ được: bảng artifacts không có cột thẻ. Thẻ hiện chỉ dùng cho link rút gọn."
+    },
+    "viewer": {
+      "title": "Người xem gặp gì",
+      "public": {
+        "headline": "Mở ngay",
+        "body": "Không có bước nào ở giữa.",
+        "warning": "Bạn sẽ không biết ai đã mở. Muốn biết thì chọn \"Đăng nhập Google\"."
+      },
+      "password": {
+        "headline": "Nhập mật khẩu trước",
+        "body": "Người xem thấy ô nhập mật khẩu, nhập đúng mới vào được nội dung."
+      },
+      "google": {
+        "headline": "Đăng nhập Google",
+        "body": "Người xem đăng nhập Google, và email của họ được ghi vào Khách hàng."
+      },
+      "private": {
+        "headline": "Xin đăng nhập",
+        "body": "Người ngoài tổ chức thấy trang xin đăng nhập, không thấy nội dung."
+      }
+    }
+  },
+  "created_dialog": {
+    "title": "Đã xuất bản",
+    "description": "Link và mã QR đã sẵn sàng để in hoặc chia sẻ.",
+    "link": "Link rút gọn",
+    "continue": "Xem artifact"
+  },
+  "detail": {
+    "title": "Artifact",
+    "preview_label": "Xem trước nội dung",
+    "preview_unavailable": "Xuất bản rồi mới xem trước được.",
+    "responsibility": "Nội dung do người dùng đăng. Li2 không kiểm duyệt trước và không chịu trách nhiệm về nội dung này.",
+    "already_published": "Artifact này đã được xuất bản",
+    "not_found": "Không tìm thấy artifact này, hoặc nó không thuộc tổ chức của bạn.",
+    "meta": {
+      "kind": "Loại",
+      "type": "Kiểu nội dung",
+      "size": "Dung lượng",
+      "created_at": "Tạo lúc",
+      "updated_at": "Cập nhật lúc",
+      "name": "Tên"
+    },
+    "back_to_list": "Quay lại danh sách",
+    "preview": {
+      "open_direct": "Không hiện ở đây? Mở trong tab mới.",
+      "download_to_view": "Tải về để mở bằng ứng dụng của bạn.",
+      "published_updated": "Xuất bản {{published}} · cập nhật {{updated}}",
+      "created": "Tạo {{created}}",
+      "serving_note": "Bản đang phục vụ cho người quét."
+    },
+    "office_viewer_loading": "Đang mở bằng Office viewer…",
+    "office_viewer_privacy": "Để hiển thị slide, Microsoft tải file này về. Không muốn vậy thì dùng nút Tải về.",
+    "delete_confirm_title": "Xoá artifact này?",
+    "delete_confirm_description": "File sẽ bị xoá khỏi kho và không khôi phục lại được. Link rút gọn và mã QR đã in vẫn hoạt động — người quét sẽ thấy trang thông báo nội dung đã được gỡ.",
+    "delete_confirm_action": "Xoá vĩnh viễn",
+    "deleted": "Đã xoá artifact.",
+    "link": {
+      "title": "Link",
+      "lead_live": "Link rút gọn là thứ in lên mã QR. Link gốc là trang người quét được chuyển tới.",
+      "lead_draft": "Chưa xuất bản nên chưa có link. Đường dẫn dưới đây sẽ dùng khi bạn xuất bản.",
+      "short_label": "Link rút gọn",
+      "origin_label": "Link gốc",
+      "open": "Mở",
+      "hint_live": "Đổi đường dẫn rồi bấm Cập nhật nội dung. Đường dẫn cũ vẫn chuyển hướng, mã QR sinh lại theo đường dẫn mới.",
+      "hint_draft": "{{min}}–{{max}} ký tự, chỉ gồm chữ thường, số và dấu gạch đơn.",
+      "hint_changed_draft": "Đường dẫn mới sẽ dùng khi xuất bản.",
+      "origin_hint": "Không đổi khi đổi đường dẫn hay thay file. Dùng khi cần nhúng trực tiếp.",
+      "warn_title": "QR đã in vẫn chạy",
+      "warn_body": "Đường dẫn cũ {{slug}} vẫn chuyển hướng tới nội dung này. Mã QR mới sẽ sinh theo đường dẫn mới.",
+      "empty": "Đường dẫn không được để trống",
+      "unchanged": "Chưa đổi gì",
+      "taken": "Đường dẫn “{{slug}}” đã có người dùng."
+    },
+    "replace": {
+      "lead_live": "Mã QR và link ngắn giữ nguyên.",
+      "lead_draft": "Chưa xuất bản nên chưa ảnh hưởng gì bên ngoài."
+    },
+    "file_info": "Thông tin file",
+    "qr": {
+      "publish_first": "Xuất bản trước đã",
+      "publish_first_hint": "Xuất bản trước đã — mã QR sinh theo link rút gọn."
+    },
+    "apply": {
+      "label_count": "Cập nhật nội dung ({{count}})",
+      "tooltip": "Áp dụng: {{parts}}",
+      "tooltip_empty": "Chọn file hoặc đổi quyền xem bên dưới rồi bấm nút này",
+      "part_file": "thay file",
+      "part_access": "đổi quyền xem",
+      "part_slug": "đổi đường dẫn",
+      "nothing_pending": "Chọn file mới hoặc đổi quyền xem bên dưới, rồi bấm Cập nhật nội dung.",
+      "success": "Đã cập nhật {{parts}}. {{note}}",
+      "success_content": "nội dung",
+      "success_access": "quyền xem ({{mode}})",
+      "success_slug": "đường dẫn ({{url}})",
+      "slug_note": "Mã QR sinh lại theo đường dẫn mới; đường dẫn cũ vẫn chuyển hướng.",
+      "partial_access": "Đã thay nội dung nhưng chưa đổi được quyền xem: {{reason}}",
+      "partial_slug": "Các thay đổi trước đã áp, riêng đường dẫn chưa đổi được: {{reason}}"
+    }
+  },
+  "update": {
+    "title": "Cập nhật nội dung",
+    "description": "Thay file của “{{name}}”.",
+    "status_refuses": "Nội dung này đang bị hệ thống giữ nên chưa thay được. Làm theo hướng dẫn ở trạng thái hiện tại rồi thử lại.",
+    "serving": "Đang phục vụ",
+    "will_replace": "Sẽ thay bằng",
+    "size_after": "Dung lượng sau khi đổi",
+    "size_after_values": "{{before}} → {{after}} / {{quota}}",
+    "delta_heavier": "File mới nặng hơn file cũ {{delta}} — chỉ phần chênh đó tính thêm.",
+    "delta_lighter": "File mới nhẹ hơn file cũ {{delta}} — phần chênh đó được trả lại.",
+    "delta_same": "File mới nặng bằng file cũ — dung lượng không đổi.",
+    "live_unchanged": "Số nội dung đã xuất bản không đổi: vẫn {{live}} / {{quota}}.",
+    "free_remaining": "Còn trống {{free}}.",
+    "keep_qr_title": "Mã QR và link ngắn giữ nguyên",
+    "keep_qr_body": "Standee, tờ rơi và bao bì đã in vẫn mở ra nội dung mới. Lượt quét đã ghi vẫn còn.",
+    "draft_no_link_title": "Chưa xuất bản nên chưa có link hay mã QR",
+    "draft_no_link_body": "Thay file lúc này không ảnh hưởng gì ở bên ngoài.",
+    "lose_old_title": "File cũ bị thay hẳn",
+    "lose_old_body": "Sau khi bấm Cập nhật, {{name}} không lấy lại được. Nếu còn cần, tải nó về trước.",
+    "lose_old_download": "Tải bản đang chạy về",
+    "kind_change_title": "Loại nội dung đổi từ {{from}} sang {{to}}",
+    "kind_change_body": "Người quét sẽ thấy {{to_viewer}} thay vì {{from_viewer}} như trước. Mã QR và link ngắn vẫn giữ nguyên.",
+    "kind_change_body_draft": "Khi xuất bản, người quét sẽ thấy {{to_viewer}}.",
+    "viewer": {
+      "html": "trang HTML",
+      "pdf": "trang xem PDF",
+      "slides": "bản xem trước slide",
+      "video": "một trình phát video"
+    },
+    "wrong_type": "Chưa mở được file {{ext}}. Nhận HTML, PDF, PowerPoint hoặc video — xuất sang một trong các định dạng đó rồi thử lại.",
+    "quota_delta": "Đổi file này cần thêm {{delta}} nhưng chỉ còn {{free}}. Gỡ một nội dung khác xuống là đủ chỗ.",
+    "quota_view_usage": "Xem nội dung đang chiếm chỗ",
+    "progress_sent": "Đã gửi {{sent}} / {{total}}.",
+    "progress_note": "Đóng tab lúc này thì {{link}} vẫn mở ra bản cũ — không hỏng gì, chỉ là chưa đổi.",
+    "progress_note_draft": "Đóng tab lúc này thì không có gì hỏng — bản cũ vẫn còn, chỉ là chưa đổi.",
+    "submitting": "Đang cập nhật…",
+    "done_title": "Đã thay nội dung",
+    "changed": "Đã đổi",
+    "changed_body": "{{link}} giờ mở ra {{name}} ({{size}}).",
+    "changed_body_draft": "Nội dung giờ là {{name}} ({{size}}).",
+    "storage_in_use": "Dung lượng còn dùng: {{used}} / {{quota}}.",
+    "unchanged": "Không đổi",
+    "unchanged_body": "Mã QR, link ngắn và lượt quét đã ghi. Standee và tờ rơi đã in vẫn mở ra bản mới.",
+    "unchanged_body_draft": "Tên và trạng thái chưa xuất bản. Link và mã QR sẽ có khi bạn xuất bản.",
+    "done": "Xong",
+    "open_link": "Mở link kiểm tra",
+    "failed_title": "Chưa thay được nội dung",
+    "failed_old_kept": "Mã QR và link ngắn vẫn mở ra {{name}} như trước — không có gì hỏng. Thử lại giúp nhé; nếu vẫn vậy thì liên hệ hỗ trợ.",
+    "failed_old_kept_draft": "Bản cũ {{name}} vẫn còn nguyên — không có gì hỏng. Thử lại giúp nhé; nếu vẫn vậy thì liên hệ hỗ trợ.",
+    "retry": "Thử lại",
+    "gone_title": "Nội dung này đã được gỡ",
+    "gone_mid_flight": "Có ai đó đã gỡ nó xuống trong lúc bạn đang mở hộp thoại này. Mã QR đã in giờ dẫn tới trang thông báo đã gỡ. Tạo một artifact mới nếu bạn cần đăng lại.",
+    "close": "Đóng",
+    "create_new": "Tạo artifact mới"
+  },
+  "errors": {
+    "wrong_type": "Chỉ nhận HTML, Markdown, PDF, Word, Excel, PowerPoint, ảnh hoặc video — tối đa {{max}}",
+    "file_too_large": "File này {{size}}, vượt mức {{max}}. Chọn file nhỏ hơn giúp nhé.",
+    "upload_failed": "Tải file lên không thành công, thử lại giúp nhé",
+    "publish_failed_draft_kept": "Đã tải file lên nhưng chưa xuất bản được. Bấm Xuất bản ở trang chi tiết để thử lại.",
+    "generic": "Có lỗi xảy ra, thử lại giúp nhé",
+    "quota_live": "Bạn đang có {{limit}} artifact đã xuất bản, là mức tối đa. Gỡ bớt một cái rồi thử lại.",
+    "removed": "Artifact này đã được gỡ xuống, không cập nhật được nữa. Đăng một artifact mới.",
+    "status_refuses_publish": "Nội dung này đang bị hệ thống giữ nên chưa xuất bản được. Làm theo hướng dẫn ở trạng thái hiện tại rồi thử lại.",
+    "scan_infected": "File này không qua được kiểm tra an toàn nên không được tải lên. Nếu bạn cho là nhầm, hãy liên hệ hỗ trợ.",
+    "scan_encrypted": "File này đang được bảo vệ bằng mật khẩu nên hệ thống không mở ra để kiểm tra an toàn được. Vui lòng tải lên bản không đặt mật khẩu.",
+    "scan_unavailable": "Không kiểm tra an toàn được file lúc này. Vui lòng thử lại sau vài phút."
+  },
+  "kind": {
+    "html": "Trang HTML",
+    "pdf": "PDF",
+    "slides": "PowerPoint",
+    "video": "Video",
+    "unknown": "Không rõ định dạng",
+    "markdown": "Markdown",
+    "document": "Tài liệu Word",
+    "sheet": "Bảng tính Excel",
+    "image": "Hình ảnh"
+  },
+  "access": {
+    "conflict": "Quyền xem vừa được người khác đổi. Tải lại trang rồi thử lại.",
+    "title": "Ai xem được",
+    "detail_title": "Quyền xem",
+    "mode": {
+      "public": {
+        "label": "Công khai",
+        "description": "Bất kỳ ai có link đều xem được."
+      },
+      "private": {
+        "label": "Riêng tư",
+        "description": "Chỉ thành viên tổ chức của bạn, sau khi đăng nhập li2."
+      },
+      "password": {
+        "label": "Mật khẩu",
+        "description": "Ai biết mật khẩu đều xem được. Bạn tự gửi mật khẩu cho họ."
+      },
+      "google": {
+        "label": "Đăng nhập Google",
+        "description": "Ai có tài khoản Google đều xem được. Email của họ được ghi lại."
+      }
+    },
+    "private_note": "Người ngoài {{org}} quét mã sẽ thấy trang thông báo không mở được, không thấy nội dung.",
+    "google_note": "Email người xem hiện trong Khách hàng. Chỉ email và thời điểm được lưu.",
+    "draft_note": "Chế độ này áp dụng ngay khi bạn xuất bản.",
+    "password_label": "Mật khẩu",
+    "password_placeholder": "Ít nhất 8 ký tự",
+    "password_generate": "Tạo ngẫu nhiên",
+    "password_show": "Hiện mật khẩu",
+    "password_hide": "Ẩn mật khẩu",
+    "password_viewer_note": "Người xem nhập mật khẩu này một lần rồi xem được trong một tuần.",
+    "password_required_reason": "Đặt mật khẩu trước đã",
+    "password_too_short": "Mật khẩu cần ít nhất 8 ký tự.",
+    "password_once": "Đây là lần duy nhất mật khẩu hiện ra. Sao chép và gửi cho người cần xem.",
+    "copy_password": "Sao chép mật khẩu",
+    "viewer_count": "{{count}} người đã mở",
+    "created_mode": "Quyền xem: {{mode}}",
+    "dialog": {
+      "keep_qr_title": "Mã QR và link ngắn không đổi",
+      "keep_qr_body": "Đổi chế độ xem có hiệu lực ngay, không sinh link mới.",
+      "leaving_password": "Mọi người đang xem bằng mật khẩu cũ sẽ phải xác thực lại.",
+      "success": "Quyền xem giờ là {{mode}}. Mã QR và link ngắn không đổi.",
+      "failed": "Chưa đổi được quyền xem. Link vẫn đang ở chế độ {{mode}}. Thử lại giúp nhé."
+    },
+    "password_dialog": {
+      "new_label": "Mật khẩu mới",
+      "done_title": "Đã đổi mật khẩu",
+      "done": "Xong"
+    },
+    "section_lead": "Đang là {{mode}}",
+    "section_set_at": " · đặt {{time}}",
+    "section_live_note": "Đổi chế độ có hiệu lực ngay, không sinh link mới.",
+    "current_badge": "hiện tại",
+    "unchanged": "Chưa đổi gì",
+    "who_viewed": "Ai đã xem",
+    "who_viewed_link": "· xem danh sách",
+    "viewers": {
+      "none": "Chưa ai mở trang này",
+      "none_hint": "Khi có người đăng nhập Google để xem, email của họ hiện trong Khách hàng.",
+      "anonymous": "Li2 không thu được email — người xem ẩn danh",
+      "anonymous_hint": "Ở chế độ {{mode}}, người xem không phải nhận mình là ai nên Li2 không có email của họ. Đây không phải \"chưa ai mở\": có thể đã có người xem mà ta không biết là ai. Đổi sang Đăng nhập Google thì từ lúc đó mỗi người mở trang đều được ghi lại.",
+      "anonymous_link": "Kiểm tra trong Khách hàng"
+    },
+    "leaving_password_title": "Mật khẩu cũ sẽ thôi hiệu lực"
+  },
+  "quick": {
+    "title": "Thả file vào đây để xuất bản ngay",
+    "hint": "Tự tạo đường dẫn ngẫu nhiên và công khai. Cần đặt tên hay mật khẩu thì dùng nút Tạo.",
+    "choose": "Chọn file",
+    "working": "Đang xử lý {{name}}",
+    "uploading": "Đang tải lên {{percent}}%",
+    "published_no_link": "Đã xuất bản, nhưng chưa lấy được link. Mở trang chi tiết để xem.",
+    "publish_failed_draft": "Tải lên xong nhưng xuất bản hỏng. File đang ở trạng thái nháp trong danh sách."
+  }
+}

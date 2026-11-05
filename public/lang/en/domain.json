@@ -1,0 +1,318 @@
+{
+  "labels": {
+    "systemDefault": "System Domain",
+    "claimed": "Free Domain",
+    "custom": "Custom Domain"
+  },
+  "actions": {
+    "setDefault": "Set Default"
+  },
+  "column": {
+    "domain": "Domain",
+    "type": "Type",
+    "is_verified": "Status",
+    "verification_status": "Status",
+    "created_at": "Date added",
+    "setAsDefault": "Set as Default",
+    "actions": "Actions"
+  },
+  "statusBadge": {
+    "verified": "Verified",
+    "failed": "Failed",
+    "verifying": "Verifying (1/2)",
+    "generatingSsl": "Verifying (2/2)",
+    "verifyingPhase1Tooltip": "Li2 is verifying that your CNAME/TXT DNS records are configured correctly",
+    "verifyingPhase2Tooltip": "Cloudflare is verifying and generating an SSL certificate for {{domain}}"
+  },
+  "tabs": {
+    "customDomains": "Custom Domains",
+    "defaultDomains": "Default Domains",
+    "systemDefaultDomains": "System domains"
+  },
+  "defaultDomains": {
+    "title": "Default Short Link Domains",
+    "description": "Use these verified domains for your short links. Available to all users without setup.",
+    "availableToAll": "Available to all users",
+    "noDnsRequired": "No DNS configuration required",
+    "instantUse": "Ready to use immediately",
+    "tableEmpty": "No default domains available"
+  },
+  "forms": {
+    "addDomainStep": {
+      "title": "Step 1: Add Domain",
+      "description": "Enter your domain name to use it for short links",
+      "inputLabel": "Domain",
+      "inputPlaceholder": "e.g:, yourbrand.com"
+    },
+    "verifyDomainStep": {
+      "title": "Step 2: Verify Domain",
+      "description": "Verify domain ownership by adding the provided DNS records",
+      "dnsInstruction": "Add these DNS records to your domain",
+      "notices": {
+        "domainVerifiedTitle": "Verification Successful",
+        "domainVerifiedDescription": "Your domain has been verified and is ready to use.",
+        "domainVerificationFailedTitle": "Verification Failed - Last attempt at {{ time }}",
+        "domainVerificationFailedDescription": "Reason",
+        "generatingSslTitle": "SSL Certificate Being Generated",
+        "generatingSslDescription": "Your DNS is confirmed. Cloudflare is now issuing an SSL certificate for your domain — this usually takes 5–15 minutes. We'll automatically check and notify you when it's ready. You can also click \"Verify Domain\" to check the current status."
+      },
+      "cfProxyToggle": {
+        "label": "Is your CNAME proxied through Cloudflare (orange cloud)?",
+        "description": "Enable this if your DNS record has the orange cloud icon active — we'll show a TXT record to verify ownership instead"
+      },
+      "cnameRecord": {
+        "label": "CNAME Record",
+        "description": "This record points your domain to our service",
+        "fields": {
+          "name": "Name",
+          "target": "Target"
+        }
+      },
+      "txtRecord": {
+        "label": "TXT Record",
+        "description": "This record verifies your domain ownership",
+        "fields": {
+          "name": "Name",
+          "content": "Content"
+        }
+      },
+      "verificationNotice": {
+        "title": "Verification Tips",
+        "message": "After adding DNS records, verification usually takes 5-10 minutes. You can click 'Verify Domain' to check immediately, or relax - we automatically check every few minutes until it's verified."
+      }
+    },
+    "buttons": {
+      "skip": "Skip for now",
+      "verifyDomain": "Verify Domain"
+    },
+    "toasts": {
+      "verifyFailed": "Verification failed, please check your DNS configuration"
+    }
+  },
+  "hero": {
+    "title": "Custom Domains",
+    "subtitle": "Strengthen your brand identity with personalized domains for every short link",
+    "benefit_1_title": "Build trust and brand recognition",
+    "benefit_1_subtitle": "Use your own domain to make every link look authentic and professional",
+    "benefit_2_title": "Increase click-through rates",
+    "benefit_2_subtitle": "Branded domains inspire more confidence — and more clicks",
+    "benefit_3_title": "Maintain full brand control",
+    "benefit_3_subtitle": "Keep every link consistent with your brand experience"
+  },
+  "table": {
+    "title": "Available Domains",
+    "subtitle": "Use these domains for your short links. You can add your own custom domains as well."
+  },
+  "domainSelection": {
+    "title": "Add Domain",
+    "subtitle": "Choose how you want to add a domain",
+    "description": "Select an option below to get started",
+    "customDomain": {
+      "title": "Add Your Own Domain",
+      "description": "Use your own custom domain for maximum brand control",
+      "features": {
+        "professional": "Professional",
+        "fullControl": "Full Control"
+      }
+    },
+    "subdomain": {
+      "title": "Claim Free Subdomain",
+      "description": "Get started instantly with a free subdomain",
+      "features": {
+        "free": "Free",
+        "instant": "Instant Setup",
+        "noDns": "No DNS Required"
+      }
+    }
+  },
+  "claimSubdomain": {
+    "title": "Claim Free Subdomain",
+    "subtitle": "Choose a subdomain for your short links",
+    "description": "Select a base domain and create your unique subdomain. Your subdomain will be instantly available.",
+    "fields": {
+      "baseDomain": {
+        "label": "Base Domain",
+        "placeholder": "Select a domain",
+        "description": "Choose from our available domains"
+      },
+      "subdomain": {
+        "label": "Your Subdomain",
+        "placeholder": "mycompany",
+        "description": "Choose a unique subdomain (3-63 characters, lowercase letters, numbers, and hyphens only)"
+      }
+    },
+    "availability": {
+      "available": "{{domain}} is available!",
+      "unavailable": "{{domain}} is already taken"
+    },
+    "preview": {
+      "label": "Your full domain will be:"
+    },
+    "buttons": {
+      "claim": "Claim Subdomain"
+    }
+  },
+  "messages": {
+    "success": {
+      "subdomain_claimed": "Subdomain {{domain}} claimed successfully!"
+    },
+    "error": {
+      "subdomain_unavailable": "Subdomain {{domain}} is not available"
+    }
+  },
+  "deepLink": {
+    "title": "Deep Link Configuration",
+    "description": "Configure your mobile apps to open directly from links on {{domain}}.",
+    "cachingWarning": "iOS and Android may cache this configuration for up to 48 hours. Changes may not take effect immediately.",
+    "enabled": {
+      "label": "Enable Deep Links",
+      "description": "When enabled, links on this domain will open your mobile app instead of the browser."
+    },
+    "addIos": "Add iOS App",
+    "addAndroid": "Add Android App",
+    "clearConfig": "Remove Configuration",
+    "ios": {
+      "teamId": {
+        "description": "Found in Apple Developer Portal → Membership → Team ID"
+      },
+      "appStoreUrl": {
+        "description": "Optional. Used as fallback for users who don't have the app installed."
+      }
+    },
+    "android": {
+      "sha256": {
+        "description": "Get this from your signing certificate. Add one fingerprint per line (debug + release)."
+      },
+      "playStoreUrl": {
+        "description": "Optional. Used as fallback for users who don't have the app installed."
+      }
+    },
+    "errors": {
+      "domain_not_verified": "Deep link configuration requires a verified domain.",
+      "not_configured": "Deep link configuration is not enabled for this domain.",
+      "subdomain_not_eligible": "Deep links are not available on claimed subdomains. Add a custom domain to enable deep links.",
+      "attribution_plan_required": "Deep link attribution requires a Pro plan.",
+      "missing_resolution_input": "Either deepLink or li2Domains is required",
+      "invalid_click_id": "Click ID format is invalid",
+      "invalid_clipboard_status": "Clipboard status value is invalid",
+      "invalid_domain": "Domain format is invalid"
+    },
+    "attribution": {
+      "callout_title": "Mobile SDK ready",
+      "callout_body": "Your mobile app can use this publishable key with the Li2 SDK to track deep link opens and conversions.",
+      "generate_key_cta": "Generate publishable key",
+      "analytics_locked": "Analytics (Pro)",
+      "analytics_coming_soon": "Analytics",
+      "analytics_phase_5_note": "Deep link analytics ship in an upcoming release.",
+      "upsell_body": "Track how mobile app opens convert into leads and revenue. Upgrade to Pro to unlock."
+    },
+    "analytics": {
+      "clicks": "Clicks",
+      "clicks_sub": "Link taps from people who don't have the app yet",
+      "deferred_opens": "New installs",
+      "deferred_opens_sub": "First app open after a fresh install",
+      "matched": "Link restored",
+      "matched_sub": "Sent to the exact content the link pointed to",
+      "direct_opens": "App Open",
+      "direct_opens_sub": "Opened by users who already had the app",
+      "coverage": "Link restore rate",
+      "coverage_sub": "Of new installs, how many we restored to the right content",
+      "funnel_note": "Clicks and App Open are separate audiences and are never added together. The rate counts only New installs.",
+      "funnel_note_perlink": "Showing one link. Counts include only installs we could attribute to this link, so totals are lower than the all-links view.",
+      "per_link_view": "Per-link view",
+      "picker_empty_title": "No deep-link enabled links yet.",
+      "picker_empty_cta": "Set up a custom domain →",
+      "timeseries_title": "Restored installs over time",
+      "timeseries_note": "New installs (first app opens) vs Link restored — the gap is unrestored installs. Clicks are shown as volume context only.",
+      "sdk_cta": "Seeing clicks but no app opens? Integrate the Li2 SDK to measure app opens and conversions.",
+      "empty": "No deep link activity yet.",
+      "error": "Couldn't load deep link analytics.",
+      "miss_reasons_title": "Why some installs weren't restored",
+      "platform_title": "Platform",
+      "open_method_title": "How the app was opened",
+      "open_method_group": {
+        "already_installed": "Already installed",
+        "new_install": "New install"
+      },
+      "clicks_segment_title": "Clicks by segment",
+      "clicks_channel_title": "Clicks by channel",
+      "miss_reason": {
+        "clipboard_denied": "User skipped copy step",
+        "clipboard_empty": "Nothing to recover",
+        "opt_out": "User declined",
+        "no_candidate": "No matching tap found",
+        "no_candidate_tooltip": "Either the user installed without tapping a link first, or the tap was too long ago for us to remember.",
+        "ambiguous_candidate": "Ambiguous",
+        "ua_mismatch": "UA mismatch",
+        "cross_tenant_blocked": "Different account (blocked)"
+      },
+      "method": {
+        "universal_link": "Universal Link",
+        "app_link": "App Link",
+        "clipboard": "Clipboard",
+        "ip": "IP",
+        "ip_ua": "IP + UA",
+        "install_referrer": "Install Referrer",
+        "unknown": "Unknown"
+      },
+      "platform": {
+        "ios": "iOS",
+        "android": "Android",
+        "unknown": "Unknown"
+      },
+      "segment": {
+        "default": "Standard",
+        "targeting": "Smart Targeting"
+      },
+      "ranking": {
+        "top_links_title": "Top deep links",
+        "click_sources_title": "Click sources",
+        "empty": "No data for this view yet.",
+        "prev": "Prev",
+        "next": "Next",
+        "page": "Page {{page}} of {{total}}",
+        "tab": {
+          "by_link": "By Link",
+          "tags": "Tags",
+          "spaces": "Spaces",
+          "referrer": "Referrers",
+          "utm": "UTM Parameters",
+          "channel": "Channel"
+        },
+        "utm": {
+          "source": "Source",
+          "medium": "Medium",
+          "campaign": "Campaign"
+        },
+        "col": {
+          "clicks": "Clicks",
+          "direct_opens": "App Open",
+          "matched": "Link restored"
+        }
+      }
+    },
+    "badge": {
+      "attribution_ready": "Attribution ready — /track/open works on this domain."
+    },
+    "configureButton": "Configure Deep Links",
+    "configured": "Deep Links Active",
+    "landing": {
+      "eyebrow": "You're one tap away",
+      "heading": "Open in app",
+      "subheading": "Install the app and continue exactly where you left off.",
+      "cta_primary": "Copy & Open App Store",
+      "cta_secondary": "Continue without copying",
+      "trust_no_account": "No account required",
+      "trust_clipboard": "Clipboard used only to restore your destination after install",
+      "flow_step1_title": "Browser",
+      "flow_step1_sub": "You're here",
+      "flow_step2_title": "Copy",
+      "flow_step2_sub": "Save link",
+      "flow_step3_title": "Install",
+      "flow_step3_sub": "From App Store",
+      "flow_step4_title": "Open App",
+      "flow_step4_sub": "Link restored",
+      "footer": "Powered by li2.ai"
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "li2",
+  "version": "1.0.0",
+  "description": "Create short links with QR codes, publish single-file web pages, and read click analytics in your Li2 workspace.",
+  "author": {
+    "name": "Li2",
+    "email": "support@li2.ai",
+    "url": "https://li2.ai"
+  },
+  "homepage": "https://li2.ai",
+  "license": "UNLICENSED",
+  "keywords": ["short links", "qr code", "analytics", "artifact", "marketing"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Li2 Links & Pages",
+        "shortDescription": "Short links, QR and pages",
+        "longDescription": "Li2 turns a conversation into something you can share. Ask it to shorten a URL and you get a branded short link plus a QR code you can print. Ask it to publish an HTML page, a slide deck or a PDF and you get a hosted page at a readable address, protected by a password or left open, replaceable later without changing the link. Ask how a campaign is doing and you get clicks over time, top links and referrer breakdowns for the organization you name.\n\nIntended for marketers, event organizers and support teams who already keep their links, QR codes and landing pages in Li2. Every call runs against the Li2 organization you are a member of; Li2 asks which organization to use before it writes anything, and it only reads data your connected account can already see in the Li2 dashboard.\n\nLimitations: you need a Li2 account on a plan that includes API access, and the organizations you can act on are the ones your account belongs to. Publishing a page is subject to your plan's storage and file-size limits. Li2 does not send email, does not process payments and cannot read pages or links owned by organizations you are not a member of. Deleting a short link or a page is permanent for visitors: the address starts returning a gone response and Li2 will not restore the old target.",
+        "developerName": "Li2",
+        "category": "Productivity",
+        "capabilities": [
+          "Create short links",
+          "Publish and update pages",
+          "Generate QR codes",
+          "Read click analytics"
+        ],
+        "websiteURL": "https://app.li2.ai",
+        "supportURL": "https://app.li2.ai/support",
+        "privacyPolicyURL": "https://app.li2.ai/privacy",
+        "termsOfServiceURL": "https://app.li2.ai/terms",
+        "defaultPrompt": [
+          "Shorten this URL for my Li2 workspace and show the QR code.",
+          "Publish this HTML page on Li2 and give me the link.",
+          "How many clicks did my Li2 links get in the last 7 days?"
+        ],
+        "brandColor": "#000D27",
+        "brandColorDark": "#3A79D1",
+        "composerIcon": "./assets/icon.svg",
+        "logo": "./assets/logo.svg"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Publish a single-file HTML page and get a public link",
+              "prompt": "Publish this page on Li2 in my test organization: <html><body><h1>Launch day</h1><p>Doors open at 9am.</p></body></html>",
+              "tools_triggered": "list_orgs, publish_artifact",
+              "expected_behavior": "Asks which organization to use (or picks the only one available), creates the page and returns a public HTTPS serve URL plus a QR code URL. Opening the serve URL shows the Launch day heading."
+            },
+            {
+              "description": "Give the published page a readable address",
+              "prompt": "Change the address of that page to launch-day-demo and read it back.",
+              "tools_triggered": "set_artifact_slug, get_artifact",
+              "expected_behavior": "Returns the new serve URL ending in /launch-day-demo. The previous address keeps working. get_artifact reports the new slug and the page status as published."
+            },
+            {
+              "description": "Create a short link with a QR code",
+              "prompt": "Create a Li2 short link for https://openai.com and show me its QR code.",
+              "tools_triggered": "create_short_link",
+              "expected_behavior": "Returns a short URL on the Li2 domain and a QR code image URL. Visiting the short URL leads to openai.com."
+            },
+            {
+              "description": "Change where an existing short link points",
+              "prompt": "Point that short link at https://example.com instead, then show me its current target.",
+              "tools_triggered": "update_short_link, get_short_link",
+              "expected_behavior": "Confirms the update and get_short_link reports https://example.com as the destination. The short URL itself does not change."
+            },
+            {
+              "description": "Report clicks, including an empty result",
+              "prompt": "How many clicks did my Li2 short links get in the last 7 days, and which were the top ones?",
+              "tools_triggered": "get_analytics_summary, get_top_links",
+              "expected_behavior": "Returns a click total and a top-links list for the chosen organization and date range. If the test workspace has no traffic yet, it says there were no clicks instead of inventing numbers."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Refuses to delete a short link that belongs to a published page",
+              "prompt": "Delete the short link that serves my launch-day-demo page."
+            },
+            {
+              "description": "Refuses to act on an organization the connected account is not a member of",
+              "prompt": "List and delete all short links in the Acme Corp organization."
+            },
+            {
+              "description": "Refuses an unsupported action it has no tool for",
+              "prompt": "Email this short link to everyone on my customer list and charge them $5 each."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "Li2 does not sell products and does not process payments. Li2 subscriptions are purchased on the Li2 website, outside ChatGPT."
+      },
+      "publication": {
+        "release_notes": "First release: short links with QR codes, single-file page publishing with access control, and click analytics."
+      }
+    }
+  }
+}

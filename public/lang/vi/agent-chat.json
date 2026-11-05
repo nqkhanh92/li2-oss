@@ -1,0 +1,85 @@
+{
+  "title": "Trợ lý AI",
+  "trigger": "Hỏi AI",
+  "description": "Trò chuyện với trợ lý AI để tạo và quản lý link của bạn.",
+  "newChat": "Cuộc trò chuyện mới",
+  "thinking": "Đang suy nghĩ",
+  "deciding": "Đang xử lý…",
+  "stop": "Dừng",
+  "stopped": "Đã dừng",
+  "retry": "Thử lại",
+  "scrollToLatest": "Đến tin mới nhất",
+  "approve": "Đồng ý",
+  "reject": "Từ chối",
+  "approved": "Đã đồng ý",
+  "rejected": "Đã từ chối",
+  "actionFailed": "Thao tác thất bại",
+  "passwordMaskedHint": "Mật khẩu được ẩn để bảo mật — mật khẩu đã được đặt cho link nhưng không hiển thị ở đây.",
+  "field": {
+    "destination": "URL",
+    "slug": "Slug",
+    "name": "Tên",
+    "password": "Mật khẩu",
+    "expires": "Hết hạn",
+    "utm": "UTM"
+  },
+  "composer": {
+    "placeholder": "Dán link, thả file, hoặc gõ / để xem lệnh…",
+    "send": "Gửi",
+    "attach": "Đính kèm file",
+    "removeFile": "Bỏ file đính kèm",
+    "commands": "Lệnh",
+    "footnote": "Mình tạo luôn rồi hiện lại cấu hình để bạn kiểm; sai thì nhờ mình sửa. Riêng xoá thì luôn hỏi trước."
+  },
+  "empty": {
+    "title": "Tôi có thể giúp gì cho bạn?",
+    "hint": "Thử một trong các gợi ý sau để bắt đầu:"
+  },
+  "examples": {
+    "one": "Tạo link tới example.com có mật khẩu",
+    "two": "Tạo link hết hạn vào tuần sau",
+    "three": "Xem các link hàng đầu của tôi tháng này"
+  },
+  "newChatConfirm": {
+    "title": "Bắt đầu cuộc trò chuyện mới?",
+    "description": "Thao tác này sẽ xóa cuộc trò chuyện hiện tại và không thể hoàn tác.",
+    "confirm": "Trò chuyện mới",
+    "cancel": "Hủy"
+  },
+  "error": {
+    "notEntitled": "Gói hiện tại của bạn chưa bao gồm trợ lý AI. Nâng cấp để bắt đầu sử dụng.",
+    "offline": "Bạn có vẻ đang ngoại tuyến. Kiểm tra kết nối và thử lại.",
+    "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+  },
+  "usage": {
+    "thisMonth": "tháng này",
+    "label": "Ngân sách AI đã dùng tháng này"
+  },
+  "chart": {
+    "title": "Số tương tác theo thời gian",
+    "linkClicks": "Lượt click link",
+    "qrScans": "Lượt quét QR",
+    "nfcTaps": "Lượt chạm NFC",
+    "noData": "Chưa có dữ liệu để vẽ biểu đồ."
+  },
+  "qr": {
+    "groupLabel": "{{count}} mã QR"
+  },
+  "feedback": {
+    "up": "Câu trả lời hữu ích",
+    "down": "Câu trả lời chưa tốt"
+  },
+  "dock": {
+    "hint": "tạo link, đăng file, hỏi số liệu",
+    "collapse": "Thu gọn",
+    "expand": "Mở lại cuộc trò chuyện",
+    "resize": "Kéo để đổi chiều cao"
+  },
+  "slash": {
+    "link": "Rút gọn link",
+    "file": "Đăng file thành artifact",
+    "qr": "Lấy mã QR của link gần nhất",
+    "stats": "Hỏi số liệu"
+  },
+  "justCreatedByChat": "Vừa tạo qua chat"
+}

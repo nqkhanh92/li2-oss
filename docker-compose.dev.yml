@@ -1,0 +1,40 @@
+services:
+  nextjs:
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+    image: registry.example.com/ftc/proximity_development:latest
+    container_name: quik-proxy-mark
+    security_opt:
+      - seccomp:unconfined
+    env_file:
+      - .env.development
+    environment:
+      - PORT=3002
+    ports:
+      - '3002'
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=devnet
+      - traefik.http.routers.quik-proxy-mark.rule=Host(`dev.example.com`)
+      - traefik.http.routers.quik-proxy-mark.entrypoints=websecure
+      - traefik.http.routers.quik-proxy-mark.tls=true
+      - traefik.http.routers.quik-proxy-mark.tls.certresolver=letsencrypt
+      - 'traefik.http.routers.block-malformed-next-action.rule=(Host(`dev.example.com`)) && Method(`POST`) && HeaderRegexp(`next-action`, `^.{1,9}$`)'
+      - 'traefik.http.routers.block-malformed-next-action.priority=2000'
+      - 'traefik.http.routers.block-malformed-next-action.service=noop@internal'
+      - 'traefik.http.routers.block-malformed-next-action.entrypoints=web,websecure'
+      - 'traefik.http.routers.block-malformed-next-action.tls.certresolver=letsencrypt'
+    volumes:
+      - /var/log/li2-app:/app/logs
+    networks:
+      - devnet
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
+networks:
+  devnet:
+    external: true

@@ -1,0 +1,9 @@
+{
+  "title": "Application selection to login",
+  "appName": "$t(common:appName)",
+  "app_desc": "Shorten, share, and manage links effortlessly with $t(common:appName).",
+  "app_button": "Go to $t(common:appName)",
+  "parcelvoy": "$t(common:module.parcelvoy)",
+  "parcelvoy_desc": "Send automated messages and engage customers with $t(common:module.parcelvoy).",
+  "parcelvoy_button": "Go to $t(common:module.parcelvoy)"
+}

@@ -1,0 +1,82 @@
+{
+  "sub_title": "Audit Logs giúp bạn theo dõi các hoạt động và thay đổi trong hệ thống",
+  "module": {
+    "audit_log": "Audit Log",
+    "audit_logs": "Audit Logs"
+  },
+  "fields": {
+    "module": "Module",
+    "action": "Action",
+    "user": "User",
+    "target": "Target",
+    "changes": "Thay đổi",
+    "metadata": "Metadata",
+    "timestamp": "Timestamp",
+    "actions": "Hành động"
+  },
+  "detail": {
+    "title": "Audit Log Details",
+    "field": "Trường",
+    "before": "Trước",
+    "after": "Sau",
+    "not_available": "N/A"
+  },
+  "export": {
+    "title": "Export Audit Logs",
+    "description": "Export audit logs với bộ lọc (filter) hiện tại",
+    "format": "Định dạng Export",
+    "select_format": "Select format",
+    "current_filters_applied": "Bộ lọc được áp dụng cho export:",
+    "all": "Tất cả",
+    "from": "Từ",
+    "until": "Đến",
+    "filter_labels": {
+      "module": "Module:",
+      "action": "Action:",
+      "date_range": "Khoảng thời gian:"
+    }
+  },
+  "access": {
+    "premium_required": "Cần nâng cấp lên gói Premium",
+    "upgrade_message": "Audit logs chỉ khả dụng trên gói Premium trở lên. Vui lòng nâng cấp để sử dụng tính năng này."
+  },
+  "messages": {
+    "export_success": "Audit logs exported successfully",
+    "export_error": "Failed to export audit logs"
+  },
+  "filters": {
+    "search_placeholder": "Tìm kiếm ...",
+    "module": "Module",
+    "action": "Action",
+    "date_range": "Date",
+    "add_filters": "Thêm Bộ lọc",
+    "filter_by": "Lọc theo",
+    "active_filters": "Bộ lọc đang áp dụng",
+    "loading": "Đang tải...",
+    "module_options": {
+      "touch_point": "Touch Point",
+      "tag": "Tag",
+      "collection": "Space",
+      "collection_member": "Thành viên Space",
+      "organization": "Tổ chức",
+      "member": "Thành viên",
+      "integration": "Tích hợp",
+      "campaign": "Chiến dịch",
+      "permission": "Quyền hạn",
+      "role": "Vai trò",
+      "utm_template": "Mẫu UTM",
+      "api_key": "API Key"
+    },
+    "action_options": {
+      "create": "Tạo mới",
+      "update": "Cập nhật",
+      "delete": "Xóa",
+      "add": "Thêm",
+      "remove": "Gỡ bỏ",
+      "add_touchpoints": "Thêm Touchpoints",
+      "remove_touchpoints": "Gỡ bỏ Touchpoints",
+      "update_role": "Cập nhật Vai trò",
+      "bulk_add": "Thêm hàng loạt"
+    }
+  }
+}

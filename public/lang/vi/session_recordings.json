@@ -1,0 +1,45 @@
+{
+  "title": "Ghi lại phiên",
+  "columns": {
+    "started_at": "Bắt đầu",
+    "duration": "Thời lượng",
+    "visitor": "Khách",
+    "session": "Phiên",
+    "pages": "Trang",
+    "entry_page": "Trang vào",
+    "device": "Thiết bị",
+    "location": "Vị trí",
+    "bounce": "Thoát nhanh"
+  },
+  "bounce": "Thoát nhanh",
+  "filters": {
+    "title": "Bộ lọc",
+    "clear_all": "Xóa tất cả",
+    "device_type": "Thiết bị",
+    "all_devices": "Tất cả thiết bị",
+    "browser": "Trình duyệt",
+    "os": "Hệ điều hành",
+    "country": "Quốc gia",
+    "country_placeholder": "Ví dụ: VN, US, SG",
+    "country_hint": "Mã quốc gia cách nhau bằng dấu phẩy",
+    "session_type": "Loại phiên",
+    "bounce": "Loại phiên",
+    "all_sessions": "Tất cả phiên",
+    "engaged": "Có tương tác",
+    "bounced": "Thoát nhanh",
+    "search_placeholder": "IP / Visitor / Session ID",
+    "date_range": "Khoảng thời gian"
+  },
+  "device": {
+    "desktop": "Máy tính",
+    "mobile": "Di động",
+    "tablet": "Máy tính bảng"
+  },
+  "min_duration_note": "Các phiên ngắn hơn 5 giây sẽ không được hiển thị.",
+  "empty": "Không tìm thấy phiên ghi nào",
+  "unknown": "Không xác định",
+  "plan_upgrade": {
+    "title": "Ghi lại phiên",
+    "description": "Nâng cấp gói để xem lại phiên và hiểu cách khách truy cập tương tác với trang của bạn."
+  }
+}

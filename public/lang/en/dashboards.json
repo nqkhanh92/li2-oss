@@ -1,0 +1,312 @@
+{
+  "list": {
+    "title": "Dashboards",
+    "newDashboard": "New Dashboard",
+    "tabAll": "All",
+    "tabMy": "My Dashboards",
+    "tabShared": "Shared with me",
+    "searchPlaceholder": "Search dashboards...",
+    "sort": {
+      "updatedAt": "Recently updated",
+      "nameAsc": "Name A-Z",
+      "nameDesc": "Name Z-A",
+      "newestFirst": "Newest first",
+      "oldestFirst": "Oldest first",
+      "mostWidgets": "Most widgets"
+    },
+    "noSearchResults": {
+      "title": "No dashboards found",
+      "description": "No dashboards match \"{{query}}\"",
+      "clear": "Clear search"
+    },
+    "pinnedSection": "Pinned",
+    "tabEmpty": {
+      "my": {
+        "title": "You haven't created any dashboards yet",
+        "description": "Create your first dashboard to start tracking what matters."
+      },
+      "shared": {
+        "title": "No shared dashboards yet",
+        "description": "When a teammate shares a dashboard with you, it appears here. You can also share yours from any dashboard's Access Settings.",
+        "step1": "Open a dashboard",
+        "step2": "Access Settings",
+        "step3": "Add members",
+        "cta": "Go to My Dashboards"
+      }
+    },
+    "empty": {
+      "title": "Your command center awaits",
+      "description": "Combine clicks, conversions, and visitor insights into one view. Build your first dashboard in under a minute."
+    }
+  },
+  "create": {
+    "title": "Create Dashboard",
+    "subtitle": "Pick a template to get started quickly, or begin with a blank canvas.",
+    "nameLabel": "Dashboard name",
+    "namePlaceholder": "My Dashboard",
+    "templateLabel": "Template",
+    "blankDescription": "Start from scratch",
+    "widgetCount": "{{count}} widgets",
+    "blankHoverDescription": "Start empty and add widgets one by one.",
+    "includesLabel": "Includes:",
+    "submit": "Create Dashboard",
+    "creating": "Creating...",
+    "proRequired": "This template requires a Pro plan to use.",
+    "upgradeCta": "Upgrade",
+    "proRequiredTooltip": "Upgrade to Pro to use this template",
+    "successMessage": "Dashboard created!"
+  },
+  "card": {
+    "onlyMe": "Only me",
+    "restricted": "Restricted",
+    "everyone": "Everyone",
+    "open": "Open",
+    "rename": "Rename",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "widgetsMore": "+{{count}} more",
+    "deleteConfirm": {
+      "title": "Delete dashboard",
+      "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+      "confirm": "Delete"
+    }
+  },
+  "actions": {
+    "pin": "Pin to Top",
+    "unpin": "Unpin"
+  },
+  "bulk": {
+    "selected": "{{count}} selected",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "deleteConfirm": {
+      "title": "Delete {{count}} dashboards",
+      "description": "Are you sure you want to delete {{count}} dashboards? This action cannot be undone."
+    }
+  },
+  "selector": {
+    "switchDashboard": "Switch dashboard",
+    "myDashboards": "My Dashboards",
+    "sharedWithMe": "Shared with me",
+    "createNew": "Create New Dashboard"
+  },
+  "access": {
+    "settings": "Access Settings",
+    "title": "Access Settings",
+    "dataNotice": "Members with access can see all data shown by this dashboard's widgets, including data they may not otherwise access via their role permissions.",
+    "modeLabel": "Who can access",
+    "modes": {
+      "only_me": "Only Me",
+      "restricted": "Specific Members",
+      "everyone": "Everyone in Org"
+    },
+    "everyoneRole": "Everyone's Role",
+    "defaultRole": "Default Role for New Members",
+    "roles": {
+      "owner": "Owner",
+      "viewer": "Viewer",
+      "editor": "Editor"
+    },
+    "everyoneInfo": "All org members have access. New members auto-get access.",
+    "members": "Members",
+    "addMember": "Add Member",
+    "searchPlaceholder": "Search by name or email...",
+    "noResults": "No members found",
+    "revokeConfirm": "This will revoke access for {{count}} members. Continue?",
+    "confirmTitle": "Change access mode",
+    "confirmRevokeMembers": "This will revoke access for {{count}} members.",
+    "confirmRevokeAll": "This will revoke access for all org members.",
+    "confirmSwitchRestricted": "Switching to Restricted will revoke access for all members not explicitly invited.",
+    "transferOwnership": "Transfer Ownership",
+    "transferTitle": "Transfer Ownership",
+    "transferDescription": "The new owner will have full control. You will become an Editor.",
+    "transferTo": "Transfer to: {{name}}",
+    "confirmTransfer": "Transfer"
+  },
+  "dateRange": {
+    "today": "Today",
+    "last7d": "Last 7 days",
+    "last30d": "Last 30 days",
+    "last90d": "Last 90 days",
+    "custom": "Custom"
+  },
+  "queryBuilder": {
+    "createTitle": "Create Widget",
+    "editTitle": "Edit Widget",
+    "templatesTab": "Templates",
+    "customTab": "Custom",
+    "standard": "Standard",
+    "formula": "Formula",
+    "formulaMetricA": "Metric A (Numerator)",
+    "formulaMetricB": "Metric B (Denominator)",
+    "formulaOperator": "Operator",
+    "widgetName": "Widget Name",
+    "widgetNamePlaceholder": "My Widget",
+    "dataSource": "Data Source",
+    "metric": "Metric",
+    "groupBy": "Group By",
+    "filters": "Filters",
+    "addFilter": "Add Filter",
+    "removeFilter": "Remove filter",
+    "filterValue": "Value",
+    "visualization": "Visualization",
+    "size": "Size",
+    "useCustomDateRange": "Use custom date range",
+    "usingGlobalRange": "Using dashboard date range: {{range}}",
+    "createWidget": "Create Widget",
+    "saveChanges": "Save Changes",
+    "configureToPreview": "Configure the widget to see a preview",
+    "loadingPreview": "Loading preview...",
+    "previewError": "Unable to load preview"
+  },
+  "view": {
+    "addWidget": "Add Widget",
+    "emptyState": "Add your first widget to get started.",
+    "emptyStateViewer": "No widgets yet.",
+    "notFound": "Dashboard not found",
+    "backToList": "Back to list",
+    "linksGroup": "Links",
+    "websiteGroup": "Website"
+  },
+  "widget": {
+    "edit": "Edit",
+    "duplicate": "Duplicate",
+    "viewConfig": "View config",
+    "customDateRange": "Custom date range",
+    "delete": "Delete",
+    "retry": "Retry",
+    "failedToLoad": "Failed to load",
+    "featureDisabled": "Feature turned off",
+    "featureDisabledHint": "This widget is kept. It will work again if the feature is switched back on.",
+    "noData": "No data",
+    "proRequired": "Pro required",
+    "upgradeToView": "Upgrade your plan to view this widget.",
+    "frozenSince": "Data frozen since {{date}}",
+    "upgradeToRefresh": "Upgrade to refresh",
+    "divisionByZero": "Denominator is zero — adjust your formula",
+    "table": {
+      "name": "Name",
+      "count": "Count"
+    }
+  },
+  "templates": {
+    "domainEvents": "Events",
+    "domainInteractions": "Interactions",
+    "domainConversions": "Conversions",
+    "dashboards": {
+      "blank": {
+        "name": "Blank Dashboard",
+        "description": "Start with a clean slate and add exactly the widgets you need."
+      },
+      "link-performance": {
+        "name": "Link Performance",
+        "description": "See which links drive the most clicks, where your audience is, and what devices they use."
+      },
+      "website-analytics": {
+        "name": "Website Analytics",
+        "description": "Track page views, discover your top pages, and see where your traffic comes from."
+      },
+      "conversion-tracking": {
+        "name": "Conversion Tracking",
+        "description": "Monitor leads and sales, track conversion trends, and see which sources convert best."
+      },
+      "engagement": {
+        "name": "Engagement",
+        "description": "Understand how visitors interact with your site — clicks, scrolls, and custom events."
+      }
+    },
+    "widgets": {
+      "link-total-clicks": {
+        "name": "Total Clicks",
+        "description": "Total number of link clicks"
+      },
+      "link-clicks-over-time": {
+        "name": "Clicks Over Time",
+        "description": "Daily click trend for the selected period"
+      },
+      "link-channel-breakdown": {
+        "name": "Channel Breakdown",
+        "description": "Click distribution by channel (Link, QR, NFC)"
+      },
+      "link-top-links": {
+        "name": "Top Links",
+        "description": "Most clicked links ranked by count"
+      },
+      "link-geo-distribution": {
+        "name": "Geo Distribution",
+        "description": "Clicks by country"
+      },
+      "link-device-split": {
+        "name": "Device Split",
+        "description": "Click distribution by device type"
+      },
+      "web-total-pageviews": {
+        "name": "Total Pageviews",
+        "description": "Total number of page views"
+      },
+      "web-traffic-over-time": {
+        "name": "Traffic Over Time",
+        "description": "Daily pageview trend for the selected period"
+      },
+      "web-top-pages": {
+        "name": "Top Pages",
+        "description": "Most viewed pages ranked by count"
+      },
+      "web-referrer-sources": {
+        "name": "Referrer Sources",
+        "description": "Traffic sources by referrer domain"
+      },
+      "event-top-events": {
+        "name": "Top Events",
+        "description": "Most triggered events ranked by count"
+      },
+      "event-over-time": {
+        "name": "Events Over Time",
+        "description": "Daily event trend for the selected period"
+      },
+      "interaction-total-count": {
+        "name": "Total Interactions",
+        "description": "Total number of user interactions"
+      },
+      "interaction-by-type": {
+        "name": "Interactions by Type",
+        "description": "Interaction distribution by type (click, scroll, etc.)"
+      },
+      "interaction-top-pages": {
+        "name": "Top Interaction Pages",
+        "description": "Pages with the most user interactions"
+      },
+      "conversion-total-leads": {
+        "name": "Total Leads",
+        "description": "Total number of lead conversion events"
+      },
+      "conversion-total-sales": {
+        "name": "Total Sales",
+        "description": "Total number of sale conversion events"
+      },
+      "conversion-over-time": {
+        "name": "Conversions Over Time",
+        "description": "Daily conversion trend for the selected period"
+      },
+      "conversion-by-utm-source": {
+        "name": "Conversions by UTM Source",
+        "description": "Conversion distribution by UTM source"
+      }
+    }
+  },
+  "layout": {
+    "editLayout": "Edit Layout",
+    "done": "Done",
+    "saving": "Saving...",
+    "lockConflict": "{{email}} is currently editing this dashboard. Try again later.",
+    "sessionExpiredTitle": "Editing Session Expired",
+    "sessionExpiredDescription": "Another editor may have taken over, or your session timed out. Reload to see the latest changes.",
+    "reload": "Reload Dashboard"
+  },
+  "errors": {
+    "not_found": "Dashboard not found",
+    "no_access": "You no longer have access to this dashboard",
+    "cannot_edit": "You do not have permission to edit this dashboard",
+    "owner_only": "Only the dashboard owner can perform this action"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "loading": {
+    "title": "Đang xác minh",
+    "description": "Vui lòng đợi trong khi chúng tôi xác minh lời mời của bạn..."
+  },
+  "header": {
+    "invited_to_join": "Bạn đã được mời tham gia"
+  },
+  "inviter": {
+    "label": "Được mời bởi:"
+  },
+  "description": {
+    "join_benefits": "Tham gia tổ chức này sẽ cấp cho bạn quyền truy cập vào các tài nguyên được chia sẻ."
+  },
+  "auth_required": {
+    "title": "Yêu cầu xác thực",
+    "description": "Bạn cần đăng nhập để chấp nhận lời mời này."
+  },
+  "actions": {
+    "cancel": "Hủy",
+    "sign_in": "Đăng nhập",
+    "decline": "Từ chối",
+    "accept": "Chấp nhận",
+    "return_home": "Quay về trang chủ",
+    "go_to_organization": "Đến tổ chức này"
+  },
+  "status": {
+    "accepted": {
+      "title": "Đã chấp nhận lời mời",
+      "description": "Bạn đã tham gia thành công {{orgName}}. Bạn sẽ được chuyển hướng đến trang tổng quan ngay sau đây."
+    },
+    "expired": {
+      "title": "Lời mời đã hết hạn",
+      "description": "Liên kết lời mời này đã hết hạn. Liên kết lời mời có hiệu lực trong 7 ngày."
+    },
+    "invalid": {
+      "title": "Lời mời không hợp lệ",
+      "description": "Liên kết lời mời này không hợp lệ hoặc đã bị thu hồi bởi quản trị viên tổ chức."
+    },
+    "declined": {
+      "title": "Đã từ chối lời mời",
+      "description": "Bạn đã từ chối lời mời này. Nó sẽ bị xóa khi lời mời hết hạn."
+    },
+    "forbidden": {
+      "title": "Lời mời không hợp lệ",
+      "description": "Lời mời này không dành cho bạn. Vui lòng liên hệ với quản trị viên tổ chức."
+    }
+  },
+  "error_help": "Nếu bạn cho rằng đây là một sai lầm, vui lòng liên hệ với quản trị viên tổ chức của bạn để yêu cầu lời mời mới.",
+  "footer": {
+    "copyright": "© {{year}} {{appName}}. All rights reserved."
+  }
+}

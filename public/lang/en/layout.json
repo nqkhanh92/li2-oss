@@ -1,0 +1,65 @@
+{
+  "header": {
+    "title": {
+      "with_expire_date_trial": "{{ field }} active: Free 1 year! Full access until ",
+      "with_expire_date": "{{ field }} active! Full access until ",
+      "free_plan": "Advanced UTM, Custom Domain & Integrations — Go Premium!",
+      "without_expire_date": "Boost your campaign — 10x stronger with $t(common:appName) Premium"
+    },
+    "navbar": {
+      "language": "Language",
+      "setting": "Settings",
+      "logout": "Logout",
+      "demo": "Try Demo"
+    },
+    "demoBanner": {
+      "notice": "You are viewing a demo account. Data shown is for demonstration purposes only."
+    }
+  },
+  "sidebar": {
+    "groups": {
+      "overview": "OVERVIEW",
+      "create": "CREATE",
+      "analyze": "ANALYZE",
+      "organize": "ORGANIZE",
+      "configure": "SETTINGS",
+      "touchpoints": "TOUCH POINTS",
+      "linkAttribution": "LINK MANAGEMENT",
+      "behaviorAnalytics": "BEHAVIOR ANALYTICS"
+    },
+    "onboarding": "Get Started",
+    "overview": "Overview",
+    "dashboards": "Dashboards",
+    "dashboard": "Dashboard",
+    "domain": "Custom Domain",
+    "touchpoint": {
+      "label": "Touchpoint",
+      "touch_point_list": "Touchpoint List",
+      "touch_point_create": "Create Touchpoint"
+    },
+    "linkAndArtifact": "Links & Artifacts",
+    "shortLink": "Short Links",
+    "artifacts": "Artifacts",
+    "qrCode": "QR Codes",
+    "nfc": "NFC Tags",
+    "analytics": "Analytics",
+    "deepLinks": "Deep Links",
+    "linkJourney": "Link Journey",
+    "conversions": "Conversions",
+    "funnels": "Funnels",
+    "heatmap": "Heatmap",
+    "siteAnalytics": "Site Analytics",
+    "sessionRecordings": "Session Replay",
+    "eventRules": "Event Rules",
+    "customers": "Customers",
+    "forms": "Form Analytics",
+    "realtimeClicks": "Realtime Clicks",
+    "utmTemplates": "UTM Templates",
+    "tag": "Tags",
+    "collections": "Spaces",
+    "integration": "Integration",
+    "setting": "Organization Settings",
+    "auditLogs": "Audit Logs",
+    "campaigns": "Campaign"
+  }
+}

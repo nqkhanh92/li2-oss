@@ -1,0 +1,85 @@
+{
+  "title": "AI Assistant",
+  "trigger": "Ask AI",
+  "description": "Chat with the AI assistant to create and manage your links.",
+  "newChat": "New chat",
+  "thinking": "Thinking",
+  "deciding": "Working…",
+  "stop": "Stop",
+  "stopped": "Stopped",
+  "retry": "Retry",
+  "scrollToLatest": "Jump to latest",
+  "approve": "Approve",
+  "reject": "Reject",
+  "approved": "Approved",
+  "rejected": "Rejected",
+  "actionFailed": "Action failed",
+  "passwordMaskedHint": "The password is hidden for security — it is set on the link but never shown here.",
+  "field": {
+    "destination": "URL",
+    "slug": "Slug",
+    "name": "Name",
+    "password": "Password",
+    "expires": "Expires",
+    "utm": "UTM"
+  },
+  "composer": {
+    "placeholder": "Paste a link, drop a file, or type / for commands…",
+    "send": "Send",
+    "attach": "Attach a file",
+    "removeFile": "Remove attachment",
+    "commands": "Commands",
+    "footnote": "I create things right away and show the settings back so you can check; ask me to fix anything wrong. Deleting always asks first."
+  },
+  "empty": {
+    "title": "How can I help?",
+    "hint": "Try one of these to get started:"
+  },
+  "examples": {
+    "one": "Create a link to example.com with a password",
+    "two": "Create a link that expires next week",
+    "three": "Show my top links this month"
+  },
+  "newChatConfirm": {
+    "title": "Start a new chat?",
+    "description": "This clears the current conversation. It cannot be undone.",
+    "confirm": "New chat",
+    "cancel": "Cancel"
+  },
+  "error": {
+    "notEntitled": "The AI assistant is not included in your current plan. Upgrade to start using it.",
+    "offline": "You appear to be offline. Check your connection and try again.",
+    "generic": "Something went wrong. Please try again."
+  },
+  "usage": {
+    "thisMonth": "this month",
+    "label": "AI budget used this month"
+  },
+  "chart": {
+    "title": "Interactions over time",
+    "linkClicks": "Link clicks",
+    "qrScans": "QR scans",
+    "nfcTaps": "NFC taps",
+    "noData": "No data to chart yet."
+  },
+  "qr": {
+    "groupLabel": "{{count}} QR codes"
+  },
+  "feedback": {
+    "up": "Helpful answer",
+    "down": "Not helpful"
+  },
+  "dock": {
+    "hint": "create links, publish files, ask about numbers",
+    "collapse": "Collapse",
+    "expand": "Reopen conversation",
+    "resize": "Drag to resize"
+  },
+  "slash": {
+    "link": "Shorten a link",
+    "file": "Publish a file as an artifact",
+    "qr": "Get the QR of the latest link",
+    "stats": "Ask about numbers"
+  },
+  "justCreatedByChat": "Just created via chat"
+}

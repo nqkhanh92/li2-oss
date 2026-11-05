@@ -1,0 +1,33 @@
+{
+  "label": "Integration",
+  "description": "Choose an app to add a connection",
+  "integration_list": {
+    "parcelvoy": {
+      "label": "Parcelvoy",
+      "description": "An automated messaging and customer engagement tool"
+    },
+    "mautic": {
+      "label": "Mautic",
+      "description": "Integrate with Mautic for marketing automation"
+    },
+    "hubspot": {
+      "label": "Hubspot",
+      "description": "Sync with HubSpot CRM and marketing tools"
+    },
+    "google_sheets": {
+      "label": "Google Sheets",
+      "description": "Sync data with Google Sheets for each links/qr code interactions."
+    },
+    "all_integrations": "All Integrations",
+    "configuration": "Configuration",
+    "documentation": "Documentation",
+    "overview": "Overview",
+    "connection_status": "Connection status",
+    "connected_google": "Connected to Google Sheets",
+    "not_connected_google": "Not connected to Google Sheets",
+    "data_actions": "Data actions",
+    "export_csv_data": "Export CSV data",
+    "export_visits": "Export visits",
+    "import_links_qr": "Import links / QR"
+  }
+}

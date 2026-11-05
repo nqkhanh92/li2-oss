@@ -1,0 +1,87 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# app logs
+/logs
+
+# local env files
+.env*.local
+.env
+.env.development
+.env.production
+.env*.bk
+# Kho nen chua env — khong duoc lot vao commit (.env.rar / .env.zip da ton tai trong repo
+# tu 13/04 va truoc day KHONG he duoc che; `git add -A` se commit thang secret).
+.env.rar
+.env.zip
+.env*.rar
+.env*.zip
+.env*.7z
+.env*.tar
+.env*.tgz
+.env*.gz
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# demo build artifacts
+demo/**/dist/
+
+
+# Sentry Config File
+.env.sentry-build-plugin
+
+yarn.lock
+supabase/.temp
+
+.github/prompts
+# CLAUDE.md ĐƯỢC TRACK TỪ 2026-10-06: nó từng bị ignore, nên khi chuyển workspace sang máy khác
+# toàn bộ hướng dẫn dự án biến mất và mọi phiên trên máy mới làm việc mù. Không ignore lại.
+
+yalc.lock
+.yalc
+
+*.local*
+.gitnexus
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+
+# ripgrep's own ignore file — local tooling (it re-admits graft/ to search).
+# Listed here because it is NOT part of any feature, and while it sat untracked on
+# disk every `git add -A` kept pulling it back into a feature branch.
+/.ignore
+
+# Remotion: chưa cài dependency `remotion`, 17 lỗi tsc nếu đưa vào typecheck.
+# Từng bị `git add -A` quét nhầm vào một commit artifact (dfbe7e80) — xem log.md 2026-10-01.
+src/remotion/
+
+# plugin submission packages (scripts/plugin-zip.mjs)
+/dist/

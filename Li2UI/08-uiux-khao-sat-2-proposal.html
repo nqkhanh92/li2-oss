@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiHi — Khảo sát UI/UX & 2 đề xuất</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --navy:#000D27; --blue:#4580F7; --ink:#1A2230; --mut:#64748B;
+    --line:#D6DDE6; --bg:#F7F8FA; --card:#fff;
+    --bad:#DC2F3E; --warn:#D9890B; --ok:#16A34A;
+  }
+  body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       color:var(--ink);background:var(--bg)}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 90px}
+
+  h1{font-size:30px;letter-spacing:-.025em;margin-bottom:6px}
+  h2{font-size:22px;letter-spacing:-.02em;margin:0 0 4px}
+  h3{font-size:16px;margin:0 0 10px}
+  .sub{color:var(--mut);font-size:13.5px}
+  header{border-bottom:3px solid var(--navy);padding-bottom:18px;margin-bottom:30px}
+
+  section{margin:46px 0 0}
+  .shead{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;
+         border-bottom:1px solid var(--line);padding-bottom:10px}
+  .snum{width:30px;height:30px;flex:none;border-radius:50%;background:var(--navy);color:#fff;
+        font-size:14px;font-weight:600;display:grid;place-items:center}
+
+  /* ── số liệu ───────────────────────────────── */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .kpi .n{font-size:30px;font-weight:650;letter-spacing:-.03em;line-height:1.1}
+  .kpi .d{font-size:11.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+  .kpi .x{font-size:12px;color:var(--mut);margin-top:7px;padding-top:7px;border-top:1px dashed var(--line)}
+  .kpi.bad .n{color:var(--bad)} .kpi.warn .n{color:var(--warn)} .kpi.ok .n{color:var(--ok)}
+
+  /* ── thanh tỉ lệ ───────────────────────────── */
+  .bars{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .bar{display:grid;grid-template-columns:132px 1fr 88px;gap:12px;align-items:center;margin:9px 0;font-size:13px}
+  .bar .t{text-align:right;color:var(--mut);font-variant-numeric:tabular-nums}
+  .track{height:20px;background:#EDF0F4;border-radius:4px;overflow:hidden;display:flex}
+  .fill{height:100%} .f-bad{background:var(--bad)} .f-ok{background:var(--ok)}
+  .f-mut{background:#C3CCD8} .f-blue{background:var(--blue)}
+  .bar .v{font-size:12.5px;color:var(--mut);font-variant-numeric:tabular-nums}
+
+  /* ── wireframe ─────────────────────────────── */
+  .mock{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+        box-shadow:0 1px 3px rgba(16,24,40,.06)}
+  .mock-bar{background:var(--navy);color:#fff;padding:9px 14px;font-size:12px;
+            display:flex;align-items:center;gap:8px}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.3)}
+  .mock-body{display:grid;grid-template-columns:186px 1fr;min-height:400px}
+  .side{background:#F3F5F8;border-right:1px solid var(--line);padding:14px 10px}
+  .sgroup{font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;
+          margin:14px 8px 7px;font-weight:600}
+  .sgroup:first-child{margin-top:0}
+  .sitem{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:7px;
+         font-size:12.5px;color:#475569;margin-bottom:2px}
+  .sitem.on{background:var(--navy);color:#fff;font-weight:500}
+  .sitem.dim{opacity:.33}
+  .sitem .ic{width:15px;text-align:center;font-size:12px}
+  .sbadge{margin-left:auto;background:var(--blue);color:#fff;font-size:9.5px;
+          padding:1px 6px;border-radius:9px;font-weight:600}
+  .sitem.on .sbadge{background:rgba(255,255,255,.26)}
+  .main{padding:16px;background:#FCFCFD}
+
+  .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+  .ph .ttl{font-size:16px;font-weight:600}
+  .btn{background:var(--navy);color:#fff;font-size:11.5px;padding:6px 13px;border-radius:7px;font-weight:500}
+  .btn.gh{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn.bl{background:var(--blue)}
+
+  .drop{border:2px dashed #BFCAD8;border-radius:10px;padding:18px;text-align:center;
+        background:#fff;margin-bottom:13px}
+  .drop .big{font-size:13.5px;font-weight:500;margin-bottom:3px}
+  .drop .sm{font-size:11.5px;color:var(--mut)}
+
+  .row{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);
+       border-radius:9px;padding:11px 13px;margin-bottom:8px}
+  .thumb{width:36px;height:36px;flex:none;border-radius:7px;background:#EEF2F7;
+         display:grid;place-items:center;font-size:15px}
+  .rbody{flex:1;min-width:0}
+  .rtitle{font-size:13px;font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rmeta{font-size:11px;color:var(--mut);margin-top:2px;display:flex;gap:9px;flex-wrap:wrap}
+  .chip{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;white-space:nowrap}
+  .c-pub{background:#FEF0C7;color:#92400E}
+  .c-lock{background:#DCFCE7;color:#15803D}
+  .c-goog{background:#DBEAFE;color:#1D4ED8}
+  .c-priv{background:#F1F5F9;color:#475569}
+  .qr{width:30px;height:30px;flex:none;border-radius:5px;
+      background:repeating-conic-gradient(var(--ink) 0 25%,#fff 0 50%) 0 0/8px 8px}
+
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:13px}
+  .mini{background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px}
+  .mini .mn{font-size:21px;font-weight:650;letter-spacing:-.02em}
+  .mini .ml{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.055em;margin-top:3px}
+
+  /* chat-first */
+  .cmd{background:#fff;border:2px solid var(--navy);border-radius:11px;padding:13px 15px;
+       display:flex;align-items:center;gap:11px;margin-bottom:12px}
+  .cmd .cue{color:var(--blue);font-weight:700;font-size:16px}
+  .cmd .ip{flex:1;color:#94A3B8;font-size:13.5px}
+  .cmd .kbd{font-size:10px;color:var(--mut);border:1px solid var(--line);
+            border-radius:4px;padding:2px 6px}
+  .sugg{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .sg{background:#fff;border:1px solid var(--line);border-radius:16px;padding:5px 12px;
+      font-size:11.5px;color:#475569}
+  .sg.hot{border-color:var(--blue);color:var(--blue);background:#F0F6FF;font-weight:500}
+
+  .bubble{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px;margin-bottom:9px}
+  .bubble.me{background:var(--navy);color:#fff;margin-left:70px;border-color:var(--navy)}
+  .bmeta{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+  .bubble.me .bmeta{color:rgba(255,255,255,.55)}
+  .res{display:flex;gap:11px;align-items:center;background:#F8FAFC;border:1px solid var(--line);
+       border-radius:8px;padding:10px;margin-top:9px}
+
+  /* ── bảng ──────────────────────────────────── */
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);
+        border-radius:10px;overflow:hidden;font-size:13.5px}
+  th{background:#F3F5F8;padding:10px 12px;text-align:left;font-size:11px;
+     text-transform:uppercase;letter-spacing:.055em;color:#64748B;font-weight:600}
+  td{padding:10px 12px;border-top:1px solid #EDF0F4;vertical-align:top}
+  td code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:11.5px;
+          font-family:ui-monospace,Menlo,monospace}
+  .num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .no{color:var(--bad);font-weight:600} .yes{color:var(--ok);font-weight:600}
+  .mid{color:var(--warn);font-weight:600}
+
+  /* ── callout ───────────────────────────────── */
+  .note{border-left:4px solid var(--navy);background:#fff;border-radius:0 9px 9px 0;
+        padding:13px 16px;margin:16px 0}
+  .note.bad{border-color:var(--bad);background:#FEF4F4}
+  .note.warn{border-color:var(--warn);background:#FFFBEB}
+  .note.ok{border-color:var(--ok);background:#F2FBF5}
+  .note b{font-weight:650}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);
+       font-weight:650;margin-bottom:8px}
+
+  .flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:#fff;
+        border:1px solid var(--line);border-radius:9px;padding:13px;margin:9px 0}
+  .step{background:#F1F5F9;border-radius:7px;padding:6px 11px;font-size:12px;white-space:nowrap}
+  .step.hl{background:var(--navy);color:#fff;font-weight:500}
+  .step.cut{background:#FEE;color:var(--bad);text-decoration:line-through;opacity:.65}
+  .arw{color:#B6C2D0;font-size:12px}
+
+  .ptag{display:inline-block;background:var(--navy);color:#fff;font-size:10.5px;padding:3px 10px;
+        border-radius:14px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+  .ptag.b{background:var(--blue)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);
+         color:var(--mut);font-size:12.5px}
+  @media(max-width:900px){
+    .two{grid-template-columns:1fr}.mock-body{grid-template-columns:1fr}
+    .side{border-right:0;border-bottom:1px solid var(--line)}
+    .cards3{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>LiHi — khảo sát UI/UX &amp; hai đề xuất</h1>
+  <div class="sub">02/11/2026 · ba agent khảo sát song song · mọi con số đo trên LiHi, đã verify lại từng cái</div>
+</header>
+
+<!-- ═══ 1. ĐO ĐƯỢC GÌ ═══ -->
+<section>
+  <div class="shead"><div class="snum">1</div><div><h2>Đo được gì</h2>
+    <div class="sub">Không phải cảm nhận — đếm trên code và DB thật</div></div></div>
+
+  <div class="kpis">
+    <div class="kpi bad"><div class="n">13<span style="font-size:17px;color:var(--mut)">/71</span></div>
+      <div class="d">Trang vào được</div><div class="x">37 trang mồ côi · 0 đường vào</div></div>
+    <div class="kpi bad"><div class="n">90%</div>
+      <div class="d">Dữ liệu là artifact</div><div class="x">70 ARTIFACT / 8 URL</div></div>
+    <div class="kpi bad"><div class="n">0</div>
+      <div class="d">Mục sidebar cho artifact</div><div class="x">Và 0 mục cho AI</div></div>
+    <div class="kpi warn"><div class="n">28<span style="font-size:17px;color:var(--mut)">/32</span></div>
+      <div class="d">Artifact đang công khai</div><div class="x">Phần lớn không do ai chọn</div></div>
+    <div class="kpi bad"><div class="n">32<span style="font-size:17px;color:var(--mut)">/1146</span></div>
+      <div class="d">File có dark mode</div><div class="x">Mà công tắc thì có thật</div></div>
+    <div class="kpi warn"><div class="n">2.6<span style="font-size:17px;color:var(--mut)">:1</span></div>
+      <div class="d">Màu cứng / token</div><div class="x">8652 vs 3386 lượt</div></div>
+  </div>
+
+  <div class="bars" style="margin-top:14px">
+    <div class="lbl">Bốn tỉ lệ nói cùng một chuyện</div>
+
+    <div class="bar"><div class="t">Trang tới được</div>
+      <div class="track"><div class="fill f-ok" style="width:18%"></div><div class="fill f-mut" style="width:82%"></div></div>
+      <div class="v">13 / 71</div></div>
+
+    <div class="bar"><div class="t">Màu qua token</div>
+      <div class="track"><div class="fill f-ok" style="width:28%"></div><div class="fill f-mut" style="width:72%"></div></div>
+      <div class="v">3386 / 12038</div></div>
+
+    <div class="bar"><div class="t">File có dark:</div>
+      <div class="track"><div class="fill f-ok" style="width:2.8%"></div><div class="fill f-mut" style="width:97.2%"></div></div>
+      <div class="v">32 / 1146</div></div>
+
+    <div class="bar"><div class="t">Artifact có khoá</div>
+      <div class="track"><div class="fill f-ok" style="width:12.5%"></div><div class="fill f-bad" style="width:87.5%"></div></div>
+      <div class="v">4 / 32</div></div>
+
+    <div style="margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--mut)">
+      Thanh xanh = phần được chăm. Thanh xám = phần đã xây mà bỏ đó.
+      <b style="color:var(--ink)">Thứ đã xây nhiều hơn thứ được chăm, ở cả bốn trục.</b>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2. HIỆN TRẠNG ═══ -->
+<section>
+  <div class="shead"><div class="snum">2</div><div><h2>Hiện trạng — vẽ ra thì thấy ngay</h2>
+    <div class="sub">Sidebar thật sau khi áp 7 cờ tắt trên LiHi</div></div></div>
+
+  <div class="two">
+    <div>
+      <div class="lbl">Sidebar đang chạy (Owner thấy 4 mục · Viewer thấy 3)</div>
+      <div class="mock">
+        <div class="mock-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span style="margin-left:6px;opacity:.75">app.example.com</span></div>
+        <div class="mock-body" style="grid-template-columns:1fr;min-height:0">
+          <div class="side" style="border:0">
+            <div class="sgroup">Quản lý liên kết</div>
+            <div class="sitem"><span class="ic">🌐</span>Domain riêng
+              <span style="margin-left:auto;font-size:9px;color:#94A3B8">Owner</span></div>
+            <div class="sitem on"><span class="ic">🔗</span>Link &amp; Artifact</div>
+            <div class="sitem"><span class="ic">📈</span>Analytics</div>
+            <div class="sitem"><span class="ic">👥</span>Khách hàng</div>
+            <div style="margin-top:16px;padding:11px;background:#FEF4F4;border:1px dashed #F3C9C5;
+                        border-radius:8px;font-size:11.5px;color:#9B2C2C">
+              <b>Hết.</b> Nhóm <i>Tổng quan</i> và <i>Hành vi tương tác</i> bị tắt cả nhóm.<br>
+              Artifact — 90% dữ liệu — không có mục nào.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="lbl">71 trang đi về đâu</div>
+      <table>
+        <tr><th>Nhóm</th><th class="num">Số</th><th>Người dùng gặp gì</th></tr>
+        <tr><td><b>Vào được</b></td><td class="num yes">13</td><td>Bình thường</td></tr>
+        <tr><td>Mồ côi trong org</td><td class="num no">34</td><td>Render được, <b>0 đường vào</b></td></tr>
+        <tr><td>Mồ côi ngoài org</td><td class="num no">3</td><td><code>apps</code> <code>billing</code> <code>upgrade</code></td></tr>
+        <tr><td>Bị cờ chặn</td><td class="num mid">13</td><td>Bấm vào → redirect/404</td></tr>
+        <tr><td>Middleware đổi hướng</td><td class="num mid">3</td><td><code>spaces</code> ×3</td></tr>
+        <tr><td><b>Chặn cứng</b></td><td class="num no">2</td><td><code>/payment</code> — mọi URL chứa chuỗi này bị đẩy về <code>/</code></td></tr>
+      </table>
+      <div class="note bad" style="margin-top:12px">
+        <b>QR và NFC — hai chữ trong tên sản phẩm — không có lối vào nào.</b><br>
+        <span style="font-size:13px">Thanh tab dẫn tới chúng chỉ render ở <i>chính trang QR</i>
+        (<code>qr-code-view.tsx:17</code>) — muốn vào tab phải đã ở trong tab.
+        Hai chỗ import khác đều bị comment.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note bad">
+    <b>Bất đối xứng ngược hướng mission — đây là lỗi nặng nhất về luồng.</b>
+    <div class="flow" style="margin:11px 0 5px">
+      <span style="font-size:11.5px;color:var(--mut);width:62px">KHOÁ lại</span>
+      <span class="step">bấm hàng</span><span class="arw">→</span>
+      <span class="step">cuộn qua 3 khối</span><span class="arw">→</span>
+      <span class="step">chọn chế độ</span><span class="arw">→</span>
+      <span class="step">nhập mật khẩu</span><span class="arw">→</span>
+      <span class="step">cuộn lên lưu</span><span class="arw">→</span>
+      <span class="step">xong</span>
+      <span style="margin-left:auto;font-weight:650;color:var(--bad)">5 bấm</span>
+    </div>
+    <div class="flow" style="margin:5px 0 0">
+      <span style="font-size:11.5px;color:var(--mut);width:62px">MỞ công khai</span>
+      <span class="step hl">menu hàng → Công khai</span>
+      <span style="font-size:11.5px;color:var(--bad);margin-left:7px">không hỏi xác nhận</span>
+      <span style="margin-left:auto;font-weight:650;color:var(--bad)">1 bấm</span>
+    </div>
+    <div style="font-size:12.5px;color:var(--mut);margin-top:9px">
+      <code>artifact-card.tsx:88</code> — và menu hàng <b>không có mục nào để khoá</b>.
+      Sản phẩm bán "kiểm soát ai được xem" lại làm việc mở dễ gấp 5 lần việc khoá.
+    </div>
+  </div>
+
+  <div class="two">
+    <div>
+      <div class="lbl">Bốn đường xuất bản, ba đều mặc định công khai</div>
+      <table>
+        <tr><th>Đường</th><th>Vào từ</th><th class="num">Bấm</th><th>Quyền xem</th></tr>
+        <tr><td>Kẹp giấy ở ô dán</td><td>Trang chủ</td><td class="num">2</td><td class="no">hardcode public</td></tr>
+        <tr><td>Ô thả ở <code>/artifacts</code></td><td class="no">không có sidebar</td><td class="num">2</td><td class="no">hardcode public</td></tr>
+        <tr><td>Trang tạo đầy đủ</td><td>Tạo mới → tab</td><td class="num">4</td><td class="yes">chọn được 4</td></tr>
+        <tr><td>Chat AI</td><td>Navbar</td><td class="num">3</td><td class="mid">theo lời yêu cầu</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="lbl">Token tự mâu thuẫn — tên class nói một đằng, màu ra một nẻo</div>
+      <table>
+        <tr><th>Token</th><th>Giá trị thật</th><th class="num">Dùng</th></tr>
+        <tr><td><code>text-gray-50</code></td><td>#5E6C7D <span class="no">xám TRUNG TỐI</span></td><td class="num">68</td></tr>
+        <tr><td><code>neutral-900</code></td><td>#7C8B9C <span class="no">xám NHẠT</span></td><td class="num">—</td></tr>
+        <tr><td><code>neutral-50</code></td><td>#FAFAFA <span class="mid">Tailwind gốc</span></td><td class="num">5</td></tr>
+        <tr><td><code>primary</code> light</td><td>#000D27 navy gần đen</td><td class="num">—</td></tr>
+        <tr><td><code>primary</code> dark</td><td>#3A79D1 <span class="no">màu KHÁC, không phải sáng hơn</span></td><td class="num">—</td></tr>
+        <tr><td><code>teriaty</code></td><td colspan="2" class="no">lỗi chính tả — đúng là <i>tertiary</i></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3. PROPOSAL A ═══ -->
+<section>
+  <div class="shead"><div class="snum">3</div><div>
+    <h2>Đề xuất A <span class="ptag">Nội dung làm trung tâm</span></h2>
+    <div class="sub">Sidebar nói đúng cái sản phẩm là. Artifact lên trước, trạng thái quyền xem hiện trên mỗi hàng.</div></div></div>
+
+  <div class="mock">
+    <div class="mock-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span style="margin-left:6px;opacity:.75">app.example.com/org/…/noi-dung</span></div>
+    <div class="mock-body">
+      <div class="side">
+        <div class="sgroup">Nội dung</div>
+        <div class="sitem on"><span class="ic">📄</span>Nội dung<span class="sbadge">70</span></div>
+        <div class="sitem"><span class="ic">🔗</span>Link ngắn<span class="sbadge" style="background:#C3CCD8">8</span></div>
+        <div class="sitem"><span class="ic">▦</span>Mã QR</div>
+        <div class="sitem"><span class="ic">✦</span>Trợ lý AI</div>
+
+        <div class="sgroup">Người xem</div>
+        <div class="sitem"><span class="ic">👥</span>Khán giả</div>
+        <div class="sitem"><span class="ic">📈</span>Lượt mở</div>
+
+        <div class="sgroup">Cài đặt</div>
+        <div class="sitem"><span class="ic">🌐</span>Domain riêng</div>
+        <div class="sitem dim"><span class="ic">💳</span>Gói &amp; thanh toán</div>
+      </div>
+
+      <div class="main">
+        <div class="ph"><div class="ttl">Nội dung</div>
+          <div style="display:flex;gap:7px">
+            <span class="btn gh">Lọc</span><span class="btn">+ Thêm nội dung</span></div></div>
+
+        <div class="cards3">
+          <div class="mini"><div class="mn">70</div><div class="ml">Đang phục vụ</div></div>
+          <div class="mini"><div class="mn" style="color:var(--warn)">66</div><div class="ml">Ai có link cũng mở</div></div>
+          <div class="mini"><div class="mn" style="color:var(--blue)">4</div><div class="ml">Biết được người xem</div></div>
+        </div>
+
+        <div class="drop">
+          <div class="big">Thả file vào đây, hoặc dán một đường link</div>
+          <div class="sm">PDF · Word · Excel · ảnh · slide · HTML — 19 loại</div>
+        </div>
+
+        <div class="row">
+          <div class="thumb">📕</div>
+          <div class="rbody"><div class="rtitle">Báo giá tháng 11 — Công ty ABC.pdf</div>
+            <div class="rmeta"><span>lihi.cyb/bao-gia-11</span><span>12 lượt mở</span><span>3 người</span></div></div>
+          <span class="chip c-goog">Google · biết tên</span><div class="qr"></div>
+        </div>
+
+        <div class="row">
+          <div class="thumb">📊</div>
+          <div class="rbody"><div class="rtitle">Menu quán — bản in QR dán bàn</div>
+            <div class="rmeta"><span>lihi.cyb/menu-quan</span><span>284 lượt mở</span></div></div>
+          <span class="chip c-pub">Ai có link</span><div class="qr"></div>
+        </div>
+
+        <div class="row" style="border-color:#F3C9C5;background:#FFFCFC">
+          <div class="thumb">📄</div>
+          <div class="rbody"><div class="rtitle">Hợp đồng NDA — chưa khoá</div>
+            <div class="rmeta"><span>lihi.cyb/hd-nda</span>
+              <span style="color:var(--bad);font-weight:600">⚠ nên khoá lại</span></div></div>
+          <span class="btn bl" style="font-size:10.5px;padding:5px 11px">Khoá ngay</span><div class="qr"></div>
+        </div>
+
+        <div class="row">
+          <div class="thumb">🔗</div>
+          <div class="rbody"><div class="rtitle">Khuyến mãi Tết → shopee.vn/…</div>
+            <div class="rmeta"><span>lihi.cyb/tet-2027</span><span>1.204 lượt bấm</span></div></div>
+          <span class="chip c-priv">Link ngắn</span><div class="qr"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two" style="margin-top:16px">
+    <div>
+      <div class="lbl">Năm thứ thay đổi</div>
+      <table>
+        <tr><th>Việc</th><th>Giải vấn đề nào</th></tr>
+        <tr><td><b>Sidebar đổi theo dữ liệu thật</b> — Nội dung lên đầu, có số đếm</td><td>0 mục cho artifact, dù nó là 90% dữ liệu</td></tr>
+        <tr><td><b>Mã QR thành mục riêng</b></td><td>QR/NFC hiện không có lối vào nào</td></tr>
+        <tr><td><b>Trợ lý AI vào sidebar</b>, không còn là icon lẻ</td><td>Thứ sắp thu tiền mà không có mặt trong điều hướng</td></tr>
+        <tr><td><b>Mỗi hàng hiện trạng thái quyền xem</b> + nút "Khoá ngay" tại chỗ</td><td>Khoá 5 bấm / mở 1 bấm → cân lại còn 1 bấm cả hai chiều</td></tr>
+        <tr><td><b>Ba số đếm ở đầu trang</b></td><td>66/70 công khai mà không ai thấy con số đó</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="lbl">Luồng khoá: trước / sau</div>
+      <div class="flow">
+        <span style="font-size:11px;color:var(--mut);width:40px">TRƯỚC</span>
+        <span class="step">bấm hàng</span><span class="arw">→</span>
+        <span class="step cut">cuộn 3 khối</span><span class="arw">→</span>
+        <span class="step">chọn</span><span class="arw">→</span>
+        <span class="step cut">cuộn lên lưu</span>
+      </div>
+      <div class="flow">
+        <span style="font-size:11px;color:var(--mut);width:40px">SAU</span>
+        <span class="step hl">bấm "Khoá ngay" trên hàng</span><span class="arw">→</span>
+        <span class="step">chọn chế độ</span>
+        <span style="margin-left:auto;font-weight:650;color:var(--ok)">2 bấm</span>
+      </div>
+      <div class="note ok" style="margin-top:12px">
+        <b>Giữ nguyên mọi thứ đang chạy.</b><br>
+        <span style="font-size:13px">Không đổi kiến trúc, không đổi component.
+        Đây là sửa <i>điều hướng</i> và <i>thứ hiện trên mỗi hàng</i> — rủi ro thấp nhất trong hai đề xuất.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4. PROPOSAL B ═══ -->
+<section>
+  <div class="shead"><div class="snum">4</div><div>
+    <h2>Đề xuất B <span class="ptag b">Một ô làm mọi việc</span></h2>
+    <div class="sub">AI là lối vào chính, không phải tính năng phụ. Gõ ý muốn thay vì tìm đúng trang.</div></div></div>
+
+  <div class="mock">
+    <div class="mock-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span style="margin-left:6px;opacity:.75">app.example.com</span></div>
+    <div class="mock-body" style="grid-template-columns:62px 1fr">
+      <div class="side" style="padding:14px 8px">
+        <div style="display:grid;gap:12px;justify-items:center">
+          <div style="width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;
+                      display:grid;place-items:center;font-size:15px">✦</div>
+          <div style="width:34px;height:34px;border-radius:9px;background:#E4E9F0;
+                      display:grid;place-items:center;font-size:14px">📄</div>
+          <div style="width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:14px;opacity:.5">👥</div>
+          <div style="width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:14px;opacity:.5">⚙</div>
+        </div>
+      </div>
+
+      <div class="main" style="padding:20px 22px">
+        <div style="text-align:center;margin-bottom:18px">
+          <div style="font-size:19px;font-weight:600;letter-spacing:-.02em">Bạn muốn làm gì?</div>
+          <div class="sub" style="margin-top:3px">Gõ, hoặc thả file vào đây</div>
+        </div>
+
+        <div class="cmd">
+          <span class="cue">›</span>
+          <span class="ip">Xuất bản báo giá này, chỉ khách công ty ABC xem được…</span>
+          <span class="kbd">⏎</span>
+        </div>
+
+        <div class="sugg">
+          <span class="sg hot">📎 Thả file → có link ngay</span>
+          <span class="sg">🔗 Rút gọn một link</span>
+          <span class="sg">▦ Tạo QR để in</span>
+          <span class="sg">👁 Ai đã mở gì tuần này?</span>
+          <span class="sg">🔒 Khoá hết trang đang công khai</span>
+        </div>
+
+        <div class="bubble me">
+          <div class="bmeta">Bạn</div>
+          Xuất bản file này, đặt mật khẩu, rồi cho tôi QR để in dán bàn
+          <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.14);
+                      border-radius:7px;padding:5px 10px;margin-top:9px;font-size:12px">
+            📕 Menu-quan-11-2026.pdf · 2,4 MB</div>
+        </div>
+
+        <div class="bubble">
+          <div class="bmeta">Trợ lý Li2</div>
+          Đã xuất bản. Mật khẩu là <b>mua-thu-2026</b> — chỉ hiện một lần, lưu lại nhé.
+          <div class="res">
+            <div class="qr" style="width:48px;height:48px"></div>
+            <div style="flex:1">
+              <div style="font-size:12.5px;font-weight:600">lihi.cyb/menu-quan-11</div>
+              <div style="font-size:11px;color:var(--mut);margin-top:2px">
+                Menu quán 11/2026 · 12 trang · <span style="color:var(--ok);font-weight:600">🔒 cần mật khẩu</span></div>
+            </div>
+            <span class="btn gh" style="font-size:10.5px">Tải QR</span>
+            <span class="btn gh" style="font-size:10.5px">Sửa</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;margin-top:13px;align-items:center">
+          <span class="sg">Đổi mật khẩu</span>
+          <span class="sg">Cho cả org xem</span>
+          <span class="sg">Xem ai đã mở</span>
+          <span style="font-size:11px;color:var(--mut);margin-left:auto">hoặc gõ tiếp…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two" style="margin-top:16px">
+    <div>
+      <div class="lbl">Vì sao đề xuất này đáng cân nhắc</div>
+      <table>
+        <tr><th>Điểm</th><th>Căn cứ từ số liệu</th></tr>
+        <tr><td><b>Không phải tìm đúng trang</b></td><td>37 trang mồ côi → vấn đề "tìm đường" biến mất thay vì được sửa</td></tr>
+        <tr><td><b>Quyền xem nói bằng tiếng Việt</b>, không phải radio</td><td>66/70 công khai vì không ai được hỏi đúng lúc</td></tr>
+        <tr><td><b>AI đúng vị trí nó sắp mang tiền</b></td><td>Link/QR sẽ miễn phí — AI là chỗ thu tiền</td></tr>
+        <tr><td><b>Hạ tầng đã có sẵn</b></td><td>22 công cụ MCP, chat đang chạy thật trên LiHi</td></tr>
+        <tr><td><b>Chưa ai làm</b></td><td>Lovable/v0/Bolt đều là <i>một người + một AI</i>, không phải nhiều AI cùng chỗ</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="lbl">Và rủi ro — nói thẳng</div>
+      <div class="note bad">
+        <b>Người dùng không biết gõ gì.</b><br>
+        <span style="font-size:13px">Ô trống là ô đáng sợ. Đó là lý do có hàng gợi ý — nhưng
+        gợi ý thì lại chính là một cái menu, chỉ nằm ngang.</span>
+      </div>
+      <div class="note warn">
+        <b>Mỗi lượt gõ là tiền thật.</b><br>
+        <span style="font-size:13px">Dùng AI làm lối vào chính nghĩa là chi phí tăng theo
+        <i>mỗi thao tác</i>, không chỉ theo mỗi người dùng. Phải có hạn mức trước khi mở.</span>
+      </div>
+      <div class="note">
+        <b>Việc lặp lại thì bảng nhanh hơn chat.</b><br>
+        <span style="font-size:13px">"Khoá 20 trang này" gõ một câu là xong — nhưng
+        "sửa tên từng cái" thì bảng thắng. Nên B <b>không bỏ</b> bảng, chỉ đẩy nó xuống icon thứ hai.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5. SO SÁNH ═══ -->
+<section>
+  <div class="shead"><div class="snum">5</div><div><h2>Hai đề xuất cạnh nhau</h2>
+    <div class="sub">Cùng giải một bộ vấn đề, bằng hai cách khác hẳn nhau</div></div></div>
+
+  <table>
+    <tr><th>Vấn đề đã đo</th><th>A — Nội dung làm trung tâm</th><th>B — Một ô làm mọi việc</th></tr>
+    <tr><td>37 trang mồ côi</td>
+      <td class="yes">Sửa điều hướng, dẫn tới chúng</td>
+      <td class="mid">Bỏ qua — không cần tìm trang nữa</td></tr>
+    <tr><td>0 mục sidebar cho artifact</td>
+      <td class="yes">Lên mục đầu tiên, có số đếm</td>
+      <td class="yes">Thành icon thứ hai sau AI</td></tr>
+    <tr><td>Khoá 5 bấm / mở 1 bấm</td>
+      <td class="yes">Cân lại: 2 bấm cả hai chiều</td>
+      <td class="yes">Nói một câu, không bấm</td></tr>
+    <tr><td>66/70 công khai ngoài ý muốn</td>
+      <td class="yes">Hiện cảnh báo trên hàng</td>
+      <td class="yes">Hỏi đúng lúc, bằng tiếng Việt</td></tr>
+    <tr><td>QR/NFC không có lối vào</td>
+      <td class="yes">Mục riêng trong sidebar</td>
+      <td class="mid">Qua câu lệnh, không có kho riêng</td></tr>
+    <tr><td>Dark mode vỡ 95% màn hình</td>
+      <td class="no">Không giải — việc riêng</td>
+      <td class="mid">Ít màn hình hơn nên rẻ hơn</td></tr>
+    <tr><td>8652 màu cứng</td>
+      <td class="no">Không giải — việc riêng</td>
+      <td class="no">Không giải — việc riêng</td></tr>
+    <tr style="background:#FAFBFC"><td><b>Công sức</b></td>
+      <td><b>Thấp</b> — sửa điều hướng + thẻ hàng</td>
+      <td><b>Cao</b> — bề mặt mới, cần hạn mức AI trước</td></tr>
+    <tr style="background:#FAFBFC"><td><b>Rủi ro</b></td>
+      <td><b>Thấp</b> — không đụng kiến trúc</td>
+      <td><b>Cao</b> — chưa ai chứng minh người Việt chịu gõ</td></tr>
+    <tr style="background:#FAFBFC"><td><b>Khớp mission mới</b></td>
+      <td>Khớp phần <i>nội dung</i></td>
+      <td>Khớp phần <i>người và AI cùng làm</i></td></tr>
+  </table>
+
+  <div class="note ok" style="margin-top:16px">
+    <b>Hai cái này không loại trừ nhau — và đó là điểm đáng chú ý nhất.</b>
+    <div class="flow" style="margin:11px 0 0;background:transparent;border:0;padding:0">
+      <span class="step hl">A trước</span><span class="arw">→</span>
+      <span class="step">đo xem người ta dùng chat bao nhiêu</span><span class="arw">→</span>
+      <span class="step hl">B sau, nếu số liệu ủng hộ</span>
+    </div>
+    <div style="font-size:13px;color:var(--mut);margin-top:9px">
+      A sửa thứ đang hỏng và rẻ. B là cược vào tương lai sản phẩm.
+      Làm A không chặn đường làm B — nhưng làm B trước thì không ai biết A có đủ chưa.
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b>Và một việc nằm ngoài cả hai, nhưng phải làm:</b> dark mode.<br>
+    <span style="font-size:13px">Công tắc có thật (<code>user-nav.tsx:171</code>) nhưng 3/4 feature đang bật có
+    <code>dark:</code> = <b>0 tuyệt đối</b>. Bấm vào là chữ 1.03:1 trên nền tối — vô hình.
+    <b>Rẻ nhất là tạm ẩn công tắc</b>, cho tới khi có người làm thật.</span>
+  </div>
+</section>
+
+<!-- ═══ 6. GHI CHÚ ═══ -->
+<section>
+  <div class="shead"><div class="snum">6</div><div><h2>Về cách khảo sát này</h2>
+    <div class="sub">Nói rõ cái gì đo được, cái gì là nhận định</div></div></div>
+
+  <div class="two">
+    <div>
+      <div class="lbl">Đo được, đã verify lại từng con số</div>
+      <table>
+        <tr><td>13/71 trang vào được</td><td class="num">đếm</td></tr>
+        <tr><td>70 ARTIFACT / 8 URL trên LiHi</td><td class="num">SQL</td></tr>
+        <tr><td>28/32 artifact công khai</td><td class="num">SQL</td></tr>
+        <tr><td>32/1146 file có <code>dark:</code></td><td class="num">grep</td></tr>
+        <tr><td>8652 màu cứng / 3386 token</td><td class="num">grep</td></tr>
+        <tr><td><code>text-gray-50</code> = #5E6C7D, dùng 68 lần</td><td class="num">đọc CSS</td></tr>
+        <tr><td><code>makePublic</code> không confirm</td><td class="num">đọc code</td></tr>
+        <tr><td>Tab QR chỉ render trong trang QR</td><td class="num">grep</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="lbl">Nhận định, không phải số đo</div>
+      <div class="note">
+        <span style="font-size:13.5px">
+        · <b>Thứ tự sidebar</b> trong đề xuất A là nhận định của tôi dựa trên tỉ lệ dữ liệu, không phải
+        kết quả test với người dùng.<br><br>
+        · <b>Người Việt có chịu gõ câu lệnh không</b> — tôi không có dữ liệu. Đề xuất B đứng hay sụp ở câu đó.<br><br>
+        · <b>Quy mô prod</b> chưa xác minh. Mọi số ở đây đo trên <b>LiHi là staging</b>, không phản ánh production.
+        </span>
+      </div>
+      <div class="note warn">
+        <b>Một việc agent đã làm trên LiHi:</b> tạo 1 short link thật khi đo luồng —
+        <code>example.com/6LAAO</code> → <code>example.com/ux-flow-probe</code>. Chưa xoá.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Ba agent khảo sát song song: kiến trúc thông tin · luồng người dùng (có mở trình duyệt thật) · design system.
+  Mọi con số trong trang này tôi đã chạy lại độc lập, không nhận báo cáo làm kết quả.<br><br>
+  <b>Nguồn:</b> <code>menu-list.tsx</code> · <code>globals.css</code> (Tailwind v4, 307 dòng) ·
+  <code>.env.production</code> trên LiHi · bảng <code>touch_points</code>, <code>artifacts</code>,
+  <code>artifact_views</code>, <code>roles</code> (chỉ SELECT).
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "title": "Chọn ứng dụng để đăng nhập",
+  "appName": "$t(common:appName)",
+  "app_desc": "Rút gọn, chia sẻ và quản lý liên kết dễ dàng với $t(common:appName).",
+  "app_button": "Truy cập $t(common:appName)",
+  "parcelvoy": "$t(common:module.parcelvoy)",
+  "parcelvoy_desc": "Gửi tin nhắn tự động và tương tác với khách hàng bằng $t(common:module.parcelvoy).",
+  "parcelvoy_button": "Truy cập $t(common:module.parcelvoy)"
+}

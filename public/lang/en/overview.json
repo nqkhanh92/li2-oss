@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Overview"
+  },
+  "title": "Overview",
+  "subtitle": "Last 7 days · compared to previous 7 days",
+  "trend": {
+    "new": "New"
+  },
+  "chart": {
+    "title": "7-Day Performance",
+    "legend": {
+      "clicks": "Clicks",
+      "pageviews": "Pageviews",
+      "conversions": "Conversions"
+    }
+  },
+  "columns": {
+    "links": {
+      "title": "Links",
+      "totalClicks": "Total Clicks",
+      "unique": "Unique",
+      "avgPerDay": "Avg/Day",
+      "channels": "By Channel",
+      "topLinks": "Top Performing",
+      "empty": {
+        "title": "No clicks",
+        "description": "No click data in the last 7 days."
+      }
+    },
+    "website": {
+      "title": "Website",
+      "pageviews": "Pageviews",
+      "visitors": "Visitors",
+      "sessions": "Sessions",
+      "topSources": "Top Sources",
+      "topPages": "Top Pages",
+      "empty": {
+        "title": "No pageviews",
+        "description": "No pageview data in the last 7 days."
+      }
+    },
+    "conversions": {
+      "title": "Conversions",
+      "totalConversions": "Total Conversions",
+      "leads": "Leads",
+      "sales": "Sales",
+      "rates": "Conversion Rate",
+      "clickToLead": "Click→Lead",
+      "leadToSale": "Lead→Sale",
+      "empty": {
+        "title": "No conversions",
+        "description": "No conversion data in the last 7 days."
+      }
+    }
+  },
+  "locked": {
+    "website": {
+      "title": "Website Analytics",
+      "description": "Track pageviews, visitors, top pages, and traffic sources"
+    },
+    "conversions": {
+      "title": "Conversion Tracking",
+      "description": "Track leads, sales, revenue, and conversion funnels"
+    },
+    "upgradeCta": "Upgrade to Pro"
+  },
+  "planFooter": {
+    "expires": "Exp {{date}}",
+    "upgradeCta": "Upgrade",
+    "manage": "Manage",
+    "quotas": {
+      "links": "Links",
+      "members": "Members",
+      "domains": "Domains",
+      "spaces": "Spaces"
+    }
+  },
+  "error": {
+    "message": "Unable to load overview data.",
+    "retry": "Retry"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "tabs": {
+    "events": "Sự kiện",
+    "customers": "Khách hàng"
+  },
+  "stats": {
+    "totalLeads": "Tổng Leads",
+    "totalCustomers": "Tổng Khách hàng",
+    "totalSales": "Tổng Sales",
+    "totalRevenue": "Tổng Doanh thu"
+  },
+  "funnel": {
+    "title": "Conversion Funnel",
+    "description": "Theo dõi hành trình chuyển đổi từ lượt truy cập đến sales",
+    "filters": "Bộ lọc",
+    "selectDateRange": "Chọn khoảng thời gian",
+    "allTouchPoints": "Tất cả Links",
+    "overall": "Tổng quan",
+    "visits": "Visits",
+    "leads": "Leads",
+    "sales": "Sales",
+    "clicksToLeads": "Visits → Leads",
+    "leadsToSales": "Leads → Sales",
+    "noData": "Không có dữ liệu cho bộ lọc đã chọn",
+    "visits.botExcludedTooltip": "Đã loại trừ bot",
+    "percentage": {
+      "baseline": "Mốc cơ sở (100%)",
+      "ofVisits": "{{percentage}}% trên tổng visits"
+    },
+    "visitsToSales": "Visits → Sales",
+    "rates": {
+      "visitsToLeadsTooltip": "Phần trăm visits chuyển đổi thành leads",
+      "leadsToSalesTooltip": "Phần trăm leads chuyển đổi thành sales",
+      "overallTooltip": "Tỷ lệ chuyển đổi toàn bộ: {{v2l}}% × {{l2s}}% = {{overall}}%"
+    },
+    "attributed": "Từ link",
+    "direct": "Trực tiếp"
+  },
+  "attribution": {
+    "title": "Top Performance",
+    "leads": "Leads",
+    "sales": "Sales",
+    "cvr": "CVR",
+    "revenue": "Doanh thu",
+    "topPerformer": "Top Performer",
+    "aboveAverage": "Trên trung bình",
+    "belowAverage": "Dưới trung bình",
+    "no_data": "Không có dữ liệu sales cho khoảng thời gian đã chọn",
+    "touchpoint": "Link",
+    "visits": "Visits",
+    "total_visits": "Tổng Visits",
+    "total_leads": "Tổng Leads",
+    "total_sales": "Tổng Sales",
+    "total_revenue": "Tổng Doanh thu",
+    "direct": "Trực tiếp",
+    "direct_description": "Chuyển đổi không qua link theo dõi"
+  },
+  "events": {
+    "title": "Conversion Events",
+    "searchPlaceholder": "Tìm kiếm theo email hoặc tên...",
+    "columns": {
+      "eventName": "Tên sự kiện",
+      "customer": "Khách hàng",
+      "touchPoint": "Link",
+      "type": "Loại",
+      "amount": "Số tiền",
+      "createdAt": "Ngày tạo",
+      "sourceLead": "Lead nguồn"
+    },
+    "empty": "Không tìm thấy conversion events",
+    "anonymous": "Ẩn danh",
+    "fromLead": "từ \"{{leadName}}\"",
+    "direct": "Trực tiếp",
+    "directDescription": "Không qua short link"
+  },
+  "customers": {
+    "title": "Customer Profiles",
+    "searchPlaceholder": "Tìm kiếm theo email hoặc tên...",
+    "columns": {
+      "name": "Tên",
+      "email": "Email",
+      "phone": "Số điện thoại",
+      "leadCount": "Leads",
+      "firstTouchPoint": "Link đầu tiên",
+      "createdAt": "Ngày tạo"
+    },
+    "empty": "Không tìm thấy customer profiles"
+  },
+  "pagination": {
+    "showing": "Hiển thị {{from}} đến {{to}} trong tổng số {{total}}"
+  },
+  "plan_upgrade": {
+    "title": "Conversion Tracking không có trong gói hiện tại của bạn",
+    "description": "Nâng cấp gói để theo dõi leads, sales và phân bổ chuyển đổi cho các link của bạn."
+  },
+  "filters": {
+    "eventName": {
+      "all": "Tất cả sự kiện"
+    }
+  },
+  "demo": {
+    "badge": "Tính năng Pro",
+    "demoNotice": "Đây là báo cáo mẫu với dữ liệu demo.",
+    "getStarted": { "cta": "Tiếp tục" },
+    "hero": {
+      "title": "Theo dõi mọi Lead, Sale & Doanh thu",
+      "desc": "Conversion Tracking kết nối link của bạn với kết quả kinh doanh thực — xem ai đã chuyển đổi, từ link nào và mỗi link mang lại bao nhiêu doanh thu."
+    },
+    "features": {
+      "trackConversions": {
+        "title": "Theo dõi Leads & Sales",
+        "desc": "Tự động ghi lại mọi lần gửi form lead và sự kiện mua hàng gắn với short link của bạn."
+      },
+      "funnelView": {
+        "title": "Trực quan hóa Funnel",
+        "desc": "Xem toàn bộ hành trình từ lượt click đến lead đến sale với tỷ lệ chuyển đổi từng bước."
+      },
+      "attribution": {
+        "title": "Phân bổ theo Link",
+        "desc": "Biết chính xác link và chiến dịch nào đang tạo ra nhiều leads và doanh thu nhất."
+      },
+      "revenue": {
+        "title": "Doanh thu theo Link",
+        "desc": "Theo dõi số tiền bán hàng và tổng doanh thu được phân bổ cho từng link hoặc chiến dịch."
+      }
+    }
+  }
+}

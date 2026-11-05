@@ -1,0 +1,10 @@
+{
+  "search.exclude": {
+    "**/docs": true,
+    "**/kb": true
+  },
+  "i18n-ally.localesPaths": ["public/lang", "src/shared/lib/i18n"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.namespace": true,
+  "files.watcherExclude": { "**/.next/**": true, "**/node_modules/**": true, "**/dist/**": true }
+}

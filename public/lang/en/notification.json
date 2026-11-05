@@ -1,0 +1,131 @@
+{
+  "title": "Notifications",
+  "unread": "unread",
+  "mark_all_read": "Mark all read",
+  "mark_as_read": "Mark as read",
+  "delete": "Delete",
+  "no_notifications": "No notifications yet",
+  "view_all": "View all notifications ({{count}})",
+  "view_all_link": "View all",
+  "all_notifications": "All Notifications",
+  "showing": "Showing {{from}}–{{to}} of {{total}}",
+  "mark_all_as_read": "Mark all as read",
+  "show": "Show:",
+  "filters": "Filters:",
+  "category": "Category",
+  "priority": "Priority",
+  "status": "Status",
+  "all_categories": "All Categories",
+  "all_priorities": "All Priorities",
+  "all": "All",
+  "unread_filter": "Unread",
+  "read": "Read",
+  "clear_filters": "Clear filters ({{count}})",
+  "failed_to_load": "Failed to load notifications.",
+  "retry": "Retry",
+  "no_match_filters": "No notifications match your filters",
+  "try_clear_filters": "Try adjusting or clearing your filters.",
+  "page_of": "Page {{page}} of {{total}}",
+  "previous": "Previous",
+  "next": "Next",
+  "new": "New",
+  "categories": {
+    "touchpoint": "Touchpoint",
+    "billing": "Billing",
+    "system": "System",
+    "security": "Security"
+  },
+  "priorities": {
+    "urgent": "Urgent",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "priority_label": "{{priority}} priority",
+  "types": {
+    "invitation": {
+      "received": {
+        "title": "Invitation Received",
+        "message": "You have received an invitation to join {{orgName}}."
+      }
+    },
+    "collection": {
+      "user_added": {
+        "title": "Added to Space",
+        "message": "{{addedBy}} has added you to space {{collectionName}}"
+      },
+      "user_removed": {
+        "title": "Removed from Space",
+        "message": "{{removedBy}} has removed you from space {{collectionName}}"
+      }
+    },
+    "touchpoint": {
+      "bulk_import": {
+        "completed": {
+          "title": "Bulk Import Completed",
+          "message": "The bulk import has completed."
+        },
+        "failed": {
+          "title": "Bulk Import Failed",
+          "message": "The bulk import has failed."
+        }
+      },
+      "export": {
+        "completed": {
+          "title": "Export data successfully",
+          "message": "Your data has been successfully exported to {{exportType}}!"
+        },
+        "failed": {
+          "title": "Export data failed",
+          "message": "An error occurred while exporting data, reason: {{errorMessage}}"
+        }
+      }
+    },
+    "quota": {
+      "exceeded": {
+        "touchpoint": {
+          "title": "Touchpoint Quota Exceeded",
+          "message": "Organization touchpoint quota exceeded"
+        },
+        "ai_credit": {
+          "title": "AI Credit Quota Exceeded",
+          "message": "Organization AI credit quota exceeded"
+        }
+      }
+    },
+    "billing": {
+      "plan": {
+        "expired": {
+          "title": "Plan Expired",
+          "message": "Your plan has expired"
+        }
+      },
+      "payment": {
+        "failed": {
+          "title": "Payment Failed",
+          "message": "Your payment has failed"
+        }
+      }
+    },
+    "system": {
+      "alert": {
+        "title": "System Alert"
+      },
+      "notification": {
+        "title": "System Notification"
+      }
+    },
+    "security": {
+      "touchpoint_safety_violation": {
+        "title": "Link Safety Alert",
+        "message": "Your link \"{{touchPointName}}\" has been flagged as unsafe ({{threats}}). Advisory provided by Google. The link has been disabled."
+      }
+    },
+    "domain": {
+      "verified": {
+        "title": "Domain Verified",
+        "message": "Domain {{domain}} has been verified successfully."
+      }
+    }
+  }
+}

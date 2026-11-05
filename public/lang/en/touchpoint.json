@@ -1,0 +1,900 @@
+{
+  "labels": {
+    "recommended": "Đề xuất",
+    "information": "Thông tin"
+  },
+  "actions": {
+    "move_to_collection": "Move to Space",
+    "view_deep_link_analytics": "Deep link analytics"
+  },
+  "form": {
+    "labels": {
+      "name": "Link Name",
+      "destination": "Original URL",
+      "description": "Description",
+      "tags": "Tags",
+      "qr_code": "QR Code",
+      "short_link": "Short Link",
+      "meta_tags": "Link Preview",
+      "utm_tags": "UTM Tags",
+      "domain": "Domain",
+      "back_half": "Custom path"
+    },
+    "placeholders": {
+      "name": "e.g My Summer Sale",
+      "destination": "https://example.com/your-page",
+      "description": "Enter description",
+      "tags": "Select or type to create tags...",
+      "domain": "Domain",
+      "back_half": "summer-sales"
+    },
+    "actions": {
+      "slug_history": "History",
+      "ai_suggested_slugs": "AI"
+    },
+    "tooltips": {
+      "destination_url": "The full URL that users will be redirected to when they click this short link.",
+      "custom_back_half": "Lowercase, numbers, and hyphens only",
+      "advanced_settings": "These options are intended for advanced configuration. You can customize them based on your specific needs. If you're unsure, you can keep the default values and adjust them later at any time."
+    }
+  },
+  "touch_point_type": {
+    "link": "Short Link",
+    "qr": "QR Code",
+    "shortLink": "Link",
+    "shortQr": "QR"
+  },
+  "touch_point_list": {
+    "label": "Touchpoint List",
+    "table_header_filter": {
+      "create_button": "Create Touchpoint",
+      "cancel_button": "Cancel",
+      "search_label": "Search",
+      "created_date": "Created Date",
+      "tag": "Tag"
+    }
+  },
+  "touch_point_create": {
+    "label": "Create Touchpoint",
+    "tool_tip": {
+      "valid_url": "This URL seems valid",
+      "invalid_url": "This URL seems invalid",
+      "notification_url": "We will verify your URL for security"
+    },
+    "ai_optimize": {
+      "label": "AI Optimize",
+      "random": {
+        "label": "Random",
+        "description": "Signature slug is randomly generated"
+      },
+      "suggested": {
+        "label": "Suggested",
+        "description": "Signature slug based on destination URL data"
+      },
+      "suggested_with_dash": {
+        "label": "Suggested with dashes (SEO-friendly)",
+        "description": "Signature slug based on destination URL data — separated by dashes"
+      }
+    },
+    "form": {
+      "name": "Touchpoint Name",
+      "destination_url": "Paste your link here",
+      "placeholder": "https://example.com/your-page",
+      "description": "Description",
+      "tag": "Tag: (Optional)",
+      "link_description": "Link is the default channel automatically created and cannot be disabled",
+      "qr_description": "Generate a QR Code you can share anywhere. You can customize the QR Code in the details section after creation.",
+      "short_link": {
+        "label": "Short Link (Optional)",
+        "domain": "Domain",
+        "back_half": "Custom back-half (Optional):"
+      },
+      "interaction_channel": {
+        "label": "Interaction Channel",
+        "description": "Select a channel to share your link"
+      },
+      "shortLinkSettings": {
+        "title": "Short Link Settings",
+        "domainSelectLabel": "Domain",
+        "domainSelectPlaceholder": "Select a domain",
+        "domainSearchPlaceholder": "Search domain...",
+        "customBackHalfLabel": "Custom Ending",
+        "customBackHalfPlaceholder": "e.g summer-sale",
+        "helpText": "Leave blank for random generation",
+        "previewText": "Preview"
+      },
+      "linkNameLabel": "Link Name",
+      "linkNamePlaceholder": "e.g My Summer Sale",
+      "linkNameHelpText": "For your reference only - auto-generated if left blank",
+      "tagSelectLabel": "Tags",
+      "tagSelectPlaceholder": "Select or type to add tags...",
+      "requiredFieldNote": "Note: Fields marked with * are required.",
+      "qr_preview_tooltip": "A QR code is automatically generated for every short link.",
+      "qr_create_first_tooltip": "Create the short link first"
+    }
+  },
+  "touch_point_edit": {
+    "add_button": "Add Touchpoint",
+    "label": "Touchpoint Info",
+    "button_list": {
+      "create_button": "Create Touchpoint",
+      "back_button": "Back",
+      "delete_button": "Delete Touchpoint",
+      "delete_dialog": "This action cannot be undone. Are you sure?",
+      "update_button": "Save Changes"
+    },
+    "tab_list": {
+      "analytics": "Analytics",
+      "details": "Details",
+      "advanced": "Advanced",
+      "basicSettings": "Basic settings",
+      "advancedOptions": "Advanced options"
+    },
+    "advanced_form": {
+      "parcevoy": {
+        "label": "Parcelvoy",
+        "description": "Connect your account to Parcelvoy to enable email marketing features like subscriber sync, automated campaign triggers, and email activity tracking."
+      },
+      "meta_tags": {
+        "label": "Meta Tags",
+        "update_note": "Some platforms may still display the old content after an update due to caching. Changes may take a few hours or even days to refresh. If you need the update to appear immediately, please use the alternative link below.",
+        "description": "Customize how your link appears when shared on social media or embedded on other platforms. Set the title, description, and image shown in the preview.",
+        "helper": "Some platforms may still display the old content after an update due to caching. Changes may take a few hours or even days to refresh."
+      },
+      "utm_tags": {
+        "label": "UTM Parameters",
+        "description": "Track how users access your destination URL by adding UTM tags for marketing analytics."
+      },
+      "lockable": {
+        "label": "Upgrade to Premium"
+      }
+    },
+    "slugs": {
+      "reached_limit_title": "You've reached your limit",
+      "reached_limit_description": "You've reached your limit of {{maxSlugs}} custom back-half in the {{planName}} plan.",
+      "reached_limit_cta": "Need help or want to upgrade?",
+      "create_up_to": "You can create up to {{maxSlugs}} custom back-half with your {{planName}} plan.",
+      "back_half_history": "Back half history (Up to {{maxSlugs}} changes allowed)",
+      "back_half_history_description": "These back half are active.",
+      "reached_limit_cta_link": "Contact us"
+    }
+  },
+  "ai-suggested-slugs": {
+    "label": "AI-Suggested Slugs",
+    "button_generate": "Gen AI slug",
+    "generating": "Generating",
+    "button_generate_description": "Generate AI slug for your touchpoint"
+  },
+  "buttons": {
+    "copy_field": "Copy {{field}}"
+  },
+  "basicSettings": {
+    "tracking": {
+      "title": "Tracking",
+      "feature_name": "Conversion Tracking",
+      "conversion_tracking": {
+        "label": "Conversion Tracking",
+        "description": "Track conversions when visitors click through this link. This helps measure the effectiveness of your campaigns and understand user behavior."
+      }
+    }
+  },
+  "advancedSettings": {
+    "buttons": {
+      "showUtmModal": "UTM",
+      "showLinkPreviewModal": "Link Preview",
+      "showPasswordModal": "Password"
+    },
+    "utm": {
+      "title": "UTM Builder",
+      "subtitle": "Generate campaign tracking parameters",
+      "advancedOptionsLabel": "Advanced Options",
+      "utmPreviewLabel": "UTM Preview",
+      "selectGroupLabels": {
+        "popular": "Popular sources",
+        "saved": "Your saved items"
+      },
+      "fields": {
+        "source": {
+          "label": "Source",
+          "placeholder": "google"
+        },
+        "campaign": {
+          "label": "Campaign",
+          "placeholder": "summer_sale"
+        },
+        "medium": {
+          "label": "Medium",
+          "placeholder": "cpc"
+        },
+        "term": {
+          "label": "Term",
+          "placeholder": "iphone_17"
+        },
+        "content": {
+          "label": "Content",
+          "placeholder": "popup_offer"
+        }
+      },
+      "utmTemplates": {
+        "inputPlaceholder": "Search, Apply or Save UTM template...",
+        "empty": {
+          "title": "No UTM templates yet",
+          "description": "Create and save a new UTM to reuse later.",
+          "action": {
+            "addUtm": "Add UTM"
+          }
+        },
+        "itemActions": {
+          "delete": "Delete template",
+          "saveAs": "Save as"
+        }
+      },
+      "actions": {
+        "apply": "Apply",
+        "discard": "Discard",
+        "showUtmTemplates": "UTM Templates"
+      }
+    },
+    "linkPreview": {
+      "title": "Link Preview",
+      "subtitle": "Customize how your link appears when shared on social media or chat apps",
+      "tabs": {
+        "label": "Social Media Preview",
+        "items": {
+          "general": "General"
+        },
+        "defaultDomain": "domain.com"
+      },
+      "fields": {
+        "image": {
+          "label": "Preview Image",
+          "placeholder": ""
+        },
+        "chooseFile": {
+          "label": "Upload image",
+          "placeholder": ""
+        },
+        "title": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "desc": {
+          "label": "Description",
+          "placeholder": ""
+        }
+      },
+      "notes": {
+        "titleOptimal": "Optimal length: {{ chars }} characters for best display on social media.",
+        "descOptimal": "Optimal length: {{ chars }} characters for best display on social media."
+      },
+      "actions": {
+        "apply": "Apply",
+        "discard": "Discard"
+      }
+    },
+    "password": {
+      "title": "Password Protection",
+      "subtitle": "Only who knows the password can access your link",
+      "fields": {
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter password",
+          "description": "This is your password to access the touch point."
+        }
+      },
+      "actions": {
+        "apply": "Apply",
+        "discard": "Discard",
+        "random": "Random"
+      }
+    },
+    "limitAccess": {
+      "fields": {
+        "limit": {
+          "label": "Limit",
+          "placeholder": "Enter limit",
+          "description": "Limit the number of times a link can be accessed. Leave blank to remove limit."
+        }
+      },
+      "actions": {
+        "apply": "Apply"
+      }
+    },
+    "linkExpires": {
+      "fields": {
+        "expiresAt": {
+          "label": "Expires At",
+          "description": "After this date, the link will no longer be accessible."
+        },
+        "validFrom": {
+          "label": "Valid From",
+          "description": "Before this date, the link will not be accessible."
+        }
+      }
+    },
+    "redirectSettings": {
+      "fields": {
+        "customRedirectCode": {
+          "label": "Custom redirect code",
+          "placeholder": "Select redirect code",
+          "description": "Your link will redirect with this HTTP code."
+        },
+        "customNotFound": {
+          "label": "Not found url",
+          "placeholder": "ex: https://li2.ai/404",
+          "description": "Your link will redirect to this URL when visitor can't pass the access control."
+        }
+      },
+      "labels": {
+        "defaultCode": "Default"
+      }
+    },
+    "privacySecurity": {
+      "fields": {
+        "linkCloaking": {
+          "label": "Enable Link Cloaking",
+          "description": "Hide the destination URL in the browser's status bar and prevent users from seeing where the link leads."
+        }
+      }
+    },
+    "fbTracking": {
+      "title": "Facebook Tracking",
+      "fields": {
+        "pixelId": {
+          "label": "Pixel ID",
+          "placeholder": "Enter your Facebook Pixel ID",
+          "description": "Your Facebook Pixel ID from Meta Events Manager"
+        },
+        "eventName": {
+          "label": "Event Name",
+          "placeholder": "e.g. PageView, Purchase, Lead",
+          "description": "The name of the event to track (max 64 characters)"
+        },
+        "customData": {
+          "label": "Custom Data",
+          "keyLabel": "Key",
+          "valueLabel": "Value",
+          "keyPlaceholder": "e.g. product_id",
+          "valuePlaceholder": "e.g. 12345",
+          "description": "Additional custom parameters to send with the event",
+          "addButton": "Add Custom Data",
+          "removeButton": "Remove"
+        }
+      }
+    },
+    "gaTracking": {
+      "title": "Google Analytics Tracking",
+      "fields": {
+        "measurementId": {
+          "label": "Measurement ID",
+          "placeholder": "Enter your Google Analytics Measurement ID",
+          "description": "Your Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)"
+        },
+        "eventName": {
+          "label": "Event Name",
+          "placeholder": "e.g. page_view, purchase, lead",
+          "description": "The name of the event to track (max 40 characters)"
+        },
+        "eventParams": {
+          "label": "Event Parameters",
+          "keyLabel": "Parameter Name",
+          "valueLabel": "Value",
+          "keyPlaceholder": "e.g. campaign_id",
+          "valuePlaceholder": "e.g. summer_2024",
+          "description": "Additional event parameters to send with the event",
+          "addButton": "Add Event Parameter",
+          "removeButton": "Remove"
+        }
+      }
+    },
+    "tiktokTracking": {
+      "title": "TikTok Tracking",
+      "fields": {
+        "pixelId": {
+          "label": "Pixel ID",
+          "placeholder": "Enter your TikTok Pixel ID",
+          "description": "Your TikTok Pixel ID from TikTok Events Manager"
+        },
+        "eventName": {
+          "label": "Event Name",
+          "placeholder": "e.g. ViewContent, CompleteRegistration",
+          "description": "The name of the event to track"
+        },
+        "customData": {
+          "label": "Custom Data",
+          "keyLabel": "Key",
+          "valueLabel": "Value",
+          "keyPlaceholder": "e.g. content_type",
+          "valuePlaceholder": "e.g. product",
+          "description": "Additional custom parameters to send with the event",
+          "addButton": "Add Custom Data",
+          "removeButton": "Remove"
+        }
+      }
+    },
+    "conversionTracking": {
+      "title": "Conversion Tracking",
+      "fields": {
+        "enabled": {
+          "label": "Enable Conversion Tracking",
+          "description": "Add li2_id parameter to redirect URL for lead attribution. Use this with the @li2/analytics SDK on your destination page."
+        }
+      }
+    }
+  },
+  "abTesting": {
+    "sections": {
+      "urls": {
+        "title": "Testing URLs",
+        "description": "Add URLs to test. Each URL will receive a portion of your traffic."
+      },
+      "trafficSplit": {
+        "title": "Traffic Split",
+        "description": "Adjust the percentage of traffic each URL receives. Total must equal 100%."
+      }
+    },
+    "fields": {
+      "url": {
+        "placeholder": "https://example.com/variant-a"
+      }
+    },
+    "actions": {
+      "addUrl": "Add URL"
+    }
+  },
+  "smart_targeting": {
+    "description": "Send visitors to different URLs based on their device or country.",
+    "resolution_order": "Resolution: Device → Country → Default. First match wins.",
+    "default_destination": {
+      "label": "Default destination",
+      "hint": "Used when no device or country rule matches. Edit in Basic Settings.",
+      "placeholder": "https://example.com",
+      "empty": "Not set",
+      "edit_in_basic": "Edit in Basic Settings"
+    },
+    "devices": {
+      "heading": "Devices",
+      "android": "Android",
+      "ios": "iOS",
+      "android_placeholder": "https://play.google.com/... or yourapp://...",
+      "ios_placeholder": "https://apps.apple.com/... or yourapp://..."
+    },
+    "countries": {
+      "heading": "Countries",
+      "add_rule": "Add country rule",
+      "edit_rule": "Edit country rule",
+      "delete_rule": "Delete country rule",
+      "save_rule": "Save",
+      "empty": "No country rules yet. Add one to redirect specific countries to a different URL.",
+      "no_countries_selected": "No countries selected",
+      "no_destination_set": "No URL set",
+      "duplicate_warning": "{{countries}} also appears in a rule above — first match wins.",
+      "dialog_title": "Country rule",
+      "dialog_countries_label": "Countries",
+      "dialog_destination_label": "Destination",
+      "dialog_destination_placeholder": "https://example.com"
+    },
+    "legacy_banner": {
+      "heading_one": "This link has 1 legacy targeting rule that doesn't fit the new layout. Saving any change here will remove it.",
+      "heading_other": "This link has {{count}} legacy targeting rules that don't fit the new layout. Saving any change here will remove them.",
+      "keep": "Keep legacy rules",
+      "clear": "Clear them",
+      "kept_notice": "Legacy rules kept. They will continue to redirect visitors as before. To clear them, reload this page and choose \"Clear them\"."
+    },
+    "legacy_dropped_toast_one": "1 unsupported targeting rule will be removed when you save:\n{{details}}",
+    "legacy_dropped_toast_other": "{{count}} unsupported targeting rules will be removed when you save:\n{{details}}",
+    "errors": {
+      "invalid_device_destination": "Must be a valid URL or app scheme (https://… or myapp://…)",
+      "invalid_country_destination": "Must be a valid http(s) URL",
+      "at_least_one_country": "Select at least one country"
+    }
+  },
+  "dynamic_targeting": {
+    "note": "Note: Rules are checked from top to bottom. The first match applies.",
+    "errors": {
+      "invalid_destination": "Must be a valid URL or app scheme (https://… or myapp://…)"
+    },
+    "add_rule": "Add Rule",
+    "add_rule_block": "Add Rule Block",
+    "add_new_rule": "Add New Rule",
+    "no_values": "No values",
+    "no_values_selected": "No values selected",
+    "no_url_set": "No URL set",
+    "coming_soon": "(coming soon)",
+    "rule_types": {
+      "countries": "Countries",
+      "continents": "Continents",
+      "cities": "Cities",
+      "devices": "Devices",
+      "interaction_channels": "Interaction channels"
+    },
+    "rule_labels": {
+      "geography": "Geography",
+      "device": "Device",
+      "interaction": "Interaction"
+    },
+    "block_operators": {
+      "and": "AND (All conditions must be met)",
+      "or": "OR (Any condition can be met)"
+    },
+    "dialog": {
+      "rule_block_title": "{{operator}} rule block",
+      "direct_to_url": "Direct to URL",
+      "url_placeholder": "https://link-redirect.com",
+      "save": "Save",
+      "create_new": "Create new",
+      "delete_rule_title": "Delete Rule",
+      "delete_rule_description": "Are you sure you want to delete this rule?",
+      "delete_button": "Delete",
+      "cancel_button": "Cancel",
+      "select_countries": "Select Countries",
+      "select_continents": "Select Continents",
+      "select_cities": "Select Cities",
+      "select_devices": "Select Devices",
+      "select_interactions": "Select Interactions"
+    },
+    "placeholders": {
+      "select_countries": "Select Countries",
+      "select_devices": "Select Devices",
+      "select_interaction_channels": "Select Interaction channels"
+    },
+    "actions": {
+      "delete_rule_block": "Delete rule block",
+      "delete_rule": "Delete rule"
+    }
+  },
+  "advancedOptionMenu": {
+    "groups": {
+      "targeting": "Targeting & Experiments",
+      "tracking": "Tracking & Analytics",
+      "access": "Access Control",
+      "redirect": "Redirect Settings",
+      "privacy": "Privacy & Security"
+    },
+    "items": {
+      "analytics": {
+        "title": "Analytics"
+      },
+      "basic_editing": {
+        "title": "Basic settings"
+      },
+      "split_traffic": {
+        "title": "Split traffic (A/B Test)",
+        "description": "Distribute visitors randomly between multiple destinations to compare performance."
+      },
+      "smart_targeting": {
+        "title": "Smart Targeting",
+        "description": "Send visitors to different URLs based on their device or country."
+      },
+      "deep_link": {
+        "title": "Deep Link",
+        "description": "Open your mobile app directly instead of a web browser."
+      },
+      "utm_builder": {
+        "title": "UTM Builder",
+        "description": "Add UTM parameters to the destination URL to track marketing campaign effectiveness."
+      },
+      "password_protection": {
+        "title": "Password Protection",
+        "description": "Require a password to access this link."
+      },
+      "link_expiration": {
+        "title": "Link Expiration",
+        "description": "Automatically disable the link after a specific date or time."
+      },
+      "click_limitation": {
+        "title": "Click Limitation",
+        "description": "Stop allowing access after reaching a maximum number of clicks."
+      },
+      "custom_redirect_code": {
+        "title": "Custom Redirect Code",
+        "description": "Choose a specific HTTP status code (301, 302, 307) for the redirect."
+      },
+      "custom_404_redirect": {
+        "title": "Custom 404 Redirect",
+        "description": "Redirect users to a specific page when the link is not available."
+      },
+      "encrypted_link": {
+        "title": "Encrypted Link",
+        "description": "Protect the destination URL by encrypting it."
+      },
+      "link_cloaking": {
+        "title": "Link Cloaking",
+        "description": "Hide the original URL for better branding or privacy."
+      },
+      "fb_pixel": {
+        "title": "Facebook Pixel",
+        "description": "Track user behavior through Facebook Pixel tracking."
+      },
+      "ga_tracking": {
+        "title": "Google Analytics",
+        "description": "Track user behavior through Google Analytics 4."
+      },
+      "tiktok_pixel": {
+        "title": "TikTok Pixel",
+        "description": "Track user behavior through TikTok Pixel tracking."
+      },
+      "conversion_tracking": {
+        "title": "Conversion Tracking",
+        "description": "Track leads and conversions from this touch point."
+      }
+    }
+  },
+  "e2ee": {
+    "feature_unavailable_title": "Feature is not available for this link",
+    "feature_unavailable_description": "This feature is not available for this link because it is encrypted with E2EE.",
+    "toggle": {
+      "label": "E2EE",
+      "tooltip": "End-to-End Encryption protects your destination URL by encrypting it. Only users with the encryption key can access the destination."
+    },
+    "dialog": {
+      "title": "🔐 End-to-End Encrypted Link Created",
+      "warning": {
+        "title": "Important: Save this URL now!",
+        "description": "This encrypted URL with the key will only be shown once. If you lose it, you won't be able to access the destination anymore. Make sure to copy and save it securely."
+      },
+      "url_section": {
+        "label": "Encrypted URL with Key",
+        "help_text": "The encryption key is embedded in the URL after the # symbol"
+      },
+      "key_section": {
+        "label": "Encryption Key",
+        "loading": "Loading..."
+      },
+      "actions": {
+        "copy_url": "Copy URL",
+        "view_detail": "View Detail"
+      }
+    },
+    "description": {
+      "title": "🔒 End-to-End Encryption",
+      "warning": "Important: This link is end-to-end encrypted. You will not be able to change or access the destination if you lose the encryption key.",
+      "key_label": "Your encryption key:",
+      "copy_success": "Encryption key copied to clipboard"
+    },
+    "form": {
+      "enabled": {
+        "title": "E2EE is Enabled",
+        "description": "This link is protected with end-to-end encryption. Some features are not available for encrypted links."
+      },
+      "disabled": {
+        "title": "E2EE is Disabled",
+        "description": "End-to-end encryption can only be enabled when creating a new link."
+      }
+    }
+  },
+  "export": {
+    "title": "Export",
+    "to_csv": "Export to CSV",
+    "to_sheets": "Export to Google Sheets",
+    "description": "Download a .CSV file of your shortlinks or QR codes.",
+    "columns_label": "Columns",
+    "use_current_filters": "Apply current list filters",
+    "use_current_filters_desc": "Export only the links matching your active search and filters.",
+    "no_active_filters": "No active filters — all links will be exported.",
+    "to_sheets_steps": {
+      "select_fields": {
+        "title": "Select data & columns",
+        "description": "Choose date range and the columns you want to export."
+      },
+      "select_sheets": {
+        "title": "Select Google Sheets destination",
+        "description": "Choose integration, spreadsheet and sheet to export data to."
+      },
+      "missing_integration": {
+        "title": "Google Sheets integration is missing",
+        "description": "Please set up Google Sheets integration to export data."
+      }
+    },
+    "select_sheets_integration": "Select your Google Account",
+    "columns": {
+      "name": "Name",
+      "short_url": "Short URL",
+      "slug": "Slug",
+      "destination": "Destination",
+      "qr_enabled": "QR Enabled",
+      "tags": "Tags",
+      "created_at": "Created At",
+      "created_by": "Created By",
+      "collection_name": "Space Name",
+      "utm_source": "UTM Source",
+      "utm_medium": "UTM Medium",
+      "utm_campaign": "UTM Campaign",
+      "utm_term": "UTM Term",
+      "utm_content": "UTM Content"
+    },
+    "encrypted": "Encrypted",
+    "export_button": "Export"
+  },
+  "import": {
+    "title": "Import",
+    "description": "Import shortlinks and QR codes.",
+    "from_csv": "Import from CSV",
+    "from_sheets": "Import from Google Sheets",
+    "sheets_label": "Google Sheets",
+    "sheets_data": "Sheets data",
+    "li2_data": "Li2 data",
+    "csv_data": "CSV data",
+    "download_template": "Download CSV template",
+    "from_sheets_steps": {
+      "select_sheets": {
+        "title": "Select Google Sheets source",
+        "description": "Choose integration, spreadsheet and sheet to import from."
+      },
+      "mapping": {
+        "title": "Map sheet columns to Li2 fields",
+        "description": "Match your sheet columns to Li2 fields before importing."
+      }
+    }
+  },
+  "messages": {
+    "no_touch_points_selected": "No links selected",
+    "removed_from_collection": "Removed from space",
+    "removed_from_collection_bulk": "Removed {{count}} links from space",
+    "moved_to_collection": "Moved to space",
+    "moved_to_collection_bulk": "Moved {{count}} links to space"
+  },
+  "move_to_collection": {
+    "title_single": "Move to Space",
+    "title_multiple": "Move {{count}} Links",
+    "description": "Select a Space to organize your Links",
+    "description_with_current": "Select a new Space or remove from current Space",
+    "remove_from_collection": "Remove from Space",
+    "uncategorized": "Link will be uncategorized",
+    "confirm_title": "Confirm Move",
+    "confirm_description_with_source": "Are you sure you want to move {{count}} Link(s) from \"{{from}}\" to \"{{to}}\"?",
+    "confirm_description": "Are you sure you want to move {{count}} Link(s) to \"{{to}}\"?"
+  },
+  "static_qr": {
+    "label": "Static QR",
+    "shortLabel": "Static",
+    "info_message": "Static QR codes contain fixed data. Once generated, the QR code image itself cannot be changed. If you need to update the content, you will need to generate a new QR code.",
+    "qr_type": "QR Type",
+    "type": {
+      "text": "Text",
+      "url": "URL",
+      "wifi": "WiFi"
+    },
+    "fields": {
+      "text": "Text",
+      "url": "URL",
+      "wifi_ssid": "SSID (Network Name)",
+      "wifi_password": "Password",
+      "wifi_security": "Security Type",
+      "wifi_hidden": "Hidden network"
+    },
+    "placeholders": {
+      "text": "Enter your text content",
+      "url": "https://li2.ai",
+      "wifi_ssid": "Li2-Guest",
+      "wifi_password": "Enter WiFi password",
+      "wifi_security": "Select security type"
+    },
+    "security_types": {
+      "none": "None"
+    }
+  },
+  "simple_form": {
+    "link_created_success": "All set! Start sharing your link",
+    "qr_created_success": "All set! Start sharing your QR code",
+    "view_detail_hint": "Want to customize or track performance?"
+  },
+  "nfc": {
+    "empty": {
+      "title": "No NFC Tags Yet",
+      "description": "NFC chips are currently only available through our sales team. Contact us to learn more and order your NFC chips."
+    }
+  },
+  "short_link_list": {
+    "empty": {
+      "title": "No short links yet",
+      "description": "Create your first short link to start tracking clicks, conversions, and visitor insights.",
+      "cta": "Create Short Link"
+    }
+  },
+  "touch_point_list_v2": {
+    "paste_link_label": "Paste your link here",
+    "paste_link_placeholder": "Paste a link or drop a file here",
+    "get_qr_code": "Get QR Code",
+    "shorten": "Shorten",
+    "shorten_progress_title": "Shortening links…",
+    "shorten_progress_description": "{{done}} / {{total}} done",
+    "shorten_success_title": "All links created",
+    "shorten_success_description": "{{count}} link shortened successfully",
+    "shorten_success_description_plural": "{{count}} links shortened successfully",
+    "shorten_error_title": "Failed to create links",
+    "shorten_error_description": "{{count}} link failed",
+    "shorten_error_description_plural": "{{count}} links failed",
+    "shorten_partial_title": "Partially created",
+    "shorten_partial_description": "{{succeeded}} created, {{failed}} failed",
+    "feature_enabled": "{{name}}",
+    "features": {
+      "conversion_tracking": "Conversion Tracking",
+      "targeting": "Targeting",
+      "redirect_rules": "Redirect Rules",
+      "access_control": "Access Control",
+      "fb_pixel": "Facebook Pixel",
+      "ga_tracking": "Google Analytics",
+      "tiktok_pixel": "TikTok Pixel",
+      "privacy_security": "Privacy & Security",
+      "link_expiration": "Link Expiration",
+      "custom_404_redirect": "Custom 404 Redirect",
+      "link_cloaking": "Link Cloaking"
+    },
+    "utm_fields": {
+      "campaign": "Campaign",
+      "source": "Source",
+      "medium": "Medium",
+      "term": "Term",
+      "content": "Content"
+    },
+    "paste_link_hint": "One link per line — paste multiple at once",
+    "valid_links_count": "{{count}} valid link",
+    "valid_links_count_plural": "{{count}} valid links",
+    "no_valid_links": "No valid links yet",
+    "no_space": "No space",
+    "no_tag": "No tag"
+  },
+  "create_success_dialog": {
+    "title": "Short Link Created!",
+    "description": "Your link is ready to share. Copy the URL or download the QR code.",
+    "copy_url": "Copy URL",
+    "continue": "View Detail"
+  },
+  "merged_list": {
+    "destination": {
+      "redirects_to": "to",
+      "content": "content",
+      "removed": "content taken down · QR still scans"
+    },
+    "quota": {
+      "links": "{{count}} links",
+      "artifacts": "{{used}}/{{total}} artifacts",
+      "storage": "{{used}}/{{total}}",
+      "links_unknown": "— links",
+      "artifacts_unknown": "— artifacts",
+      "storage_unknown": "— storage"
+    },
+    "create": {
+      "button": "Create",
+      "kind_switch_label": "What to create",
+      "kind": {
+        "link": "Short link",
+        "artifact": "Artifact"
+      }
+    },
+    "assistant": {
+      "title": "Li2 Assistant",
+      "coming_soon": "coming soon",
+      "hint": "Create links and publish files by asking"
+    },
+    "status": {
+      "error": {
+        "title": "Couldn't load the list",
+        "description": "The server didn't respond. Your data is still there — this is a loading error, not an empty list.",
+        "retry": "Try again"
+      },
+      "no_match": {
+        "title": "No matching rows",
+        "description": "No link or artifact matches the filters and search term in use.",
+        "clear": "Clear filters"
+      }
+    },
+    "filters": {
+      "button": "Filters",
+      "type": "Type",
+      "type_artifact": "Artifact",
+      "type_link": "Shortlink",
+      "status": "Status",
+      "domain": "Domain",
+      "status_live": "Live",
+      "status_disabled": "Disabled",
+      "status_flagged": "Flagged",
+      "status_pending": "Not published",
+      "status_blocked": "Blocked",
+      "status_expired": "Expired",
+      "status_removed": "Taken down",
+      "domain_none": "System domain"
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "tabs": {
+    "click": "Clickmap",
+    "scroll": "Scroll Heatmap"
+  },
+  "stats": {
+    "totalClicks": "Tổng lần nhấp",
+    "uniqueVisitors": "Khách truy cập duy nhất",
+    "totalSessions": "Tổng phiên",
+    "reachedBottom": "Cuộn đến cuối (100%)"
+  },
+  "empty": {
+    "selectPage": "Chọn trang để xem bản đồ nhiệt",
+    "selectPageDesc": "Chọn trang từ menu trên để xem vị trí khách nhấp chuột.",
+    "noClickData": "Không có dữ liệu nhấp chuột trong khoảng thời gian này",
+    "noClickDataDesc": "Thử chọn khoảng thời gian hoặc loại thiết bị khác.",
+    "selectPageScroll": "Chọn trang để xem độ sâu cuộn",
+    "selectPageScrollDesc": "Chọn trang từ menu trên để xem khách truy cập cuộn đến đâu.",
+    "noScrollData": "Không có dữ liệu cuộn trong khoảng thời gian này",
+    "noScrollDataDesc": "Thử chọn khoảng thời gian hoặc loại thiết bị khác."
+  },
+  "controls": {
+    "selectDateRange": "Chọn khoảng thời gian",
+    "all": "Tất cả",
+    "desktop": "Máy tính",
+    "tablet": "Máy tính bảng",
+    "mobile": "Di động",
+    "heatmap": "Heatmap",
+    "clickmap": "Clickmap",
+    "viewOnSite": "Xem trên trang",
+    "tagEventsOnSite": "Gắn thẻ sự kiện trên trang",
+    "overlayOpacity": "Độ mờ lớp phủ"
+  },
+  "filter": {
+    "filteredByLink": "Lọc theo link",
+    "linkFilter": "Link: {{name}}"
+  },
+  "elements": {
+    "noData": "Không có dữ liệu phần tử.",
+    "clicks": "nhấp",
+    "createEventRule": "Tạo Event Rule",
+    "title": "Phần tử được nhấp nhiều nhất"
+  },
+  "rageClicks": {
+    "title": "Nhấp chuột liên tục",
+    "noData": "Không phát hiện nhấp chuột liên tục trong khoảng thời gian này.",
+    "clicks": "nhấp",
+    "session_one": "{{count}} phiên",
+    "session_other": "{{count}} phiên"
+  },
+  "sidebar": {
+    "pages": "TRANG",
+    "pagesCount": "{{count}} trang",
+    "expandTree": "Mở rộng cây trang",
+    "collapseSidebar": "Thu gọn thanh bên",
+    "searchPages": "Tìm kiếm trang...",
+    "loading": "Đang tải trang...",
+    "noData": "Không có dữ liệu trang trong khoảng thời gian này.",
+    "noDataDesc": "Điều chỉnh khoảng thời gian hoặc kiểm tra SDK đã được cài đặt.",
+    "no_recent_tooltip": "Không có hoạt động trong 3 ngày qua. Kiểm tra xem script theo dõi đã được cài đặt trên trang này chưa.",
+    "mode_top": "Hàng đầu",
+    "mode_recent": "Gần đây",
+    "mode_tree": "Cây",
+    "all_domains": "Tất cả tên miền",
+    "switch_domain": "Chuyển tên miền…",
+    "search_in": "Tìm trong {{host}}…",
+    "expand": "Mở rộng",
+    "collapse": "Thu gọn",
+    "expand_all": "Mở rộng tất cả",
+    "collapse_all": "Thu gọn tất cả",
+    "view_all": "Xem tất cả {{count}} trang trong {{host}}",
+    "more_count": "… {{count}} trang nữa",
+    "show_less": "Thu gọn",
+    "showing_all": "Đang hiển thị tất cả {{count}} trang",
+    "no_matches": "Không có trang nào khớp với tìm kiếm của bạn.",
+    "interactions_count": "{{count}} tương tác",
+    "range_hint": "Số liệu phản ánh khoảng thời gian này",
+    "page_cap": "top {{count}}",
+    "page_cap_tooltip": "Đang hiển thị {{count}} trang hoạt động nhiều nhất trong khoảng thời gian này. Các trang ít lượt tương tác có thể bị bỏ qua.",
+    "legend_title": "Chú giải",
+    "legend_recent": "Gần đây — có hoạt động trong 3 ngày qua",
+    "legend_hot": "Nổi bật — top 10% theo lượt tương tác",
+    "legend_bar": "Độ dài thanh = tỷ lệ tương tác trong tên miền"
+  },
+  "scrollStats": {
+    "title": "Chi tiết độ sâu cuộn",
+    "scrollDepth": "Độ sâu cuộn",
+    "usersReached": "Người dùng đã đến",
+    "percentOfVisitors": "% khách truy cập",
+    "avgTimeInZone": "Thời gian TB trong vùng",
+    "reachedBottom": "Cuộn đến cuối (100%)"
+  },
+  "canvas": {
+    "pagePreviewUnavailable": "Không thể xem trước trang",
+    "iframeBlocked": "— trang này hạn chế nhúng iframe. Tọa độ bản đồ nhiệt vẫn chính xác.",
+    "viewOnSiteButton": "Xem trên trang",
+    "noHostname": "Không thể xem trước trang. Cấu hình tên miền trong Cài đặt phân tích để bật xem trước.",
+    "loadingPreview": "Đang tải xem trước trang...",
+    "viewForAccuracy": "Xem trên trang để có độ chính xác pixel hoàn hảo"
+  },
+  "createEvent": {
+    "title": "Tạo Event Rule",
+    "description": "Gán tên sự kiện cho phần tử này. Sự kiện sẽ được tạo hồi tố cho 30 ngày dữ liệu nhấp chuột gần nhất."
+  },
+  "demo": {
+    "badge": "Tính năng Pro",
+    "demoNotice": "Đây là heatmap mẫu với dữ liệu demo.",
+    "getStarted": { "cta": "Tiếp tục" },
+    "hero": {
+      "title": "Xem chính xác nơi khách truy cập nhấp và cuộn",
+      "desc": "Heatmap Analytics hiển thị hành vi thực của khách truy cập lên trang để bạn tối ưu layout, CTA và vị trí nội dung."
+    },
+    "features": {
+      "clickMap": { "title": "Click Heatmap", "desc": "Trực quan hóa nơi khách truy cập nhấp nhiều nhất trên bất kỳ trang nào." },
+      "scrollMap": { "title": "Scroll Heatmap", "desc": "Xem khách truy cập cuộn đến đâu và mất hứng thú ở điểm nào." },
+      "rageClicks": { "title": "Phát hiện Rage Click", "desc": "Xác định các phần tử UI gây bực bội mà người dùng nhấp liên tục." },
+      "elementStats": { "title": "Thống kê theo phần tử", "desc": "Xem số lượt nhấp và tỷ lệ tương tác cho từng phần tử trên trang." }
+    }
+  },
+  "elementOverlay": {
+    "clickElement": "Phần tử được nhấp",
+    "rageClickElement": "Phần tử nhấp liên tục",
+    "clicks": "Lượt nhấp",
+    "shareOfTotal": "Tỷ lệ tổng",
+    "rank": "Thứ hạng",
+    "rageClicks": "Nhấp liên tục",
+    "affectedSessions": "Phiên bị ảnh hưởng"
+  },
+  "plan_upgrade": {
+    "title": "Heatmap không có trong gói hiện tại của bạn",
+    "description": "Nâng cấp gói để trực quan hóa nơi khách truy cập nhấp chuột và cuộn trang của bạn."
+  }
+}

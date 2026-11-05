@@ -1,0 +1,11 @@
+{
+  "name": "speednet-demo",
+  "version": "1.0.0",
+  "description": "SpeedNet Internet Package Demo",
+  "scripts": {
+    "start": "npx serve -p 5000 --no-clipboard"
+  },
+  "keywords": ["demo", "internet", "packages"],
+  "author": "",
+  "license": "ISC"
+}

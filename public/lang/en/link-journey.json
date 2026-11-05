@@ -1,0 +1,91 @@
+{
+  "emptyState": {
+    "noLinks": "Install the Li2 SDK on your site to see visitor journeys.",
+    "awaitingData": "No visitor data yet. Traffic may take a few minutes to appear.",
+    "externalLink": "This link points to an external site. Behavioral data is only available for pages with the Li2 SDK installed."
+  },
+  "page": {
+    "noJourneyTitle": "No visitor journey data yet",
+    "noJourneyDesc": "To see what visitors do after clicking your links, you need a short link pointing to your website with the Li2 SDK installed.",
+    "createShortLink": "Create Short Link",
+    "sdkSetupGuide": "SDK Setup Guide",
+    "selectDateRange": "Select date range",
+    "selectLinkPrompt": "Select a link above to view its visitor journey."
+  },
+  "steps": {
+    "click": "Click",
+    "visit": "Visit",
+    "engage": "Engage",
+    "convert": "Convert"
+  },
+  "linkSelector": {
+    "placeholder": "Select a link...",
+    "searchPlaceholder": "Search links...",
+    "noResults": "No matching links found.",
+    "noResultsDesc": "Only links pointing to pages with the Li2 SDK appear here. Links to external sites won't have visitor journey data.",
+    "views": "views"
+  },
+  "traffic": {
+    "totalClicks": "Total Clicks",
+    "uniqueVisitors": "Unique Visitors",
+    "sessions": "Sessions",
+    "bounceRate": "Bounce Rate"
+  },
+  "pageFlow": {
+    "title": "Page Flow",
+    "noData": "No page data available for this link.",
+    "pagesVisited_one": "{{count}} page visited",
+    "pagesVisited_other": "{{count}} pages visited",
+    "views": "views",
+    "visitors": "visitors",
+    "heatmap": "Heatmap",
+    "funnel": "Funnel"
+  },
+  "behavioral": {
+    "title": "Behavioral Highlights",
+    "noData": "No interaction data yet. The Li2 SDK click tracker captures on-page behavior automatically.",
+    "interactions": "Interactions",
+    "rageClicks": "Rage Clicks",
+    "topClickedElements": "Top Clicked Elements"
+  },
+  "conversions": {
+    "title": "Conversions",
+    "noData": "No conversion data for this link in the selected period.",
+    "leads": "Leads",
+    "sales": "Sales",
+    "revenue": "Revenue",
+    "recentConversions": "Recent Conversions",
+    "anonymous": "Anonymous"
+  },
+  "demo": {
+    "badge": "Pro Feature",
+    "demoNotice": "This is a sample journey with demo data.",
+    "getStarted": { "cta": "Continue" },
+    "hero": {
+      "title": "See the Full Journey Behind Every Click",
+      "desc": "Link Journey connects each short link click to real on-site behavior — which pages visitors land on, what they click, and whether they convert."
+    },
+    "features": {
+      "clickData": {
+        "title": "Click & Traffic Stats",
+        "desc": "See total clicks, unique visitors, sessions, and bounce rate for any short link."
+      },
+      "pageFlow": {
+        "title": "Page Flow",
+        "desc": "Discover which pages visitors navigate to after clicking, ranked by traffic."
+      },
+      "behavioral": {
+        "title": "Behavioral Highlights",
+        "desc": "Track on-page interactions, top clicked elements, and rage clicks after the click."
+      },
+      "conversions": {
+        "title": "Conversion Attribution",
+        "desc": "See which links drive leads, sales, and revenue — directly tied to each click."
+      }
+    },
+    "planUpgrade": {
+      "title": "Link Journey is not available on your plan",
+      "description": "Upgrade your plan to trace the full visitor journey from click to conversion."
+    }
+  }
+}

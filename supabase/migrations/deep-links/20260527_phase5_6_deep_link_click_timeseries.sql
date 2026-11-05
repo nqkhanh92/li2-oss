@@ -1,0 +1,10 @@
+-- Phase 5 (Task 5.6) — SUPERSEDED, intentionally a no-op (2026-05-27 consolidation, #6).
+--
+-- get_deep_link_click_timeseries was originally created here as a 12-arg function. It is now
+-- owned SOLELY by 20260527_phase5_6_timeseries_user_timezone.sql, which adds the `_timezone`
+-- arg (13-arg) and DROPs the old 12-arg signature first. Re-creating the 12-arg version here
+-- would resurrect a duplicate overload on re-apply → ambiguous-function errors at call time
+-- (PostgREST 300) whenever `_timezone` is omitted.
+--
+-- Left as a stub rather than deleted, to preserve the migration sequence record. Applying it
+-- is a no-op. See plans/deep-links/phase-5-analytics deferred-issues #6.

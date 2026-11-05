@@ -1,0 +1,62 @@
+{
+  "header": {
+    "title": {
+      "with_expire_date_trial": "{{ field }} đang kích hoạt: Miễn phí trong 1 năm! Tận hưởng quyền truy cập đầy đủ vào tất cả các tính năng cho đến ",
+      "with_expire_date": "{{ field }} đang kích hoạt! Tận hưởng quyền truy cập đầy đủ vào tất cả các tính năng cho đến ",
+      "free_plan": "Advanced UTM, Custom Domain & Integrations — Nâng cấp lên Premium!",
+      "without_expire_date": "Tăng cường chiến dịch của bạn — Mạnh mẽ hơn gấp 10 lần với $t(common:appName) Premium"
+    },
+    "navbar": {
+      "language": "Ngôn ngữ",
+      "setting": "Cài đặt",
+      "logout": "Đăng xuất",
+      "demo": "Dùng thử Demo"
+    },
+    "demoBanner": {
+      "notice": "Bạn đang xem tài khoản demo. Dữ liệu hiển thị chỉ mang tính minh họa."
+    }
+  },
+  "sidebar": {
+    "groups": {
+      "overview": "TỔNG QUAN",
+      "create": "TẠO MỚI",
+      "touchpoints": "TOUCH POINTS",
+      "analyze": "PHÂN TÍCH",
+      "organize": "QUẢN LÝ",
+      "configure": "CÀI ĐẶT",
+      "linkAttribution": "QUẢN LÝ LIÊN KẾT",
+      "behaviorAnalytics": "HÀNH VI TƯƠNG TÁC"
+    },
+    "onboarding": "Bắt đầu",
+    "overview": "Overview",
+    "dashboards": "Dashboards",
+    "dashboard": "Dashboard",
+    "domain": "Domain riêng",
+    "touchpoint": {
+      "label": "Touchpoint",
+      "touch_point_list": "Danh sách Touchpoint",
+      "touch_point_create": "Tạo mới Touchpoint"
+    },
+    "linkAndArtifact": "Link & Artifact",
+    "shortLink": "Short Links",
+    "artifacts": "Artifact",
+    "qrCode": "Mã QR",
+    "nfc": "Thẻ NFC",
+    "analytics": "Analytics",
+    "deepLinks": "Deep Links",
+    "linkJourney": "Hành trình Link",
+    "conversions": "Conversions",
+    "heatmap": "Heatmap",
+    "siteAnalytics": "Phân tích trang",
+    "sessionRecordings": "Ghi lại phiên",
+    "eventRules": "Quy t\u1eafc s\u1ef1 ki\u1ec7n",
+    "customers": "Khách hàng",
+    "forms": "Phân tích Form",
+    "utmTemplates": "Mẫu UTM",
+    "tag": "Tag",
+    "collections": "Spaces",
+    "integration": "Tích hợp",
+    "setting": "Cài đặt tổ chức",
+    "campaigns": "Chiến dịch"
+  }
+}

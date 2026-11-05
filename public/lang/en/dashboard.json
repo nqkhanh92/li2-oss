@@ -1,0 +1,131 @@
+{
+  "welcome": "Welcome to $t(common:appName)!",
+  "banner": {
+    "have_expired": {
+      "is_warning": {
+        "heading": "Your {{plan_to_change}} plan is about to end!",
+        "description": "Upgrade now to retain your benefits.",
+        "mobile_heading": "Your {{plan_to_change}} plan is about to end! Upgrade now to retain your benefits.",
+        "mobile_heading_ending_soon": "Your {{plan_to_change}} is ending soon! Upgrade now to keep your benefits.",
+        "button": "Upgrade Now"
+      },
+      "non_warning": {
+        "description_field_trial": "Your {{plan}} is active — free until {{date}}. Your {{plan}} ends in:",
+        "description_field": "Your {{plan}} is active! Full access until {{date}}. Your {{plan}} plan ends in:",
+        "premium_trial": {
+          "plan": "PREMIUM TRIAL",
+          "title": "Congratulations! You are one of the first 200 users to use $t(common:appName) Premium.",
+          "description": "Your Premium plan has been activated — free for 1 year! Enjoy full access to all $t(common:appName) features until ",
+          "insight": [
+            ""
+          ],
+          "button": "",
+          "buttonLink": ""
+        },
+        "premium": {
+          "plan": "PREMIUM",
+          "title": "Congratulations! Your Premium plan has been activated!",
+          "description": "Your Premium plan has been activated! Enjoy full access to all $t(common:appName) features until ",
+          "insight": [
+            "Boost marketing efficiency with branded QR codes and full analytics.",
+            "Add UTM tags and metadata to optimize shareable links.",
+            "Create AI-optimized custom slugs for branded links."
+          ],
+          "button": "",
+          "buttonLink": ""
+        },
+        "free": {
+          "plan": "FREE",
+          "title": "Get 6 Months of Premium Trial!",
+          "description": "You’re eligible for a 6-month premium trial packed with advanced features.",
+          "insight": [
+            "Create, update & manage unlimited links and branded QR codes.",
+            "Unlock custom UTM tags & meta tags to track every link in detail.",
+            "Customize branded link slugs (back-half) to boost trust & clicks."
+          ],
+          "button": "Start Free Trial",
+          "buttonLink": "https://li2.ai/vi/support"
+        },
+        "free_trial": {
+          "plan": "FREE TRIAL",
+          "title": "Unlock the full power of Premium!",
+          "description": "Elevate your marketing with exclusive features:",
+          "insight": [
+            "Add new organizations and manage them flexibly.",
+            "Activate custom domains and white-label QR/NFC codes.",
+            "Connect with Parcevoy and advanced integrations."
+          ],
+          "button": "",
+          "buttonLink": ""
+        }
+      }
+    }
+  },
+  "overall_visits": "Overall visits",
+  "performance_overtime": {
+    "label": "Performance Over Time",
+    "tooltip": "This chart shows how many visits your link received during each time period, helping you track performance trends over time.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "last_week": "Last Week",
+    "last_month": "Last Month"
+  },
+  "performance_overview": {
+    "label": "Performance Overview",
+    "total": "Total Visits",
+    "unique": "Unique Visitors",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "last_week": "Last Week",
+    "last_month": "Last Month",
+    "tooltip": {
+      "total": "Total interactions (clicks + scans), including repeat interactions from the same user",
+      "unique": "Number of distinct users who interacted with your links. Each user is counted only once"
+    }
+  },
+  "interaction_channels": {
+    "label": "Engagements",
+    "qr_code": "QR Code",
+    "nfc_card": "NFC Card",
+    "short_link": "Click",
+    "scan": "Scan",
+    "tap": "Tap",
+    "wifi_access": "WiFi Access",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "last_week": "Last Week",
+    "last_month": "Last Month"
+  },
+  "recent_activities": {
+    "label": "Recent Activities",
+    "subtitle": "{{count}} activities in the last 24 hours",
+    "auto_update": "Auto update every 10 seconds",
+    "columns": {
+      "link_name": "Link name",
+      "action": "Action",
+      "country": "Country",
+      "platform": "Platform",
+      "ip": "IP",
+      "time": "Time"
+    },
+    "actions": {
+      "click": "Click",
+      "scan": "Scan",
+      "tap": "Tap"
+    }
+  },
+  "simpleForm": {
+    "linkInput": {
+      "label": "Paste your link here",
+      "placeholder": "https://example.com/my-long-URL"
+    },
+    "linkSubmit": {
+      "label": "Shorten Link",
+      "loadingLabel": "Creating your short link..."
+    },
+    "qrSubmit": {
+      "label": "Generate QR Code",
+      "loadingLabel": "Generating your QR code..."
+    }
+  }
+}

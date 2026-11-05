@@ -1,0 +1,69 @@
+{
+  "page": {
+    "title": "Form Analytics",
+    "selectDateRange": "Select date range"
+  },
+  "kpi": {
+    "totalFills": "Total Fills",
+    "totalFillsSub": "unique form touches",
+    "totalSubmits": "Total Submits",
+    "totalSubmitsSub": "successful submissions",
+    "avgCompletionRate": "Avg Completion Rate",
+    "avgCompletionRateSub": "fills → submits",
+    "avgTimeOnForm": "Avg Time on Form",
+    "avgTimeOnFormSub": "across all submits",
+    "bestPerformingForm": "Best Performing Form",
+    "bestPerformingFormSub": "{{pct}}% completion"
+  },
+  "chart": {
+    "completionTrend": "Completion Rate Trend",
+    "fills": "Fills",
+    "submits": "Submits",
+    "completionLabel": "{{value}} ({{pct}} completion)"
+  },
+  "table": {
+    "title": "Forms Performance",
+    "form": "Form",
+    "page": "Page",
+    "fills": "Fills",
+    "submits": "Submits",
+    "completionPct": "Completion %",
+    "avgTime": "Avg Time",
+    "noData": "No form data for this period"
+  },
+  "detail": {
+    "conversionFunnel": "Conversion Funnel",
+    "fills": "Fills",
+    "submits": "Submits",
+    "completed": "{{pct}}% completed",
+    "droppedOff": "{{pct}}% dropped off",
+    "avgTimeOnForm": "Avg Time on Form",
+    "dailyTrend": "Daily Trend",
+    "fastCompletion": "Fast completion",
+    "normal": "Normal",
+    "struggling": "⚠ Users may be struggling",
+    "highFriction": "🔴 High friction — review form length",
+    "unknownForm": "Unknown Form"
+  },
+  "demo": {
+    "badge": "Pro Feature",
+    "demoNotice": "This is a sample report with demo data.",
+    "getStarted": {
+      "cta": "Continue"
+    },
+    "hero": {
+      "title": "Understand How Visitors Interact With Your Forms",
+      "desc": "Form Analytics tracks every fill, submit, and drop-off so you can reduce friction and improve completion rates."
+    },
+    "features": {
+      "trackFills": { "title": "Track Form Fills", "desc": "See how many visitors start filling out each form on your pages." },
+      "avgTime": { "title": "Average Time on Form", "desc": "Measure how long visitors spend on forms to identify complexity issues." },
+      "completionRate": { "title": "Completion Rate", "desc": "Track the percentage of visitors who successfully submit each form." },
+      "dropOff": { "title": "Drop-off Analysis", "desc": "Identify which forms have the highest abandonment and understand why." }
+    }
+  },
+  "plan_upgrade": {
+    "title": "Form Analytics is not available on your plan",
+    "description": "Upgrade your plan to analyze form interactions and track field-level engagement on your pages."
+  }
+}

@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>By Location — cấp tỉnh là mức sâu nhất</title>
+<style>
+  :root{--ink:#0f172a;--muted:#64748b;--faint:#94a3b8;--line:#e2e8f0;--card:#fff;--accent:#4125b9;
+        --green:#34a853;--amber:#d97706}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);
+       font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 22px 80px}
+  h1{font-size:25px;margin:0 0 8px;letter-spacing:-.02em}
+  h2{font-size:20px;margin:40px 0 4px;letter-spacing:-.01em}
+  h2 small{font-weight:400;font-size:14px;color:var(--faint);margin-left:8px;letter-spacing:0}
+  h3{font-size:15px;margin:20px 0 6px}
+  p.lede{color:var(--muted);margin:0;max-width:76ch}
+  p.sub{color:var(--muted);margin:0 0 12px;max-width:84ch;font-size:14px}
+  .warn{color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+        padding:10px 14px;font-size:13px;margin-top:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-top:14px}
+  .card-title{font-size:16px;font-weight:600;color:#334155;margin:0 0 4px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  @media(max-width:900px){.two{grid-template-columns:1fr}}
+  .pane{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
+  .pane.bad{border-color:#fecaca;background:#fffafa}
+  .pane.good{border-color:#a7f3d0;background:#f8fffc}
+  .pane h4{margin:0 0 2px;font-size:14px}
+  .pane .why{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
+  .pane.bad h4{color:#b91c1c}.pane.good h4{color:#047857}
+  svg{display:block;width:100%;height:auto}
+  .mapbox{position:relative;background:#fcfcfd;border-radius:10px;overflow:hidden}
+  path.p{stroke:#cbd5e1;stroke-width:.7;vector-effect:non-scaling-stroke;transition:fill .15s}
+  path.p.hot{fill:var(--accent)!important}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-weight:500;color:var(--muted);font-size:12.5px;padding:6px 10px 6px 0;
+     border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0}
+  td{padding:8px 10px 8px 0;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+  tr.dim td{color:var(--faint)}
+  tr.hl td{background:#f6f4ff}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{position:relative;height:15px;background:#f1f5f9;border-radius:4px;overflow:hidden;min-width:56px}
+  .bar i{position:absolute;inset:0 auto 0 0;background:var(--green);border-radius:4px}
+  .bar.g i{background:var(--faint)}
+  .bar b{position:absolute;right:5px;top:0;line-height:15px;font-size:11px;font-weight:600;color:#334155}
+  .note{color:var(--faint);font-size:12px}
+  .foot{color:var(--faint);font-size:12.5px;margin-top:10px}
+  .foot b{color:var(--muted);font-weight:600}
+  .scroller{max-height:300px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;padding:0 12px}
+  .box{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+       border-radius:0 10px 10px 0;padding:13px 17px;margin-top:16px}
+  .box.red{border-left-color:#dc2626}
+  .box.amber{border-left-color:var(--amber)}
+  .box b{font-size:14px}.box p{margin:5px 0 0;color:var(--muted);font-size:13.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+  pre.ascii{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:16px 18px;overflow-x:auto;
+            font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin:10px 0 0}
+  pre.ascii u{color:#fcd34d;text-decoration:none}
+  .crumbs{display:flex;align-items:center;gap:8px;font-size:14px;min-height:24px;flex-wrap:wrap}
+  .crumbs a{cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+  .crumbs .sep{color:var(--faint)}
+  .crumbs .here{font-weight:600}
+  .crumbs .lv{color:var(--faint);font-size:12px}
+  .auto{font-size:12.5px;color:var(--muted);background:#f6f4ff;border:1px solid #ddd6fe;
+        border-radius:7px;padding:6px 11px;margin-top:9px;display:flex;gap:8px;align-items:center}
+  .auto a{color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .auto button{margin-left:auto;border:0;background:0;color:var(--faint);cursor:pointer;font-size:15px;padding:0 2px}
+  .key{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+  .key i{width:16px;height:11px;border-radius:2px;display:inline-block;vertical-align:-1px;margin-right:5px;
+         border:1px solid #dde4ea}
+  .scale{display:flex;gap:2px;margin:6px 0 2px}
+  .scale i{flex:1;height:20px;border-radius:2px;display:block;border:1px solid rgba(0,0,0,.05)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:4px 0 10px}
+  .seg button{border:0;background:#fff;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer;color:var(--muted)}
+  .seg button+button{border-left:1px solid var(--line)}
+  .seg button.on{background:var(--accent);color:#fff}
+  dl.q{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;margin-top:10px;font-size:14px}
+  dl.q dt{font-weight:600;color:var(--accent)}
+  dl.q dd{margin:0;color:#334155}
+  table.meas td,table.meas th{padding-right:16px}
+  table.meas tr.hi td{background:#fffbeb}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>By Location — cấp tỉnh là mức sâu nhất</h1>
+  <p class="lede">Bốn việc còn lại sau khi chốt không đi xuống cấp quận: nói độ chính xác, xử lý khoảng
+     trắng, chịu được lưu lượng lớn, và chọn mức mở mặc định. Mọi con số dưới đây đo trực tiếp trên
+     GeoIP đang chạy ở LiHi và trên <span class="mono">visits</span> thật.</p>
+
+  <div class="warn"><b>Sửa một số tôi báo sai lần trước.</b> 29 909 dải là <b>IPv4 + IPv6 cộng lại</b>.
+     Tách ra: <b>17 437 dải IPv4</b> (16 780 859 địa chỉ) và 12 472 dải IPv6. Tỷ lệ dải chỉ xác định
+     được tới cấp tỉnh trên riêng IPv4 là <b>46,3%</b>, không phải 37,2%. Các con số trong brief
+     (Hà Nội 13 201, Lai Châu 35, Cao Bằng 59) cũng là bản cộng cả hai họ địa chỉ.</div>
+
+  <!-- ══════════════════════════ Câu 3 ══════════════════════════ -->
+  <h2>3. Nói độ chính xác cấp tỉnh <small>mà không thêm một thành phần UI nào</small></h2>
+  <p class="sub">Brief nói độ phủ “rất lệch”. Đo kỹ thì nó không chỉ lệch — nó lệch theo <b>hai hướng
+     khác nhau</b>, và gộp chúng vào một chữ “độ tin cậy” là làm mất cả hai.</p>
+
+  <div class="card">
+    <p class="card-title">Đo trên 17 437 dải IPv4 Việt Nam</p>
+    <p class="sub">Đếm <b>số địa chỉ</b> chứ không chỉ số dải — một dải có thể to gấp nghìn lần dải khác.</p>
+    <table class="meas">
+      <thead><tr><th>Tỉnh (tên GeoIP)</th><th class="num">Dải</th><th class="num">Địa chỉ IPv4</th>
+                 <th class="num">% cả nước</th><th class="num">% địa chỉ chỉ biết tới tỉnh</th></tr></thead>
+      <tbody>
+        <tr class="hi"><td><b>Hanoi</b></td><td class="num">7 830</td><td class="num">12 123 109</td>
+            <td class="num"><b>72,2%</b></td><td class="num"><b>92,6%</b></td></tr>
+        <tr><td>Ho Chi Minh City (HCMC)</td><td class="num">3 591</td><td class="num">2 638 884</td>
+            <td class="num">15,7%</td><td class="num">43,2%</td></tr>
+        <tr><td>Dong Nai</td><td class="num">413</td><td class="num">206 645</td>
+            <td class="num">1,2%</td><td class="num">0%</td></tr>
+        <tr class="dim"><td colspan="5" style="text-align:center">… 28 tỉnh ở giữa …</td></tr>
+        <tr><td>Cao Bằng Province</td><td class="num">28</td><td class="num">10 752</td>
+            <td class="num">0,06%</td><td class="num">0%</td></tr>
+        <tr><td>Lai Châu Province</td><td class="num">28</td><td class="num">9 728</td>
+            <td class="num">0,06%</td><td class="num">0%</td></tr>
+        <tr><td>Điện Biên Province</td><td class="num">23</td><td class="num">6 400</td>
+            <td class="num">0,04%</td><td class="num">0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="pane bad">
+      <h4>Hướng lệch A — Hà Nội là thùng chứa mặc định</h4>
+      <p class="why">Sai hệ thống. Không sửa được bằng chờ thêm dữ liệu.</p>
+      <p class="sub" style="margin:0">Nhà mạng Việt Nam đăng ký khối IP ở trụ sở Hà Nội và dùng chung
+         cho cả nước, nên GeoIP đổ nguyên khối về Hà Nội. Đo được, không phải suy đoán:</p>
+      <ul class="sub" style="margin:8px 0 0;padding-left:20px">
+        <li><b>9 trên 10</b> khối IPv4 lớn nhất Việt Nam mang nhãn <span class="mono">Hanoi &gt;&gt; Hanoi</span>
+            — nghĩa là không có cấp dưới tỉnh. Khối to nhất 96 256 địa chỉ
+            (<span class="mono">14.250.169.0–14.252.32.255</span>).</li>
+        <li><b>92,6%</b> địa chỉ của Hà Nội không có cấp dưới tỉnh — tỷ lệ cao nhất cả nước.</li>
+        <li>Cộng lại: <b>11 228 628 / 16 780 859 = 66,9%</b> toàn bộ không gian IPv4 Việt Nam mang
+            đúng một nhãn <i>“Hà Nội, không rõ hơn”</i>.</li>
+      </ul>
+      <p class="sub" style="margin:10px 0 0"><b>Hệ quả cho người xem:</b> một lượt gán cho Hà Nội có thể
+         là khách ở bất cứ đâu trong nước. Hà Nội trong báo cáo <i>luôn</i> cao hơn thực tế.</p>
+    </div>
+    <div class="pane">
+      <h4>Hướng lệch B — mẫu quá thưa ở tỉnh nhỏ</h4>
+      <p class="why">Sai thống kê. Đỡ dần khi lưu lượng tăng.</p>
+      <p class="sub" style="margin:0">Lai Châu 9 728 địa chỉ, Điện Biên 6 400 — cỡ một phần nghìn Hà Nội.
+         Nhưng để ý: các tỉnh này có <b>0%</b> dải “chỉ biết tới tỉnh”, tức khi GeoIP nói Lai Châu thì
+         nó đã nhìn thấy một dải cụ thể. Vấn đề không phải nhãn sai mà là <b>mẫu nhỏ</b>: 1 lượt trên
+         0,06% không gian địa chỉ không suy ra được xu hướng nào.</p>
+      <p class="sub" style="margin:10px 0 0"><b>Hệ quả cho người xem:</b> đừng đọc thứ bậc giữa hai tỉnh
+         chênh nhau 1–2 lượt. Con số không sai, chỉ là không có nghĩa.</p>
+    </div>
+  </div>
+
+  <div class="box red">
+    <b>Vì sao không làm cột “Độ tin cậy” với ba mức cao/vừa/thấp.</b>
+    <p>Nó gộp hai hướng lệch ngược nhau vào một thang. Hà Nội sẽ được xếp “cao” vì nhiều dải, nhiều
+       lượt — đúng theo mọi công thức, mà lại chính là ô sai nhiều nhất. Một thang xếp hạng nhầm chỗ
+       còn tệ hơn không có thang nào, vì nó khiến người xem tin vào ô đáng ngờ nhất.</p>
+  </div>
+
+  <h3>Đề xuất: hai sửa đổi, không thêm thành phần UI nào</h3>
+  <div class="two">
+    <div class="pane bad">
+      <h4>Hiện tại</h4>
+      <p class="why">Dữ liệu thật của tổ chức test, 137 lượt</p>
+      <table>
+        <thead><tr><th>Tỉnh</th><th class="num">Lượt</th><th>Tỷ lệ</th></tr></thead>
+        <tbody>
+          <tr><td>TP. Hồ Chí Minh</td><td class="num">101</td>
+              <td><div class="bar"><i style="width:100%"></i><b>73.72%</b></div></td></tr>
+          <tr><td>Hà Nội</td><td class="num">5</td>
+              <td><div class="bar"><i style="width:5%"></i><b>3.65%</b></div></td></tr>
+          <tr class="dim"><td>⊘ Chưa rõ vị trí</td><td class="num">31</td>
+              <td><div class="bar g"><i style="width:31%"></i><b>22.63%</b></div></td></tr>
+        </tbody>
+      </table>
+      <p class="foot">32 tỉnh chưa có lượt nào</p>
+      <p class="sub" style="margin:10px 0 0">Hai chỗ nói quá sự thật: <b>“3.65%”</b> gợi ý độ chính xác
+         hai chữ số thập phân từ một mẫu 5 lượt, và hàng <b>Hà Nội</b> không hề báo rằng nó là nơi mọi
+         IP không định vị được rơi vào.</p>
+    </div>
+    <div class="pane good">
+      <h4>Đề xuất</h4>
+      <p class="why">Cùng dữ liệu, cùng số hàng, cùng số cột</p>
+      <table>
+        <thead><tr><th>Tỉnh</th><th class="num">Lượt</th><th>Tỷ lệ</th></tr></thead>
+        <tbody>
+          <tr><td>TP. Hồ Chí Minh</td><td class="num">101</td>
+              <td><div class="bar"><i style="width:100%"></i><b>74%</b></div></td></tr>
+          <tr><td>Hà Nội<br><span class="note">có thể gồm khách tỉnh khác</span></td><td class="num">5</td>
+              <td><div class="bar"><i style="width:5%"></i><b>4%</b></div></td></tr>
+          <tr class="dim"><td>⊘ Chưa rõ vị trí</td><td class="num">31</td>
+              <td><div class="bar g"><i style="width:31%"></i><b>23%</b></div></td></tr>
+        </tbody>
+      </table>
+      <p class="foot">Vị trí suy ra từ dải IP (DB-IP, 10/2026). Nhà mạng Việt Nam đăng ký phần lớn
+         khối IP ở Hà Nội, nên Hà Nội thường cao hơn thực tế.</p>
+      <p class="sub" style="margin:10px 0 0"><b>(a) Số chữ số theo cỡ mẫu</b>, một quy tắc duy nhất khoá
+         vào <span class="mono">totalVisits</span>: ≥1000 → một chữ số thập phân; 100–999 → số nguyên;
+         &lt;100 → bỏ cột tỷ lệ, chỉ còn số lượt.
+         <b>(b) Nhãn thường trực</b> dưới tên Hà Nội — đây là tính chất của cột dữ liệu, không phải cảnh
+         báo tình huống, nên nó thuộc về nhãn chứ không phải tooltip hay icon ⓘ.</p>
+    </div>
+  </div>
+  <div class="box">
+    <b>Một câu cước chú, đặt một lần, thay cho mọi badge rải rác.</b>
+    <p>Dòng dưới bảng nói đúng ba điều người xem cần: nguồn, thời điểm, và hướng lệch đã biết.
+       Thay cho <span class="mono">toFixed(2)</span> ở
+       <span class="mono">analytic-map-chart.tsx:30</span> và không cần thêm cột, icon, hay tooltip nào.</p>
+  </div>
+
+  <!-- ══════════════════════════ Câu 4 ══════════════════════════ -->
+  <h2>4. Khoảng trắng <small>thật ra là 33/34 tỉnh, không phải 32</small></h2>
+  <p class="sub">Tôi dựng lại đúng thuật toán màu hiện tại trên dữ liệu thật để xem người dùng đang
+     thấy gì. Kết quả tệ hơn mô tả trong brief.</p>
+
+  <div class="two">
+    <div class="pane bad">
+      <h4>Hiện tại — chạy đúng code trong repo</h4>
+      <p class="why">buildScale(101) · EMPTY_FILL #F8F9FB</p>
+      <div class="mapbox"><svg id="m-now" viewBox="-11.1 -11.1 579.3 687.3" role="img" aria-label="Bản đồ hiện tại"></svg></div>
+      <div class="key" id="k-now"></div>
+      <p class="sub" style="margin:10px 0 0">Hai lỗi cộng dồn. <b>Một:</b>
+         <span class="mono">EMPTY_FILL = '#F8F9FB'</span>
+         (<span class="mono">vietnam-map-chart.tsx:28</span>) gần trùng nền trắng. <b>Hai:</b>
+         <span class="mono">buildScale</span> chia <span class="mono">[0,101]</span> thành 5 bậc đều nên
+         ngưỡng bậc 1 là 21 lượt — <b>Hà Nội 5 lượt rơi vào bậc thấp nhất <span class="mono">#e8f5e9</span></b>,
+         cũng gần trắng. Nên thực tế bản đồ có <b>1 tỉnh đậm và 33 tỉnh gần trắng</b>: tỉnh có dữ liệu
+         và tỉnh không có dữ liệu nhìn như nhau.</p>
+    </div>
+    <div class="pane good">
+      <h4>Đề xuất — khi ≤ 3 tỉnh có dữ liệu</h4>
+      <p class="why">Bỏ choropleth, dùng dấu + vân gạch</p>
+      <div class="mapbox"><svg id="m-new" viewBox="-11.1 -11.1 579.3 687.3" role="img" aria-label="Bản đồ đề xuất">
+        <defs><pattern id="hatch" width="3" height="3" patternTransform="rotate(45)"
+                       patternUnits="userSpaceOnUse">
+          <rect width="3" height="3" fill="#fff"/><line x1="0" y1="0" x2="0" y2="3"
+            stroke="#e2e8f0" stroke-width="1.1"/></pattern></defs>
+      </svg></div>
+      <div class="key" id="k-new"></div>
+      <p class="sub" style="margin:10px 0 0">Với 1–3 tỉnh có dữ liệu, thang 5 bậc không có gì để phân
+         biệt — nó chỉ làm loãng tỉnh duy nhất có dữ liệu. Hai trạng thái đủ: <b>có</b> (tô đặc, kèm
+         chấm và tên) và <b>không</b> (vân gạch — mắt đọc ngay là “trống có chủ ý”, khác hẳn
+         “chưa tải xong”).</p>
+    </div>
+  </div>
+
+  <div class="box">
+    <b>Và một câu tiêu đề — rẻ nhất, hiệu quả nhất.</b>
+    <p>Khoảng trắng chỉ trông như lỗi khi không ai nói nó nghĩa là gì. Một dòng ngay trên bản đồ biến
+       cả tấm hình trống thành một câu trả lời:</p>
+  </div>
+  <pre class="ascii">Thế giới › <u>Việt Nam</u>                        <u>Khách của bạn đến từ 2 trong 34 tỉnh.</u>
+
+  [bản đồ]            Tỉnh                      Lượt   Tỷ lệ
+                      TP. Hồ Chí Minh            101   ███████████ 74%
+                      Hà Nội                       5   ▌ 4%
+                        có thể gồm khách tỉnh khác
+                      ⊘ Chưa rõ vị trí            31   ███ 23%
+
+                      <u>▸ 32 tỉnh chưa có lượt nào</u>          ← gập lại được, bấm ra tên tỉnh</pre>
+  <p class="sub" style="margin-top:12px">Khối gập trả lời được câu “khách của tôi có ở Cần Thơ không”
+     mà không phải dò màu trên hình — câu mà bản đồ choropleth không bao giờ trả lời tốt. Dòng
+     “32 tỉnh chưa có lượt nào” đã có ở <span class="mono">analytic-map-chart.tsx:180-184</span>,
+     chỉ cần biến nó thành khối mở ra được.</p>
+
+  <!-- ══════════════════════════ Câu 5 ══════════════════════════ -->
+  <h2>5. Lưu lượng lớn <small>cuộn, không phân trang, không gộp “tỉnh khác”</small></h2>
+  <p class="sub">Phân bố mô phỏng lệch nặng đúng kiểu Việt Nam (Hà Nội + TP.HCM chiếm hơn nửa),
+     34 tỉnh đều có lượt, tổng 19 481 (Hà Nội + TP.HCM chiếm 64%).</p>
+
+  <div class="card">
+    <div class="seg" id="seg">
+      <button data-m="linear" class="on">Thang chia đều (hiện tại)</button>
+      <button data-m="quant">Thang phân vị (đề xuất)</button>
+    </div>
+    <div class="two" style="grid-template-columns:4fr 6fr">
+      <div>
+        <div class="mapbox"><svg id="m-big" viewBox="-11.1 -11.1 579.3 687.3" role="img" aria-label="34 tỉnh"></svg></div>
+        <div class="scale" id="sc"></div>
+        <p class="foot" id="sc-lab"></p>
+      </div>
+      <div>
+        <p class="foot" style="margin:0 0 6px"><b id="hdr"></b></p>
+        <div class="scroller">
+          <table><thead><tr><th>Tỉnh</th><th class="num">Lượt</th><th>Tỷ lệ</th></tr></thead>
+          <tbody id="tb-big"></tbody></table>
+        </div>
+        <p class="foot" id="ft-big"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="pane bad">
+      <h4>Vì sao không phân trang</h4>
+      <p class="sub" style="margin:0">34 là <b>tập đóng và nhỏ</b>. Phân trang 7 dòng biến câu
+         “tỉnh nào thấp nhất” thành 5 lần bấm, và cắt mất khả năng so hai tỉnh không cùng trang.
+         Cuộn trong khung cao cố định cho cả hai mà không tốn thành phần nào.</p>
+    </div>
+    <div class="pane bad">
+      <h4>Vì sao không gộp “các tỉnh khác”</h4>
+      <p class="sub" style="margin:0">Hàng gộp phá đúng câu hỏi người xem có: <i>tỉnh nào tôi chưa với
+         tới</i>. Nó cũng đã bị chiếm dụng: hàng <span class="mono">⊘</span> hiện là “chưa rõ vị trí”
+         (<span class="mono">analytic-map-chart.tsx:169-177</span>) — thêm một hàng gộp nữa thì hai
+         hàng xám cạnh nhau mang hai nghĩa hoàn toàn khác.</p>
+    </div>
+  </div>
+
+  <div class="box amber">
+    <b>Cuộn làm đứt liên kết hình ↔ bảng, phải nối lại.</b>
+    <p>Hover hai chiều đã có (<span class="mono">analytic-map-chart.tsx:159-160</span> và
+       <span class="mono">highlightedCode</span>), nhưng với 34 dòng cuộn thì hover trên bản đồ sẽ tô
+       một dòng <i>đang nằm ngoài khung nhìn</i>. Cần <span class="mono">scrollIntoView</span> khi
+       highlight đến từ phía bản đồ. Thử ngay trên mockup: trỏ vào một tỉnh ở hình, bảng tự cuộn tới.</p>
+  </div>
+  <div class="box">
+    <b>Mức quốc gia thì giữ nguyên 7 dòng.</b>
+    <p>Khác hẳn: danh sách nước là <b>tập mở</b> cỡ 200, nên top 7 + “còn N nước khác” là đúng. Quy tắc
+       phân biệt không phải “bao nhiêu dòng” mà “tập đóng hay mở”. <span class="mono">TOP_ROWS = 7</span>
+       (<span class="mono">analytic-map-chart.tsx:19</span>) hiện dùng chung cho cả hai mức — cần tách.</p>
+  </div>
+
+  <!-- ══════════════════════════ Câu 6 ══════════════════════════ -->
+  <h2>6. Mặc định mở thẳng mức tỉnh? <small>có — và code đã ngầm quyết thế rồi</small></h2>
+
+  <div class="box red">
+    <b>Phát hiện quyết định câu này: bản đồ thế giới đã tự phóng vào Việt Nam.</b>
+    <p><span class="mono">map-chart.tsx:95-101</span> có một <span class="mono">useEffect</span> tự gọi
+       <span class="mono">zoomToCountry</span> ở <span class="mono">zoom: 6</span> cho nước nhiều lượt
+       nhất, và <span class="mono">analytic-map-chart.tsx:135-141</span> không truyền
+       <span class="mono">autoZoom</span> nên nó mặc định bật
+       (<span class="mono">map-chart.tsx:60</span>). Nghĩa là khách Việt Nam <b>hiện đã</b> thấy một
+       khối Việt Nam phẳng một màu, phóng to hết cỡ. Mức tỉnh ở đúng tầm nhìn đó chỉ nhiều thông tin
+       hơn — không có đánh đổi nào về ngữ cảnh, vì ngữ cảnh thế giới đã bị bỏ mất rồi.</p>
+  </div>
+
+  <h3>Mức mặc định theo tỷ lệ, không ghim cứng Việt Nam</h3>
+  <p class="sub">Ghim cứng “luôn mở Việt Nam” sẽ sai với tổ chức có khách quốc tế. Quy tắc một dòng:
+     mở sẵn mức tỉnh khi <span class="mono">vietnam.count / totalVisits ≥ 2/3</span>. Với dữ liệu test
+     (106/137 = 77%) thì mở; một tổ chức 40% Việt Nam thì không.</p>
+
+  <div class="card">
+    <p class="card-title">Breadcrumb khi mức tỉnh là mức mở sẵn</p>
+    <p class="sub">Vấn đề: nếu không nói gì, người dùng tưởng cấp tỉnh là mức gốc và không biết có mức
+       thế giới. Nếu nói quá nhiều thì thành một banner phải đóng mỗi lần vào trang.</p>
+    <div style="border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:10px">
+      <div class="crumbs">
+        <a>Thế giới</a><span class="sep">›</span>
+        <span class="here">Việt Nam</span>
+        <span class="lv">34 tỉnh · 106 lượt</span>
+      </div>
+      <div class="auto" id="auto">
+        <span>77% lượt ở Việt Nam nên đã mở sẵn mức tỉnh. <a>Xem cả thế giới</a></span>
+        <button type="button" title="Ẩn" onclick="document.getElementById('auto').style.display='none'">×</button>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:12px">Ba điều kiện để dòng giải thích không thành rác:
+       chỉ hiện <b>khi mức tỉnh là mức tự mở</b> (người dùng tự bấm xuống thì không hiện);
+       <b>tắt vĩnh viễn</b> sau lần đầu đóng; và <b>không hiện lại</b> khi người dùng đã tự lùi ra
+       thế giới rồi quay vào.</p>
+  </div>
+
+  <div class="box amber">
+    <b>Phải sửa một bug trước khi bật mặc định.</b>
+    <p><span class="mono">analytic-map-chart.tsx:76-78</span> tự lùi về thế giới khi Việt Nam hết lượt.
+       Khi mức tỉnh thành mức mặc định, logic này phải phân biệt <i>“người dùng chủ động chọn mức thế
+       giới”</i> với <i>“chưa chọn gì”</i> — nếu không, người dùng lùi ra thế giới rồi đổi bộ lọc là bị
+       kéo ngược vào Việt Nam, lặp mãi. Cần một state thứ hai kiểu
+       <span class="mono">userPickedLevel: boolean</span> chứ không suy từ
+       <span class="mono">drilled === undefined</span>.</p>
+  </div>
+
+  <!-- ══════════════════════════ Chốt ══════════════════════════ -->
+  <h2>Thứ tự làm</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th style="width:30px">#</th><th>Việc</th><th style="width:130px">Chạm vào</th>
+                 <th style="width:90px">Chờ dữ liệu?</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>Hai bậc màu khi ≤ 3 tỉnh có dữ liệu</b> + vân gạch cho tỉnh 0 lượt.
+                Đây là lỗi nặng nhất: hôm nay tỉnh có dữ liệu và tỉnh không có nhìn như nhau.</td>
+            <td class="mono">vietnam-map-chart</td><td>không</td></tr>
+        <tr><td>2</td><td><b>Câu tiêu đề “2 trong 34 tỉnh”</b> + khối gập liệt kê 32 tỉnh trống.</td>
+            <td class="mono">analytic-map-chart</td><td>không</td></tr>
+        <tr><td>3</td><td><b>Số chữ số theo cỡ mẫu</b> + nhãn “có thể gồm khách tỉnh khác” ở Hà Nội
+                + cước chú nguồn và hướng lệch.</td>
+            <td class="mono">analytic-map-chart</td><td>không</td></tr>
+        <tr><td>4</td><td><b>Mở sẵn mức tỉnh khi ≥ 2/3 lượt ở Việt Nam</b> — kèm sửa bug tự-lùi ở
+                dòng 76-78 <i>trước</i>.</td>
+            <td class="mono">analytic-map-chart</td><td>không</td></tr>
+        <tr><td>5</td><td><b>Thang phân vị + cuộn 34 dòng + scrollIntoView.</b> Chưa cấp vì khách hiện
+                tại chỉ chạm 2 tỉnh; nhưng là thứ sẽ hỏng âm thầm khi lưu lượng lên.</td>
+            <td class="mono">cả hai</td><td>không</td></tr>
+      </tbody>
+    </table>
+    <p class="foot">Không việc nào chờ worker hay migration. Toàn bộ nằm trong hai file đã có.</p>
+  </div>
+
+  <h2>Cần chủ sản phẩm quyết</h2>
+  <dl class="q">
+    <dt>1</dt><dd><b>Nhãn Hà Nội.</b> Chịu để một dòng nhỏ “có thể gồm khách tỉnh khác” dưới tên Hà Nội
+                  thường trực không? Nó đúng nhưng làm xấu con số lớn thứ hai trên báo cáo.</dd>
+    <dt>2</dt><dd><b>Bỏ cột tỷ lệ khi &lt; 100 lượt.</b> Trung thực hơn, nhưng bảng trông nghèo đi ở
+                  đúng lúc tổ chức mới dùng. Hay giữ cột và chỉ làm tròn về số nguyên?</dd>
+    <dt>3</dt><dd><b>Ngưỡng mở sẵn mức tỉnh</b> — 2/3 lượt ở Việt Nam có hợp không, hay muốn ngưỡng
+                  khác, hay luôn mở bất kể tỷ lệ?</dd>
+    <dt>4</dt><dd><b>Dòng “đã mở sẵn mức tỉnh”</b> — hiện rồi tắt vĩnh viễn sau lần đóng đầu, hay không
+                  hiện gì cả và chỉ dựa vào breadcrumb “Thế giới ›” là đủ?</dd>
+    <dt>5</dt><dd><b>Việc số 5</b> làm ngay cùng đợt này, hay chờ tới khi có khách thật vượt
+                  ~1 000 lượt?</dd>
+  </dl>
+</div>
+
+<script>
+const VN   = {"VN-89": "M123 531l2 3l1 2l2 3l1 2l2 4l3 0l4 1l1 4l-2 3l-1 1l-3 2l-4 3l-3-1l-2 3l-3-3l-5-3l-4-1l-3-2l-1-3l2-2l3-4l6-4l-1-4l-1-3l2-3l3 1Z", "VN-24": "M164 78l-1 4l3 1l2 2l2 2l3 0l2-1l2-3l2-4l4-1l2 2l3 0l3 1l1 2l1 3l4 0l0 4l-1 2l-1 4l-3 1l-2 1l-5 0l-3-1l-4-1l-2-1l-3 1l-3 1l-2 2l-2-2l-3 0l-3-1l-2-2l-4 1l-1-3l0-4l2-2l2 2l1-3l1-4l0-3l4 0Z", "VN-6": "M164 44l0 4l2 1l-1 3l-1 4l-2 1l-2 3l1 3l-4 0l-2 1l-2 2l-2 2l-3 2l-1-4l0-3l-3-3l-3 1l-2 2l-3-2l-1-3l1-3l-3-3l2-3l1-3l2-3l2-3l-1-3l-2-3l2-2l3-1l3-2l2 2l-1 2l1 3l2 2l3 1l3-1l3-1l2 1l0 4l2 2Z", "VN-95": "M131 585l3 0l4 1l0 5l3 2l3 1l2-1l3 1l0 4l-3 3l-3 1l-5 2l-3 2l-2 2l-3-1l-2-1l-2-2l-1-3l3-3l-2-2l2-3l0-3l1-2l-1-3l3 0Z", "VN-27": "M168 99l0 4l-2 2l-3 1l-3-2l-4 1l-1-3l-2-3l0-3l3-2l4 1l3 2l3 0l2 2Z", "VN-83": "M188 560l0 4l-1 2l-3 1l-1 4l1 3l-2 2l-4-3l-3-2l-4-2l-2-2l-2-3l-2-2l-2-1l-2-2l-3-1l3-1l4-2l3 0l4-1l3 2l3 1l6 1l3 2Z", "VN-52": "M281 378l1 4l1 4l2 4l1 5l0 3l2 3l0 5l2 3l-1 4l-1-3l0-3l-1 4l0 3l-3 2l-1 2l-2 2l-2 2l-4 0l-3-2l-1-3l0-4l-1-3l-2-3l0-4l-1-3l-2-2l0-4l-1-3l-1-3l-1-4l1-4l2-2l3 0l0-4l3-1l4 0l3 1l2 2l1 2Z", "VN-74": "M194 514l-1 3l2 4l0 4l-2 1l-3-2l-2 3l1 3l-2 2l-3-2l-1-2l-3-2l-2-2l-1-3l-3-1l-2-3l-2-2l1-5l2-2l3-2l2 2l0 3l3 1l3-1l2-2l3-2l-1 2l1 2l2 2l2-1Z", "VN-70": "M213 495l-4 1l-1 4l1 2l-2 3l-4 1l-2 1l-2 3l-2 3l-2 2l-2-3l-1 2l-1-3l-4-1l2-2l-3 1l-2 2l-3 1l-3-1l2-3l-4-2l-2-1l2-2l-1-3l-1-3l0-4l-1-6l4-1l5 1l3 0l2-3l3-2l3 1l4-1l2-2l2-2l1-2l3-3l1 6l0 4l2 2l3 2l1 2l2 2l-1 3Z", "VN-60": "M272 513l-3 1l-1 3l-2 3l-3-1l-3 1l-3 2l-1 3l-4 1l-2 3l-4 0l-2 1l-4 1l-1 3l-1 4l-2 1l-3-1l-3 2l-2 1l-3 1l-3 2l-3-4l-2-3l3-2l0-5l-3-4l-2 0l0-4l1-3l2-2l1-4l3 0l4 0l3-1l4 0l4 1l2 3l3-1l5-2l3-3l-2-2l2-3l4 0l4 0l2-1l4 2l3 1l3 4l2 1Z", "VN-96": "M126 593l0 4l-1 4l2 2l-1 2l3 1l4 2l-2 3l-1 3l-3 5l-3 1l-2 2l-2 2l-4 2l-6 1l-4-1l-2-2l4-1l1-3l2-2l-3 0l-1-4l1-4l0-6l0-3l1-6l0-8l3-1l4 1l7 4l3 2Z", "VN-92": "M143 563l2 1l3 2l1 2l-2 2l-4 1l-4-3l-2 4l-3-4l-4-3l-1-3l-4-2l3-3l4 1l3-3l5 3l3 4Z", "VN-4": "M179 43l-3 1l-1 2l-4 0l-1-3l-4-2l-2 3l-3 0l0-3l-1-4l-3 0l-3 1l-3 0l-3-1l-2-2l1-4l-2-2l-3 2l-3 1l-3 1l-1-3l-1-2l-2-2l-2-1l-3-1l1-3l2-1l3-2l3-1l1-3l2-2l2 2l4 0l2 2l3 2l1 3l3-1l2-2l4-1l4 1l2 2l2 3l3-1l3 0l3-2l3 0l2 2l3 1l2 2l3 1l-2 2l-1 3l-1 2l-2 3l-3 0l-1 3l-1 4Z", "VN-66": "M265 444l2 2l3 4l2 1l3 1l2 2l0 3l-3 1l-2 2l1 3l-1 2l-3 0l-3 1l-2 2l1 4l-2 2l-4-1l-3 1l-3 2l-3 1l-3 2l-3-2l-3-1l-2-2l-3-1l-1-3l0-3l2-1l-2-2l-2-2l1-3l-1-3l-2-3l-3 0l-6-1l-3-1l-2-2l-1-3l3-8l2-7l4-2l4-1l4 0l4 0l2-1l4 0l3 2l5 1l1 3l2 2l2 2l2 4l2 2l5 1Z", "VN-67": "M242 478l-2 2l-3 1l1 2l1 3l2 3l-1 3l-3 2l-4 0l-2-3l-3 1l-2-2l-4 1l-2 2l-4 1l-2 2l0-5l-2-2l-1-2l-2-2l-3-2l0-4l-1-5l2-1l4-1l2 2l3-1l3-2l1-4l1-5l-1-3l-1-5l3-2l6 1l3-1l3 3l0 3l1 3l-2 2l3 2l-1 2l0 3l1 3l3 1l2 2l1 2Z", "VN-11": "M55 62l0 5l2 2l2 6l-2 2l-1 3l-3 3l0 3l-5 0l2 3l2 2l0 4l-1 3l1 4l-3-1l-3 1l1 4l-1 3l-4 0l-3-1l-2-3l-2-3l-2-2l-2-3l-1-3l-3-1l3-1l1-5l-1-3l2-2l2-3l0-4l-1-3l-3 2l-1-5l-1 4l-3 2l-3 1l-2-3l1-4l-2-2l-2-3l-3-3l-1-2l-1-3l-3-2l-2-2l-3-1l-3-3l-1-4l2-2l3 1l0-3l2-3l1 3l2 2l1 3l2 2l2 2l4 2l1 2l2-2l3 1l-1 3l2 2l3 1l3-1l1 2l4-1l3-1l3 1l3 1l1-3l3-2l2 3l2 3l1 2Z", "VN-75": "M219 512l-1 3l-1 3l-2 2l0 3l-2 2l3 2l3 1l0 4l-1 4l-3-1l-3 2l-1 3l-2-3l-4 0l-3 2l-1 2l-4 1l0 3l-2-1l-2-2l-4-1l-2-1l2-3l2-1l0-3l-2-3l-2-2l2-2l4 0l2-3l-1-4l0-5l3-1l2-3l2-3l2-1l4-1l3-1l3 1l3 2l-1 3l3 1Z", "VN-87": "M136 529l3 2l2 3l6 7l6 5l-2 5l-2 4l3 2l1 3l-2 2l-4-2l-4 2l-2-2l-3-4l-2-2l1-1l2-3l-1-3l-2-1l-4-1l-2-2l0-4l-3-1l-1-3l-2-2l1-2l4 2l2-3l2-2l3 1Z", "VN-64": "M260 378l1 1l2 3l0 4l1 5l1 3l0 4l2 2l1 3l0 3l1 3l2 2l0 4l0 4l-3 2l-2 2l2 2l2 3l1 3l1 4l-1 2l-3 1l0 5l-3 1l-4-1l-3-2l-2-2l-1-3l-2-3l-2-3l-3-1l-3-1l-3-1l-4 1l-4 0l-3-1l-3 2l-5 1l-1-8l-2-4l-1-3l-2-3l-1-3l-1-3l3-3l2-1l3-2l1-3l1-4l2 1l4-1l2-2l3 2l3-2l2-2l3-1l2-2l3 0l2-3l1-2l0-3l3 1l4 0Z", "VN-2": "M139 12l-2 2l-1 3l-3 1l-3 2l-2 1l-1 2l2 2l3 1l2 2l1 2l1 3l-4 1l-3-1l-4-1l-3-1l0 3l-2 2l0 4l0 3l-1 3l-1 3l-3-2l-3-1l-1 3l1 4l-4 1l-3-2l-2-2l-3-1l-2 2l1-3l-2-3l-1-2l-2-1l-1-3l1-3l-1-2l-2-3l-2-1l3-1l3-2l2-3l3 1l4 0l2-1l2-3l2-3l-2-2l0-4l3-1l3-1l2-2l2-2l4 0l3-1l1-3l3-2l2 3l2 2l3 2l2 2l1 3Z", "VN-35": "M161 121l2 3l1 3l-3 1l-4 1l-2 1l-1 2l-3-2l-2-3l-2-3l2-2l2-2l2-1l3-1l2 2l3 1Z", "VN-1": "M152 91l1 2l-1 3l2 4l2 2l-1 3l-2 1l-1 3l2 2l1 3l0 4l-3 1l-3 0l-1 3l-4 0l-1-3l-1-3l-1-3l-3-3l-1-3l-3 0l-2-2l-3-1l0-4l-2-2l3-2l0-3l4 0l1 3l2 2l4-1l1-2l4-1l1-2l1-4l3 3Z", "VN-42": "M146 201l2 4l2 4l2 3l1 3l3 2l2 3l3 2l3 1l2 2l3 2l1 3l3-1l1 3l2 3l-3 0l-4 0l-1 2l-4 0l-5 0l-1-4l-2-2l-4-1l-3 1l-2 2l-3 1l-3-1l-2-3l-2-2l-1-2l-4 1l-2-1l-1-3l-3-1l-2-2l-2-3l-2-2l1-4l0-2l4-1l2-1l2 2l4 0l3-1l2 2l3-1l3-2l3-2l-1-3Z", "VN-30": "M177 95l-1 3l-2 3l3 1l4 1l-2 2l1 2l-2 1l-2 2l1 3l-2 3l-3 1l-4 1l-3-1l-1-2l-2-2l0-4l0-3l4-1l2-2l0-4l1-3l4 0l3-1Z", "VN-31": "M195 110l3 1l3 2l-2 2l-2 2l-3-4ZM187 113l1 3l-3 2l-2 3l-4 0l-3 1l-2-3l-1-3l3-1l0-3l3-2l1-3l-1-3l4 0l3 1l1 3l-1 3l1 2Z", "VN-93": "M146 570l4-1l2 2l-1 3l-1 5l-3 1l-3 2l-2 2l-3 0l-3 1l-3 0l-2-3l1-3l1-2l4-3l2-5l2 1l4 0Z", "VN-17": "M129 104l3 1l2 2l3 0l2 1l0 4l2 2l2 4l0 3l2 1l3 4l2 1l-1 3l-3-1l-2 1l1 3l-2 2l-4-3l-3 0l-3-1l-5-1l-2-2l-2-2l-4-2l-3 0l-3-2l-2-3l-3-1l2-3l3 1l2-2l-1-5l-2-3l-3-2l1-4l2 2l3 1l3 2l2 2l3 0l3 1l3-1l-1-3Z", "VN-33": "M161 105l2 3l-1 3l1 3l2 2l1 2l-1 2l-4 0l-2 2l-1-4l-3-1l-2-3l1-3l-1-4l2-2l4-1l2 1Z", "VN-62": "M247 359l2 3l1 2l3 3l2 2l3 1l-1 3l0 3l3 2l-3 2l-3-1l-1 2l-2 2l-2 3l-3 0l-2 2l-3 0l-1 3l-3 1l-4-1l-2 2l-3 1l-4 1l-1 5l-2 1l-3 1l-2 2l-3-1l-1-3l-1-4l2-3l0-4l1-2l3-2l0-3l1-3l1-4l-1-3l0-4l3-2l-3-2l-2-2l2-3l3-1l1-3l-2-3l2-4l-1-3l3 1l2 3l2 2l4 1l3 1l2 2l-1 3l2 3l3 1l3-1l1-3Z", "VN-12": "M56 35l2 3l-1 3l2 2l4 0l3 3l2 3l1 3l3 3l1 2l1 4l-1 4l-2 2l2 2l1 3l-2 2l-4-2l-2-1l-3-2l0-4l-1-2l-3-2l-3-1l-2 2l-1-3l-2-3l-3-2l-2 3l-1 2l-3-1l-3-1l-3 2l-2 1l-2-2l-3 0l-3-1l-2-2l1-3l-3-2l0 4l-3-1l-2-3l-4-3l-2-2l-1-2l-1-3l-2-3l2-2l1-4l2-2l2-2l2 1l5 3l3 1l2 2l3 1l1 2l2 3l2 1l4 0l2-3l2-1l0-4l3-1l1-3l2-4l3 2l2 2l0 2l1 3Z", "VN-68": "M267 479l-2 2l1 2l-1 3l-1 3l-2 5l2 1l2 3l-3 2l-3 1l1 3l-2 2l-3 0l-4 0l-3 0l-1 3l0 3l-3 2l-3 2l-2 2l-1-3l-3-3l-7 0l-3 0l-2 1l-3 0l-3-2l-2-2l-1-3l-3-1l-2-1l-2-3l0-4l4-2l3 1l3-2l3-2l3-2l4 2l3-1l2 2l4 1l3-2l2-2l-2-2l-2-3l-2-2l2-3l3 0l3-3l3 2l2-2l2-2l4 0l2-2l4 1l3-1l2 3l1 3Z", "VN-20": "M179 43l0 3l4 1l1 2l0 3l1 4l0 4l3 1l3 1l3 1l3 1l2 2l-2 2l2 1l3 3l3 1l3 0l3 2l0 4l-3 1l-3 1l2 3l1 3l-4 1l-3 1l-3 2l-1-3l-2-2l-3-1l-2-3l-2-2l-3 0l-2-2l-3 1l-2 1l-2 4l-2 2l-2 2l-2-2l-2-3l-5-1l0-3l2-3l1-3l-4-1l-2-3l1-3l0-5l-1-3l3-2l3-2l0-5l-2-1l0-4l1-3l3 1l2 2l3 1l3-1l3-1Z", "VN-10": "M89 30l2 1l2 3l1 2l-2 2l2 2l1 3l3 2l1 3l-1 3l3 1l-2 1l-1 4l-3-2l-2-2l-2 2l0 3l1 3l1 3l-3 3l-3-3l-3-1l-1 3l-3-1l-4 0l-3-4l0-4l-1-2l-2-2l-1-3l-2-2l-1-4l-5 0l-4-3l2-3l-2-3l1-3l1-4l2-1l4 3l3 3l2 3l2 2l4 0l0-4l1-5l2-3l3-1l4-1l0 4l2 1Z", "VN-80": "M163 528l4 0l4-1l4 2l3 2l-1 4l-2 2l2 1l2 3l3 1l3-1l1 3l0 4l-2 2l-4 0l-4 1l-3-1l-2-2l-1-2l-5-2l-5 0l-4 2l-3 0l-3-4l-10-8l-3-4l5-2l3-2l4 3l2 2l3 3l0-4l3 3l2 1l4 1l-1-5l1-2Z", "VN-36": "M164 127l1 3l3 2l3 1l3 2l4-1l2 3l-3 1l-3 1l-3 1l-5 6l-2 2l-3 2l0-4l2-3l-1-5l-2-1l-2 1l-2-3l-2-2l1-3l2 1l2-3l3-2Z", "VN-40": "M148 179l-1 2l-2 2l0 4l-3 1l-1 4l0 3l3 2l2 4l1 3l-3 2l-1 3l-3 0l-4-1l-3 1l-4 0l-2-2l-2 2l-1-3l-3-2l-3 0l-3-2l-3-2l-5 0l-2-1l-3-2l-3-2l-2-2l-2-2l-3-1l-2-2l-3-2l-3 0l-1-3l-3-2l-4 0l-4-2l1-3l2-2l3-1l1-3l1-3l-2-3l2-1l2-2l4 0l2 1l4-1l2 2l3 2l3-1l2-2l2-3l2-1l3-2l0-3l1-3l2-2l4 2l4 1l3 1l-1 3l-1 4l1 3l3 1l2 2l0 3l3 0l2 4l4-1l3 3l2 1l2 3l3 0Z", "VN-37": "M151 130l1 2l2 2l2 3l2 1l4 0l1 4l-1 3l-2 4l-1 3l-2-3l2-2l-3-2l-3-1l-3-2l-2-1l-4-3l-2-2l-2-2l-2-2l3 1l3 2l0-4l2-1l5 0Z", "VN-58": "M286 493l1 3l-2 3l-1 4l-4 0l-1-2l0 3l-1 3l0 4l-2 3l-3-1l-3-2l-2-3l-3-1l-2-3l-2-1l2-3l3-2l-2-3l-2-1l2-3l0-4l1-3l0-3l2-2l2 1l1 3l2 2l2 3l2 1l3 0l2 3l2 2Z", "VN-25": "M129 83l1 3l2 2l1 2l-3 2l0 4l-3 2l2 2l-1 4l2 3l-3 1l-3-1l-3 0l-2-2l-3-2l-3-1l-1-2l-2-2l-1-3l0-4l3-1l0-5l-1-2l1-3l1-4l3-1l4 0l4 1l1 2l2 2l2 3Z", "VN-54": "M294 451l-5 0l-3 0l-2 2l-3 2l-3 1l-1-3l-4-1l-3-3l-2-2l-3-2l3-2l0-4l3-2l1-2l-1-4l-1-3l-1-4l-3 1l1-4l2-1l4 2l3 1l4-2l3-1l1-2l2-3l2 4l1 2l-2-2l1 3l2 3l-1 2l-1-3l-1 3l2 2l0 3l1 4l1 4l2 3l2 3l1 3l-2 2Z", "VN-44": "M177 235l-2 4l0 5l1 2l2 3l1 2l2 4l2 2l2 3l2 2l2 2l4 2l2 2l-1 4l-3 1l-2 2l-1 2l-2 3l-2-2l-3 1l-2-2l-4 0l-2-2l-1-3l-2-2l-1-3l0-3l-3 2l-2-2l-3-2l-10-12l-3-2l-2-2l-3-4l-1-2l-1-4l3-2l2-2l3 0l3-2l2 1l4 2l0 3l4 1l3 0l3-1l2-2l4 1Z", "VN-49": "M230 316l3 1l3-1l0 3l1 3l5-1l3-1l3 0l3 2l2 1l1 3l4 7l3 4l2 3l3 1l1 3l-2 1l-4 1l-2 1l-4 0l-3 1l-2 2l0 3l-2 3l-1 3l-3-1l-1 4l-3 0l-3-1l-1-3l1-2l-2-3l-3-1l-4-1l-2-2l-1-2l-1-3l-3-1l-3 1l-2-3l-4-1l0-3l-2-3l-2-1l-1-3l-1-3l3-3l3-1l2-2l2-4l3 1l3-2l2 2l4-2Z", "VN-51": "M281 378l-1-2l-2-2l-3-1l-3 1l-4 0l0 4l-3 0l-2 2l-3-2l-3-2l1-2l0-4l-2-1l-3-2l-2-3l-2-2l-1-2l0-4l2-3l-1-3l1-2l4 0l4-1l3-1l4-1l2-1l2 2l1-2l2 2l1 3l3 2l-2 2l0 4l1 3l2 6l2 5l2 2l0 5Z", "VN-22": "M219 107l-1 3l-2 3l1-3l2-4ZM219 104l-1 4l-2 1l1-3l2-3ZM221 103l-1 3l1-4l1-3l-1 4ZM216 93l2 2l3 1l-2 2l-3 3l-3 2l1-4l2-2l-1-3ZM191 112l-2-1l-3 0l1-3l0-3l-4-1l-3-2l-4 0l-2-2l3-4l3 0l5 1l3 1l3-1l3 0l2-2l1-3l2-2l4-1l3-1l0-3l-1-4l3-1l3-1l3-2l3 1l3 0l4 0l3-1l4 0l2 2l2 2l3 3l-2 2l-1-3l-3-1l-4 0l0 3l-3 2l-2 2l-2 2l-3-1l-2 1l-2 2l-2-2l0 4l-1 3l1 3l-1 4l-4 0l-3 2l-3 0l-5 0l-2 2l-4 0l1 3Z", "VN-45": "M213 287l-3 3l-1 4l-3 0l-3 0l-4 2l3 2l-2 2l-2 3l0 3l-3-2l-2-2l-1-3l-2-4l-1 4l-2 2l-3-2l-1-3l-2-3l-2-3l0-3l0-5l-2-3l2-3l2 3l3-1l2 2l2-3l1-2l2-2l3-1l2-3l3 2l2 3l3 5l3 3l4 4Z", "VN-94": "M155 573l3 3l3 2l3 3l2 3l3 1l-2 3l-3 2l0 4l-2 1l-4 1l-6 2l-3 1l0-4l1-1l-3-1l-3 1l-2-1l-4-2l0-5l2-2l4-2l3-2l3-1l0-4l1-3l4 0Z", "VN-14": "M72 74l3 1l4 2l4 0l4-1l0 4l0 3l1 3l3 1l4 2l2-2l3 0l3 1l2-1l1 3l3 1l1 4l0 3l2 2l-2 1l1 3l2 4l3 3l-1 4l-4 0l-2 2l-1 3l-1 3l-4-1l-2-2l-2-2l-4-1l-1-3l-3-1l-3-2l-1-3l-4-1l-3-1l-3 1l-2 2l-4 0l-2 2l-3 2l-2 3l-2 3l-2-2l-3-1l-2-1l-2-3l-2 2l-4-1l-3-1l2-3l1-3l-1-3l1-2l3 1l1-4l1-2l1-3l-3-3l-2-3l3-1l2-3l3-1l1-3l1-4l-1-3l-1-4l-2-3l2-3l3-1l3 2l1 2l0 4l2 2l2 2l2 2Z", "VN-72": "M175 499l1 3l-2 2l-1 4l-2 2l-1 3l1 2l1 4l2 2l-1 4l-2 2l-3-1l-2 2l-3 0l1-3l-1-2l-5-1l-1-3l-3-1l-1-3l-1-3l0-3l-1-3l-2-3l1-3l3 0l2-2l2-2l4 0l4 1l3 2l4-1l3 1Z", "VN-34": "M182 121l-2 3l0 3l0 5l0 4l-2-2l-3 1l-2-1l-3-2l-2 2l-3-4l-1-3l-1-3l-2-3l3-1l3-2l3-1l3-1l1 3l1 3l3-1Z", "VN-19": "M160 64l1 3l0 4l3 1l1 3l-1 3l-4 0l-2 1l0 4l0 4l-3-1l-1 3l-3 1l-2-1l-2-2l-3-2l-3-1l-1-2l-2-2l-2-2l-1-4l1-2l0-3l1-3l1-3l2-2l3-1l3 0l1 3l0 4l3 1l3-2l2-2l2-1l3 1Z", "VN-38": "M138 132l1 3l3 1l2 2l2 2l4 2l3 2l3 1l3 0l-1 3l-2 2l-2 3l-1 3l-1 4l-2 3l-1 3l-1 4l0 3l0 3l-2 2l-3-1l-2-2l-2-1l-2-3l-3 1l-3-2l-3 1l-1-4l-1-3l-3-2l-2-3l0-4l2-1l-1-3l-4 0l-3-2l-3-2l3-2l-2-2l-4-1l-3-3l-4 0l-2-2l0-4l2-2l0-3l-3 2l-3 1l-2 1l-2-1l-2-3l3-2l2-2l2-2l3-1l3 1l3 1l2-3l3-1l3 1l1 3l3 1l4 1l3 1l2 2l3 3l4 1l4 0Z", "VN-46": "M245 310l-2 1l-4-1l-5 0l-2 2l-1 2l-3 2l-2 2l-4-1l-3 1l-3-1l-3-2l-3 1l-2-3l-2 0l-3-2l0-3l-3-3l-4-1l2-3l4-1l-1-3l2-3l3 0l3 0l1-4l2-3l5 4l5 3l4 3l2 1l2 2l3 3l2 1l3 1l3 4l3 1Z", "VN-82": "M186 548l3 3l1 4l-3 2l1 3l-3-1l-5-1l-3-1l-3-1l-3-2l-6 1l-3 1l-4 0l-5 1l-3-1l-1-3l5-5l2-2l4 1l5-3l3 0l2 2l2 3l3 1l3 0l4 0l3-1Z", "VN-79": "M190 531l2 4l-2 2l-3 2l2 2l4 1l2 2l1 2l-1 5l-2 2l-3 2l-1-4l-3-3l0-4l-1-3l-3 1l-3-1l-2-3l-2-1l2-2l1-4l-3-2l-4-1l2-2l1-5l4 1l0 3l3 1l2 4l1 2l3-1Z", "VN-84": "M181 576l-2 3l1 3l-2 4l-3 1l-3 1l-2-3l-4-1l-2-3l-2-2l-3-2l-2-2l-3-3l4-1l4-1l2-3l2-2l3 2l2 2l3 2l2 1l3 3Z", "VN-8": "M136 33l2 2l2 2l-2 4l-1 3l-1 3l-3 3l1 3l1 3l1 3l1 3l1 3l-1 3l-1 3l-1 3l1 3l2 3l-2 2l-3 1l-3-1l-3-1l-1-3l-2-2l-2-2l-3-1l0-3l-1-3l-2-3l-1-3l-2-2l-3-2l0-4l2-1l1-4l2-1l1 3l2-3l1-3l1-3l1-3l0-4l2-3l4 2l2 2l2-1l3 1Z", "VN-86": "M168 566l-3 2l-3-1l-1 4l-4 0l-2 2l-2-2l-3-2l-2-3l-3-2l-2-1l2-3l3 2l3-2l1-3l3-2l2 2l3 1l2 2l3 1l2 3Z", "VN-26": "M148 89l-2 3l-2 3l-3 1l-2 2l-4-1l-1-3l-1-4l-1-2l-2-2l-1-3l3-1l4 0l2-2l2 2l1 1l3 2l2 2l1 2Z", "VN-15": "M110 53l0 4l3 2l2 2l1 3l2 3l2 2l-1 3l1 3l-4 0l-3 1l-2 2l-1 3l2 3l-1 4l-1 2l-3 1l-2-3l-4 0l-2-2l-3 2l-4 1l-2-2l-3-1l0-4l0-3l2-3l-3 0l-4 0l-5 0l-2-1l-3-1l2-2l-1-3l-2-2l1-3l3-1l2 2l4 1l4-1l2-1l2 2l4-2l-1-3l-1-3l0-3l2-2l2 2l3 2l1-3l1-2l-1-2l3-1l3 2l1 3l4-1Z", "VN-48": "M245 310l-1 2l1 3l2-1l3-1l-2 1l1 6l-3 1l-3 0l-3 0l-3 1l0-4l-3-1l-4-1l1-2l1-4l4 1l4 0l4-1ZM423 316l-2 2l-4-1l5-2ZM391 306l-1 3l-4-2l-3 2l2-2l4-1Z", "VN-56": "M286 493l-4 1l-2-3l-2-2l-3-1l-3-1l-1-3l-1-2l-1-3l-3-1l0-5l-1-3l1-3l2-2l3 1l2-2l-1-3l2-2l2-2l4-2l2-2l2-2l4 0l5-1l0 3l1 3l2 2l-1 3l-1-3l-2 1l1-3l-1-4l-2 2l-2 2l-2 3l0 3l2 3l1 2l3 2l-2 2l-3-2l-2-2l1 2l2 4l-2 2l-1 2l2 2l-1 3l1 3l2 3l0 3l-3-1l1-3l-2-4l1 3l-2 4l-2 2l3-1ZM487 660l-3 2l-3 2l-2 1l3-1l1-2l3-2ZM500 652l-4 1l-3 2l1-3l3 0ZM510 643l3 2l-4 0l-3 0l3 2l3-1l-3 1l-3-1l-4 0l3-1l4-2ZM454 641l-4 6l2-4l2-3ZM478 616l3 1l2 2l-7-3ZM442 581l-2 2l-3 2l1-3l3-1ZM556 536l1 4l-1-3l-1 5l-1-3l0-4Z", "VN-91": "M107 547l1 3l2 4l6 1l5 3l3 3l3 1l3 2l4 4l3 4l-2 3l-3 3l-2 2l2 2l-2 3l-2-2l0 3l0 4l-2 3l-3-2l-7-5l-4 0l-1 3l-2-3l1-6l1-5l3-1l2-2l3-2l-3-5l-4 0l-3-4l-3-2l-3 1l-2 3l-2-2l-1-4l-2-3l-3-1l2-2l2-2l2-3l4 0l4 1ZM77 551l1 3l1 4l-2 4l-1 3l1 3l-2-2l-1-5l-2-5l-3-2l4-1l1-3Z", "VN-77": "M183 619l-1 3l-2 2l0-3l3-2ZM217 536l2 3l1 4l-2 4l-3 2l-4 0l-3 2l-4 1l-3 2l1-3l-1-3l-2 2l-2-3l1-3l0-3l4-1l2-4l3 1l2 2l3-1l3-3l2 1Z"};
+const PROV = [{"code": "VN-1", "nameVi": "Hà Nội", "legacy": ["VN-1"]}, {"code": "VN-46", "nameVi": "Huế", "legacy": ["VN-46"]}, {"code": "VN-31", "nameVi": "Hải Phòng", "legacy": ["VN-31", "VN-30"]}, {"code": "VN-48", "nameVi": "Đà Nẵng", "legacy": ["VN-48", "VN-49"]}, {"code": "VN-92", "nameVi": "Cần Thơ", "legacy": ["VN-92", "VN-94", "VN-93"]}, {"code": "VN-79", "nameVi": "TP. Hồ Chí Minh", "legacy": ["VN-79", "VN-74", "VN-77"]}, {"code": "VN-12", "nameVi": "Lai Châu", "legacy": ["VN-12"]}, {"code": "VN-11", "nameVi": "Điện Biên", "legacy": ["VN-11"]}, {"code": "VN-14", "nameVi": "Sơn La", "legacy": ["VN-14"]}, {"code": "VN-20", "nameVi": "Lạng Sơn", "legacy": ["VN-20"]}, {"code": "VN-22", "nameVi": "Quảng Ninh", "legacy": ["VN-22"]}, {"code": "VN-38", "nameVi": "Thanh Hóa", "legacy": ["VN-38"]}, {"code": "VN-40", "nameVi": "Nghệ An", "legacy": ["VN-40"]}, {"code": "VN-42", "nameVi": "Hà Tĩnh", "legacy": ["VN-42"]}, {"code": "VN-4", "nameVi": "Cao Bằng", "legacy": ["VN-4"]}, {"code": "VN-8", "nameVi": "Tuyên Quang", "legacy": ["VN-8", "VN-2"]}, {"code": "VN-10", "nameVi": "Lào Cai", "legacy": ["VN-10", "VN-15"]}, {"code": "VN-19", "nameVi": "Thái Nguyên", "legacy": ["VN-19", "VN-6"]}, {"code": "VN-25", "nameVi": "Phú Thọ", "legacy": ["VN-25", "VN-26", "VN-17"]}, {"code": "VN-27", "nameVi": "Bắc Ninh", "legacy": ["VN-27", "VN-24"]}, {"code": "VN-33", "nameVi": "Hưng Yên", "legacy": ["VN-33", "VN-34"]}, {"code": "VN-37", "nameVi": "Ninh Bình", "legacy": ["VN-37", "VN-35", "VN-36"]}, {"code": "VN-45", "nameVi": "Quảng Trị", "legacy": ["VN-45", "VN-44"]}, {"code": "VN-51", "nameVi": "Quảng Ngãi", "legacy": ["VN-51", "VN-62"]}, {"code": "VN-64", "nameVi": "Gia Lai", "legacy": ["VN-64", "VN-52"]}, {"code": "VN-56", "nameVi": "Khánh Hòa", "legacy": ["VN-56", "VN-58"]}, {"code": "VN-68", "nameVi": "Lâm Đồng", "legacy": ["VN-68", "VN-67", "VN-60"]}, {"code": "VN-66", "nameVi": "Đắk Lắk", "legacy": ["VN-66", "VN-54"]}, {"code": "VN-75", "nameVi": "Đồng Nai", "legacy": ["VN-75", "VN-70"]}, {"code": "VN-72", "nameVi": "Tây Ninh", "legacy": ["VN-72", "VN-80"]}, {"code": "VN-86", "nameVi": "Vĩnh Long", "legacy": ["VN-86", "VN-83", "VN-84"]}, {"code": "VN-87", "nameVi": "Đồng Tháp", "legacy": ["VN-87", "VN-82"]}, {"code": "VN-89", "nameVi": "An Giang", "legacy": ["VN-89", "VN-91"]}, {"code": "VN-96", "nameVi": "Cà Mau", "legacy": ["VN-96", "VN-95"]}];
+const VB   = [-11.1, -11.1, 579.3, 687.3];
+const CENT = {"VN-1": [143.8, 103.9], "VN-46": [219.7, 305.6], "VN-31": [178.6, 109.6], "VN-48": [256.8, 329.0], "VN-92": [145.6, 577.4], "VN-79": [189.9, 536.9], "VN-12": [42.8, 48.1], "VN-11": [31.6, 70.4], "VN-14": [77.0, 96.1], "VN-20": [182.9, 68.2], "VN-22": [209.8, 96.2], "VN-38": [125.1, 144.5], "VN-40": [113.3, 179.6], "VN-42": [146.9, 221.1], "VN-4": [158.6, 28.6], "VN-8": [120.5, 39.7], "VN-10": [89.1, 57.7], "VN-19": [149.5, 60.5], "VN-25": [128.3, 102.6], "VN-27": [170.5, 91.5], "VN-33": [166.7, 120.0], "VN-37": [157.5, 134.3], "VN-45": [180.1, 268.8], "VN-51": [245.3, 369.7], "VN-64": [259.6, 405.2], "VN-56": [346.8, 525.6], "VN-68": [237.0, 497.9], "VN-66": [262.8, 445.3], "VN-75": [198.7, 510.9], "VN-72": [164.6, 525.0], "VN-86": [166.8, 567.7], "VN-87": [154.0, 548.2], "VN-89": [112.1, 559.3], "VN-96": [125.3, 603.0]};
+
+const byLegacy = {};
+PROV.forEach(p => p.legacy.forEach(c => byLegacy[c] = p));
+
+/* ── Dữ liệu thật của tổ chức test, 137 lượt ── */
+const REAL = { 'VN-79': 101, 'VN-1': 5 };
+const REAL_TOTAL = 137;
+
+const STOPS = ['#e8f5e9','#a5d6a7','#66bb6a','#2e7d32','#1b5e20'];
+const EMPTY = '#F8F9FB';            // vietnam-map-chart.tsx:28
+
+/* Chính xác buildScale trong vietnam-map-chart.tsx:31-45 */
+function buildScale(maxCount){
+  const max = Math.max(maxCount, 1);
+  const th = STOPS.map((_, i) => Math.ceil(max*(i+1)/STOPS.length));
+  return {max, th, colorOf: n => {
+    if (n <= 0) return EMPTY;
+    const i = th.findIndex(t => n <= t);
+    return STOPS[i === -1 ? STOPS.length-1 : i];
+  }};
+}
+
+const render = (svg, fillOf, extra) => {
+  svg.insertAdjacentHTML('beforeend', PROV.map(p =>
+    p.legacy.map(c => `<path class="p" d="${VN[c]}" fill="${fillOf(p)}" data-code="${p.code}"/>`).join('')
+  ).join('') + (extra ? extra() : ''));
+};
+
+/* ── Câu 4: hiện tại ── */
+const sNow = buildScale(Math.max(...Object.values(REAL)));
+render(document.getElementById('m-now'), p => sNow.colorOf(REAL[p.code] ?? 0));
+document.getElementById('k-now').innerHTML =
+  `<span><i style="background:${EMPTY}"></i>0 lượt</span>`
++ STOPS.map((c, i) => `<span><i style="background:${c}"></i>≤ ${sNow.th[i]}</span>`).join('')
++ `<span style="color:#b91c1c">Hà Nội (5 lượt) nhận ${STOPS[0]} — gần trùng ${EMPTY}</span>`;
+
+/* ── Câu 4: đề xuất — hai trạng thái + chấm và tên tỉnh có dữ liệu ── */
+render(document.getElementById('m-new'),
+  p => REAL[p.code] ? '#2e7d32' : 'url(#hatch)',
+  () => Object.keys(REAL).map(code => {
+    const p = PROV.find(x => x.code === code);
+    const [cx, cy] = CENT[code];
+    const left = cx > (VB[0] + VB[2]/2);   // tỉnh nằm nửa phải thì nhãn đổ sang trái
+    const r = VB[2]/120, fs = VB[2]/42;
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="#1b5e20" stroke-width="${r/2}"/>
+            <text x="${cx + (left ? -r*2.6 : r*2.6)}" y="${cy + fs*0.35}" font-size="${fs}"
+                  fill="#0f172a" text-anchor="${left ? 'end' : 'start'}"
+                  >${p.nameVi} · ${REAL[code]}</text>`;
+  }).join(''));
+document.getElementById('k-new').innerHTML =
+  `<span><i style="background:#2e7d32"></i>có lượt</span>`
++ `<span><i style="background:repeating-linear-gradient(45deg,#fff 0 2px,#e2e8f0 2px 3px)"></i>chưa có lượt</span>`;
+
+/* ── Câu 5: 34 tỉnh, phân bố lệch mô phỏng ── */
+const SKEW = [8400,4100,980,760,640,520,470,410,360,310,280,250,230,210,190,170,
+              155,140,125,112,100,90,80,71,62,54,47,40,34,28,23,18,13,9];
+const BIG = PROV.map((p, i) => ({p, n: SKEW[i]})).sort((a,b) => b.n-a.n);
+const BIG_TOTAL = SKEW.reduce((a,b) => a+b, 0);
+const byCode = Object.fromEntries(BIG.map(r => [r.p.code, r.n]));
+
+const linear = buildScale(BIG[0].n);
+const quant  = (() => {
+  const s = [...SKEW].sort((a,b) => a-b);
+  const th = STOPS.map((_, i) => s[Math.ceil(s.length*(i+1)/STOPS.length)-1]);
+  return {th, colorOf: n => {
+    if (n <= 0) return EMPTY;
+    const i = th.findIndex(t => n <= t);
+    return STOPS[i === -1 ? STOPS.length-1 : i];
+  }};
+})();
+
+const svgBig = document.getElementById('m-big');
+let mode = 'linear';
+const scaleOf = () => mode === 'linear' ? linear : quant;
+
+const drawBig = () => {
+  const s = scaleOf();
+  svgBig.innerHTML = '';
+  render(svgBig, p => s.colorOf(byCode[p.code] ?? 0));
+  svgBig.querySelectorAll('path').forEach(el => {
+    el.onmouseenter = () => hl(el.dataset.code, true);
+    el.onmouseleave = () => hl(el.dataset.code, false);
+  });
+  document.getElementById('sc').innerHTML =
+    STOPS.map(c => `<i style="background:${c}"></i>`).join('');
+  const counts = STOPS.map((_, i) => SKEW.filter(n => s.colorOf(n) === STOPS[i]).length);
+  document.getElementById('sc-lab').innerHTML =
+    `Mốc: ${s.th.map(t => t.toLocaleString('vi')).join(' · ')}<br>`
+  + `Số tỉnh mỗi bậc: <b>${counts.join(' · ')}</b>`
+  + (mode === 'linear' ? ` — <span style="color:#b91c1c">${counts[0]}/34 tỉnh cùng một màu</span>` : '');
+};
+
+const pctBig = n => (n/BIG_TOTAL*100).toFixed(1);
+document.getElementById('tb-big').innerHTML = BIG.map(r => `
+  <tr data-code="${r.p.code}">
+    <td>${r.p.nameVi}</td><td class="num">${r.n.toLocaleString('vi')}</td>
+    <td><div class="bar"><i style="width:${Math.max(3, r.n/BIG[0].n*100)}%"></i><b>${pctBig(r.n)}%</b></div></td>
+  </tr>`).join('');
+document.getElementById('hdr').textContent = `Đủ 34 tỉnh, cuộn trong khung cố định`;
+document.getElementById('ft-big').innerHTML =
+  `Tổng <b>${BIG_TOTAL.toLocaleString('vi')}</b> lượt · không hàng “tỉnh khác”, không phân trang`;
+
+const hl = (code, on) => {
+  svgBig.querySelectorAll(`path[data-code="${code}"]`).forEach(el => el.classList.toggle('hot', on));
+  const tr = document.querySelector(`#tb-big tr[data-code="${code}"]`);
+  if (!tr) return;
+  tr.classList.toggle('hl', on);
+  if (on) tr.scrollIntoView({block:'nearest', behavior:'smooth'});
+};
+document.querySelectorAll('#tb-big tr').forEach(tr => {
+  tr.onmouseenter = () => hl(tr.dataset.code, true);
+  tr.onmouseleave = () => hl(tr.dataset.code, false);
+});
+
+document.querySelectorAll('#seg button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#seg button').forEach(x => x.classList.toggle('on', x === b));
+  mode = b.dataset.m;
+  drawBig();
+});
+drawBig();
+</script>
+</body>
+</html>

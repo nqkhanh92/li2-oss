@@ -1,0 +1,78 @@
+# ClamAV cho LiHi — soạn 2026-10-21 (WP6 của docs/artifact-scan-clamav-spec.md).
+#
+# Đích trên server: ~/lihi/clamav/docker-compose.yml
+#   → compose project name = "clamav" → volume thật tên "clamav_clamav_db"
+#     (cùng quy ước với ~/lihi/worker: "worker_redis_data", "worker_pg_aux_data").
+#
+# Nguồn đã kiểm 2026-10-21:
+#   https://docs.clamav.net/manual/Installing/Docker.html
+#     → database /var/lib/clamav, config /etc/clamav, port clamd 3310 + milter 7357,
+#       RAM tối thiểu 3 GiB / ưu tiên 4 GiB (đỉnh gấp đôi trong lúc reload database),
+#       env CLAMAV_NO_CLAMD / CLAMAV_NO_FRESHCLAMD / CLAMAV_NO_MILTERD / CLAMD_STARTUP_TIMEOUT / FRESHCLAM_CHECKS
+#   https://raw.githubusercontent.com/Cisco-Talos/clamav-docker/main/clamav/1.4/alpine/Dockerfile
+#     → "HEALTHCHECK --start-period=6m CMD clamdcheck.sh", script ở /usr/local/bin/clamdcheck.sh,
+#       EXPOSE 3310 + 7357, KHÔNG có dòng VOLUME nào.
+#   https://hub.docker.com/v2/repositories/clamav/clamav/tags/1.4
+#     → manifest list digest sha256:3bba6dd5ac6663d55b80f86a3126e146612d93b593cc2617188d13f637d91260
+#       (last_updated 2026-10-19), layer amd64 155 MB nén.
+
+services:
+  clamav:
+    # Nhánh LTS, hỗ trợ bảo mật tới 2027-08-15 (endoflife.date/clamav).
+    # KHÔNG dùng :latest / :stable — hai tag đó nhảy major.minor dưới chân mình khi 1.5 thành stable.
+    # Tag có database sẵn (KHÔNG phải :1.4_base) để lần khởi động đầu không tải trọn ~1 GB signature.
+    #
+    # Ghim digest khi muốn bất biến (Talos đã thông báo sẽ xoá ảnh cũ khỏi Docker Hub):
+    #   image: clamav/clamav:1.4@sha256:3bba6dd5ac6663d55b80f86a3126e146612d93b593cc2617188d13f637d91260
+    image: clamav/clamav:1.4
+    container_name: lihi-clamav        # tiền tố "lihi-" như lihi-redis, lihi-worker, lihi-postgres-aux
+    restart: unless-stopped            # như li2-app và lihi-worker (redis/postgres-aux dùng "always")
+
+    # docs.clamav.net: tối thiểu 3 GiB, ưu tiên 4 GiB. Engine ~1,2 GiB khi nạp signature và
+    # tăng gần gấp đôi trong lúc freshclam reload (clamd dựng engine mới trước khi bỏ engine cũ).
+    # Đặt tường minh để lần tăng vọt hằng ngày không ăn vào phần của supabase-db.
+    mem_limit: 4g
+
+    environment:
+      - CLAMAV_NO_MILTERD=true         # không lọc mail → không cần milter (port 7357)
+      - FRESHCLAM_CHECKS=1             # 1 lần/ngày là đủ cho artifact upload
+      - CLAMD_STARTUP_TIMEOUT=1800     # mặc định của ảnh; giữ nguyên, lần đầu nạp database rất lâu
+
+    volumes:
+      # Cấu hình: 6 dòng mặc định của ảnh + AlertEncryptedArchive/Doc (xem clamd.conf).
+      # Mount read-only; đổi file thì phải `up -d --force-recreate clamav`, clamd không reload conf.
+      - ./clamd.conf:/etc/clamav/clamd.conf:ro
+      # PHẢI là named volume, KHÔNG bind mount. Named volume rỗng được Docker seed bằng
+      # nội dung có trong ảnh, nên database bundled đi vào volume và freshclam chỉ tải delta.
+      # Một bind mount thư mục rỗng sẽ CHE MẤT database của ảnh và buộc tải lại ~1 GB.
+      - clamav_db:/var/lib/clamav
+
+    networks:
+      # Đúng network mà li2-app đang ở (docker inspect li2-app 2026-10-21 → lihi-internal + lihi-proxy).
+      # Chỉ lihi-internal: app gọi clamd bằng DNS nội bộ "clamav:3310".
+      # KHÔNG lihi-proxy (không cần Traefik) và KHÔNG "ports:" — clamd không có xác thực,
+      # mở ra host là mở một dịch vụ cho phép quét file tuỳ ý.
+      - lihi-internal
+
+    healthcheck:
+      # Ảnh đã có sẵn HEALTHCHECK --start-period=6m CMD clamdcheck.sh. Khai lại chỉ để siết interval
+      # và cho "docker compose ps" nói rõ hơn; bỏ hẳn khối này thì hành vi vẫn đúng.
+      test: ['CMD', '/usr/local/bin/clamdcheck.sh']
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 6m                 # giữ đúng 6m của ảnh: lần đầu phải nạp ~1 GB database vào engine
+
+    logging:
+      # Cùng khuôn với li2-app. clamd log mỗi lần freshclam reload; không giới hạn thì đĩa trôi dần.
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+volumes:
+  clamav_db:
+
+networks:
+  lihi-internal:
+    external: true

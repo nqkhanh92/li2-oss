@@ -1,0 +1,237 @@
+{
+  "labels": {
+    "orgEditSectionTitle": "Edit Organization"
+  },
+  "sidebar": {
+    "profile": {
+      "label": "Profile Settings",
+      "sub_label": {
+        "edit_profile": "Edit Profile Information",
+        "update_password": "Update Password",
+        "mfa": "2FA Password"
+      }
+    },
+    "organization": {
+      "label": "Organization Settings",
+      "sub_label": {
+        "member": "Member",
+        "update_organization": "Update Organization",
+        "delete_organization": "Delete Organization",
+        "audit_logs": "Audit Logs"
+      }
+    },
+    "subscription": {
+      "label": "Subscription Details",
+      "sub_label": {
+        "planning": "Planning",
+        "usage": "Usage"
+      }
+    },
+    "developer": {
+      "label": "Developer",
+      "sub_label": {
+        "analytics": "Analytics",
+        "conversion_settings": "Conversion Settings",
+        "api_keys": "API Keys"
+      }
+    }
+  },
+  "conversion_settings": {
+    "title": "Conversion Settings",
+    "currency": {
+      "title": "Default Currency",
+      "description": "Currency used for conversion tracking when not specified in sale events. This affects how revenue is displayed across your analytics.",
+      "select_placeholder": "Select currency",
+      "saved": "Currency setting saved successfully"
+    }
+  },
+  "profile_form": {
+    "profile_settings": "Profile Settings",
+    "profile_infor": "Profile Info",
+    "profile": "Profile",
+    "password": "Password",
+    "security": "Security",
+    "update_password": "Update Password",
+    "update_password_description": "Change your password to keep your account secure",
+    "mfa_description": "Add an extra layer of security to your account",
+    "multi-factor_authentication": {
+      "label": "Multi-factor Authentication",
+      "app": "Authenticator App",
+      "description": "Adds an extra security challenge when logging in. If you fail the challenge, you’ll have the option to recover your account via email."
+    }
+  },
+  "subscription": {
+    "label": "Planning",
+    "usage": "Usage",
+    "include_title": "Included in your plan",
+    "max_tps_per_month": "Links/Month",
+    "max_tags_per_org": "Tags/Organization",
+    "max_domains_per_org": "Custom Domains/Organization",
+    "no_custom_domain": "No Custom Domain",
+    "max_slugs_per_tp": "Keep up to {{ count }} previous custom URLs active/Link",
+    "no_custom_link_ending": "No Custom Link Ending",
+    "max_tags_per_tp": "Tags/Link",
+    "no_allow_custom_utm_tags": "Custom UTM Tags Not Allowed",
+    "allow_custom_utm_tags": "Custom UTM Tags Allowed",
+    "no_allow_custom_meta_tags": "Custom Meta Tags Not Allowed",
+    "allow_custom_meta_tags": "Custom Meta Tags Allowed",
+    "usage_details": "Current Usage",
+    "section_monthly": "Monthly",
+    "section_total": "General limits",
+    "usage_details_for_module": "You’ve used this many {{ type }} for {{ field }} so far."
+  },
+  "mfa": {
+    "dialog_title": "Enabled Multi-Factor Authentication",
+    "label": "Multi-factor Authentication",
+    "title": "Enabled Multi-Factor Authentication",
+    "heading": "Scan the QR code with any authenticator app (Authy, Google Authenticator, 1Password, etc):",
+    "description": "If scanning doesn’t work, you can manually enter the code below.",
+    "then": "Then",
+    "one_time_code": "Enter your one time code:",
+    "one_time_code_placeholder": "Enter your one time code",
+    "cancel": "Cancel",
+    "finish_description": "Please save your recovery code in a secure place. You will need it to log in if you lose access to your authentication app",
+    "enable_mfa": "Enable MFA",
+    "disable_mfa": "Disable MFA",
+    "downloaded": "Downloaded",
+    "recovery_code_downloaded": "Recovery code downloaded"
+  },
+  "please_type": "Please type",
+  "to_confirm": "to confirm",
+  "role_permissions": {
+    "title": "Role Permissions",
+    "table": {
+      "permission": "Permission"
+    },
+    "scope": {
+      "all": "All resources",
+      "own": "Own resources only",
+      "none": "No access"
+    },
+    "roles": {
+      "member": "Member",
+      "owner": "Owner"
+    },
+    "groups": {
+      "view": "View",
+      "add": "Add",
+      "edit": "Edit",
+      "delete": "Delete",
+      "other": "Other"
+    },
+    "permissions": {
+      "view_dashboard": "View Dashboard",
+      "view_analytics": "View Analytics",
+      "view_touch_points": "View Touch Points",
+      "view_tags": "View Tags",
+      "view_integrations": "View Integrations",
+      "view_assets": "View Assets",
+      "view_campaign": "View Campaigns",
+      "view_organization": "View Organization",
+      "view_members": "View Members",
+      "view_utm_templates": "View UTM Templates",
+      "view_collections": "View Collections",
+      "view_audit_logs": "View Audit Logs",
+      "add_touch_point": "Add Touch Point",
+      "add_tag": "Add Tag",
+      "add_integration": "Add Integration",
+      "add_asset": "Add Asset",
+      "add_campaign": "Add Campaign",
+      "add_utm_template": "Add UTM Template",
+      "add_collection": "Add Collection",
+      "edit_touch_point": "Edit Touch Point",
+      "edit_tag": "Edit Tag",
+      "edit_integration": "Edit Integration",
+      "edit_asset": "Edit Asset",
+      "edit_campaign": "Edit Campaign",
+      "edit_utm_template": "Edit UTM Template",
+      "edit_collection": "Edit Collection",
+      "delete_touch_point": "Delete Touch Point",
+      "delete_tag": "Delete Tag",
+      "delete_integration": "Delete Integration",
+      "delete_asset": "Delete Asset",
+      "delete_campaign": "Delete Campaign",
+      "delete_utm_template": "Delete UTM Template",
+      "delete_collection": "Delete Collection",
+      "manage_organization": "Manage Organization",
+      "manage_members": "Manage Members",
+      "manage_collection_members": "Manage Collection Members",
+      "manage_domains": "Manage Domains",
+      "manage_api_keys": "Manage API Keys",
+      "delete_organization": "Delete Organization",
+      "export_audit_logs": "Export Audit Logs",
+      "view_funnels": "View Funnels",
+      "add_funnel": "Add Funnel",
+      "edit_funnel": "Edit Funnel",
+      "delete_funnel": "Delete Funnel",
+      "view_event_rules": "View Event Rules",
+      "add_event_rule": "Add Event Rule",
+      "edit_event_rule": "Edit Event Rule",
+      "delete_event_rule": "Delete Event Rule"
+    }
+  },
+  "analytics_settings": {
+    "save_btn": "Save",
+    "tabs": {
+      "publishable_key": "Publishable Key",
+      "features": "Features",
+      "tracking": "Tracking",
+      "allowed_domains": "Allowed Domains",
+      "data_collection": "Data Collection",
+      "debug": "Debug",
+      "scripts": "Scripts"
+    },
+    "data_collection_rules": {
+      "description": "Control which pages on your website should be tracked. You can either exclude specific pages or include only specific pages.",
+      "help": "Use exact paths (/checkout) or regex patterns (^/admin/.*) to match multiple pages. Paths are case-sensitive.",
+      "mode_label": "Collection Mode",
+      "exclude_mode": "Exclude Pages",
+      "exclude_description": "Track all pages except the ones listed",
+      "include_mode": "Include Pages Only",
+      "include_description": "Track only the pages listed",
+      "excluded_paths": "Excluded Paths",
+      "included_paths": "Included Paths",
+      "no_excluded": "No excluded paths configured",
+      "no_included": "No included paths configured",
+      "no_excluded_hint": "All pages will be tracked",
+      "no_included_hint": "No pages will be tracked until you add some",
+      "add_path": "Add",
+      "empty_error": "Path cannot be empty",
+      "duplicate_error": "Path already exists",
+      "saved": "Data collection rules updated successfully",
+      "example_exact": "Matches /checkout exactly",
+      "example_regex": "Matches all paths starting with /admin/"
+    }
+  },
+  "members": {
+    "title": "Invite new member",
+    "list_title": "Member list",
+    "table": {
+      "email": "Email",
+      "status": "Status",
+      "role": "Role"
+    },
+    "status": {
+      "member": "Member",
+      "invited": "Invited",
+      "rejected": "Rejected"
+    },
+    "actions": {
+      "delete": "Delete",
+      "delete_title": "Delete member",
+      "delete_description": "Are you sure you want to delete this member?",
+      "resend_invite": "Resend invite",
+      "remove": "Remove",
+      "select_role": "Select a role"
+    },
+    "form": {
+      "email_placeholder": "Email",
+      "invite_button": "Invite"
+    },
+    "leave": {
+      "title": "Leave organization",
+      "button": "Leave",
+      "description": "Are you sure you want to leave this organization? You will lose access immediately."
+    }
+  }
+}

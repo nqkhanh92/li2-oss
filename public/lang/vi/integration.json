@@ -1,0 +1,33 @@
+{
+  "label": "Tích hợp",
+  "description": "Chọn ứng dụng để thêm kết nối",
+  "integration_list": {
+    "parcelvoy": {
+      "label": "Parcelvoy",
+      "description": "Công cụ nhắn tin tự động và thu hút khách hàng"
+    },
+    "mautic": {
+      "label": "Mautic",
+      "description": "Kết nối với Mautic để tự động hóa marketing"
+    },
+    "hubspot": {
+      "label": "Hubspot",
+      "description": "Đồng bộ với HubSpot CRM và công cụ marketing"
+    },
+    "google_sheets": {
+      "label": "Google trang tính",
+      "description": "Đồng bộ dữ liệu với Google trang tính cho mỗi lượt tương tác với links/qr code."
+    },
+    "all_integrations": "Tất cả các tích hợp",
+    "configuration": "Cấu hình",
+    "documentation": "Tài liệu",
+    "overview": "Tổng quan",
+    "connection_status": "Trạng thái kết nối",
+    "connected_google": "Đã kết nối Google Sheets",
+    "not_connected_google": "Chưa kết nối Google Sheets",
+    "data_actions": "Hành động dữ liệu",
+    "export_csv_data": "Xuất dữ liệu CSV",
+    "export_visits": "Xuất lượt truy cập",
+    "import_links_qr": "Nhập links / QR"
+  }
+}

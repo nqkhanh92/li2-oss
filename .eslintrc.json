@@ -1,0 +1,15 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "BinaryExpression[operator='instanceof'][right.name=/^(OAuthProtocolError|McpToolError)$/]",
+        "message": "Use `OAuthProtocolError.is(x)` / `McpToolError.is(x)`, never `instanceof`. Next builds a separate bundle per route, so these classes exist as several distinct objects at runtime and `instanceof` compares identity between them — it returns false for a genuine error that crossed a bundle boundary. This passes in dev (one bundle) and fails only in production; it already shipped once, proven live 2026-07-29. See the Symbol.for note in mcp-oauth.service.ts."
+      }
+    ]
+  }
+}

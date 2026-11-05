@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Li2 Heatmap Test — Pricing Page</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a2e; background: #fff; }
+
+    /* Nav */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; border-bottom: 1px solid #e5e7eb; }
+    nav .logo { font-size: 20px; font-weight: 700; color: #6366f1; }
+    nav .links { display: flex; gap: 24px; }
+    nav .links a { text-decoration: none; color: #4b5563; font-size: 14px; font-weight: 500; padding: 8px 12px; border-radius: 6px; }
+    nav .links a:hover { background: #f3f4f6; color: #111827; }
+    nav .cta { background: #6366f1; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    nav .cta:hover { background: #4f46e5; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 60px 40px 40px; }
+    .hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 16px; }
+    .hero h1 span { color: #6366f1; }
+    .hero p { font-size: 18px; color: #6b7280; max-width: 600px; margin: 0 auto 32px; }
+
+    /* Toggle */
+    .toggle { display: flex; justify-content: center; gap: 0; margin-bottom: 40px; }
+    .toggle button { padding: 10px 24px; font-size: 14px; font-weight: 500; border: 1px solid #d1d5db; background: #fff; cursor: pointer; color: #4b5563; }
+    .toggle button:first-child { border-radius: 8px 0 0 8px; }
+    .toggle button:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+    .toggle button.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+
+    /* Pricing */
+    .pricing { display: flex; justify-content: center; gap: 24px; padding: 0 40px 60px; flex-wrap: wrap; }
+    .plan { border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; width: 320px; text-align: center; }
+    .plan.featured { border-color: #6366f1; box-shadow: 0 0 0 2px #6366f1; position: relative; }
+    .plan.featured::before { content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #6366f1; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .plan h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .plan .price { font-size: 40px; font-weight: 800; margin-bottom: 4px; }
+    .plan .price span { font-size: 16px; font-weight: 400; color: #9ca3af; }
+    .plan .desc { font-size: 14px; color: #6b7280; margin-bottom: 24px; }
+    .plan ul { list-style: none; text-align: left; margin-bottom: 24px; }
+    .plan ul li { padding: 8px 0; font-size: 14px; color: #374151; border-bottom: 1px solid #f3f4f6; }
+    .plan ul li::before { content: '✓ '; color: #22c55e; font-weight: 700; }
+    .plan button { width: 100%; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
+    .plan button.primary { background: #6366f1; color: #fff; }
+    .plan button.primary:hover { background: #4f46e5; }
+    .plan button.secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .plan button.secondary:hover { background: #e5e7eb; }
+
+    /* Footer */
+    footer { border-top: 1px solid #e5e7eb; padding: 24px 40px; display: flex; justify-content: space-between; font-size: 13px; color: #9ca3af; }
+    footer a { color: #6b7280; text-decoration: none; margin-left: 16px; }
+    footer a:hover { color: #111827; }
+
+    /* FAQ */
+    .faq { max-width: 720px; margin: 0 auto 60px; padding: 0 40px; }
+    .faq h2 { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 32px; }
+    .faq-item { border-bottom: 1px solid #e5e7eb; padding: 16px 0; }
+    .faq-item summary { font-size: 15px; font-weight: 600; cursor: pointer; color: #1a1a2e; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item p { font-size: 14px; color: #6b7280; margin-top: 12px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Li2</div>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#docs">Docs</a>
+      <a href="#blog">Blog</a>
+    </div>
+    <button class="cta">Sign Up Free</button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Simple pricing for <span>every team</span></h1>
+    <p>Start free, scale as you grow. No hidden fees, no surprises. Cancel anytime.</p>
+  </section>
+
+  <!-- Monthly / Yearly Toggle -->
+  <div class="toggle">
+    <button class="active" onclick="this.classList.add('active');this.nextElementSibling.classList.remove('active')">Monthly</button>
+    <button onclick="this.classList.add('active');this.previousElementSibling.classList.remove('active')">Yearly (save 20%)</button>
+  </div>
+
+  <!-- Pricing Cards -->
+  <section class="pricing" id="pricing">
+    <div class="plan">
+      <h3>Starter</h3>
+      <div class="price">$0<span>/mo</span></div>
+      <div class="desc">For individuals getting started</div>
+      <ul>
+        <li>1,000 events/month</li>
+        <li>1 website</li>
+        <li>Basic analytics</li>
+        <li>7-day data retention</li>
+      </ul>
+      <button class="secondary">Get Started</button>
+    </div>
+
+    <div class="plan featured">
+      <h3>Pro</h3>
+      <div class="price">$29<span>/mo</span></div>
+      <div class="desc">For growing businesses</div>
+      <ul>
+        <li>100,000 events/month</li>
+        <li>10 websites</li>
+        <li>Funnels & heatmaps</li>
+        <li>90-day data retention</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="primary">Get Started</button>
+    </div>
+
+    <div class="plan">
+      <h3>Enterprise</h3>
+      <div class="price">Custom</div>
+      <div class="desc">For large organizations</div>
+      <ul>
+        <li>Unlimited events</li>
+        <li>Unlimited websites</li>
+        <li>Custom retention</li>
+        <li>SSO & SAML</li>
+        <li>Dedicated support</li>
+      </ul>
+      <button class="secondary">Contact Sales</button>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item">
+      <summary>Can I change plans later?</summary>
+      <p>Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What counts as an event?</summary>
+      <p>Pageviews, clicks, and custom events all count as events. Bot traffic is automatically filtered and does not count.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do you offer refunds?</summary>
+      <p>We offer a 14-day money-back guarantee on all paid plans. No questions asked.</p>
+    </details>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span>&copy; 2026 Li2. All rights reserved.</span>
+    <div>
+      <a href="#privacy">Privacy</a>
+      <a href="#terms">Terms</a>
+      <a href="#status">Status</a>
+    </div>
+  </footer>
+
+  <!--
+    Li2 Analytics SDK
+    ==================
+    INSTRUCTIONS:
+    1. Replace YOUR_PUBLISHABLE_KEY with your org's actual publishable key
+       (find it at: Dashboard → Settings → Analytics Settings)
+    2. Set data-api-url to your li2-be backend URL (default: http://localhost:8080)
+    3. data-pageview="true"  → enables pageview tracking
+    4. data-clicks="true"    → enables click/interaction tracking (for heatmap)
+    5. data-debug            → enables console debug logging
+  -->
+  <script
+    src="./li2-sdk.js"
+    data-publishable-key="li2_pk_b3061997_c9adbc4a73e7dcf8079d1e0702d3bc62"
+    data-api-url="http://localhost:8088"
+    data-pageview="true"
+    data-clicks="true"
+    data-debug
+  ></script>
+
+  <!-- Status indicator -->
+  <script>
+    window.addEventListener('load', () => {
+      const el = document.createElement('div')
+      el.style.cssText = 'position:fixed;bottom:12px;right:12px;background:#1a1a2e;color:#fff;padding:8px 14px;border-radius:8px;font-size:12px;font-family:monospace;z-index:9999;opacity:0.9;'
+      const sdkLoaded = typeof window.li2 !== 'undefined'
+      el.innerHTML = sdkLoaded
+        ? '✅ Li2 SDK loaded — clicks are being tracked'
+        : '⚠️ Li2 SDK not loaded — update script src'
+      document.body.appendChild(el)
+    })
+  </script>
+
+</body>
+</html>

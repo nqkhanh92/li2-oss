@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - SpeedNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/li2-analytics.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent">
+                ⚡ SpeedNet
+            </a>
+        </div>
+    </nav>
+
+    <div class="flex-grow flex items-center justify-center px-6 py-12">
+        <div class="max-w-md w-full bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-3xl p-10 shadow-2xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold mb-2">Welcome Back</h2>
+                <p class="text-gray-400">Sign in to manage your connection</p>
+            </div>
+
+            <form id="signinForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+                    <input type="email" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="you@example.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Password</label>
+                    <input type="password" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="••••••••">
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input type="checkbox" class="w-4 h-4 rounded border-gray-700 bg-gray-800 text-purple-500 focus:ring-purple-500 focus:ring-offset-gray-900">
+                        <span class="text-gray-400 group-hover:text-gray-300">Remember me</span>
+                    </label>
+                    <a href="#" class="text-purple-500 hover:text-purple-400">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/20 transition-all active:scale-[0.98]">
+                    Sign In
+                </button>
+            </form>
+
+            <div id="successMessage" class="hidden mt-6 p-4 bg-emerald-500/10 border border-emerald-500/50 rounded-xl text-emerald-500 text-center">
+                <p class="font-bold">Sign in successful!</p>
+                <p class="text-sm">Redirecting you to home page...</p>
+            </div>
+
+            <p class="mt-8 text-center text-gray-500 text-sm">
+                Don't have an account? <a href="signup.html" class="text-purple-500 hover:text-purple-400 font-medium">Create an account</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Trigger li2 conversion if available
+            if (window.li2Analytics && typeof window.li2Analytics.identify === 'function') {
+                window.li2Analytics.identify({
+                    email: e.target.querySelector('input[type="email"]').value
+                });
+            }
+
+            // Show success message
+            this.classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

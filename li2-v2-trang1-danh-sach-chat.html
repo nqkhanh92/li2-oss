@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Li2 v2 — Trang 1: Link & Artifact + chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F7FA;--card:#FFFFFF;--line:#E3E7EC;--line2:#EEF1F5;--ink:#0F172A;--muted:#4A5568;--blue:#2F5BEA;--dark:#0B1220;--green:#1B6B3D}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,sans-serif;color:var(--ink);min-height:100vh}
+  button,input{font:inherit;color:inherit}
+  a{color:var(--blue)}
+  .page{position:relative;min-height:100vh;padding-bottom:160px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:20px 32px;border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:22px;font-weight:600}
+  .meta{font-size:13px;color:var(--muted)}
+  .btn{height:44px;padding:0 18px;border:0;border-radius:10px;background:var(--dark);color:#fff;font-weight:600;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+  .btn.ghost{background:#fff;border:1px solid #C9D1DB;color:var(--ink);font-weight:500}
+  .btn.sm{height:40px;padding:0 14px}
+  main{max-width:1200px;margin:0 auto;padding:24px 32px;display:flex;flex-direction:column;gap:10px}
+  .row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+  .row.new{border:1.5px solid #8FD1A6}
+  .tile{width:44px;height:44px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+  .tile.url{background:#EEF2FF;color:#2F45B8}.tile.file{background:#FDECEC;color:#A3261F}.tile.page{background:#FFF3E6;color:#8A4B00}
+  .info{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .name{font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pill{font-size:11px;font-weight:700;color:var(--green);background:#E6F4EA;border-radius:6px;padding:2px 7px;margin-left:8px}
+  .links{display:flex;gap:10px;font-size:14px;min-width:0}
+  .links a{text-decoration:none;font-weight:500;white-space:nowrap}
+  .links span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .access{font-size:13px;color:#3B4556;background:var(--bg);border-radius:8px;padding:6px 10px}
+  .clicks{font-size:13px;color:#3B4556;min-width:64px}
+
+  /* dock */
+  .dock{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);border-radius:22px 22px 0 0;box-shadow:0 -12px 32px rgba(15,23,42,.10);display:flex;flex-direction:column;height:150px;transition:height .2s}
+  .dock.open{height:min(720px,70vh)}
+  .dock-in{max-width:880px;width:100%;margin:0 auto;padding:0 24px;flex:1;min-height:0;display:flex;flex-direction:column}
+  .dock-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 10px}
+  .dock-head .t{display:flex;align-items:center;gap:10px}
+  .logo{width:32px;height:32px;border-radius:10px;background:var(--dark);color:#fff;display:flex;align-items:center;justify-content:center}
+  .toggle{height:40px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:13px;cursor:pointer}
+  .thread{flex:1;min-height:0;overflow-y:auto;display:none;flex-direction:column;gap:16px;padding:6px 2px 12px}
+  .dock.open .thread{display:flex}
+  .intro{max-width:640px;font-size:15px;line-height:1.6;color:#1F2937}
+  .step{display:flex;flex-direction:column;gap:10px}
+  .u{align-self:flex-end;max-width:560px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .u .bubble{padding:10px 14px;border-radius:16px 16px 4px 16px;background:#EEF1F5;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
+  .att{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:13px}
+  .att b{font-size:10px;font-weight:700;color:#A3261F;background:#FDECEC;border-radius:4px;padding:3px 5px}
+  .a{font-size:15px;line-height:1.6;color:#1F2937;max-width:680px}
+  .card{max-width:640px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+  .card-h{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line2);font-size:14px;font-weight:600}
+  .badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
+  .badge.link{background:#EEF2FF;color:#2F45B8}.badge.art{background:#FDECEC;color:#A3261F}
+  .fields{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+  .f{display:flex;align-items:center;gap:12px;min-height:40px}
+  .f .k{width:110px;flex:none;font-size:13px;color:var(--muted)}
+  .f .v{flex:1;min-width:0;min-height:38px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:#F8FAFC;font-size:14px;text-align:left;cursor:pointer}
+  .f .v span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .note{font-size:12px;color:var(--muted)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:6px}
+  .done{padding:14px 16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .qr{width:88px;height:88px;flex:none;padding:6px;border:1px solid var(--line);border-radius:10px;display:grid;grid-template-columns:repeat(21,1fr)}
+  .qr i{display:block;aspect-ratio:1}
+  .done .txt{flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:4px}
+  .ok{font-size:13px;font-weight:600;color:var(--green)}
+  .short{font-size:18px;font-weight:600;color:var(--blue)}
+  .stats{max-width:560px;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .bar{display:grid;grid-template-columns:minmax(0,1fr) 140px 40px;gap:10px;align-items:center;font-size:14px}
+  .bar .track{height:8px;border-radius:999px;background:var(--line2);overflow:hidden}
+  .bar .track i{display:block;height:100%;background:var(--blue);border-radius:999px}
+  .composer{padding:8px 0 18px;display:flex;flex-direction:column;gap:8px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:13px;cursor:pointer}
+  .box{position:relative}
+  .slash{position:absolute;left:0;bottom:calc(100% + 8px);width:320px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none}
+  .slash.show{display:block}
+  .slash button{width:100%;min-height:44px;display:flex;align-items:center;gap:10px;padding:0 10px;border:0;border-radius:8px;background:transparent;text-align:left;cursor:pointer}
+  .slash button:hover{background:#F1F4F8}
+  .slash code{font-size:13px;font-weight:600;width:64px}
+  .inp{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 10px;border:1.5px solid #D5DBE3;border-radius:16px;background:#fff}
+  .ico{width:44px;height:44px;border:0;border-radius:12px;background:#F1F4F8;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
+  .inp input{flex:1;min-width:0;height:44px;border:0;outline:none;font-size:15px;background:transparent}
+  .send{width:44px;height:44px;border:0;border-radius:12px;background:#A7AFBA;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
+  .send.on{background:var(--dark)}
+  .hint{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <h1>Link &amp; Artifact</h1>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <span class="meta">24 link · 3/50 artifact · 4,2 MB/30 MB</span>
+    <a class="btn" href="li2-v2-trang2-trinh-tao.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Tạo mới</a>
+  </div>
+</header>
+
+<main id="list"></main>
+
+<section class="dock open" id="dock" aria-label="Trợ lý Li2">
+  <div class="dock-in">
+    <div class="dock-head">
+      <div class="t">
+        <span class="logo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18 9.5l-4.2 1.8L12 16l-1.8-4.7L6 9.5l4.2-1.8z"/></svg></span>
+        <span style="font-size:15px;font-weight:600">Trợ lý Li2</span>
+        <span class="hint">tạo link, đăng file, hỏi số liệu</span>
+      </div>
+      <button class="toggle" id="toggle" aria-expanded="true">Thu gọn</button>
+    </div>
+    <div class="thread" id="thread">
+      <div class="intro">Dán link, thả file hoặc nói bạn cần gì. Mình điền sẵn cấu hình, bạn kiểm tra rồi bấm tạo. Chỉ dán một link trơn thì tạo ngay, không cần hỏi.</div>
+    </div>
+    <div class="composer">
+      <div class="chips" id="chips"></div>
+      <div class="box">
+        <div class="slash" id="slash" role="listbox" aria-label="Lệnh"></div>
+        <div class="inp">
+          <button class="ico" id="attach" aria-label="Đính kèm file"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12l-8.5 8.5a5 5 0 0 1-7-7L14 5a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 8"/></svg></button>
+          <input id="ask" placeholder="Dán link, thả file, hoặc gõ / để xem lệnh…" aria-label="Nhắn cho trợ lý Li2">
+          <button class="send" id="send" aria-label="Gửi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+        </div>
+      </div>
+      <span class="hint">Mọi cấu hình đều hiện ra để bạn kiểm tra trước khi tạo · Cũng dùng được trong Claude và ChatGPT qua connector Li2</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const state = { open:true, steps:[], done:{}, created:[] };
+
+  const BASE = [
+    { type:'url', tile:'LINK', name:'KOC Tiktok - Tips đạt 1.000 Followers cho người mới', link:'li2.sh/koc-tiktok-tips…', dest:'adpia.vn/koc-tiktok-tips-dat-1000-followers…', access:'Public', clicks:3 },
+    { type:'url', tile:'LINK', name:'EDM-Chuyên mục Kiếm tiền online (web)', link:'li2.sh/adpia-chuyen-muc…', dest:'adpia.vn/kiem-tien-online', access:'Public', clicks:2 },
+    { type:'url', tile:'LINK', name:'HD CÁCH SỬ DỤNG GIAO DIỆN NEWPUB', link:'li2.sh/adpia-huong-dan…', dest:'www.youtube.com/watch?v=otTeDNF9LDw', access:'Public', clicks:2 },
+    { type:'url', tile:'LINK', name:'HD TẠO LINK AFFILIATE SHOPEE TRÊN PC MÁY TÍNH', link:'li2.sh/adpia-huong-dan-tao…', dest:'www.youtube.com/watch?v=Uonnw9ro2WM', access:'Public', clicks:1 }
+  ];
+
+  const DEF = {
+    link: { user:'rút gọn https://adpia.vn/kiem-tien-online cho email 11.11, gắn UTM, hết hạn cuối tháng', badge:'LINK', cls:'link', title:'Link rút gọn', text:'Mình đã điền sẵn như bên dưới. Bấm vào ô nào để sửa.',
+      fields:[['Đích đến','adpia.vn/kiem-tien-online'],['Đường dẫn','li2.sh/kiem-tien-1111'],['UTM','email · newsletter · sale-1111'],['Hết hạn','30/11/2026 23:59'],['Tag','email MKT']],
+      cta:'Tạo link', short:'li2.sh/kiem-tien-1111', doneText:'Đã tạo link', doneSub:'Hết hạn 30/11 · UTM đã gắn',
+      row:{ type:'url', tile:'LINK', name:'Email 11.11 — Kiếm tiền online', link:'li2.sh/kiem-tien-1111', dest:'adpia.vn/kiem-tien-online', access:'Public', clicks:0 } },
+    file: { user:'đăng file này, chỉ ai có mật khẩu mới xem, cho tải về', attach:true, badge:'ARTIFACT', cls:'art', title:'Artifact · PDF', text:'File 12 trang. Mình tạo sẵn mật khẩu ngẫu nhiên, bạn có thể đổi.',
+      fields:[['Nội dung','catalog-thu-dong-2026.pdf · 12 trang'],['Đường dẫn','li2.sh/catalog-thu-dong'],['Ai được xem','Mật khẩu · ••••••••'],['Hiển thị','Cho phép tải về']],
+      note:'Mật khẩu chỉ hiện một lần sau khi publish, hãy gửi cho người xem.',
+      cta:'Publish', short:'li2.sh/catalog-thu-dong', doneText:'Đã publish artifact', doneSub:'Mật khẩu · cho tải về',
+      row:{ type:'file', tile:'PDF', name:'Catalog thu đông 2026', link:'li2.sh/catalog-thu-dong', dest:'catalog-thu-dong-2026.pdf · 12 trang', access:'Mật khẩu', clicks:0 } },
+    quick: { user:'https://www.youtube.com/watch?v=Uonnw9ro2WM', badge:'LINK', cls:'link', title:'Tạo nhanh', quick:true,
+      short:'li2.sh/x7k2pd', doneText:'Đã tạo ngay, không cần hỏi', doneSub:'Link trơn → slug ngẫu nhiên · Public',
+      row:{ type:'url', tile:'LINK', name:'youtube.com/watch?v=Uonnw9ro2WM', link:'li2.sh/x7k2pd', dest:'www.youtube.com/watch?v=Uonnw9ro2WM', access:'Public', clicks:0 } },
+    stats: { user:'tuần này link nào nhiều lượt nhất?', stats:true, text:'Top 3 link trong 7 ngày qua:',
+      bars:[['KOC Tiktok - Tips đạt 1.000 Followers',3,100],['EDM-Chuyên mục Kiếm tiền online',2,67],['HD cách sử dụng giao diện NEWPUB',2,67]] }
+  };
+  const CHIPS = [['link','Rút gọn link cho chiến dịch'],['file','Đăng file có mật khẩu'],['quick','Chỉ dán một link'],['stats','Hỏi số liệu tuần này']];
+  const SLASH = [['/link','Rút gọn link','link'],['/file','Đăng file thành artifact','file'],['/trang','Tạo trang HTML / Markdown','file'],['/qr','Tải QR của link gần nhất','quick'],['/stats','Hỏi số liệu','stats']];
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function qr(seed){
+    let n=21, out='', x=seed*9301+49297;
+    const finder=(r,c)=>{ for(const [br,bc] of [[0,0],[0,14],[14,0]]){ const dr=r-br, dc=c-bc; if(dr>=0&&dr<7&&dc>=0&&dc<7){ const e=dr===0||dr===6||dc===0||dc===6, k=dr>=2&&dr<=4&&dc>=2&&dc<=4; return e||k?1:0;} if(dr>=-1&&dr<=7&&dc>=-1&&dc<=7) return 0;} return -1; };
+    for(let r=0;r<n;r++) for(let c=0;c<n;c++){ const f=finder(r,c); let on; if(f>=0) on=f===1; else { x=(x*1103515245+12345)%2147483648; on=((x>>16)%100)<46; } out+=`<i style="background:${on?'#0B1220':'transparent'}"></i>`; }
+    return `<div class="qr" aria-hidden="true">${out}</div>`;
+  }
+
+  function renderList(){
+    const rows = state.created.concat(BASE);
+    $('#list').innerHTML = rows.map(r => `
+      <article class="row${r.isNew?' new':''}">
+        <div class="tile ${r.type}">${r.tile}</div>
+        <div class="info">
+          <div class="name">${esc(r.name)}${r.isNew?'<span class="pill">Vừa tạo qua chat</span>':''}</div>
+          <div class="links"><a href="#">${esc(r.link)}</a><span>→ ${esc(r.dest)}</span></div>
+        </div>
+        <span class="access">${r.access}</span>
+        <span class="clicks">${r.clicks} lượt</span>
+      </article>`).join('');
+  }
+
+  function renderChips(){
+    $('#chips').innerHTML = CHIPS.filter(c => !state.steps.includes(c[0])).map(c => `<button class="chip" data-go="${c[0]}">${c[1]}</button>`).join('');
+  }
+
+  function renderStep(id){
+    const d = DEF[id], done = !!state.done[id] || !!d.quick;
+    let html = `<div class="step" data-step="${id}"><div class="u">${d.attach?'<span class="att"><b>PDF</b>catalog-thu-dong-2026.pdf · 2,4 MB</span>':''}<div class="bubble">${esc(d.user)}</div></div>`;
+    if (d.stats) {
+      html += `<div class="a">${d.text}</div><div class="stats">${d.bars.map(b=>`<div class="bar"><span>${esc(b[0])}</span><span class="track"><i style="width:${b[2]}%"></i></span><span style="text-align:right;font-weight:600">${b[1]}</span></div>`).join('')}<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>Dữ liệu minh họa</span><a href="#" style="text-decoration:none;font-weight:500">Mở analytics →</a></div></div>`;
+    } else {
+      if (d.text && !done) html += `<div class="a">${d.text}</div>`;
+      html += `<div class="card"><div class="card-h"><span class="badge ${d.cls}">${d.badge}</span>${d.title}</div>`;
+      if (!done) {
+        html += `<div class="fields">${d.fields.map(f=>`<div class="f"><span class="k">${f[0]}</span><button class="v"><span>${esc(f[1])}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></button></div>`).join('')}
+          ${d.note?`<span class="note">${d.note}</span>`:''}
+          <div class="actions"><button class="btn" data-confirm="${id}">${d.cta}</button><a class="btn ghost" href="li2-v2-trang2-trinh-tao.html">Mở trình chỉnh đầy đủ →</a></div></div>`;
+      } else {
+        html += `<div class="done">${qr(d.short.length)}<div class="txt"><span class="ok">${d.doneText}</span><span class="short">${d.short}</span><span class="note">${d.doneSub}</span></div><div style="display:flex;gap:8px"><button class="btn sm">Copy</button><button class="btn ghost sm">Tải QR</button></div></div>`;
+      }
+      html += `</div>`;
+    }
+    return html + `</div>`;
+  }
+
+  function renderThread(){
+    const t = $('#thread');
+    t.innerHTML = `<div class="intro">Dán link, thả file hoặc nói bạn cần gì. Mình điền sẵn cấu hình, bạn kiểm tra rồi bấm tạo. Chỉ dán một link trơn thì tạo ngay, không cần hỏi.</div>` + state.steps.map(renderStep).join('');
+    t.scrollTop = t.scrollHeight;
+  }
+
+  function add(id){
+    state.steps = state.steps.filter(s=>s!==id).concat([id]);
+    if (DEF[id].quick) pushRow(id);
+    $('#ask').value=''; setOpen(true); $('#slash').classList.remove('show'); renderAll();
+  }
+  function pushRow(id){
+    const r = Object.assign({isNew:true}, DEF[id].row);
+    state.created = [r].concat(state.created.filter(x=>x.link!==r.link));
+  }
+  function setOpen(v){ state.open=v; $('#dock').classList.toggle('open',v); $('#toggle').textContent = v?'Thu gọn':'Mở lại cuộc trò chuyện'; $('#toggle').setAttribute('aria-expanded', v); }
+  function renderAll(){ renderList(); renderChips(); renderThread(); }
+
+  document.addEventListener('click', e => {
+    const go = e.target.closest('[data-go]'); if (go) return add(go.dataset.go);
+    const c = e.target.closest('[data-confirm]'); if (c) { state.done[c.dataset.confirm]=true; pushRow(c.dataset.confirm); return renderAll(); }
+  });
+  $('#toggle').onclick = () => setOpen(!state.open);
+  $('#attach').onclick = () => add('file');
+  const ask = $('#ask');
+  ask.oninput = () => {
+    $('#send').classList.toggle('on', ask.value.trim().length>0);
+    const show = ask.value.startsWith('/');
+    $('#slash').classList.toggle('show', show);
+    if (show) $('#slash').innerHTML = SLASH.map(s=>`<button data-go="${s[2]}"><code>${s[0]}</code><span style="font-size:14px;color:#3B4556">${s[1]}</span></button>`).join('');
+  };
+  function send(){
+    const t = ask.value.trim(); if (!t) return;
+    if (/^https?:\/\/\S+$/i.test(t)) add('quick');
+    else if (/\?|lượt|click|số liệu/i.test(t)) add('stats');
+    else add('link');
+  }
+  $('#send').onclick = send;
+  ask.addEventListener('keydown', e => { if (e.key==='Enter') send(); });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

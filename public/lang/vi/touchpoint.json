@@ -1,0 +1,887 @@
+{
+  "labels": {
+    "recommended": "Đề xuất",
+    "information": "Information"
+  },
+  "actions": {
+    "move_to_collection": "Chuyển đến Space",
+    "view_deep_link_analytics": "Phân tích deep link"
+  },
+  "form": {
+    "labels": {
+      "name": "Tên link",
+      "destination": "Link gốc",
+      "description": "Mô tả",
+      "tags": "Tag",
+      "qr_code": "QR Code",
+      "short_link": "Link rút gọn",
+      "meta_tags": "Link Preview",
+      "utm_tags": "UTM Tags",
+      "domain": "Domain",
+      "back_half": "Tùy chỉnh đường dẫn"
+    },
+    "placeholders": {
+      "name": "vd: Chiến dịch mùa hè",
+      "destination": "https://example.com/your-page",
+      "description": "Mô tả",
+      "tags": "Chọn hoặc nhập để thêm tag",
+      "domain": "Tên miền",
+      "back_half": "khuyen-mai-he"
+    },
+    "actions": {
+      "slug_history": "Lịch sử",
+      "ai_suggested_slugs": "AI"
+    },
+    "tooltips": {
+      "destination_url": "URL đầy đủ mà người dùng sẽ được chuyển hướng đến khi họ nhấp vào link rút gọn này.",
+      "custom_back_half": "Chỉ chữ thường, số và dấu gạch ngang",
+      "advanced_settings": "Các tùy chọn này dành cho cấu hình nâng cao. Bạn có thể tùy chỉnh chúng dựa trên nhu cầu cụ thể của mình. Nếu bạn không chắc chắn, bạn có thể giữ các giá trị mặc định và điều chỉnh chúng sau bất cứ lúc nào."
+    }
+  },
+  "touch_point_type": {
+    "link": "Link rút gọn",
+    "qr": "Mã QR",
+    "shortLink": "Link",
+    "shortQr": "QR"
+  },
+  "touch_point_list": {
+    "label": "Danh sách Touchpoint",
+    "table_header_filter": {
+      "create_button": "Tạo Touchpoint",
+      "cancel_button": "Hủy",
+      "search_label": "Tìm kiếm",
+      "created_date": "Ngày tạo",
+      "tag": "Tag"
+    }
+  },
+  "touch_point_create": {
+    "label": "Tạo Touchpoint",
+    "tool_tip": {
+      "valid_url": "URL này có vẻ hợp lệ",
+      "invalid_url": "URL này có vẻ không hợp lệ",
+      "notification_url": "Chúng tôi sẽ xác minh url của bạn để đảm bảo an toàn"
+    },
+    "ai_optimize": {
+      "label": "Tối ưu với AI",
+      "random": {
+        "label": "Ngẫu nhiên",
+        "description": "Slug chữ ký được tạo ngẫu nhiên"
+      },
+      "suggested": {
+        "label": "Đề xuất",
+        "description": "Slug chữ ký dựa trên dữ liệu từ URL đích"
+      },
+      "suggested_with_dash": {
+        "label": "Đề xuất với dấu gạch ngang (thân thiện với SEO)",
+        "description": "Slug chữ ký dựa trên dữ liệu từ URL đích - được phân tách bằng dấu gạch ngang"
+      }
+    },
+    "form": {
+      "name": "Tên Touchpoint",
+      "destination_url": "Nhập link của bạn",
+      "placeholder": "https://example.com/trang-cua-ban",
+      "description": "Mô tả",
+      "tag": "Tag: (Tùy chọn)",
+      "link_description": "Link rút gọn là kênh mặc định được tự động tạo và không thể tắt",
+      "qr_description": "Tạo Mã QR mà bạn có thể chia sẻ ở bất cứ đâu.Bạn có thể tùy chỉnh Mã QR trong phần chi tiết sau khi tạo xong.",
+      "short_link": {
+        "label": "Link rút gọn (Tùy chọn)",
+        "domain": "Tên miền",
+        "back_half": "Đuôi liên kết tùy chỉnh (Tùy chọn):"
+      },
+      "interaction_channel": {
+        "label": "Kênh tương tác",
+        "description": "Chọn kênh để chia sẻ link"
+      },
+      "shortLinkSettings": {
+        "title": "Cài đặt Link rút gọn",
+        "domainSelectLabel": "Domain",
+        "domainSelectPlaceholder": "Chọn domain",
+        "domainSearchPlaceholder": "Tìm domain...",
+        "customBackHalfLabel": "Tùy chỉnh đường dẫn",
+        "customBackHalfPlaceholder": "khuyen-mai-he",
+        "helpText": "Để trống để tạo tự động",
+        "previewText": "Xem trước"
+      },
+      "linkNameLabel": "Tên Link",
+      "linkNamePlaceholder": "Chiến dịch mùa hè",
+      "linkNameHelpText": "Chỉ để bạn tham khảo - tự động tạo nếu để trống",
+      "tagSelectLabel": "Tags",
+      "tagSelectPlaceholder": "Chọn hoặc nhập để thêm tags...",
+      "requiredFieldNote": "Lưu ý: Chỉ các trường có dấu * là bắt buộc nhập.",
+      "qr_preview_tooltip": "Mã QR được tự động tạo cho mỗi short link.",
+      "qr_create_first_tooltip": "Tạo short link trước"
+    }
+  },
+  "touch_point_edit": {
+    "add_button": "Thêm Touchpoint",
+    "label": "Thông tin Touchpoint",
+    "button_list": {
+      "create_button": "Tạo Touchpoint",
+      "back_button": "Quay lại",
+      "cancel_button": "Hủy",
+      "delete_button": "Xóa Link",
+      "delete_dialog": "Không thể hoàn tác một khi đã xóa. Bạn có chắc chắn không?",
+      "update_button": "Lưu thay đổi"
+    },
+    "tab_list": {
+      "analytics": "Phân tích",
+      "details": "Chi tiết",
+      "advanced": "Nâng cao",
+      "basicSettings": "Cài đặt cơ bản",
+      "advancedOptions": "Tùy chọn nâng cao"
+    },
+    "advanced_form": {
+      "parcevoy": {
+        "label": "Parcelvoy",
+        "description": "Kết nối tài khoản của bạn với Parcelvoy để kích hoạt các tính năng tiếp thị qua email như đồng bộ hóa người đăng ký, kích hoạt chiến dịch tự động và theo dõi hoạt động email."
+      },
+      "meta_tags": {
+        "label": "Meta Tags",
+        "update_note": "Một số nền tảng có thể vẫn hiển thị nội dung cũ sau khi bạn cập nhật. Thay đổi có thể mất vài giờ hoặc vài ngày để được làm mới. Sau khi lưu, bạn có thể sử dụng link thay thế bên dưới để hiển thị nội dung mới ngay lập tức.",
+        "description": "Tùy chỉnh cách liên kết của bạn hiển thị khi được chia sẻ trên mạng xã hội hoặc được nhúng trên các nền tảng khác. Đặt tiêu đề, mô tả và hình ảnh sẽ hiển thị trong bản xem trước.",
+        "helper": "Một số nền tảng có thể vẫn hiển thị nội dung cũ sau khi bạn cập nhật. Thay đổi có thể mất vài giờ hoặc vài ngày để được làm mới."
+      },
+      "utm_tags": {
+        "label": "UTM Parameters",
+        "description": "Theo dõi cách mọi người truy cập vào URL đích của bạn bằng cách thêm thẻ UTM để phân tích tiếp thị."
+      },
+      "lockable": {
+        "label": "Nâng cấp lên Premium"
+      }
+    },
+    "slugs": {
+      "reached_limit_title": "Bạn đã đạt đến giới hạn",
+      "reached_limit_description": "Bạn đã đạt đến giới hạn {{maxSlugs}} tùy chỉnh đuôi liên kết trong gói {{planName}}.",
+      "reached_limit_cta": "Bạn cần giúp đỡ hoặc muốn nâng cấp?",
+      "create_up_to": "Bạn có thể tạo tối đa {{maxSlugs}} tùy chỉnh đuôi liên kết với gói {{planName}}.",
+      "back_half_history": "Lịch sử sửa đuôi liên kết (Thay đổi tối đa {{maxSlugs}} lần)",
+      "back_half_history_description": "Các đuôi liên kết đang hoạt động.",
+      "reached_limit_cta_link": "Liên hệ với chúng tôi"
+    }
+  },
+  "ai-suggested-slugs": {
+    "label": "Đuôi liên kết với AI đề xuất",
+    "button_generate": "Tạo đuôi liên kết bằng AI",
+    "generating": "Đang tạo",
+    "button_generate_description": "Tạo đuôi liên kết với AI cho touchpoint của bạn"
+  },
+  "buttons": {
+    "copy_field": "Sao chép {{field}}"
+  },
+  "basicSettings": {
+    "tracking": {
+      "title": "Theo dõi",
+      "feature_name": "Theo dõi chuyển đổi",
+      "conversion_tracking": {
+        "label": "Theo dõi chuyển đổi",
+        "description": "Theo dõi chuyển đổi khi khách truy cập nhấp qua liên kết này. Điều này giúp đo lường hiệu quả chiến dịch và hiểu hành vi người dùng."
+      }
+    }
+  },
+  "advancedSettings": {
+    "buttons": {
+      "showUtmModal": "UTM",
+      "showLinkPreviewModal": "Link Preview",
+      "showPasswordModal": "Mật khẩu"
+    },
+    "utm": {
+      "title": "UTM Builder",
+      "subtitle": "Tạo tham số theo dõi chiến dịch (UTM)",
+      "advancedOptionsLabel": "Xem tùy chọn nâng cao",
+      "utmPreviewLabel": "UTM Preview",
+      "selectGroupLabels": {
+        "popular": "Source phổ biến",
+        "saved": "Mục đã lưu"
+      },
+      "fields": {
+        "source": {
+          "label": "Source",
+          "placeholder": "google"
+        },
+        "campaign": {
+          "label": "Campaign",
+          "placeholder": "khuyen_mai_he"
+        },
+        "medium": {
+          "label": "Medium",
+          "placeholder": "cpc"
+        },
+        "term": {
+          "label": "Term",
+          "placeholder": "iphone_17"
+        },
+        "content": {
+          "label": "Content",
+          "placeholder": "popup_uu_dai"
+        }
+      },
+      "utmTemplates": {
+        "inputPlaceholder": "Tìm, Áp dụng hoặc Lưu mẫu UTM...",
+        "empty": {
+          "title": "Chưa có mẫu UTM nào",
+          "description": "Hãy tạo và lưu một UTM mới để sử dụng về sau.",
+          "action": {
+            "addUtm": "Thêm UTM"
+          }
+        },
+        "itemActions": {
+          "delete": "Xóa mẫu",
+          "saveAs": "Lưu thành"
+        }
+      },
+      "actions": {
+        "apply": "Áp dụng",
+        "discard": "Bỏ qua",
+        "showUtmTemplates": "Mẫu UTM"
+      }
+    },
+    "linkPreview": {
+      "title": "Link Preview",
+      "subtitle": "Tùy chỉnh cách link của bạn hiển thị khi chia sẻ lên mạng xã hội hoặc ứng dụng chat",
+      "tabs": {
+        "label": "Hiển thị khi chia sẻ lên mạng xã hội",
+        "items": {
+          "general": "Mặc định"
+        },
+        "defaultDomain": "domain.com"
+      },
+      "fields": {
+        "image": {
+          "label": "Ảnh xem trước",
+          "placeholder": ""
+        },
+        "chooseFile": {
+          "label": "Upload ảnh",
+          "placeholder": ""
+        },
+        "title": {
+          "label": "Tiêu đề",
+          "placeholder": ""
+        },
+        "desc": {
+          "label": "Mô tả",
+          "placeholder": ""
+        }
+      },
+      "notes": {
+        "titleOptimal": "Độ dài tối ưu: khoảng {{ chars }} ký tự dể hiển thị tốt nhất trên mạng xã hội.",
+        "descOptimal": "Độ dài tối ưu: khoảng {{ chars }} ký tự để hiển thị đầy đủ."
+      },
+      "actions": {
+        "apply": "Áp dụng",
+        "discard": "Bỏ qua"
+      }
+    },
+    "password": {
+      "title": "Bảo vệ bằng mật khẩu",
+      "subtitle": "Chỉ người biết mật khẩu mới có thể truy cập link của bạn",
+      "fields": {
+        "password": {
+          "label": "Mật khẩu",
+          "placeholder": "Nhập mật khẩu",
+          "description": "Đây là mật khẩu để truy cập link của bạn."
+        }
+      },
+      "actions": {
+        "apply": "Áp dụng",
+        "discard": "Bỏ qua",
+        "random": "Ngẫu nhiên"
+      }
+    },
+    "linkExpires": {
+      "fields": {
+        "expiresAt": {
+          "label": "Hết hạn vào",
+          "description": "Sau ngày này, link sẽ không còn truy cập được."
+        },
+        "validFrom": {
+          "label": "Hiệu lực từ",
+          "description": "Trước ngày này, link sẽ không thể truy cập được."
+        }
+      }
+    },
+    "redirectSettings": {
+      "fields": {
+        "customRedirectCode": {
+          "label": "Mã chuyển hướng tùy chỉnh",
+          "placeholder": "Chọn mã chuyển hướng",
+          "description": "Link của bạn sẽ chuyển hướng với mã HTTP này."
+        },
+        "customNotFound": {
+          "label": "URL trang lỗi",
+          "placeholder": "ex: https://li2.ai/404",
+          "description": "Link của bạn sẽ chuyển hướng đến URL này khi người dùng không có quyền truy cập."
+        }
+      },
+      "labels": {
+        "defaultCode": "Mặc định"
+      }
+    },
+    "privacySecurity": {
+      "fields": {
+        "linkCloaking": {
+          "label": "Bật ẩn danh liên kết",
+          "description": "Ẩn URL đích trong thanh trạng thái của trình duyệt và ngăn người dùng nhìn thấy nơi liên kết dẫn đến."
+        }
+      }
+    },
+    "limitAccess": {
+      "fields": {
+        "limit": {
+          "label": "Giới hạn",
+          "placeholder": "Nhập giới hạn",
+          "description": "Giới hạn số lượt truy cập link của bạn. Để trống để bỏ giới hạn."
+        }
+      }
+    },
+    "fbTracking": {
+      "title": "Theo dõi Facebook",
+      "fields": {
+        "pixelId": {
+          "label": "Pixel ID",
+          "placeholder": "Nhập Facebook Pixel ID của bạn",
+          "description": "Facebook Pixel ID từ Meta Events Manager"
+        },
+        "eventName": {
+          "label": "Tên sự kiện",
+          "placeholder": "vd: PageView, Purchase, Lead",
+          "description": "Tên sự kiện cần theo dõi (tối đa 64 ký tự)"
+        },
+        "customData": {
+          "label": "Dữ liệu tùy chỉnh",
+          "keyLabel": "Khóa",
+          "valueLabel": "Giá trị",
+          "keyPlaceholder": "vd: product_id",
+          "valuePlaceholder": "vd: 12345",
+          "description": "Các tham số tùy chỉnh bổ sung để gửi cùng sự kiện",
+          "addButton": "Thêm dữ liệu tùy chỉnh",
+          "removeButton": "Xóa"
+        }
+      }
+    },
+    "gaTracking": {
+      "title": "Theo dõi Google Analytics",
+      "fields": {
+        "measurementId": {
+          "label": "Measurement ID",
+          "placeholder": "Nhập Google Analytics Measurement ID của bạn",
+          "description": "Google Analytics 4 Measurement ID của bạn (vd: G-XXXXXXXXXX)"
+        },
+        "eventName": {
+          "label": "Tên sự kiện",
+          "placeholder": "vd: page_view, purchase, lead",
+          "description": "Tên sự kiện cần theo dõi (tối đa 40 ký tự)"
+        },
+        "eventParams": {
+          "label": "Tham số sự kiện",
+          "keyLabel": "Tên tham số",
+          "valueLabel": "Giá trị",
+          "keyPlaceholder": "vd: campaign_id",
+          "valuePlaceholder": "vd: summer_2024",
+          "description": "Các tham số sự kiện bổ sung để gửi cùng sự kiện",
+          "addButton": "Thêm tham số sự kiện",
+          "removeButton": "Xóa"
+        }
+      }
+    },
+    "tiktokTracking": {
+      "title": "Theo dõi TikTok",
+      "fields": {
+        "pixelId": {
+          "label": "Pixel ID",
+          "placeholder": "Nhập TikTok Pixel ID của bạn",
+          "description": "TikTok Pixel ID từ TikTok Events Manager"
+        },
+        "eventName": {
+          "label": "Tên sự kiện",
+          "placeholder": "vd: ViewContent, CompleteRegistration",
+          "description": "Tên sự kiện cần theo dõi"
+        },
+        "customData": {
+          "label": "Dữ liệu tùy chỉnh",
+          "keyLabel": "Khóa",
+          "valueLabel": "Giá trị",
+          "keyPlaceholder": "vd: content_type",
+          "valuePlaceholder": "vd: product",
+          "description": "Các tham số tùy chỉnh bổ sung để gửi cùng sự kiện",
+          "addButton": "Thêm dữ liệu tùy chỉnh",
+          "removeButton": "Xóa"
+        }
+      }
+    }
+  },
+  "abTesting": {
+    "sections": {
+      "urls": {
+        "title": "Danh sách URL thử nghiệm",
+        "description": "Thêm các URL để thử nghiệm. Mỗi URL sẽ nhận một phần lưu lượng truy cập."
+      },
+      "trafficSplit": {
+        "title": "Phân chia lưu lượng",
+        "description": "Điều chỉnh tỷ lệ phần trăm lưu lượng mỗi URL nhận được. Tổng phải bằng 100%."
+      }
+    },
+    "fields": {
+      "url": {
+        "placeholder": "https://example.com/phien-ban-a"
+      }
+    },
+    "actions": {
+      "addUrl": "Thêm URL"
+    }
+  },
+  "smart_targeting": {
+    "description": "Chuyển hướng khách truy cập đến các URL khác nhau dựa trên thiết bị hoặc quốc gia.",
+    "resolution_order": "Thứ tự áp dụng: Thiết bị → Quốc gia → Mặc định. Khớp đầu tiên sẽ thắng.",
+    "default_destination": {
+      "label": "Đích mặc định",
+      "hint": "Áp dụng khi không có quy tắc thiết bị hoặc quốc gia nào khớp. Hãy chỉnh sửa trong Cài đặt cơ bản.",
+      "placeholder": "https://example.com",
+      "empty": "Chưa thiết lập",
+      "edit_in_basic": "Chỉnh sửa trong Cài đặt cơ bản"
+    },
+    "devices": {
+      "heading": "Thiết bị",
+      "android": "Android",
+      "ios": "iOS",
+      "android_placeholder": "https://play.google.com/... hoặc yourapp://...",
+      "ios_placeholder": "https://apps.apple.com/... hoặc yourapp://..."
+    },
+    "countries": {
+      "heading": "Quốc gia",
+      "add_rule": "Thêm quy tắc quốc gia",
+      "edit_rule": "Sửa quy tắc quốc gia",
+      "delete_rule": "Xóa quy tắc quốc gia",
+      "save_rule": "Lưu",
+      "empty": "Chưa có quy tắc quốc gia nào. Thêm một quy tắc để chuyển hướng các quốc gia cụ thể tới một URL khác.",
+      "no_countries_selected": "Chưa chọn quốc gia",
+      "no_destination_set": "Chưa đặt URL",
+      "duplicate_warning": "{{countries}} cũng xuất hiện trong quy tắc bên trên — quy tắc khớp đầu tiên sẽ thắng.",
+      "dialog_title": "Quy tắc quốc gia",
+      "dialog_countries_label": "Quốc gia",
+      "dialog_destination_label": "URL đích",
+      "dialog_destination_placeholder": "https://example.com"
+    },
+    "legacy_banner": {
+      "heading_one": "Liên kết này có 1 quy tắc cũ không phù hợp với giao diện mới. Lưu bất kỳ thay đổi nào sẽ xóa quy tắc đó.",
+      "heading_other": "Liên kết này có {{count}} quy tắc cũ không phù hợp với giao diện mới. Lưu bất kỳ thay đổi nào sẽ xóa các quy tắc đó.",
+      "keep": "Giữ quy tắc cũ",
+      "clear": "Xóa các quy tắc đó",
+      "kept_notice": "Đã giữ quy tắc cũ. Các quy tắc này sẽ tiếp tục chuyển hướng khách như trước. Để xóa, hãy tải lại trang và chọn \"Xóa các quy tắc đó\"."
+    },
+    "legacy_dropped_toast_one": "1 quy tắc nhắm mục tiêu không hỗ trợ sẽ được xóa khi bạn lưu:\n{{details}}",
+    "legacy_dropped_toast_other": "{{count}} quy tắc nhắm mục tiêu không hỗ trợ sẽ được xóa khi bạn lưu:\n{{details}}",
+    "errors": {
+      "invalid_device_destination": "Phải là URL hợp lệ hoặc lược đồ ứng dụng (https://… hoặc myapp://…)",
+      "invalid_country_destination": "Phải là URL http(s) hợp lệ",
+      "at_least_one_country": "Chọn ít nhất một quốc gia"
+    }
+  },
+  "dynamic_targeting": {
+    "note": "Lưu ý: Các điều kiện được kiểm tra từ trên xuống dưới. Hệ thống sẽ áp dụng điều kiện khớp đầu tiên.",
+    "errors": {
+      "invalid_destination": "Phải là URL hợp lệ hoặc lược đồ ứng dụng (https://… hoặc myapp://…)"
+    },
+    "add_rule": "Thêm điều kiện",
+    "add_rule_block": "Thêm nhóm điều kiện",
+    "add_new_rule": "Thêm điều kiện mới",
+    "no_values": "Không có giá trị",
+    "no_values_selected": "Chưa chọn giá trị nào",
+    "no_url_set": "Chưa thiết lập Link",
+    "coming_soon": "(sắp ra mắt)",
+    "rule_types": {
+      "countries": "Quốc gia",
+      "continents": "Châu lục",
+      "cities": "Thành phố",
+      "devices": "Thiết bị",
+      "interaction_channels": "Hình thức tương tác"
+    },
+    "rule_labels": {
+      "geography": "Khu vực",
+      "device": "Thiết bị",
+      "interaction": "Hình thức tương tác"
+    },
+    "block_operators": {
+      "and": "AND (Tất cả điều kiện phải thỏa mãn)",
+      "or": "OR (Bất kỳ điều kiện nào thỏa mãn)"
+    },
+    "dialog": {
+      "rule_block_title": "Nhóm điều kiện {{operator}}",
+      "direct_to_url": "Chuyển hướng đến Link",
+      "url_placeholder": "https://link-redirect.com",
+      "save": "Lưu",
+      "create_new": "Tạo mới",
+      "delete_rule_title": "Xóa điều kiện",
+      "delete_rule_description": "Bạn có chắc chắn muốn xóa điều kiện này?",
+      "delete_button": "Xóa",
+      "cancel_button": "Hủy",
+      "select_countries": "Chọn quốc gia",
+      "select_continents": "Chọn châu lục",
+      "select_cities": "Chọn thành phố",
+      "select_devices": "Chọn thiết bị",
+      "select_interactions": "Chọn hình thức tương tác"
+    },
+    "placeholders": {
+      "select_countries": "Chọn quốc gia",
+      "select_devices": "Chọn thiết bị",
+      "select_interaction_channels": "Chọn hình thức tương tác"
+    },
+    "actions": {
+      "delete_rule_block": "Xóa nhóm điều kiện",
+      "delete_rule": "Xóa điều kiện"
+    }
+  },
+  "advancedOptionMenu": {
+    "groups": {
+      "targeting": "Định tuyến & Thử nghiệm",
+      "tracking": "Theo dõi & Phân tích",
+      "access": "Kiểm soát truy cập",
+      "redirect": "Cài đặt chuyển hướng",
+      "privacy": "Bảo mật & Riêng tư"
+    },
+    "items": {
+      "analytics": {
+        "title": "Thống kê"
+      },
+      "basic_editing": {
+        "title": "Cài đặt cơ bản"
+      },
+      "split_traffic": {
+        "title": "Chia lượng truy cập (Kiểm thử A/B)",
+        "description": "Chia ngẫu nhiên người truy cập giữa nhiều URL đích để so sánh hiệu quả."
+      },
+      "smart_targeting": {
+        "title": "Nhắm mục tiêu thông minh",
+        "description": "Chuyển hướng khách truy cập đến các URL khác nhau dựa trên thiết bị hoặc quốc gia."
+      },
+      "deep_link": {
+        "title": "Liên kết sâu (Deep Link)",
+        "description": "Mở trực tiếp ứng dụng di động thay vì trình duyệt web."
+      },
+      "utm_builder": {
+        "title": "UTM Builder",
+        "description": "Thêm tham số UTM vào URL đích để theo dõi hiệu quả chiến dịch marketing."
+      },
+      "password_protection": {
+        "title": "Bảo vệ bằng mật khẩu",
+        "description": "Chỉ người có mật khẩu mới có thể truy cập liên kết này."
+      },
+      "link_expiration": {
+        "title": "Hết hạn liên kết",
+        "description": "Tự động ngừng hoạt động sau thời gian hoặc ngày nhất định."
+      },
+      "click_limitation": {
+        "title": "Giới hạn lượt truy cập",
+        "description": "Ngừng cho phép truy cập sau khi đạt số lượt nhấp tối đa."
+      },
+      "custom_redirect_code": {
+        "title": "Mã chuyển hướng tùy chỉnh",
+        "description": "Chọn mã trạng thái HTTP cụ thể (301, 302, 307) cho chuyển hướng."
+      },
+      "custom_404_redirect": {
+        "title": "Trang lỗi tùy chỉnh (404)",
+        "description": "Chuyển hướng người dùng đến trang bạn chọn khi link không thể truy cập."
+      },
+      "encrypted_link": {
+        "title": "Mã hóa liên kết",
+        "description": "Bảo vệ URL đích bằng cách mã hóa nội dung."
+      },
+      "link_cloaking": {
+        "title": "Ẩn liên kết gốc",
+        "description": "Ẩn URL thật để trông chuyên nghiệp hoặc bảo mật hơn."
+      },
+      "fb_pixel": {
+        "title": "Facebook Pixel",
+        "description": "Theo dõi hành vi truy cập của người dùng thông qua Facebook Pixel."
+      },
+      "ga_tracking": {
+        "title": "Google Analytics",
+        "description": "Theo dõi hành vi truy cập của người dùng thông qua Google Analytics 4."
+      },
+      "tiktok_pixel": {
+        "title": "TikTok Pixel",
+        "description": "Theo dõi hành vi truy cập của người dùng thông qua TikTok Pixel."
+      }
+    }
+  },
+  "e2ee": {
+    "feature_unavailable_title": "Tính năng này không khả dụng",
+    "feature_unavailable_description": "Tính năng này hiện không khả dụng đối với link này, vì link đích đã được mã hóa.",
+    "toggle": {
+      "label": "E2EE",
+      "tooltip": "Mã hóa đầu cuối giúp bảo vệ Link đích của bạn. Chỉ những người có khóa giải mã mới có thể truy cập link này."
+    },
+    "dialog": {
+      "title": "🔐 Liên kết mã hóa đầu-cuối đã được tạo",
+      "warning": {
+        "title": "Quan trọng: Lưu URL này ngay!",
+        "description": "URL mã hóa kèm khóa này chỉ hiển thị một lần duy nhất. Nếu bạn mất nó, bạn sẽ không thể truy cập đích nữa. Hãy chắc chắn sao chép và lưu trữ an toàn."
+      },
+      "url_section": {
+        "label": "URL mã hóa kèm khóa",
+        "help_text": "Khóa mã hóa được nhúng trong URL sau ký hiệu #"
+      },
+      "key_section": {
+        "label": "Khóa mã hóa",
+        "loading": "Đang tải..."
+      },
+      "actions": {
+        "copy_url": "Sao chép URL",
+        "view_detail": "Xem chi tiết"
+      }
+    },
+    "description": {
+      "title": "🔒 Mã hóa đầu-cuối",
+      "warning": "Quan trọng: Liên kết này được mã hóa đầu-cuối. Bạn sẽ không thể thay đổi hoặc truy cập đích nếu mất khóa mã hóa.",
+      "key_label": "Khóa mã hóa của bạn:",
+      "copy_success": "Đã sao chép khóa mã hóa"
+    },
+    "form": {
+      "enabled": {
+        "title": "E2EE đã được bật",
+        "description": "Liên kết này được bảo vệ bằng mã hóa đầu-cuối. Một số tính năng không khả dụng cho liên kết được mã hóa."
+      },
+      "disabled": {
+        "title": "E2EE đã bị tắt",
+        "description": "Mã hóa đầu-cuối chỉ có thể được bật khi tạo liên kết mới."
+      }
+    }
+  },
+  "export": {
+    "title": "Xuất tệp",
+    "to_csv": "Xuất tệp CSV",
+    "to_sheets": "Xuất sang Google Sheets",
+    "description": "Tải xuống tệp CSV của Links hoặc QR Codes của bạn.",
+    "columns_label": "Cột dữ liệu",
+    "use_current_filters": "Áp dụng bộ lọc hiện tại",
+    "use_current_filters_desc": "Chỉ xuất các link khớp với tìm kiếm và bộ lọc đang áp dụng.",
+    "no_active_filters": "Không có bộ lọc nào — toàn bộ link sẽ được xuất.",
+    "to_sheets_steps": {
+      "select_fields": {
+        "title": "Chọn dữ liệu và cột",
+        "description": "Chọn khoảng thời gian và các cột bạn muốn xuất."
+      },
+      "select_sheets": {
+        "title": "Chọn Google Sheets đích",
+        "description": "Chọn tích hợp, bảng tính và sheet để xuất dữ liệu."
+      },
+      "missing_integration": {
+        "title": "Chưa kết nối Google Sheets",
+        "description": "Bạn chưa có tích hợp Google Sheets. Vui lòng thêm tích hợp để tiếp tục.",
+        "link_label": "Bấm vào đây để thêm tích hợp"
+      }
+    },
+    "select_sheets_integration": "Chọn tài khoản Google",
+    "columns": {
+      "name": "Tên",
+      "short_url": "Link rút gọn",
+      "slug": "Đuôi liên kết",
+      "destination": "Link đích",
+      "qr_enabled": "Bật QR",
+      "tags": "Tags",
+      "created_at": "Ngày tạo",
+      "created_by": "Tạo bởi",
+      "collection_name": "Tên Space",
+      "utm_source": "Nguồn UTM",
+      "utm_medium": "Kênh UTM",
+      "utm_campaign": "Chiến dịch UTM",
+      "utm_term": "Từ khóa UTM",
+      "utm_content": "Nội dung UTM"
+    },
+    "encrypted": "Đã được mã hóa",
+    "export_button": "Xuất"
+  },
+  "import": {
+    "title": "Nhập tệp",
+    "description": "Nhập Links hoặc QR Codes.",
+    "from_csv": "Nhập từ tệp CSV",
+    "from_sheets": "Nhập từ Google Sheets",
+    "sheets_label": "Google Sheets",
+    "sheets_data": "Dữ liệu từ Sheets",
+    "li2_data": "Dữ liệu LI2",
+    "csv_data": "Dữ liệu trong CSV",
+    "download_template": "Tải mẫu CSV",
+    "from_sheets_steps": {
+      "select_sheets": {
+        "title": "Chọn nguồn Google Sheets",
+        "description": "Chọn tích hợp, bảng tính và sheet để nhập dữ liệu."
+      },
+      "mapping": {
+        "title": "Ghép cột sheet với trường Li2",
+        "description": "Ghép các cột trong sheet với trường Li2 trước khi nhập."
+      }
+    }
+  },
+  "messages": {
+    "no_touch_points_selected": "Chưa chọn link nào",
+    "removed_from_collection": "Đã xóa khỏi Space",
+    "removed_from_collection_bulk": "Đã xóa {{count}} links khỏi Space",
+    "moved_to_collection": "Đã chuyển đến Space",
+    "moved_to_collection_bulk": "Đã chuyển {{count}} links đến Space"
+  },
+  "move_to_collection": {
+    "title_single": "Chuyển đến Space",
+    "title_multiple": "Chuyển {{count}} Links",
+    "description": "Chọn Space để quản lý links của bạn",
+    "description_with_current": "Chọn Space mới hoặc xóa khỏi Space hiện tại",
+    "remove_from_collection": "Xóa khỏi Space",
+    "uncategorized": "Links sẽ không được phân loại vào Space nào",
+    "confirm_title": "Xác nhận di chuyển",
+    "confirm_description_with_source": "Bạn có chắc muốn di chuyển {{count}} link(s) từ \"{{from}}\" sang \"{{to}}\"?",
+    "confirm_description": "Bạn có chắc muốn di chuyển {{count}} Link(s) đến \"{{to}}\"?"
+  },
+  "static_qr": {
+    "label": "Mã QR tĩnh",
+    "shortLabel": "Tĩnh",
+    "info_message": "Mã QR tĩnh chứa dữ liệu cố định. Sau khi tạo, hình ảnh mã QR không thể thay đổi. Nếu bạn cần cập nhật nội dung, bạn sẽ cần tạo mã QR mới.",
+    "qr_type": "Loại QR",
+    "type": {
+      "text": "Văn bản",
+      "url": "Đường dẫn",
+      "wifi": "WiFi"
+    },
+    "fields": {
+      "text": "Văn bản",
+      "url": "Đường dẫn",
+      "wifi_ssid": "SSID (Tên mạng)",
+      "wifi_password": "Mật khẩu",
+      "wifi_security": "Loại bảo mật",
+      "wifi_hidden": "Mạng ẩn"
+    },
+    "placeholders": {
+      "text": "Nhập nội dung văn bản của bạn",
+      "url": "https://li2.ai",
+      "wifi_ssid": "Li2-Guest",
+      "wifi_password": "Nhập mật khẩu WiFi",
+      "wifi_security": "Chọn loại bảo mật"
+    },
+    "security_types": {
+      "none": "Không có"
+    }
+  },
+  "simple_form": {
+    "link_created_success": "Tuyệt! Bắt đầu chia sẻ link của bạn",
+    "qr_created_success": "Tuyệt! Bắt đầu chia sẻ mã QR của bạn",
+    "view_detail_hint": "Muốn tùy chỉnh hoặc theo dõi hiệu suất?"
+  },
+  "nfc": {
+    "empty": {
+      "title": "Chưa có thẻ NFC nào",
+      "description": "Chip NFC hiện chỉ có sẵn thông qua đội ngũ bán hàng của chúng tôi.",
+      "contact_us": "Liên hệ với chúng tôi để tìm hiểu thêm và đặt hàng chip NFC của bạn."
+    }
+  },
+  "short_link_list": {
+    "empty": {
+      "title": "Chưa có link rút gọn nào",
+      "description": "Tạo link rút gọn đầu tiên để bắt đầu theo dõi lượt nhấp, chuyển đổi và thông tin khách truy cập.",
+      "cta": "Tạo Link Rút Gọn"
+    }
+  },
+  "touch_point_list_v2": {
+    "paste_link_label": "Dán liên kết vào đây",
+    "paste_link_placeholder": "Dán link hoặc thả file vào đây",
+    "get_qr_code": "Lấy mã QR",
+    "shorten": "Rút gọn",
+    "shorten_progress_title": "Đang rút gọn liên kết…",
+    "shorten_progress_description": "{{done}} / {{total}} hoàn thành",
+    "shorten_success_title": "Tất cả liên kết đã được tạo",
+    "shorten_success_description": "{{count}} liên kết đã được rút gọn thành công",
+    "shorten_success_description_plural": "{{count}} liên kết đã được rút gọn thành công",
+    "shorten_error_title": "Không thể tạo liên kết",
+    "shorten_error_description": "{{count}} liên kết thất bại",
+    "shorten_error_description_plural": "{{count}} liên kết thất bại",
+    "shorten_partial_title": "Tạo một phần",
+    "shorten_partial_description": "{{succeeded}} thành công, {{failed}} thất bại",
+    "feature_enabled": "{{name}}",
+    "features": {
+      "conversion_tracking": "Theo dõi chuyển đổi",
+      "targeting": "Nhắm mục tiêu",
+      "redirect_rules": "Quy tắc chuyển hướng",
+      "access_control": "Kiểm soát truy cập",
+      "fb_pixel": "Facebook Pixel",
+      "ga_tracking": "Google Analytics",
+      "tiktok_pixel": "TikTok Pixel",
+      "privacy_security": "Bảo mật & Quyền riêng tư",
+      "link_expiration": "Hết hạn liên kết",
+      "custom_404_redirect": "Trang 404 tùy chỉnh",
+      "link_cloaking": "Ẩn liên kết"
+    },
+    "utm_fields": {
+      "campaign": "Chiến dịch",
+      "source": "Nguồn",
+      "medium": "Kênh",
+      "term": "Từ khóa",
+      "content": "Nội dung"
+    },
+    "paste_link_hint": "Mỗi dòng một liên kết — dán nhiều cùng lúc",
+    "valid_links_count": "{{count}} liên kết hợp lệ",
+    "valid_links_count_plural": "{{count}} liên kết hợp lệ",
+    "no_valid_links": "Chưa có liên kết hợp lệ",
+    "no_space": "No space",
+    "no_tag": "No tag"
+  },
+  "create_success_dialog": {
+    "title": "Đã tạo Short Link!",
+    "description": "Link của bạn đã sẵn sàng để chia sẻ. Sao chép URL hoặc tải mã QR.",
+    "copy_url": "Sao chép URL",
+    "continue": "Xem chi tiết"
+  },
+  "merged_list": {
+    "destination": {
+      "redirects_to": "tới",
+      "content": "nội dung",
+      "removed": "nội dung đã gỡ · QR vẫn quét được"
+    },
+    "quota": {
+      "links": "{{count}} link",
+      "artifacts": "{{used}}/{{total}} artifact",
+      "storage": "{{used}}/{{total}}",
+      "links_unknown": "— link",
+      "artifacts_unknown": "— artifact",
+      "storage_unknown": "— dung lượng"
+    },
+    "create": {
+      "button": "Tạo mới",
+      "kind_switch_label": "Loại cần tạo",
+      "kind": {
+        "link": "Link rút gọn",
+        "artifact": "Artifact"
+      }
+    },
+    "assistant": {
+      "title": "Trợ lý Li2",
+      "coming_soon": "sắp có",
+      "hint": "Tạo link và đăng file bằng cách nói"
+    },
+    "status": {
+      "error": {
+        "title": "Không tải được danh sách",
+        "description": "Máy chủ không trả lời. Dữ liệu của bạn vẫn còn nguyên — đây là lỗi tải, không phải danh sách trống.",
+        "retry": "Thử lại"
+      },
+      "no_match": {
+        "title": "Không có hàng nào khớp",
+        "description": "Không link hay artifact nào khớp bộ lọc và từ khoá đang áp.",
+        "clear": "Xoá bộ lọc"
+      }
+    },
+    "filters": {
+      "button": "Bộ lọc",
+      "type": "Loại",
+      "type_artifact": "Artifact",
+      "type_link": "Shortlink",
+      "status": "Trạng thái",
+      "domain": "Domain",
+      "status_live": "Đang phục vụ",
+      "status_disabled": "Đã tắt",
+      "status_flagged": "Bị gắn cờ",
+      "status_pending": "Chưa xuất bản",
+      "status_blocked": "Bị chặn",
+      "status_expired": "Hết hạn",
+      "status_removed": "Đã gỡ",
+      "domain_none": "Domain hệ thống"
+    }
+  }
+}

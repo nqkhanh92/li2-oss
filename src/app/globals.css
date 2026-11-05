@@ -1,0 +1,307 @@
+@import 'tailwindcss';
+
+/* Typography plugin — powers the `prose` classes used to render the agent's Markdown replies.
+ * Without it, Tailwind v4's Preflight strips list markers/heading sizes and model output renders flat. */
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  :root {
+    --chart-1: oklch(0.6548 0.1094 194.81);
+    --chart-2: oklch(0.2265 0.0827 264.64);
+    --chart-3: oklch(0.4141 0.2126 280.37);
+    --chart-4: oklch(0.6184 0.1917 262.62);
+    --chart-5: oklch(0.6776 0.192952 45.2346);
+    --chart-6: oklch(0.8169 0.1653 82.59);
+    --chart-7: oklch(0.8526 0.0396 212.67);
+    --chart-8: oklch(0.869 0.0198 252.89);
+    --chart-9: oklch(0.6271 0.1699 149.21);
+  }
+
+  .dark {
+    --chart-1: oklch(0.5797 0.1127 242.39);
+    --chart-2: oklch(0.2265 0.0827 264.64);
+    --chart-3: oklch(0.4141 0.2126 280.37);
+    --chart-4: oklch(0.6184 0.1917 262.62);
+    --chart-5: oklch(0.6776 0.192952 45.2346);
+    --chart-6: oklch(0.8169 0.1653 82.59);
+    --chart-7: oklch(0.8526 0.0396 212.67);
+    --chart-8: oklch(0.869 0.0198 252.89);
+    --chart-9: oklch(0.6271 0.1699 149.21);
+  }
+}
+
+@theme {
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-s: 0.875rem;
+  --text-s--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-l: 1.125rem;
+  --text-l--line-height: 1.625rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+
+  --color-background: oklch(0.9759 0.0029 264.54);
+  --color-foreground: var(--color-slate-800);
+
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(0 0% 3.9%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(0 0% 3.9%);
+  --color-primary: oklch(0.165 0.059 257.19);
+  --color-primary-light: oklch(0.2265 0.0827 264.64);
+  --color-primary-foreground: hsl(0 0% 98%);
+  --color-secondary: hsl(251 67% 44%);
+  --color-secondary-foreground: hsl(0 0% 9%);
+  --color-secondary-cyan: oklch(0.8526 0.0396 212.67);
+  --color-secondary-dark-cyan: oklch(0.6548 0.1094 194.81);
+  --color-secondary-orange: oklch(0.6776 0.192952 45.2346);
+  --color-secondary-blue: hsl(220 92% 62%);
+  --color-secondary-yellow: hsl(43 93% 52%);
+  --color-secondary-purple: oklch(0.4141 0.2126 280.37);
+  --color-muted: hsl(0 0% 96.1%);
+  --color-muted-foreground: hsl(0 0% 45.1%);
+  --color-accent: hsl(0 0% 96.1%);
+  --color-accent-foreground: hsl(0 0% 9%);
+  --color-success: hsl(122 64.3% 52.2%);
+  --color-success-foreground: hsl(0 0% 98%);
+  --color-teriaty: hsl(223 78% 15%);
+  --color-teriaty-light: hsl(223 72% 18%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(0 0% 98%);
+  --color-border: oklch(0.869 0.0198 252.89);
+  --color-input: hsl(0 0% 89.8%);
+  --color-ring: hsl(0 0% 3.9%);
+
+  --color-semantic-info: oklch(0.6184 0.1917 262.62);
+  --color-semantic-warning: oklch(0.6806 0.1423 75.83);
+  --color-semantic-error: oklch(0.5771 0.2152 27.33);
+  --color-semantic-success: oklch(0.6271 0.1699 149.21);
+
+  --color-sidebar: oklch(0.9759 0.0029 264.54);
+  --color-sidebar-foreground: oklch(0.2795 0.0368 260.03);
+  --color-sidebar-primary: hsl(240 5.9% 10%);
+  --color-sidebar-primary-foreground: hsl(0 0% 98%);
+  --color-sidebar-accent: hsl(0 0% 100%);
+  --color-sidebar-accent-foreground: oklch(0.2795 0.0368 260.03);
+  --color-sidebar-border: oklch(0.869 0.0198 252.89);
+  --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
+
+  --color-guest-primary-dark: hsl(220 100% 8%);
+  --color-guest-primary-default: hsl(251 67% 44%);
+  --color-guest-secondary-default: hsl(43 93% 52%);
+
+  --color-slate-50: hsl(210 40% 98%);
+  --color-slate-100: hsl(210 40% 96%);
+  --color-slate-200: hsl(214 32% 91%);
+  --color-slate-300: oklch(0.869 0.0198 252.89);
+  --color-slate-400: hsl(215 20% 65%);
+  --color-slate-500: hsl(215 16% 47%);
+  --color-slate-600: oklch(0.4455 0.0374 257.28);
+  --color-slate-700: hsl(215 25% 27%);
+  --color-slate-800: oklch(0.2795 0.0368 260.03);
+  --color-slate-900: oklch(0.2077 0.0398 265.75);
+
+  --color-green-50: hsl(138 76% 97%);
+  --color-green-600: hsl(142 76% 36%);
+
+  --color-red-100: hsl(0 93% 94%);
+  --color-red-500: hsl(0 84% 60%);
+
+  --color-gray-50: hsl(213 14% 43%);
+  --color-gray-500: hsl(220 21% 23%);
+
+  --color-blue-500: hsl(220 92% 62%);
+
+  --color-neutral-100: hsl(220 27% 98%);
+  --color-neutral-400: hsl(212 36% 96%);
+  --color-neutral-500: hsl(0 0% 91%);
+  --color-neutral-700: hsl(212 23% 85%);
+  --color-neutral-900: hsl(213 14% 55%);
+
+  --color-yellow-50: hsl(55 92% 95%);
+  --color-yellow-500: hsl(45 93% 47%);
+
+  --color-beta-tag-from: #b9aaff;
+  --color-beta-tag-to: #d6a4af;
+
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-loading-sweep: loading-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+  --breakpoint-14inch: 1400px;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes loading-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(400%);
+    }
+  }
+  @keyframes check-pop {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes fade-up {
+    0% {
+      transform: translateY(12px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+.dark {
+  /* Soft Dark Theme — slate-blue tinted surfaces, not pure black */
+  --color-background: oklch(0.19 0.008 264);
+  --color-foreground: var(--color-slate-100);
+
+  --color-card: oklch(0.22 0.008 264);
+  --color-card-foreground: oklch(0.93 0.006 264);
+
+  --color-popover: oklch(0.22 0.008 264);
+  --color-popover-foreground: oklch(0.93 0.006 264);
+
+  --color-primary: oklch(0.58 0.15 257.19);
+  --color-primary-light: oklch(0.65 0.12 264.64);
+  --color-primary-foreground: oklch(0.98 0 0);
+
+  --color-secondary: oklch(0.62 0.22 280);
+  --color-secondary-foreground: oklch(0.98 0 0);
+
+  --color-secondary-cyan: oklch(0.72 0.08 212.67);
+  --color-secondary-dark-cyan: oklch(0.58 0.1 230);
+
+  --color-secondary-orange: oklch(0.68 0.14 50);
+  --color-secondary-blue: oklch(0.65 0.16 250);
+  --color-secondary-yellow: oklch(0.78 0.14 85);
+  --color-secondary-purple: oklch(0.55 0.2 280.37);
+
+  --color-muted: oklch(0.27 0.008 264);
+  --color-muted-foreground: oklch(0.62 0.01 264);
+
+  --color-accent: oklch(0.27 0.008 264);
+  --color-accent-foreground: oklch(0.93 0.006 264);
+
+  --color-success: oklch(0.62 0.18 145);
+  --color-success-foreground: oklch(0.98 0 0);
+
+  --color-tertiary: oklch(0.32 0.07 257);
+  --color-tertiary-light: oklch(0.38 0.09 257);
+
+  --color-destructive: oklch(0.62 0.22 25);
+  --color-destructive-foreground: oklch(0.98 0 0);
+
+  --color-border: oklch(0.32 0.01 264);
+  --color-input: oklch(0.28 0.008 264);
+  --color-ring: oklch(0.65 0.14 257.19);
+
+  --color-sidebar: oklch(0.17 0.009 264.54);
+  --color-sidebar-foreground: oklch(0.9 0.008 260.03);
+  --color-sidebar-primary: oklch(0.95 0 0);
+  --color-sidebar-primary-foreground: oklch(0.2 0.01 264);
+  --color-sidebar-accent: oklch(0.25 0.009 264);
+  --color-sidebar-accent-foreground: oklch(0.7 0.12 270);
+  --color-sidebar-border: oklch(0.28 0.01 264);
+  --color-sidebar-ring: oklch(0.65 0.18 217.2);
+}
+
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: Arial, Helvetica, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  input.not-fill-input:-webkit-autofill {
+    -webkit-background-clip: text;
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+.rdp-caption_dropdowns {
+  @apply flex flex-row items-center gap-2 w-full;
+}
+
+.rdp-vhidden {
+  @apply hidden;
+}
+
+.dropdown-fullwidth {
+  width: var(--radix-dropdown-menu-trigger-width);
+  max-height: var(--radix-dropdown-menu-content-available-height);
+}
+
+::placeholder {
+  opacity: 0.5;
+  color: var(--color-slate-600);
+}
+
+/* Designer using MacOS said that our font have different weight compare to figma 
+so we need force their macos render with grayscale instead of subpixel */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+}

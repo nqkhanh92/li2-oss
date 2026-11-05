@@ -1,0 +1,129 @@
+{
+  "welcome": "Chào mừng đến với $t(common:appName)!",
+  "banner": {
+    "have_expired": {
+      "is_warning": {
+        "heading": "Gói {{plan_to_change}} của bạn sắp kết thúc!",
+        "description": "Nâng cấp ngay để giữ nguyên quyền lợi.",
+        "mobile_heading": "Gói {{plan_to_change}} của bạn sắp kết thúc! Nâng cấp ngay để giữ nguyên quyền lợi.",
+        "mobile_heading_ending_soon": "Gói {{plan_to_change}} của bạn sắp kết thúc! Nâng cấp ngay để giữ nguyên quyền lợi.",
+        "button": "Nâng cấp ngay"
+      },
+      "non_warning": {
+        "description_field_trial": "{{plan}} active— miễn phí đến {{date}}. Gói {{plan}} kết thúc trong:",
+        "description_field": "{{plan}} active! Toàn quyền truy cập đến {{date}}. Gói {{plan}} kết thúc trong:",
+        "premium_trial": {
+          "plan": "DÙNG THỬ CAO CẤP",
+          "title": "Chúc mừng! Bạn là một trong 200 người dùng đầu tiên được sử dụng $t(common:appName) Premium.",
+          "description": "Gói Cao cấp của bạn đã được kích hoạt — miễn phí trong 1 năm!<br>Tận hưởng quyền truy cập đầy đủ vào tất cả các tính năng của $t(common:appName) cho đến ngày ",
+          "insight": [""],
+          "button": "",
+          "buttonLink": ""
+        },
+        "premium": {
+          "plan": "PREMIUM",
+          "title": "Chúc mừng! Gói Premium của bạn đã được kích hoạt!",
+          "description": "Gói Premium của bạn đã được kích hoạt! <br>Tận hưởng quyền truy cập đầy đủ vào tất cả các tính năng của $t(common:appName) cho đến ",
+          "insight": [
+            "Tăng hiệu quả tiếp thị với mã QR thương hiệu và phân tích đầy đủ.",
+            "Thêm thẻ UTM và siêu dữ liệu để tối ưu hóa liên kết chia sẻ.",
+            "Tạo slug tùy chỉnh tối ưu hóa bằng AI cho các liên kết có thương hiệu."
+          ],
+          "button": "",
+          "buttonLink": ""
+        },
+        "free": {
+          "plan": "MIỄN PHÍ",
+          "title": "Nhận 6 tháng dùng thử miễn phí Premium!",
+          "description": "Bạn đủ điều kiện để dùng thử miễn phí trong 6 tháng với nhiều tính năng nâng cao.",
+          "insight": [
+            "Tạo, cập nhật và quản lý số lượng liên kết không giới hạn và mã QR có thương hiệu.",
+            "Mở khóa thẻ UTM và thẻ meta tùy chỉnh để theo dõi mọi liên kết một cách chi tiết.",
+            "Tùy chỉnh slug tùy chỉnh tối ưu hóa bằng AI cho các liên kết có thương hiệu."
+          ],
+          "button": "Bắt đầu dùng thử miễn phí",
+          "buttonLink": "/contact"
+        },
+        "free_trial": {
+          "plan": "DÙNG THỬ MIỄN PHÍ",
+          "title": "Khai phá toàn bộ sức mạnh của gói Premium!",
+          "description": "Nâng tầm tiếp thị với các tính năng độc quyền:",
+          "insight": [
+            "Thêm tổ chức mới và quản lý linh hoạt.",
+            "Kích hoạt tên miền tùy chỉnh và mã white-label QR/NFC",
+            "Kết nối với Parcevoy và các tích hợp nâng cao."
+          ],
+          "button": "",
+          "buttonLink": ""
+        }
+      }
+    }
+  },
+  "overall_visits": "Tổng lượt truy cập",
+  "performance_overtime": {
+    "label": "Hiệu quả theo thời gian",
+    "tooltip": "Biểu đồ thể hiện số lượt truy cập trong từng khung giờ, giúp bạn theo dõi mức độ hiệu quả của liên kết theo thời gian.",
+    "today": "Hôm nay",
+    "yesterday": "Hôm qua",
+    "last_week": "Tuần qua",
+    "last_month": "Tháng qua"
+  },
+  "performance_overview": {
+    "label": "Tổng quan hiệu suất",
+    "total": "Lượt truy cập",
+    "unique": "Truy cập duy nhất",
+    "today": "Hôm nay",
+    "yesterday": "Hôm qua",
+    "last_week": "Tuần qua",
+    "last_month": "Tháng qua",
+    "tooltip": {
+      "total": "Tổng số lượt tương tác (click + scan), bao gồm cả lượt tương tác lặp lại từ cùng một người dùng",
+      "unique": "Số người dùng riêng biệt đã tương tác với link của bạn. Mỗi người dùng chỉ được tính một lần"
+    }
+  },
+  "interaction_channels": {
+    "label": "Lượt truy cập",
+    "qr_code": "Mã QR",
+    "nfc_card": "Lượt chạm NFC",
+    "short_link": "Click",
+    "scan": "Scan",
+    "tap": "Tap",
+    "wifi_access": "Lượt kết nối Wifi",
+    "today": "Hôm nay",
+    "yesterday": "Hôm qua",
+    "last_week": "Tuần qua",
+    "last_month": "Tháng qua"
+  },
+  "recent_activities": {
+    "label": "Hoạt động gần đây",
+    "subtitle": "{{count}} hoạt động trong 24 giờ qua",
+    "auto_update": "Tự động cập nhật mỗi 10 giây",
+    "columns": {
+      "link_name": "Tên link",
+      "action": "Hành động",
+      "country": "Quốc gia",
+      "platform": "Nền tảng",
+      "ip": "IP",
+      "time": "Thời gian"
+    },
+    "actions": {
+      "click": "Click",
+      "scan": "Scan",
+      "tap": "Tap"
+    }
+  },
+  "simpleForm": {
+    "linkInput": {
+      "label": "Nhập link của bạn",
+      "placeholder": "https://example.com/my-long-URL"
+    },
+    "linkSubmit": {
+      "label": "Rút gọn link",
+      "loadingLabel": "Đang tạo link của bạn..."
+    },
+    "qrSubmit": {
+      "label": "Tạo mã QR",
+      "loadingLabel": "Đang tạo mã QR của bạn..."
+    }
+  }
+}

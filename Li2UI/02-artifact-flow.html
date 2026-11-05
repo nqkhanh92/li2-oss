@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Artifact — flow đầy đủ theo theme Li2 (bố cục đề xuất)</title>
+<!--
+  NGUỒN TOKEN — không tự chế giá trị nào.
+  - Màu, cỡ chữ, bo góc, dark mode:  src/app/globals.css
+      @theme light  :49-84 (background, card, primary, secondary, secondary-blue, border, semantic-*)
+      slate scale   :99-108 ; radius :133-135 ; text scale :36-47
+      .dark         :189-242 (Soft Dark Theme)
+  - Style shadcn "new-york", baseColor neutral: components.json (tailwind.config.ts được tham chiếu nhưng
+    KHÔNG tồn tại trên nhánh — Tailwind v4 đọc token trực tiếp từ globals.css @theme).
+  - Font: Be Vietnam Pro self-host (src/app/layout.tsx:19-57). File này không tải font ngoài, nên dùng
+    font-family: "Be Vietnam Pro", Arial, Helvetica, sans-serif — Arial là fallback của body (globals.css:264).
+  - Bo góc thành phần: Button rounded-[8px] (ui/button.tsx:7); thẻ hàng rounded-[8px] (touchpoint-card.tsx:212);
+    dialog rounded-[16px] 480/640px (custom-dialog-v2.tsx:28,35-37); panel 16px border-slate-300
+    (docs/artifact-ui-wave2.md §B.5).
+  - Kích thước khung: navbar app 52px, thanh tiêu đề page 60px (content-layout-nav.tsx:29), nội dung
+    max-w-7xl = 1280px (content-layout.tsx:76), sidebar form 252px (short-link-form/index.tsx:228),
+    panel phải 252px (:273), ô QR 90×90 (touchpoint-card.tsx:228).
+  - Bảng neo token tóm tắt: docs/artifact-multiformat-ui.md §0.
+  - Copy tiếng Việt: public/lang/vi/artifact.json và src/core/helpers/artifact-landing.ts:19-69 (trang cổng);
+    số lần thử mật khẩu = ARTIFACT_GATE_MAX_TRIES = 3 (src/core/types/artifact.type.ts:80).
+-->
+<style>
+/* ============ TOKEN (globals.css) ============ */
+:root {
+  --text-xs: 0.75rem;   --lh-xs: 1rem;
+  --text-s: 0.875rem;   --lh-s: 1.25rem;
+  --text-sm: 0.9375rem; --lh-sm: 1.375rem;
+  --text-base: 1rem;    --lh-base: 1.5rem;
+  --text-l: 1.125rem;   --lh-l: 1.625rem;
+  --text-xl: 1.25rem;   --lh-xl: 1.75rem;
+
+  --background: oklch(0.9759 0.0029 264.54);
+  --foreground: oklch(0.2795 0.0368 260.03);            /* slate-800 */
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 3.9%);
+  --popover: hsl(0 0% 100%);
+  --primary: oklch(0.165 0.059 257.19);
+  --primary-light: oklch(0.2265 0.0827 264.64);
+  --primary-foreground: hsl(0 0% 98%);
+  --secondary: hsl(251 67% 44%);
+  --secondary-blue: hsl(220 92% 62%);
+  --secondary-purple: oklch(0.4141 0.2126 280.37);
+  --secondary-orange: oklch(0.6776 0.192952 45.2346);
+  --secondary-dark-cyan: oklch(0.6548 0.1094 194.81);
+  --muted: hsl(0 0% 96.1%);
+  --muted-foreground: hsl(0 0% 45.1%);
+  --border: oklch(0.869 0.0198 252.89);
+  --input: hsl(0 0% 89.8%);
+  --ring: hsl(0 0% 3.9%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --semantic-info: oklch(0.6184 0.1917 262.62);
+  --semantic-warning: oklch(0.6806 0.1423 75.83);
+  --semantic-error: oklch(0.5771 0.2152 27.33);
+  --semantic-success: oklch(0.6271 0.1699 149.21);
+  --sidebar: oklch(0.9759 0.0029 264.54);
+  --sidebar-foreground: oklch(0.2795 0.0368 260.03);
+  --sidebar-accent: hsl(0 0% 100%);
+
+  --slate-50: hsl(210 40% 98%);
+  --slate-100: hsl(210 40% 96%);
+  --slate-200: hsl(214 32% 91%);
+  --slate-300: oklch(0.869 0.0198 252.89);
+  --slate-400: hsl(215 20% 65%);
+  --slate-500: hsl(215 16% 47%);
+  --slate-600: oklch(0.4455 0.0374 257.28);
+  --slate-700: hsl(215 25% 27%);
+  --slate-800: oklch(0.2795 0.0368 260.03);
+  --slate-900: oklch(0.2077 0.0398 265.75);
+
+  --radius-lg: 0.5rem;
+  --r-btn: 8px;        /* button.tsx:7 */
+  --r-card: 8px;       /* touchpoint-card.tsx:212 */
+  --r-panel: 16px;     /* custom-dialog-v2.tsx:28, artifact-detail panel */
+  --r-qr: 15px;        /* touchpoint-card.tsx:228 */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
+
+  --h-navbar: 52px;
+  --h-pagenav: 60px;
+  --w-content: 1280px;
+  --w-sidebar: 232px;
+  --w-formside: 252px;
+
+  /* bề mặt tài liệu (không phải app) */
+  --doc-bg: var(--background);
+  --doc-ink: var(--foreground);
+  --doc-muted: var(--slate-500);
+  --doc-panel: var(--card);
+  --doc-line: var(--border);
+  --note-bg: color-mix(in oklab, var(--secondary-blue) 8%, var(--card));
+}
+.dark {
+  --background: oklch(0.19 0.008 264);
+  --foreground: hsl(210 40% 96%);
+  --card: oklch(0.22 0.008 264);
+  --card-foreground: oklch(0.93 0.006 264);
+  --popover: oklch(0.22 0.008 264);
+  --primary: oklch(0.58 0.15 257.19);
+  --primary-light: oklch(0.65 0.12 264.64);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.62 0.22 280);
+  --secondary-blue: oklch(0.65 0.16 250);
+  --secondary-purple: oklch(0.55 0.2 280.37);
+  --secondary-orange: oklch(0.68 0.14 50);
+  --secondary-dark-cyan: oklch(0.58 0.1 230);
+  --muted: oklch(0.27 0.008 264);
+  --muted-foreground: oklch(0.62 0.01 264);
+  --border: oklch(0.32 0.01 264);
+  --input: oklch(0.28 0.008 264);
+  --ring: oklch(0.65 0.14 257.19);
+  --destructive: oklch(0.62 0.22 25);
+  --sidebar: oklch(0.17 0.009 264.54);
+  --sidebar-foreground: oklch(0.9 0.008 260.03);
+  --sidebar-accent: oklch(0.25 0.009 264);
+  /* globals.css KHÔNG định nghĩa lại slate-* trong .dark; app dùng class slate cứng nên trong dark mode
+     chữ slate-700 vẫn tối. Ở đây đảo thang slate để wireframe đọc được — ghi rõ đây là ngoại suy. */
+  --slate-50: oklch(0.25 0.009 264);
+  --slate-100: oklch(0.27 0.008 264);
+  --slate-200: oklch(0.32 0.01 264);
+  --slate-300: oklch(0.38 0.012 264);
+  --slate-400: oklch(0.55 0.015 264);
+  --slate-500: oklch(0.68 0.012 264);
+  --slate-600: oklch(0.78 0.01 264);
+  --slate-700: oklch(0.86 0.008 264);
+  --slate-800: oklch(0.93 0.006 264);
+  --note-bg: color-mix(in oklab, var(--secondary-blue) 14%, var(--card));
+}
+
+/* ============ Tài liệu ============ */
+* { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--doc-bg); color: var(--doc-ink);
+  font-family: "Be Vietnam Pro", Arial, Helvetica, sans-serif;
+  font-size: var(--text-sm); line-height: var(--lh-sm);
+}
+a { color: var(--secondary-blue); }
+code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; }
+h1 { font-size: var(--text-xl); line-height: var(--lh-xl); margin: 0; font-weight: 600; }
+h2 { font-size: var(--text-l); line-height: var(--lh-l); margin: 48px 0 8px; font-weight: 600; }
+h3 { font-size: var(--text-base); margin: 24px 0 8px; font-weight: 600; }
+p.lead { color: var(--doc-muted); margin: 0 0 16px; }
+
+.doc-head {
+  position: sticky; top: 0; z-index: 10; background: var(--doc-bg); border-bottom: 1px solid var(--doc-line);
+  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+}
+.doc-head .meta { color: var(--doc-muted); font-size: var(--text-xs); }
+.toggle {
+  margin-left: auto; height: 36px; padding: 0 12px; border-radius: var(--r-btn); border: 1px solid var(--slate-200);
+  background: var(--card); color: var(--slate-700); font: inherit; font-size: var(--text-s); font-weight: 500; cursor: pointer;
+}
+.wrap { max-width: 1480px; margin: 0 auto; padding: 24px; }
+.toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 6px 24px; margin: 8px 0 0; padding: 0; list-style: none; }
+.toc li { font-size: var(--text-s); }
+.toc li span { color: var(--doc-muted); margin-right: 6px; }
+.callout {
+  border: 1px solid var(--doc-line); background: var(--doc-panel); border-radius: var(--r-panel); padding: 16px 20px; margin: 16px 0;
+}
+.callout ul { margin: 6px 0 0; padding-left: 18px; }
+
+/* bảng token */
+.tokens { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.tok { border: 1px solid var(--doc-line); border-radius: var(--r-card); overflow: hidden; background: var(--card); }
+.tok .sw { height: 44px; }
+.tok .nm { padding: 6px 8px; font-size: var(--text-xs); color: var(--slate-600); }
+.tok .nm b { display: block; color: var(--foreground); font-weight: 600; }
+
+/* màn hình = khung + chú thích */
+.screen { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; margin: 16px 0 40px; }
+@media (max-width: 1100px) { .screen { grid-template-columns: 1fr; } }
+.notes {
+  position: sticky; top: 72px; background: var(--note-bg); border: 1px solid var(--doc-line); border-radius: var(--r-panel);
+  padding: 14px 16px; font-size: var(--text-s); line-height: var(--lh-s);
+}
+.notes h4 { margin: 0 0 8px; font-size: var(--text-s); font-weight: 600; }
+.notes h4 + h4, .notes ul + h4 { margin-top: 14px; }
+.notes ul { margin: 0; padding-left: 16px; }
+.notes li { margin: 4px 0; }
+.notes .k { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 1px 6px; border-radius: 999px; margin-right: 4px; }
+.k.new { background: color-mix(in oklab, var(--semantic-success) 15%, transparent); color: var(--semantic-success); }
+.k.chg { background: color-mix(in oklab, var(--semantic-warning) 18%, transparent); color: var(--semantic-warning); }
+.k.keep { background: var(--slate-100); color: var(--slate-600); }
+.pin { position: absolute; width: 18px; height: 18px; border-radius: 999px; background: var(--secondary); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 3; box-shadow: 0 0 0 2px var(--card); }
+.notes .pin { position: static; display: inline-flex; margin-right: 6px; vertical-align: -3px; box-shadow: none; }
+
+/* ============ Khung app Li2 ============ */
+.app { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); background: var(--slate-800); border-radius: 12px; overflow: hidden; border: 1px solid var(--doc-line); position: relative; min-height: 560px; }
+.dark .app { background: oklch(0.14 0.008 264); }
+.app-side { background: oklch(0.2795 0.0368 260.03); color: hsl(210 40% 90%); padding: 14px 10px; font-size: var(--text-s); }
+.dark .app-side { background: oklch(0.14 0.008 264); }
+.app-side .logo { font-weight: 700; padding: 6px 10px 16px; letter-spacing: .02em; display: flex; align-items: center; gap: 8px; }
+.app-side .logo i { width: 22px; height: 22px; border-radius: 6px; background: var(--secondary); display: inline-block; }
+.app-side .it { padding: 7px 10px; border-radius: 8px; color: hsl(210 20% 75%); display: flex; align-items: center; gap: 8px; }
+.app-side .it::before { content: ""; width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid currentColor; opacity: .6; }
+.app-side .it.on { background: oklch(0.34 0.04 260); color: #fff; }
+.app-main { display: flex; flex-direction: column; min-width: 0; }
+.app-nav { height: var(--h-navbar); background: oklch(0.2795 0.0368 260.03); display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 0 16px; color: hsl(210 20% 80%); font-size: var(--text-xs); }
+.dark .app-nav { background: oklch(0.14 0.008 264); }
+.app-nav .av { width: 26px; height: 26px; border-radius: 999px; background: var(--secondary-blue); }
+.page { background: var(--background); border-top-left-radius: 24px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.pagenav { height: var(--h-pagenav); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; gap: 12px; }
+.pagenav h3 { margin: 0; font-size: var(--text-l); font-weight: 500; color: var(--foreground); }
+.pagenav .extra { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.pagebody { padding: 24px; flex: 1; }
+.pagefoot { height: 60px; border-top: 1px solid var(--slate-300); background: var(--background); display: flex; align-items: center; justify-content: center; gap: 16px; }
+.back { width: 20px; height: 20px; color: var(--slate-500); display: inline-flex; align-items: center; justify-content: center; }
+.back::before { content: "←"; font-size: 18px; line-height: 1; }
+
+/* ============ Nguyên tử shadcn/Li2 ============ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: var(--r-btn); font-size: 14px; font-weight: 500; line-height: 20px; border: 1px solid transparent; white-space: nowrap; cursor: default; }
+.btn.sm { height: 36px; font-size: var(--text-sm); }
+.btn.xs { height: 32px; padding: 0 8px; font-size: var(--text-xs); }
+.btn.icon { width: 36px; height: 36px; padding: 0; }
+.btn.primary { background: var(--primary); color: var(--primary-foreground); }
+.btn.secondary { background: var(--card); color: var(--slate-700); border-color: var(--slate-200); }
+.btn.tertiary { background: transparent; color: var(--slate-700); }
+.btn.table { background: hsl(212 36% 96%); color: var(--primary); width: 28px; height: 28px; padding: 0; border-radius: 8px; }
+.dark .btn.table { background: var(--slate-200); }
+.btn.danger { background: var(--semantic-error); color: #fff; }
+.btn.disabled { opacity: .3; }
+.btn .ico { width: 18px; height: 18px; display: inline-block; border: 1.6px solid currentColor; border-radius: 4px; opacity: .85; }
+.btn .plus::before { content: "+"; font-size: 18px; line-height: 1; }
+.spin { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 999px; display: inline-block; }
+
+.input { height: 40px; border: 1px solid var(--slate-300); background: var(--card); border-radius: 8px; padding: 0 12px; display: flex; align-items: center; gap: 8px; font-size: var(--text-s); color: var(--foreground); }
+.input.muted { background: var(--slate-100); border-color: transparent; }
+.input.mono { font-family: ui-monospace, Menlo, monospace; font-size: var(--text-s); }
+.input .ph { color: var(--slate-600); opacity: .5; }
+.input .ad { margin-left: auto; color: var(--slate-400); font-size: 14px; }
+.input.bad { border-color: var(--semantic-error); }
+.label { font-size: var(--text-s); font-weight: 500; color: var(--slate-700); line-height: 20px; }
+.hint { font-size: var(--text-xs); color: var(--slate-500); line-height: var(--lh-xs); }
+.err { font-size: var(--text-xs); color: var(--semantic-error); line-height: var(--lh-xs); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.sep { height: 1px; background: var(--border); }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-size: var(--text-xs); line-height: 16px; font-weight: 500; white-space: nowrap; }
+.badge.neutral { background: var(--slate-100); color: var(--slate-600); border: 1px solid var(--slate-200); }
+.badge.success { background: color-mix(in oklab, var(--semantic-success) 10%, transparent); color: var(--semantic-success); border: 1px solid color-mix(in oklab, var(--semantic-success) 25%, transparent); }
+.badge.warning { background: color-mix(in oklab, var(--semantic-warning) 10%, transparent); color: var(--semantic-warning); border: 1px solid color-mix(in oklab, var(--semantic-warning) 25%, transparent); }
+.badge.error { background: color-mix(in oklab, var(--semantic-error) 10%, transparent); color: var(--semantic-error); border: 1px solid color-mix(in oklab, var(--semantic-error) 25%, transparent); }
+.badge.gray { background: var(--slate-100); color: var(--slate-500); font-weight: 400; padding: 2px 8px; }
+.badge .i { width: 12px; height: 12px; border: 1.4px solid currentColor; border-radius: 3px; display: inline-block; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+.panel16 { background: var(--card); border: 1px solid var(--slate-300); border-radius: var(--r-panel); }
+.row-card { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--slate-300); border-radius: var(--r-card); padding: 16px 16px 16px 8px; position: relative; }
+.row-card.sel { background: var(--slate-50); }
+.chk { width: 16px; height: 16px; border: 1.5px solid var(--slate-400); border-radius: 4px; margin: 0 8px; flex: none; }
+.chk.on { background: var(--primary); border-color: var(--primary); }
+.qr { width: 90px; height: 90px; border-radius: var(--r-qr); background: #fff; padding: 8px; flex: none; display: flex; align-items: center; justify-content: center; }
+.qr svg { width: 100%; height: 100%; }
+.qr.ph { background: var(--slate-50); color: var(--slate-300); border: 1px dashed var(--slate-300); }
+.kind-ic { width: 28px; height: 34px; border: 2px solid currentColor; border-radius: 4px; position: relative; display: inline-block; }
+.kind-ic::after { content: ""; position: absolute; right: -2px; top: -2px; width: 9px; height: 9px; background: var(--card); border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; }
+.short { color: var(--secondary-blue); font-weight: 500; font-size: var(--text-s); }
+.icobtn { width: 28px; height: 28px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: var(--secondary); }
+.icobtn.blue { color: var(--secondary-blue); }
+.statbar { display: inline-flex; align-items: center; gap: 6px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 6px; padding: 4px 12px; font-size: var(--text-xs); color: var(--slate-600); height: 36px; }
+.statbar .eye { color: var(--secondary-blue); }
+.sqbtn { width: 36px; height: 36px; border: 1px solid var(--slate-200); border-radius: 6px; background: var(--card); display: inline-flex; align-items: center; justify-content: center; color: var(--slate-600); font-size: 13px; }
+.meta { display: flex; align-items: center; gap: 16px; font-size: var(--text-xs); color: var(--slate-600); flex-wrap: wrap; padding-top: 4px; }
+.meta .sp { flex: 1; }
+.meta .av { width: 16px; height: 16px; border-radius: 999px; background: var(--secondary-orange); display: inline-block; vertical-align: -3px; margin-right: 6px; }
+
+.tools { display: flex; align-items: center; gap: 8px; }
+.tools .search { width: 250px; }
+.tools .sq { width: 40px; height: 40px; border: 1px solid var(--slate-300); border-radius: 6px; background: var(--card); display: inline-flex; align-items: center; justify-content: center; color: var(--slate-600); font-size: 13px; }
+.thead { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-bottom: 2px solid var(--slate-50); font-size: var(--text-s); color: var(--slate-500); font-weight: 500; }
+.dark .thead { border-color: var(--slate-200); }
+.rows { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.pager { display: flex; justify-content: flex-end; gap: 6px; margin-top: 14px; font-size: var(--text-xs); color: var(--slate-500); align-items: center; }
+.pager b { display: inline-flex; width: 28px; height: 28px; align-items: center; justify-content: center; border: 1px solid var(--slate-200); border-radius: 6px; background: var(--card); color: var(--slate-700); font-weight: 500; }
+
+/* menu, dialog, overlay */
+.menu { position: absolute; right: 16px; top: 52px; width: 220px; background: var(--popover); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-xl); padding: 4px; z-index: 4; font-size: var(--text-s); }
+.menu .mi { padding: 6px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; color: var(--slate-700); }
+.menu .mi.hover { background: var(--slate-100); }
+.menu .mi.danger { color: var(--semantic-error); }
+.menu .mi .sub { display: block; font-size: var(--text-xs); color: var(--slate-500); padding-left: 0; }
+.menu .mi.locked { opacity: .55; flex-direction: column; align-items: flex-start; gap: 0; }
+.menu .sep { margin: 4px 0; }
+.overlay { position: absolute; inset: 0; background: rgb(0 0 0 / .45); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 5; border-radius: inherit; }
+.dialog { background: var(--card); border-radius: var(--r-panel); padding: 24px 20px; width: 480px; max-width: 100%; box-shadow: var(--shadow-xl); color: var(--foreground); }
+.dialog.sm { width: 640px; }
+.dialog h4 { margin: 0; font-size: var(--text-base); font-weight: 600; }
+.dialog .desc { color: var(--slate-500); font-size: var(--text-s); margin: 4px 0 0; }
+.dialog .x { float: right; width: 24px; height: 24px; border-radius: 999px; color: var(--slate-500); text-align: center; line-height: 24px; }
+.dialog .body { display: flex; flex-direction: column; gap: 20px; padding: 12px 0; }
+.dialog .foot { display: flex; justify-content: flex-end; gap: 8px; }
+.notice { display: flex; gap: 12px; border-radius: 8px; border: 1px solid; padding: 12px; font-size: var(--text-xs); color: var(--slate-600); }
+.notice b { display: block; font-size: var(--text-s); color: var(--slate-700); margin-bottom: 4px; font-weight: 500; }
+.notice .ni { width: 16px; height: 16px; border: 1.6px solid currentColor; border-radius: 999px; flex: none; margin-top: 2px; }
+.notice.success { border-color: color-mix(in oklab, var(--semantic-success) 25%, transparent); background: color-mix(in oklab, var(--semantic-success) 5%, var(--card)); }
+.notice.success .ni { color: var(--semantic-success); }
+.notice.warning { border-color: color-mix(in oklab, var(--semantic-warning) 40%, transparent); background: color-mix(in oklab, var(--semantic-warning) 10%, var(--card)); }
+.notice.warning .ni { color: var(--semantic-warning); }
+.notice.neutral { border-color: var(--slate-200); background: var(--slate-50); }
+.notice.neutral .ni { color: var(--slate-400); }
+.notice.info { border: 0; background: color-mix(in oklab, var(--secondary-blue) 10%, var(--card)); border-radius: 12px; }
+.notice.info .ni { color: var(--secondary-blue); }
+.diff { border: 1px solid var(--slate-200); border-radius: 8px; }
+.diff .r { display: grid; grid-template-columns: 96px 1fr auto auto; gap: 12px; align-items: center; padding: 8px 12px; font-size: var(--text-s); color: var(--slate-700); }
+.diff .r + .r { border-top: 1px solid var(--slate-100); }
+.diff .r .l { font-size: var(--text-xs); color: var(--slate-500); }
+.bar { height: 6px; border-radius: 999px; background: var(--slate-100); position: relative; overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; background: var(--primary); border-radius: 999px; }
+.bar i.add { background: color-mix(in oklab, var(--primary) 40%, transparent); }
+.radio-card { display: flex; gap: 12px; border: 1px solid var(--slate-200); border-radius: 12px; padding: 12px; align-items: flex-start; }
+.radio-card.on { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 5%, var(--card)); }
+.radio-card .rd { width: 16px; height: 16px; border-radius: 999px; border: 1.5px solid var(--slate-400); margin-top: 2px; flex: none; }
+.radio-card.on .rd { border: 5px solid var(--primary); }
+.radio-card .t { font-size: var(--text-s); font-weight: 500; color: var(--foreground); }
+.radio-card .d { font-size: var(--text-xs); color: var(--slate-500); }
+
+/* form layout 2–3 cột */
+.formgrid { display: flex; gap: 20px; max-width: var(--w-content); margin: 0 auto; }
+.formside { width: var(--w-formside); flex: none; }
+.formside .box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 8px; }
+.formside .ti { display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 8px; font-size: var(--text-s); color: var(--slate-600); }
+.formside .ti::before { content: ""; width: 18px; height: 18px; border: 1.6px solid var(--slate-400); border-radius: 4px; flex: none; }
+.formside .ti.on { color: var(--primary); background: color-mix(in oklab, var(--primary) 5%, transparent); font-weight: 500; }
+.formside .ti.on::before { border-color: var(--primary); }
+.merged { flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; }
+.center { flex: 1; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.rpanel { width: var(--w-formside); flex: none; border-left: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.qrcard { display: flex; flex-direction: column; gap: 8px; }
+.qrcard .hd { display: flex; align-items: center; justify-content: space-between; }
+.qrcard .hd .acts { display: flex; gap: 4px; }
+.qrcard .hd .acts span { width: 28px; height: 28px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; color: var(--slate-700); font-size: 12px; }
+.qrcard .hd .acts span.off { opacity: .4; }
+.qrcard .box { border: 1px solid var(--border); border-radius: 8px; position: relative; padding: 16px; display: flex; justify-content: center; background-image: linear-gradient(var(--slate-100) 1px, transparent 1px), linear-gradient(90deg, var(--slate-100) 1px, transparent 1px); background-size: 28px 28px; }
+.qrcard .box .pen { position: absolute; top: 4px; right: 4px; width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+.qrcard .box .qr { box-shadow: var(--shadow-sm); border: 1px solid var(--border); border-radius: 12px; }
+.dropzone { border: 1px dashed var(--slate-300); border-radius: 16px; background: var(--card); padding: 40px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.dropzone .cloud { width: 28px; height: 20px; border: 2px solid var(--slate-400); border-radius: 12px 12px 10px 10px; }
+.dropzone .t { font-size: var(--text-s); font-weight: 500; color: var(--foreground); }
+.metarow { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--slate-100); font-size: var(--text-s); color: var(--slate-700); }
+.metarow:last-child { border: 0; }
+.metarow span:first-child { font-size: var(--text-xs); color: var(--slate-500); }
+.preview { border: 1px solid var(--slate-300); border-radius: 16px; height: 300px; background: #fff; display: flex; align-items: center; justify-content: center; color: var(--slate-400); font-size: var(--text-s); overflow: hidden; }
+.dark .preview { background: oklch(0.96 0 0); color: var(--slate-500); }
+.preview .fake { width: 70%; }
+.preview .fake i { display: block; height: 10px; border-radius: 4px; background: #e2e8f0; margin: 10px 0; }
+.preview .fake i:first-child { height: 18px; width: 60%; background: #cbd5e1; }
+
+/* trạng thái rỗng */
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 0 56px; }
+.empty .illu { width: 420px; max-width: 100%; border: 1px solid var(--slate-200); background: var(--card); border-radius: 16px; box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 32px; }
+.empty .illu .bar { height: 36px; border-radius: 0; border-bottom: 1px solid var(--slate-100); background: var(--slate-50); display: flex; align-items: center; gap: 6px; padding: 0 16px; }
+.empty .illu .bar i { position: static; width: 10px; height: 10px; border-radius: 999px; background: var(--slate-200); }
+.empty .illu .mk { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid var(--slate-100); border-radius: 12px; margin: 10px 16px; }
+.empty .illu .mk .ic { width: 32px; height: 32px; border-radius: 8px; background: color-mix(in oklab, var(--primary) 8%, transparent); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+.empty .illu .mk .ln { flex: 1; }
+.empty .illu .mk .ln i { display: block; height: 8px; width: 96px; background: var(--slate-700); opacity: .7; border-radius: 4px; margin-bottom: 6px; }
+.empty .illu .mk .ln i + i { height: 6px; width: 128px; background: var(--slate-300); margin: 0; }
+.empty h2 { margin: 0 0 8px; font-size: var(--text-xl); }
+.empty p { margin: 0 0 24px; color: var(--slate-500); font-size: var(--text-s); max-width: 380px; }
+
+/* ============ Trang công khai /a/<token> ============ */
+.phone { width: 390px; max-width: 100%; border: 1px solid var(--slate-300); border-radius: 28px; padding: 14px; background: var(--slate-100); }
+.phone .scr { background: #fff; color: #111; border-radius: 18px; min-height: 560px; padding: 16px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; display: flex; flex-direction: column; }
+.phone.darkshell .scr { background: #111; color: #eee; }
+.gone-brand { display: flex; align-items: center; gap: 6px; color: #2563eb; font-weight: 600; margin-bottom: 20px; font-size: 15px; }
+.gone-brand i { width: 18px; height: 18px; border: 2.2px solid currentColor; border-radius: 6px; display: inline-block; }
+.gone-icon { color: #94a3b8; margin-bottom: 10px; width: 22px; height: 22px; border: 1.8px solid currentColor; border-radius: 5px; }
+.scr h1 { font-size: 1.125rem; font-weight: 600; margin: 0 0 12px; }
+.gate-lead { font-size: .9375rem; line-height: 1.5; margin: 0 0 16px; }
+.gate-label { display: block; font-size: .8125rem; font-weight: 600; margin: 0 0 6px; }
+.gate-input { height: 44px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #111; display: flex; align-items: center; padding: 0 12px; font-size: 16px; }
+.phone.darkshell .gate-input { background: #1e293b; border-color: #334155; color: #eee; }
+.gate-input.bad { border-color: #dc2626; }
+.gate-err { margin: 8px 0 0; font-size: .8125rem; color: #dc2626; }
+.gate-hint { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px; background: #f1f5f9; font-size: .8125rem; }
+.phone.darkshell .gate-hint { background: #1e293b; }
+.gate-btn { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 12px 16px; border-radius: 8px; background: #111; color: #fff; font-size: 16px; font-weight: 600; }
+.phone.darkshell .gate-btn { background: #eee; color: #111; }
+.gate-btn.li2 { background: oklch(0.165 0.059 257.19); }
+.gate-email { font-size: .8125rem; color: #94a3b8; margin: -6px 0 14px; }
+.gone-reassure { margin: 16px 0 0; padding: 12px 14px; border-radius: 8px; background: #f1f5f9; font-size: .9375rem; line-height: 1.5; }
+.phone.darkshell .gone-reassure { background: #1e293b; }
+.gone-foot { font-size: .8125rem; color: #94a3b8; margin: auto 0 0; padding-top: 28px; }
+.gone-foot a { color: inherit; }
+.viewer { width: 100%; aspect-ratio: 16/10; border-radius: 8px; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; }
+.download { display: inline-block; margin-top: 16px; padding: 10px 16px; border-radius: 8px; background: #111; color: #fff; font-weight: 600; font-size: 14px; }
+.phone.darkshell .download { background: #eee; color: #111; }
+.note { font-size: .8125rem; opacity: .7; margin: 12px 0 0; }
+.phones { display: flex; flex-wrap: wrap; gap: 20px; }
+.phones > div { display: flex; flex-direction: column; gap: 8px; }
+.phones .cap { font-size: var(--text-xs); color: var(--doc-muted); }
+.phones .cap b { color: var(--doc-ink); }
+.http { font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: var(--slate-100); color: var(--slate-700); border-radius: 4px; padding: 1px 6px; }
+
+/* flowchart */
+.flow { background: var(--card); border: 1px solid var(--doc-line); border-radius: var(--r-panel); padding: 12px; overflow-x: auto; }
+.flow svg { display: block; min-width: 1100px; width: 100%; font-family: inherit; }
+.flow .lane { fill: var(--slate-50); }
+.flow .lanet { fill: var(--slate-500); font-size: 11px; font-weight: 600; letter-spacing: .06em; }
+.flow .node rect { fill: var(--card); stroke: var(--slate-300); stroke-width: 1; rx: 8; }
+.flow .node.pri rect { fill: var(--primary); stroke: var(--primary); }
+.flow .node.pri text { fill: var(--primary-foreground); }
+.flow .node.dlg rect { stroke-dasharray: 4 3; }
+.flow .node.gate rect { fill: color-mix(in oklab, var(--secondary-blue) 10%, var(--card)); stroke: var(--secondary-blue); }
+.flow .node.err rect { fill: color-mix(in oklab, var(--semantic-error) 8%, var(--card)); stroke: var(--semantic-error); }
+.flow .node.ok rect { fill: color-mix(in oklab, var(--semantic-success) 8%, var(--card)); stroke: var(--semantic-success); }
+.flow .node.ext rect { fill: var(--slate-100); stroke: var(--slate-400); }
+.flow text { fill: var(--foreground); font-size: 12px; }
+.flow text.sub { fill: var(--slate-500); font-size: 10.5px; }
+.flow .edge { stroke: var(--slate-500); stroke-width: 1.3; fill: none; marker-end: url(#arr); }
+.flow .edge.alt { stroke-dasharray: 4 3; }
+.flow .el { fill: var(--slate-600); font-size: 10.5px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: var(--text-xs); color: var(--doc-muted); margin-top: 10px; }
+.legend i { display: inline-block; width: 14px; height: 10px; border-radius: 3px; border: 1px solid var(--slate-300); background: var(--card); vertical-align: -1px; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<header class="doc-head">
+  <div>
+    <h1>Artifact — flow đầy đủ theo theme Li2</h1>
+    <div class="meta">Bố cục đề xuất từ <code>01-phan-tich-shortlink-vs-artifact.md</code> · token đọc từ <code>src/app/globals.css</code> · 2026-10-06 · nhánh <code>feat/artifact</code></div>
+  </div>
+  <button class="toggle" id="themeToggle" type="button" aria-pressed="false">Chuyển dark mode</button>
+</header>
+
+<main class="wrap">
+
+<nav class="callout" aria-label="Mục lục">
+  <b>Mục lục</b>
+  <ol class="toc">
+    <li><span>0</span><a href="#token">Token và nguyên tắc theme</a></li>
+    <li><span>1</span><a href="#flow">Sơ đồ flow tổng (người tạo và người xem)</a></li>
+    <li><span>2.1</span><a href="#list">Danh sách artifact</a></li>
+    <li><span>2.2</span><a href="#empty">Trạng thái rỗng</a></li>
+    <li><span>2.3</span><a href="#create">Tạo artifact (tải file / dán HTML / MCP)</a></li>
+    <li><span>2.4</span><a href="#created">Hộp thoại Đã xuất bản</a></li>
+    <li><span>2.5</span><a href="#detail">Chi tiết: header, tab Nội dung</a></li>
+    <li><span>2.6</span><a href="#detail-access">Chi tiết: tab Quyền xem và tab Phân tích</a></li>
+    <li><span>2.7</span><a href="#replace">Hộp thoại Cập nhật nội dung (thay file giữ QR)</a></li>
+    <li><span>2.8</span><a href="#access">Hộp thoại Đổi quyền xem và Đổi mật khẩu</a></li>
+    <li><span>2.9</span><a href="#delete">Xoá: xác nhận và trạng thái removed</a></li>
+    <li><span>3.1</span><a href="#public">Trang công khai <code>/a/&lt;token&gt;</code></a></li>
+    <li><span>3.2</span><a href="#gates">Bốn cổng: mật khẩu, Google, riêng tư, 410</a></li>
+  </ol>
+</nav>
+
+<!-- ====================================================== 0. TOKEN -->
+<h2 id="token">0. Token và nguyên tắc theme</h2>
+<p class="lead">Mọi màu dưới đây là biến CSS, đổi theo class <code>.dark</code> trên <code>&lt;html&gt;</code>. Thang <code>slate-*</code> không có bản dark trong <code>globals.css</code> nên ở dark mode tài liệu này đảo thang để đọc được, đó là ngoại suy, không phải token của app.</p>
+<div class="tokens">
+  <div class="tok"><div class="sw" style="background:var(--background)"></div><div class="nm"><b>background</b>globals.css:49 / dark :191</div></div>
+  <div class="tok"><div class="sw" style="background:var(--card)"></div><div class="nm"><b>card</b>:52 / :194</div></div>
+  <div class="tok"><div class="sw" style="background:var(--primary)"></div><div class="nm"><b>primary</b>:56 / :200</div></div>
+  <div class="tok"><div class="sw" style="background:var(--secondary)"></div><div class="nm"><b>secondary</b>:59 / :204</div></div>
+  <div class="tok"><div class="sw" style="background:var(--secondary-blue)"></div><div class="nm"><b>secondary-blue</b>:64 / :211 — short URL, nút mở</div></div>
+  <div class="tok"><div class="sw" style="background:var(--border)"></div><div class="nm"><b>border</b>:77 / :230</div></div>
+  <div class="tok"><div class="sw" style="background:var(--semantic-success)"></div><div class="nm"><b>semantic-success</b>:84 — badge Đang chạy</div></div>
+  <div class="tok"><div class="sw" style="background:var(--semantic-warning)"></div><div class="nm"><b>semantic-warning</b>:82 — ô vàng đổi loại</div></div>
+  <div class="tok"><div class="sw" style="background:var(--semantic-error)"></div><div class="nm"><b>semantic-error</b>:83 — Xoá vĩnh viễn</div></div>
+  <div class="tok"><div class="sw" style="background:var(--slate-300)"></div><div class="nm"><b>slate-300</b>:102 — viền thẻ, viền panel 16px</div></div>
+</div>
+<div class="callout">
+  <b>Nguyên tắc giữ xuyên suốt</b>
+  <ul>
+    <li>Thẻ hàng: <code>bg-card border-slate-300 rounded-[8px] p-3 md:pl-2 md:pr-4 md:py-4</code> (touchpoint-card.tsx:212). Panel lớn: <code>rounded-[16px] border-slate-300</code>. Dialog: <code>rounded-[16px]</code>, 480px (<code>xs</code>) hoặc 640px (<code>sm</code>).</li>
+    <li>Nút: <code>default</code> (navy đặc) cho việc chính, <code>secondary</code> (viền) cho việc phụ, <code>tertiary</code> (trong) cho Huỷ, ⋮ dùng <code>secondary size=icon</code> ở header chi tiết (short-link-detail-header.tsx:144).</li>
+    <li>Badge trạng thái mang màu ngữ nghĩa; badge kind và quyền xem màu xám (artifact-access-badge.tsx:10-13). Chữ phụ <code>text-xs text-slate-500</code>.</li>
+    <li>Nút khoá phải tự nói lý do ngay dưới nút, nối bằng <code>aria-describedby</code> (artifact-create/index.tsx:201-212). Nút đang chạy có con quay và không mờ (artifact-replace-dialog.tsx:396-401).</li>
+    <li>Trang <code>/a/&lt;token&gt;</code> không dùng token app: CSP <code>default-src 'none'</code> cấm font và stylesheet ngoài, nên font hệ thống và hex cứng là bắt buộc (artifact-landing-shell.ts:11-13).</li>
+  </ul>
+</div>
+
+<!-- ====================================================== 1. FLOW -->
+<h2 id="flow">1. Sơ đồ flow tổng</h2>
+<p class="lead">Hai làn: người tạo trong dashboard (trên) và người quét QR trên điện thoại (dưới). Mũi tên đứt là nhánh phụ hoặc lỗi.</p>
+<div class="flow">
+<svg viewBox="0 0 1240 640" role="img" aria-label="Sơ đồ flow artifact">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--slate-500)"/>
+    </marker>
+  </defs>
+
+  <!-- lanes -->
+  <rect class="lane" x="8" y="8" width="1224" height="330" rx="12"/>
+  <text class="lanet" x="24" y="30">NGƯỜI TẠO · DASHBOARD /org/[org]/artifacts</text>
+  <rect class="lane" x="8" y="352" width="1224" height="280" rx="12"/>
+  <text class="lanet" x="24" y="374">NGƯỜI XEM · ĐIỆN THOẠI · ngoài middleware</text>
+
+  <!-- row 1: create paths -->
+  <g class="node"><rect x="30" y="60" width="150" height="54"/><text x="105" y="83" text-anchor="middle">Danh sách</text><text class="sub" x="105" y="99" text-anchor="middle">tìm · lọc · chọn hàng loạt</text></g>
+
+  <g class="node"><rect x="230" y="48" width="160" height="40"/><text x="310" y="73" text-anchor="middle">Tải file lên</text></g>
+  <g class="node"><rect x="230" y="96" width="160" height="40"/><text x="310" y="121" text-anchor="middle">Dán HTML</text></g>
+  <g class="node ext"><rect x="230" y="144" width="160" height="40"/><text x="310" y="162" text-anchor="middle">MCP publish_artifact</text><text class="sub" x="310" y="176" text-anchor="middle">Claude · scope write</text></g>
+
+  <g class="node pri"><rect x="440" y="78" width="150" height="54"/><text x="515" y="101" text-anchor="middle">Xuất bản</text><text class="sub" x="515" y="117" text-anchor="middle" style="fill:var(--primary-foreground);opacity:.75">chọn Ai xem được</text></g>
+
+  <g class="node dlg"><rect x="640" y="78" width="160" height="54"/><text x="720" y="101" text-anchor="middle">Đã xuất bản</text><text class="sub" x="720" y="117" text-anchor="middle">short link + QR (+ mật khẩu 1 lần)</text></g>
+
+  <g class="node"><rect x="850" y="60" width="170" height="90"/><text x="935" y="84" text-anchor="middle">Chi tiết</text><text class="sub" x="935" y="101" text-anchor="middle">header: link · lượt quét · ⋮</text><text class="sub" x="935" y="116" text-anchor="middle">tab Nội dung / Quyền xem /</text><text class="sub" x="935" y="131" text-anchor="middle">Phân tích</text></g>
+
+  <!-- row 2: actions from detail -->
+  <g class="node dlg"><rect x="640" y="200" width="160" height="54"/><text x="720" y="222" text-anchor="middle">Cập nhật nội dung</text><text class="sub" x="720" y="239" text-anchor="middle">thay file · QR &amp; link giữ nguyên</text></g>
+  <g class="node dlg"><rect x="850" y="200" width="170" height="54"/><text x="935" y="222" text-anchor="middle">Đổi quyền xem</text><text class="sub" x="935" y="239" text-anchor="middle">công khai · riêng tư · mật khẩu · Google</text></g>
+  <g class="node err"><rect x="1060" y="200" width="150" height="54"/><text x="1135" y="222" text-anchor="middle">Xoá vĩnh viễn</text><text class="sub" x="1135" y="239" text-anchor="middle">status = removed</text></g>
+  <g class="node ext"><rect x="440" y="200" width="150" height="54"/><text x="515" y="222" text-anchor="middle">MCP update_artifact</text><text class="sub" x="515" y="239" text-anchor="middle">cùng PATCH với UI</text></g>
+
+  <!-- edges lane 1 -->
+  <path class="edge" d="M180 87 L230 68"/>
+  <path class="edge" d="M180 87 L230 116"/>
+  <path class="edge alt" d="M180 87 L230 164"/>
+  <path class="edge" d="M390 68 L440 100"/>
+  <path class="edge" d="M390 116 L440 108"/>
+  <path class="edge alt" d="M390 164 L440 118"/>
+  <path class="edge" d="M590 105 L640 105"/>
+  <path class="edge" d="M800 105 L850 105"/>
+  <path class="edge alt" d="M390 164 C 560 164, 600 290, 720 260 L 720 254"/>
+  <text class="el" x="500" y="186">MCP bỏ qua hộp thoại, trả JSON cho agent</text>
+  <path class="edge" d="M900 150 L760 200"/>
+  <path class="edge" d="M935 150 L935 200"/>
+  <path class="edge alt" d="M980 150 L1110 200"/>
+  <path class="edge alt" d="M590 227 L640 227"/>
+  <path class="edge alt" d="M720 254 C 720 300, 500 300, 500 290 C 420 290, 160 280, 105 114"/>
+  <text class="el" x="300" y="296">xong → về danh sách / chi tiết, không link mới</text>
+  <path class="edge alt" d="M1135 254 L1135 300 L1020 300 L1020 406"/>
+  <text class="el" x="1030" y="292">QR vẫn trỏ về /a/&lt;token&gt;</text>
+
+  <!-- lane 2 -->
+  <g class="node"><rect x="30" y="420" width="130" height="48"/><text x="95" y="440" text-anchor="middle">Quét QR</text><text class="sub" x="95" y="456" text-anchor="middle">hoặc mở short link</text></g>
+  <g class="node ext"><rect x="200" y="420" width="130" height="48"/><text x="265" y="440" text-anchor="middle">li2-be</text><text class="sub" x="265" y="456" text-anchor="middle">302 · ghi visits</text></g>
+  <g class="node"><rect x="370" y="408" width="170" height="72"/><text x="455" y="432" text-anchor="middle">/a/&lt;token&gt;</text><text class="sub" x="455" y="448" text-anchor="middle">1 token hợp lệ? 2 có hàng?</text><text class="sub" x="455" y="462" text-anchor="middle">3 removed → 410  4 live?  5 cổng</text></g>
+
+  <g class="node gate"><rect x="600" y="392" width="150" height="40"/><text x="675" y="417" text-anchor="middle">Công khai</text></g>
+  <g class="node gate"><rect x="600" y="440" width="150" height="40"/><text x="675" y="458" text-anchor="middle">Mật khẩu</text><text class="sub" x="675" y="472" text-anchor="middle">401 form · sai 3 lần → 429</text></g>
+  <g class="node gate"><rect x="600" y="488" width="150" height="40"/><text x="675" y="506" text-anchor="middle">Riêng tư</text><text class="sub" x="675" y="520" text-anchor="middle">401 đăng nhập li2</text></g>
+  <g class="node gate"><rect x="600" y="536" width="150" height="40"/><text x="675" y="554" text-anchor="middle">Đăng nhập Google</text><text class="sub" x="675" y="568" text-anchor="middle">401 · OAuth riêng, ghi email</text></g>
+
+  <g class="node ok"><rect x="820" y="400" width="150" height="60"/><text x="895" y="424" text-anchor="middle">Nội dung</text><text class="sub" x="895" y="440" text-anchor="middle">HTML sandbox · PDF · slide</text><text class="sub" x="895" y="453" text-anchor="middle">Office viewer · video</text></g>
+  <g class="node err"><rect x="820" y="480" width="150" height="44"/><text x="895" y="499" text-anchor="middle">403 Tài khoản không</text><text class="sub" x="895" y="514" text-anchor="middle">mở được · đổi tài khoản</text></g>
+  <g class="node err"><rect x="820" y="540" width="150" height="44"/><text x="895" y="559" text-anchor="middle">429 Đã thử quá nhiều</text><text class="sub" x="895" y="574" text-anchor="middle">khoá m phút</text></g>
+  <g class="node"><rect x="1030" y="406" width="170" height="60"/><text x="1115" y="429" text-anchor="middle">410 Nội dung đã gỡ</text><text class="sub" x="1115" y="445" text-anchor="middle">"Mã QR của bạn không hỏng."</text><text class="sub" x="1115" y="459" text-anchor="middle">đứng TRƯỚC mọi cổng</text></g>
+
+  <path class="edge" d="M160 444 L200 444"/>
+  <path class="edge" d="M330 444 L370 444"/>
+  <path class="edge" d="M540 430 L600 412"/>
+  <path class="edge" d="M540 444 L600 460"/>
+  <path class="edge" d="M540 458 L600 508"/>
+  <path class="edge" d="M540 470 L600 556"/>
+  <path class="edge alt" d="M540 416 L1030 416"/>
+  <path class="edge" d="M750 412 L820 426"/>
+  <path class="edge" d="M750 460 L820 436"/>
+  <text class="el" x="755" y="452">đúng · cookie 1 tuần</text>
+  <path class="edge" d="M750 500 L820 446"/>
+  <text class="el" x="752" y="494">thành viên org</text>
+  <path class="edge alt" d="M750 508 L820 502"/>
+  <path class="edge" d="M750 556 L820 456"/>
+  <path class="edge alt" d="M750 468 L820 562"/>
+</svg>
+<div class="legend">
+  <span><i></i>màn hình</span>
+  <span><i style="border-style:dashed"></i>hộp thoại</span>
+  <span><i style="background:var(--primary)"></i>hành động chính</span>
+  <span><i style="background:color-mix(in oklab, var(--secondary-blue) 10%, var(--card));border-color:var(--secondary-blue)"></i>cổng theo chế độ</span>
+  <span><i style="background:color-mix(in oklab, var(--semantic-success) 8%, var(--card));border-color:var(--semantic-success)"></i>thành công</span>
+  <span><i style="background:color-mix(in oklab, var(--semantic-error) 8%, var(--card));border-color:var(--semantic-error)"></i>từ chối / xoá</span>
+  <span><i style="background:var(--slate-100)"></i>hệ thống ngoài UI</span>
+</div>
+</div>
+
+<!-- ====================================================== 2.1 LIST -->
+<h2 id="list">2.1 Danh sách artifact</h2>
+<p class="lead">Khung y hệt Short link: tiêu đề + CTA ở thanh page, hàng công cụ, header bảng chọn hàng loạt, thẻ hàng một cột.</p>
+<div class="screen">
+  <div class="app">
+    <aside class="app-side">
+      <div class="logo"><i></i>li2</div>
+      <div class="it">Tổng quan</div><div class="it">Short link</div><div class="it on">Artifact</div><div class="it">Phân tích</div><div class="it">Khách hàng</div>
+    </aside>
+    <div class="app-main">
+      <div class="app-nav">khanhqns-organization <span class="av"></span></div>
+      <div class="page">
+        <div class="pagenav">
+          <h3>Artifact</h3>
+          <div class="extra">
+            <span class="btn secondary icon" title="Xuất danh sách">⋮</span>
+            <span class="btn secondary"><span class="plus"></span>Tạo artifact</span>
+            <span class="pin" style="position:static">1</span>
+          </div>
+        </div>
+        <div class="pagebody">
+          <div class="tools" style="justify-content:space-between">
+            <div class="hint" style="max-width:420px">Hàng tạo nhanh để trống: artifact cần file, không tạo từ một ô dán. Nếu cần, đặt một dropzone nhỏ ở đây (tùy chọn).</div>
+            <div class="tools">
+              <div class="input search"><span class="ph">Tìm theo tên hoặc đường dẫn</span><span class="ad">⌕</span></div>
+              <span class="sq" title="Lọc theo ngày tạo">▦</span>
+              <span class="sq" title="Lọc trạng thái · loại · quyền xem">⚲</span>
+              <span class="pin" style="position:static">2</span>
+            </div>
+          </div>
+          <div class="thead" style="margin-top:16px">
+            <span class="chk on" style="background:var(--primary);border-color:var(--primary)"></span>
+            <span class="icobtn" title="Xoá đã chọn" style="color:var(--slate-600)">🗑</span>
+            <span>Đã chọn 1</span>
+            <span class="pin" style="position:static">3</span>
+          </div>
+          <div class="rows">
+            <div class="row-card sel">
+              <span class="chk on"></span>
+              <div class="qr"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1a1a2e"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM9 0h1v2H9zM11 1h2v1h-2zM9 3h3v1H9zM12 4h1v2h-1zM9 5h2v1H9zM0 9h2v1H0zM3 8h1v3H3zM5 9h3v1H5zM9 8h1v3H9zM11 9h2v1h-2zM14 8h2v1h-2zM17 9h1v2h-1zM19 8h2v1h-2zM1 11h3v1H1zM5 11h1v2H5zM7 12h2v1H7zM10 11h1v2h-1zM12 12h3v1h-3zM16 11h1v2h-1zM18 12h3v1h-3zM9 14h2v1H9zM12 14h1v2h-1zM14 15h3v1h-3zM18 14h1v2h-1zM20 15h1v2h-1zM9 16h1v3H9zM11 17h2v1h-2zM14 17h1v3h-1zM16 18h3v1h-3zM9 20h3v1H9zM13 19h1v2h-1zM15 20h2v1h-2zM19 20h2v1h-2z"/></svg></div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;padding:0 8px">
+                <div style="display:flex;gap:8px;align-items:flex-start">
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:var(--text-sm);font-weight:500">Bảng giá tháng 10</span><span class="badge success">Đang chạy</span></div>
+                    <div style="display:flex;align-items:center;gap:8px"><span class="short">lihi.vn/bang-gia-thang-10</span><span class="icobtn" title="Sao chép link">⧉</span><span class="icobtn blue" title="Mở link">↗</span><span class="hint">→ bang-gia-thang-10.pdf · 2,3 MB</span><span class="pin" style="position:static">4</span></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span class="statbar"><span class="eye">◉</span> 47</span>
+                    <span class="sqbtn" title="Phân tích">▤</span>
+                    <span class="sqbtn" title="Thêm hành động">⋯</span>
+                    <span class="pin" style="position:static">5</span>
+                  </div>
+                </div>
+                <div class="meta">
+                  <span><span class="kind-ic" style="width:12px;height:14px;border-width:1.4px;vertical-align:-3px;margin-right:6px"></span>PDF</span>
+                  <span class="badge gray"><span class="i"></span>Mật khẩu</span>
+                  <span>2,3 MB</span>
+                  <span class="sp"></span>
+                  <span><span class="av"></span>Cập nhật 2 giờ trước</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row-card">
+              <span class="chk"></span>
+              <div class="qr ph"><span class="kind-ic"></span></div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;padding:0 8px">
+                <div style="display:flex;gap:8px;align-items:flex-start">
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:var(--text-sm);font-weight:500">Catalogue mùa thu</span><span class="badge neutral">Chưa xuất bản</span></div>
+                    <div class="hint">Chưa có link công khai. Bấm Xuất bản để lấy link và mã QR.</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span class="sqbtn" title="Thêm hành động">⋯</span>
+                  </div>
+                </div>
+                <div class="meta">
+                  <span><span class="kind-ic" style="width:12px;height:14px;border-width:1.4px;vertical-align:-3px;margin-right:6px"></span>PowerPoint</span>
+                  <span>8,1 MB</span>
+                  <span class="sp"></span>
+                  <span><span class="av" style="background:var(--secondary-dark-cyan)"></span>Tạo 3 ngày trước</span>
+                </div>
+              </div>
+              <div class="menu" style="top:14px">
+                <div class="mi">Sửa <span>✎</span></div>
+                <div class="mi hover">Cập nhật nội dung <span>⟳</span></div>
+                <div class="mi locked"><span>Sao chép link</span><span class="sub">Chưa xuất bản nên chưa có link.</span></div>
+                <div class="mi">Tải mã QR <span>⤓</span></div>
+                <div class="sep"></div>
+                <div class="mi danger">Xoá <span>🗑</span></div>
+              </div>
+              <span class="pin" style="right:240px;top:14px">6</span>
+            </div>
+
+            <div class="row-card">
+              <span class="chk"></span>
+              <div class="qr"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1a1a2e"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM9 1h2v1H9zM12 0h1v3h-1zM9 3h1v2H9zM11 4h2v1h-2zM0 9h3v1H0zM4 8h1v2H4zM6 9h2v1H6zM9 8h2v1H9zM12 9h1v2h-1zM14 8h1v2h-1zM16 9h3v1h-3zM20 8h1v2h-1zM1 11h1v2H1zM3 12h3v1H3zM7 11h1v2H7zM9 12h2v1H9zM12 11h3v1h-3zM16 12h1v2h-1zM18 11h3v1h-3zM9 14h1v2H9zM11 15h3v1h-3zM15 14h2v1h-2zM18 15h1v2h-1zM20 14h1v2h-1zM10 17h2v1h-2zM13 16h1v3h-1zM15 17h2v1h-2zM18 18h3v1h-3zM9 19h1v2H9zM11 20h2v1h-2zM14 19h1v2h-1zM16 20h2v1h-2z"/></svg></div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;padding:0 8px">
+                <div style="display:flex;gap:8px;align-items:flex-start">
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:var(--text-sm);font-weight:500">Video hướng dẫn lắp ráp</span><span class="badge success">Đang chạy</span></div>
+                    <div style="display:flex;align-items:center;gap:8px"><span class="short">lihi.vn/huong-dan-lap</span><span class="icobtn">⧉</span><span class="icobtn blue">↗</span><span class="hint">→ huong-dan.mp4 · 9,6 MB</span></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span class="statbar"><span class="eye">◉</span> 1.204</span>
+                    <span class="sqbtn">▤</span>
+                    <span class="sqbtn">⋯</span>
+                  </div>
+                </div>
+                <div class="meta">
+                  <span><span class="kind-ic" style="width:12px;height:14px;border-width:1.4px;vertical-align:-3px;margin-right:6px"></span>Video</span>
+                  <span class="badge gray"><span class="i"></span>Đăng nhập Google</span>
+                  <span>9,6 MB</span>
+                  <span class="sp"></span>
+                  <span><span class="av"></span>Cập nhật 1 tuần trước</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pager">1–3 / 3 <b>‹</b><b>1</b><b>›</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi so với hiện trạng</h4>
+    <ul>
+      <li><span class="pin">1</span><span class="k keep">giữ</span>Nút <b>Tạo artifact</b> <code>secondary</code> + Plus đã khớp (artifact-header-actions.tsx:15-21). Thêm ⋮ xuất danh sách là tùy chọn, không bắt buộc.</li>
+      <li><span class="pin">2</span><span class="k new">mới</span>Hàng công cụ search · lọc ngày · lọc popover theo khuôn <code>short-link-list/index.tsx:263-301</code>. <b>Chỉ hiện khi API lọc xong</b> (hôm nay <code>listForOrg</code> chỉ nhận page/limit). Không hiện ô lọc chết.</li>
+      <li><span class="pin">3</span><span class="k new">mới</span>Header bảng với checkbox chọn tất cả + xoá hàng loạt, chép <code>index.tsx:303-357</code>. Lý do: lỗi <code>errors.quota_live</code> bảo "gỡ bớt một cái" mà không có đường gỡ nhanh.</li>
+      <li><span class="pin">4</span><span class="k chg">đổi</span>Dòng 2 có <b>nút copy</b> (tím) trước nút mở (xanh), và "→ tên file · dung lượng" ở vị trí "→ đích" của short link (touchpoint-card.tsx:258-285). Hiện tại copy chỉ nằm trong ⋮.</li>
+      <li><span class="pin">5</span><span class="k new">mới</span>Thanh lượt quét + nút Phân tích vuông (touchpoint-card.tsx:290-340). Số lượt chờ <code>visits</code> vào <code>ArtifactDTO</code>; nút Phân tích dẫn về analytics qua <code>touch_point_id</code> đã có.</li>
+      <li><span class="pin">6</span><span class="k chg">đổi</span>Menu ⋮ dùng <code>DataTableRowActions</code> + <code>TableActionProvider</code> thay cho <code>DropdownMenu</code> tự dựng. Nội dung giữ đúng spec M1.2: Cập nhật nội dung / Sao chép link (khoá kèm lý do) / Tải QR / Xoá tách dòng.</li>
+      <li><span class="k chg">đổi</span>Badge kind và quyền xem rời dòng tên, xuống hàng metadata cùng dung lượng, avatar và <code>RelativeTime</code>. Dòng tên chỉ còn badge trạng thái.</li>
+      <li><span class="k chg">đổi</span>Skeleton về <code>rounded-[8px] border-slate-300</code>, một hàng nội dung + một hàng metadata, khớp thẻ.</li>
+    </ul>
+    <h4>Tái dùng từ Short link / shared</h4>
+    <ul>
+      <li><code>TableV2WithRef</code>, <code>TableActionProvider</code>, <code>DataTableRowActions</code>, <code>DataFilterItem</code>, <code>Checkbox</code>, <code>LoadingButton</code>, <code>useConfirmDialog</code>, <code>QrRenderWithRef</code>, <code>RelativeTime</code>, <code>CustomAvatar</code>, <code>Badge</code>.</li>
+      <li>Khối tải QR trong ⋮ chép nguyên <code>short-link-list/index.tsx:162-200</code>.</li>
+    </ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.2 EMPTY -->
+<h2 id="empty">2.2 Trạng thái rỗng</h2>
+<div class="screen">
+  <div class="app" style="min-height:420px">
+    <aside class="app-side"><div class="logo"><i></i>li2</div><div class="it">Short link</div><div class="it on">Artifact</div></aside>
+    <div class="app-main"><div class="app-nav"><span class="av"></span></div>
+      <div class="page">
+        <div class="pagenav"><h3>Artifact</h3><div class="extra"><span class="btn secondary"><span class="plus"></span>Tạo artifact</span></div></div>
+        <div class="pagebody">
+          <div class="empty">
+            <div class="illu">
+              <div class="bar"><i></i><i></i><i></i></div>
+              <div class="mk"><span class="ic">PDF</span><span class="ln"><i></i><i></i></span><span class="hint">◉ 1.2k</span></div>
+              <div class="mk"><span class="ic">HTML</span><span class="ln"><i></i><i></i></span><span class="hint">◉ 843</span></div>
+              <div class="mk"><span class="ic">MP4</span><span class="ln"><i></i><i></i></span><span class="hint">◉ 327</span></div>
+            </div>
+            <h2>Chưa có artifact nào</h2>
+            <p>Tải lên trang HTML, PDF, bản trình chiếu hay video — lấy link và mã QR để dán lên bao bì, standee hay tờ rơi.</p>
+            <span class="btn primary"><span class="plus"></span>Tạo artifact đầu tiên</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi</h4>
+    <ul>
+      <li><span class="k chg">đổi</span>Dùng khuôn <code>ShortLinkEmptyState</code> (short-link-empty-state.tsx:30-88): minh hoạ 480px có ba thẻ giả, tiêu đề <code>text-xl font-semibold</code>, mô tả, CTA mặc định. Ba thẻ giả mang icon kind thay cho icon link.</li>
+      <li><span class="k keep">giữ</span>Copy <code>list.empty.*</code> nguyên văn. Không chép gradient tím của short link (wave2 §C.12), nền minh hoạ phẳng.</li>
+    </ul>
+    <h4>Tái dùng</h4>
+    <ul><li><code>Button</code>, <code>useOrganizationStoreProvider().orgRouterPush</code>.</li></ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.3 CREATE -->
+<h2 id="create">2.3 Tạo artifact</h2>
+<p class="lead">Khung hai cột lấy từ <code>short-link-form/index.tsx:237-278</code>: card gộp giữa + panel phải. Không có sidebar trái vì chỉ có một nhóm thiết lập.</p>
+<div class="screen">
+  <div class="app">
+    <aside class="app-side"><div class="logo"><i></i>li2</div><div class="it">Short link</div><div class="it on">Artifact</div></aside>
+    <div class="app-main"><div class="app-nav"><span class="av"></span></div>
+      <div class="page">
+        <div class="pagenav"><span class="back"></span><h3>Tạo artifact</h3></div>
+        <div class="pagebody">
+          <div class="formgrid">
+            <div class="merged">
+              <div class="center">
+                <div style="display:flex;gap:8px;align-items:center;margin-bottom:-4px">
+                  <span class="badge neutral" style="font-weight:600">Tải file lên</span>
+                  <span class="badge gray">Dán HTML</span>
+                  <span class="hint" style="margin-left:auto">Hoặc đăng từ Claude qua MCP <code>publish_artifact</code></span>
+                  <span class="pin" style="position:static">1</span>
+                </div>
+                <div class="dropzone">
+                  <span class="cloud"></span>
+                  <span class="t">bang-gia-thang-10.pdf · 2,3 MB</span>
+                  <span class="badge gray">PDF</span>
+                  <span class="hint" style="text-decoration:underline">Chọn file khác</span>
+                </div>
+                <div class="sep"></div>
+                <div class="field"><span class="label">Tên</span><div class="input muted">Bảng giá tháng 10</div><span class="hint">Chỉ bạn và đồng đội thấy tên này.</span></div>
+                <div class="field"><span class="label">Đường dẫn</span><div class="input muted" style="gap:0"><span class="hint" style="padding-right:6px">lihi.vn/</span>bang-gia-thang-10</div><span class="hint">Không sửa được sau khi xuất bản, vì mã QR đã in sẽ trỏ vào đây.</span><span class="pin" style="position:static">2</span></div>
+                <div class="sep"></div>
+                <div class="field">
+                  <span class="label">Ai xem được</span>
+                  <div class="radio-card on"><span class="rd"></span><div><div class="t">Công khai</div><div class="d">Bất kỳ ai có link đều xem được.</div></div></div>
+                  <div class="radio-card"><span class="rd"></span><div><div class="t">Riêng tư</div><div class="d">Chỉ thành viên tổ chức của bạn, sau khi đăng nhập li2.</div></div></div>
+                  <div class="radio-card"><span class="rd"></span><div><div class="t">Mật khẩu</div><div class="d">Ai biết mật khẩu đều xem được. Bạn tự gửi mật khẩu cho họ.</div></div></div>
+                  <div class="radio-card"><span class="rd"></span><div><div class="t">Đăng nhập Google</div><div class="d">Ai có tài khoản Google đều xem được. Email của họ được ghi lại.</div></div></div>
+                  <span class="pin" style="position:static">3</span>
+                </div>
+              </div>
+              <div class="rpanel">
+                <div class="qrcard">
+                  <div class="hd"><span class="label">Mã QR <span class="hint" style="color:var(--secondary-blue)">ⓘ</span></span><div class="acts"><span class="off">⤓</span><span class="off">⧉</span></div></div>
+                  <div class="box"><div class="qr" style="width:106px;height:106px;opacity:.35"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1a1a2e"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM9 0h1v2H9zM11 1h2v1h-2zM9 3h3v1H9zM12 4h1v2h-1zM0 9h2v1H0zM3 8h1v3H3zM5 9h3v1H5zM9 8h1v3H9zM11 9h2v1h-2zM14 8h2v1h-2zM17 9h1v2h-1zM19 8h2v1h-2zM9 14h2v1H9zM12 14h1v2h-1zM9 16h1v3H9zM11 17h2v1h-2zM14 17h1v3h-1zM9 20h3v1H9z"/></svg></div></div>
+                  <span class="hint">Xuất bản trước đã — mã QR sinh theo link rút gọn.</span>
+                  <span class="pin" style="position:static">4</span>
+                </div>
+                <div class="qrcard">
+                  <span class="label">File sẽ xuất bản</span>
+                  <div class="metarow"><span>Loại</span><span>PDF</span></div>
+                  <div class="metarow"><span>Dung lượng</span><span>2,3 MB / còn trống 21,4 MB</span></div>
+                  <div class="metarow"><span>Người xem thấy</span><span>trang xem PDF</span></div>
+                  <span class="pin" style="position:static">5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pagefoot">
+          <span class="btn tertiary">Huỷ</span>
+          <span class="btn primary">Xuất bản</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi so với hiện trạng</h4>
+    <ul>
+      <li><span class="pin">1</span><span class="k new">mới</span>Hai cách tạo trong một card: <b>Tải file lên</b> (mặc định) và <b>Dán HTML</b> (textarea thay dropzone, gửi cùng endpoint multipart dưới dạng file <code>.html</code>). MCP không có màn hình, chỉ nêu một dòng hướng dẫn. Nếu chưa muốn làm "Dán HTML", bỏ hàng tab, card vẫn đúng.</li>
+      <li><span class="pin">2</span><span class="k chg">đổi</span>Form chuyển sang <code>useForm + zodResolver</code> với <code>FormField/FormLabel/FormMessage</code>, cùng <code>Input className="bg-slate-100"</code> như basic-editing-tab.tsx:118-123. Có <code>FormWarningProvider</code> khi rời trang đang nhập. Tiền tố domain hiện trước slug để người dùng thấy link cuối cùng.</li>
+      <li><span class="pin">3</span><span class="k keep">giữ</span><code>ArtifactAccessFields</code> radio card nguyên bản (artifact-access-fields.tsx:54-148), mật khẩu tạo bằng <code>crypto</code>. Không kéo về theo password-section.tsx của short link.</li>
+      <li><span class="pin">4</span><span class="k new">mới</span>Panel phải dùng thẳng <code>QrPreviewCard isEditMode={false}</code> (qr-preview-card.tsx:34-131): nút tải/copy mờ với tooltip đổi copy "Xuất bản trước đã"; QR mờ vì chưa có link.</li>
+      <li><span class="pin">5</span><span class="k new">mới</span>Khối tóm tắt file + dung lượng còn trống từ <code>useArtifactQuota</code>, hiện trước khi quota chặn (wave2 §C.3). Câu Office <code>create.office_notice</code> xuất hiện ở đây khi là PowerPoint.</li>
+      <li><span class="k new">mới</span><code>create/page.tsx</code> kiểm quota server-side và truyền <code>blocked</code> vào <code>ContentBlock</code> như short-links/create/page.tsx:15-25.</li>
+      <li><span class="k keep">giữ</span>Footer dính Huỷ / <b>Xuất bản</b>, dòng lý do khi nút khoá ("Chọn một file trước đã", "Đặt mật khẩu trước đã").</li>
+    </ul>
+    <h4>Tái dùng</h4>
+    <ul><li><code>ContentLayout</code>, <code>ContentBlock</code>, <code>Form*</code>, <code>Separator</code>, <code>QrPreviewCard</code>, <code>LoadingButton</code>, <code>ArtifactDropzone</code>, <code>ArtifactAccessFields</code>.</li></ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.4 CREATED -->
+<h2 id="created">2.4 Hộp thoại Đã xuất bản</h2>
+<div class="screen">
+  <div class="app" style="min-height:560px">
+    <aside class="app-side"><div class="logo"><i></i>li2</div><div class="it">Short link</div><div class="it on">Artifact</div></aside>
+    <div class="app-main"><div class="app-nav"><span class="av"></span></div>
+      <div class="page"><div class="pagenav"><span class="back"></span><h3>Tạo artifact</h3></div><div class="pagebody"></div></div>
+    </div>
+    <div class="overlay">
+      <div class="dialog">
+        <span class="x">×</span>
+        <h4>Đã xuất bản</h4>
+        <p class="desc">Link và mã QR đã sẵn sàng để in hoặc chia sẻ.</p>
+        <div class="body">
+          <div class="field"><span class="label" style="color:var(--slate-600)">Link rút gọn</span><div class="input mono">https://lihi.vn/bang-gia-thang-10<span class="ad">⧉</span></div></div>
+          <div class="hint">Quyền xem: Mật khẩu</div>
+          <div class="field"><span class="label" style="color:var(--slate-600)">Mật khẩu</span><div class="input mono">k7p2m9qx4z1wnb3c<span class="ad">⧉</span></div><span class="hint">Đây là lần duy nhất mật khẩu hiện ra. Sao chép và gửi cho người cần xem.</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div class="qr" style="width:160px;height:160px;border:1px solid var(--border);border-radius:12px"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1a1a2e"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM9 0h1v2H9zM11 1h2v1h-2zM9 3h3v1H9zM12 4h1v2h-1zM9 5h2v1H9zM0 9h2v1H0zM3 8h1v3H3zM5 9h3v1H5zM9 8h1v3H9zM11 9h2v1h-2zM14 8h2v1h-2zM17 9h1v2h-1zM19 8h2v1h-2zM1 11h3v1H1zM5 11h1v2H5zM7 12h2v1H7zM10 11h1v2h-1zM12 12h3v1h-3zM16 11h1v2h-1zM18 12h3v1h-3zM9 14h2v1H9zM12 14h1v2h-1zM14 15h3v1h-3zM18 14h1v2h-1zM20 15h1v2h-1zM9 16h1v3H9zM11 17h2v1h-2zM14 17h1v3h-1zM16 18h3v1h-3zM9 20h3v1H9zM13 19h1v2h-1zM15 20h2v1h-2zM19 20h2v1h-2z"/></svg></div>
+            <div style="display:flex;gap:8px;width:100%"><span class="btn secondary sm" style="flex:1">⧉ Sao chép QR</span><span class="btn secondary sm" style="flex:1">⤓ Tải QR</span></div>
+          </div>
+          <span class="btn primary sm" style="width:100%">Xem artifact</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi</h4>
+    <ul>
+      <li><span class="k keep">giữ</span>Đã khớp <code>ShortLinkCreatedDialog</code> từng khối: <code>size="xs"</code>, Input readOnly + copy, QR 160, hai nút QR, nút chính full. Khác duy nhất là dòng "Quyền xem" và <code>ArtifactPasswordReveal</code>, đó là bản chất.</li>
+      <li><span class="k chg">đổi</span>Tuỳ chọn: gộp hai file thành <code>shared/components/customize/link-created-dialog.tsx</code> với slot <code>children</code>; hai dialog hiện tại thành wrapper mỏng. Không bắt buộc.</li>
+      <li><span class="k keep">giữ</span>Đóng dialog bằng bất kỳ cách nào đều đi tới trang chi tiết (artifact-created-dialog.tsx:62-64).</li>
+    </ul>
+    <h4>Tái dùng</h4>
+    <ul><li><code>CustomDialogV2</code>, <code>Input endAdornment</code>, <code>QrRenderWithRef</code>, <code>DownloadQrPopover</code>.</li></ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.5 DETAIL -->
+<h2 id="detail">2.5 Chi tiết: header và tab Nội dung</h2>
+<p class="lead">Header lấy đúng hình <code>ShortLinkDetailHeader</code>: back · link + copy · lượt quét · nút chính · ⋮. Thân là khung sidebar ngắn + card gộp + panel phải.</p>
+<div class="screen">
+  <div class="app" style="min-height:620px">
+    <aside class="app-side"><div class="logo"><i></i>li2</div><div class="it">Short link</div><div class="it on">Artifact</div></aside>
+    <div class="app-main"><div class="app-nav"><span class="av"></span></div>
+      <div class="page">
+        <div class="pagenav" style="gap:12px">
+          <span class="back"></span>
+          <span style="font-size:var(--text-s);font-weight:500">https://lihi.vn/bang-gia-thang-10</span>
+          <span class="btn table" title="Sao chép">⧉</span>
+          <span class="pin" style="position:static">1</span>
+          <div class="extra">
+            <span class="statbar"><span class="eye">◉</span> 47</span>
+            <span class="pin" style="position:static">2</span>
+            <span class="btn primary sm">⟳ Cập nhật nội dung</span>
+            <span class="btn secondary icon">⋯</span>
+            <span class="pin" style="position:static">3</span>
+          </div>
+        </div>
+        <div class="pagebody">
+          <div class="formgrid">
+            <div class="formside">
+              <div class="box">
+                <div class="ti">Phân tích</div>
+                <div class="sep" style="margin:8px 16px"></div>
+                <div class="ti on">Nội dung</div>
+                <div class="ti">Quyền xem</div>
+              </div>
+              <span class="pin" style="position:static;margin-top:8px">4</span>
+            </div>
+            <div class="merged">
+              <div class="center">
+                <div style="display:flex;align-items:center;gap:8px"><span class="badge success">Đang chạy</span><span class="badge gray">PDF</span><span class="hint">Xuất bản 3 ngày trước · cập nhật 2 giờ trước</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span class="label" style="color:var(--slate-600)">Xem trước nội dung</span><div style="display:flex;gap:8px"><span class="btn secondary sm">↗ Mở trong tab mới</span><span class="btn secondary sm">⤓ Tải về</span></div></div>
+                <div class="preview"><div class="fake"><i></i><i></i><i></i><i style="width:80%"></i><i></i></div></div>
+                <span class="hint">Không hiện ở đây? Mở trong tab mới.</span>
+                <span class="hint">Nội dung do người dùng đăng. Li2 không kiểm duyệt trước và không chịu trách nhiệm về nội dung này.</span>
+                <span class="pin" style="position:static">5</span>
+              </div>
+              <div class="rpanel">
+                <div class="qrcard">
+                  <div class="hd"><span class="label">Mã QR <span class="hint" style="color:var(--secondary-blue)">ⓘ</span></span><div class="acts"><span>⤓</span><span>⧉</span></div></div>
+                  <div class="box"><div class="qr" style="width:106px;height:106px"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1a1a2e"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM9 0h1v2H9zM11 1h2v1h-2zM9 3h3v1H9zM12 4h1v2h-1zM9 5h2v1H9zM0 9h2v1H0zM3 8h1v3H3zM5 9h3v1H5zM9 8h1v3H9zM11 9h2v1h-2zM14 8h2v1h-2zM17 9h1v2h-1zM19 8h2v1h-2zM1 11h3v1H1zM5 11h1v2H5zM7 12h2v1H7zM10 11h1v2h-1zM12 12h3v1h-3zM16 11h1v2h-1zM18 12h3v1h-3zM9 14h2v1H9zM12 14h1v2h-1zM14 15h3v1h-3zM18 14h1v2h-1zM20 15h1v2h-1zM9 16h1v3H9zM11 17h2v1h-2zM14 17h1v3h-1zM16 18h3v1h-3zM9 20h3v1H9zM13 19h1v2h-1zM15 20h2v1h-2zM19 20h2v1h-2z"/></svg></div></div>
+                  <span class="pin" style="position:static">6</span>
+                </div>
+                <div class="qrcard">
+                  <span class="label">Thông tin file</span>
+                  <div class="metarow"><span>Tên</span><span>Bảng giá tháng 10</span></div>
+                  <div class="metarow"><span>Loại</span><span>PDF</span></div>
+                  <div class="metarow"><span>Dung lượng</span><span>2,3 MB</span></div>
+                  <div class="metarow"><span>Tạo lúc</span><span>3 ngày trước</span></div>
+                  <div class="metarow"><span>Cập nhật lúc</span><span>2 giờ trước</span></div>
+                  <span class="pin" style="position:static">7</span>
+                </div>
+                <div class="qrcard">
+                  <span class="label">Quyền xem</span>
+                  <span class="badge gray" style="align-self:flex-start"><span class="i"></span>Mật khẩu · đặt 3 ngày trước</span>
+                  <span class="hint" style="color:var(--secondary-blue)">Đổi ở tab Quyền xem →</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu" style="right:24px;top:98px">
+      <div class="mi">Chia sẻ <span>⇪</span></div>
+      <div class="mi">Mở trong tab mới <span>↗</span></div>
+      <div class="mi">Tải về <span>⤓</span></div>
+      <div class="sep"></div>
+      <div class="mi danger">Xoá <span>🗑</span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi so với hiện trạng</h4>
+    <ul>
+      <li><span class="pin">1</span><span class="k chg">đổi</span>Short URL + nút copy <code>variant=table size-7</code> lên header như short-link-detail-header.tsx:91-104. Hiện tại title là tên artifact và link nằm dưới thân (artifact-detail/index.tsx:115, 189-211). Khi <code>draft</code>: header hiện tên + badge "Chưa xuất bản".</li>
+      <li><span class="pin">2</span><span class="k new">mới</span>Thanh lượt quét <code>bg-slate-50 border rounded-[6px] h-9</code> (:109-114). Chỉ render khi DTO có <code>visits</code>.</li>
+      <li><span class="pin">3</span><span class="k chg">đổi</span>Nút chính <code>ArtifactPrimaryAction size=sm</code> giữ nguyên logic theo trạng thái; ⋮ chuyển sang <code>secondary size=icon</code> (:144) và chứa Chia sẻ (<code>SharingModal url</code>), Mở tab mới, Tải về, Xoá. Hiện ⋮ chỉ có Xoá và là <code>tertiary</code>.</li>
+      <li><span class="pin">4</span><span class="k new">mới</span>Sidebar ba mục theo lớp CSS short-link-sidebar.tsx:66-106, nhóm Phân tích đứng đầu rồi đường kẻ, như <code>ANALYTICS_SIDEBAR_GROUP</code>. Hỗ trợ <code>?tab=</code>. Mobile thành ô 72px.</li>
+      <li><span class="pin">5</span><span class="k keep">giữ</span><code>ArtifactPreview</code> nguyên bản (iframe sandbox cho html, Office viewer cho slides), chỉ đổi viền về <code>border-slate-300</code>. Dòng trách nhiệm giữ.</li>
+      <li><span class="pin">6</span><span class="k chg">đổi</span>Khối QR ngang thành <code>QrPreviewCard isEditMode</code> trong panel phải: nút tải/copy bật, nút bút sửa ẩn vì artifact chưa lưu <code>qr_customize_options</code>.</li>
+      <li><span class="pin">7</span><span class="k chg">đổi</span>Bảng <code>MetaRow</code> chuyển vào panel phải, bỏ dòng "Kiểu nội dung" (wave2 §C.9), thêm dòng Tên vì tên không còn ở title.</li>
+    </ul>
+    <h4>Tái dùng</h4>
+    <ul><li><code>ContentLayout</code> với <code>title=&lt;Header/&gt; isBackable={false} navBarClassName</code> (short-link-edit.tsx:122-135), <code>ShortLinkSidebar</code> (cần nới kiểu <code>SidebarItemKey</code>) hoặc bản sao 40 dòng, <code>QrPreviewCard</code>, <code>SharingModal</code>, <code>useConfirmDialog</code>.</li></ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.6 DETAIL ACCESS + ANALYTICS -->
+<h2 id="detail-access">2.6 Chi tiết: tab Quyền xem và tab Phân tích</h2>
+<div class="screen">
+  <div>
+    <div class="app" style="min-height:360px;margin-bottom:20px">
+      <aside class="app-side"><div class="logo"><i></i>li2</div><div class="it">Short link</div><div class="it on">Artifact</div></aside>
+      <div class="app-main"><div class="app-nav"><span class="av"></span></div>
+        <div class="page">
+          <div class="pagenav"><span class="back"></span><span style="font-size:var(--text-s);font-weight:500">https://lihi.vn/bang-gia-thang-10</span><span class="btn table">⧉</span><div class="extra"><span class="statbar"><span class="eye">◉</span> 47</span><span class="btn primary sm">⟳ Cập nhật nội dung</span><span class="btn secondary icon">⋯</span></div></div>
+          <div class="pagebody">
+            <div class="formgrid">
+              <div class="formside"><div class="box"><div class="ti">Phân tích</div><div class="sep" style="margin:8px 16px"></div><div class="ti">Nội dung</div><div class="ti on">Quyền xem</div></div></div>
+              <div class="merged"><div class="center">
+                <div><div style="font-size:var(--text-l);font-weight:600;color:var(--slate-700)">Quyền xem</div><div class="hint" style="font-size:var(--text-s)">Đổi chế độ xem có hiệu lực ngay, không sinh link mới.</div></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+                  <div style="display:flex;align-items:center;gap:8px"><span class="badge gray"><span class="i"></span>Mật khẩu</span><span class="hint">Đặt lúc 3 ngày trước</span></div>
+                  <div style="display:flex;gap:8px"><span class="btn secondary sm">Đổi mật khẩu</span><span class="btn secondary sm">Đổi</span><span class="pin" style="position:static">1</span></div>
+                </div>
+                <div class="notice info"><span class="ni"></span><div><b>Mã QR và link ngắn không đổi</b>Đổi chế độ xem có hiệu lực ngay, không sinh link mới.</div></div>
+                <div class="hint">Chế độ Đăng nhập Google: dòng "<span style="color:var(--secondary-blue);font-weight:500">12 người đã mở</span>" dẫn tới Khách hàng. Chế độ Riêng tư: "Chỉ thành viên khanhqns-organization."</div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="app" style="min-height:300px">
+      <aside class="app-side"><div class="logo"><i></i>li2</div><div class="it">Short link</div><div class="it on">Artifact</div></aside>
+      <div class="app-main"><div class="app-nav"><span class="av"></span></div>
+        <div class="page">
+          <div class="pagenav"><span class="back"></span><span style="font-size:var(--text-s);font-weight:500">https://lihi.vn/bang-gia-thang-10</span><span class="btn table">⧉</span><div class="extra"><span class="statbar"><span class="eye">◉</span> 47</span><span class="btn secondary icon">⋯</span></div></div>
+          <div class="pagebody">
+            <div class="formgrid" style="max-width:100%">
+              <div class="formside"><div class="box"><div class="ti on">Phân tích</div><div class="sep" style="margin:8px 16px"></div><div class="ti">Nội dung</div><div class="ti">Quyền xem</div></div></div>
+              <div class="merged"><div class="center">
+                <div style="display:flex;gap:12px"><div class="card" style="flex:1;padding:12px"><div class="hint">Lượt quét</div><div style="font-size:var(--text-xl);font-weight:600">47</div></div><div class="card" style="flex:1;padding:12px"><div class="hint">Người xem riêng</div><div style="font-size:var(--text-xl);font-weight:600">31</div></div><div class="card" style="flex:1;padding:12px"><div class="hint">Thiết bị</div><div style="font-size:var(--text-xl);font-weight:600">iOS 62%</div></div></div>
+                <div class="card" style="height:120px;display:flex;align-items:flex-end;gap:6px;padding:12px">
+                  <i style="flex:1;height:30%;background:color-mix(in oklab,var(--secondary) 30%,transparent);border-radius:3px"></i><i style="flex:1;height:55%;background:color-mix(in oklab,var(--secondary) 30%,transparent);border-radius:3px"></i><i style="flex:1;height:40%;background:color-mix(in oklab,var(--secondary) 30%,transparent);border-radius:3px"></i><i style="flex:1;height:85%;background:color-mix(in oklab,var(--secondary) 30%,transparent);border-radius:3px"></i><i style="flex:1;height:60%;background:color-mix(in oklab,var(--secondary) 30%,transparent);border-radius:3px"></i><i style="flex:1;height:70%;background:color-mix(in oklab,var(--secondary) 30%,transparent);border-radius:3px"></i>
+                </div>
+                <span class="pin" style="position:static">2</span>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Tab Quyền xem</h4>
+    <ul>
+      <li><span class="pin">1</span><span class="k chg">đổi</span>Khối hiện tại (artifact-detail/index.tsx:222-286) chuyển nguyên vào card giữa với <code>SectionHeader</code> (h2 <code>text-lg font-semibold</code> + mô tả) như short-link-form/index.tsx:103-121. Hai nút Đổi mật khẩu / Đổi và hai dialog giữ nguyên.</li>
+      <li><span class="k keep">giữ</span>Ghi chú theo chế độ: Riêng tư "Chỉ thành viên {org}.", Mật khẩu "Đặt lúc …", Google "{n} người đã mở" dẫn <code>/customers</code>. Draft thêm "Chế độ này áp dụng ngay khi bạn xuất bản."</li>
+    </ul>
+    <h4>Tab Phân tích</h4>
+    <ul>
+      <li><span class="pin">2</span><span class="k new">mới</span>Dùng <code>AnalyticByTouchPoint</code> với <code>touch_point_id</code> của artifact. Component hiện đọc id từ <code>useParams</code> (analytic-by-touch-point.tsx:30) nên cần thêm prop <code>tpId</code>. Khi ở tab này, nới <code>maxWidth</code> 96rem và thu sidebar app ở màn lg như short-link-edit.tsx:66-93.</li>
+      <li><span class="k keep">giữ</span>Khi <code>draft</code> không có <code>touch_point_id</code>: tab Phân tích ẩn, như short link chỉ thêm nhóm này ở trang sửa.</li>
+    </ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.7 REPLACE -->
+<h2 id="replace">2.7 Hộp thoại Cập nhật nội dung</h2>
+<p class="lead">Giữ nguyên hộp thoại đã nghiệm thu (artifact-replace-dialog.tsx). Vẽ lại hai pha chính để thấy vị trí trong khung mới.</p>
+<div class="screen">
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div class="app" style="min-height:640px">
+      <aside class="app-side"><div class="logo"><i></i>li2</div><div class="it on">Artifact</div></aside>
+      <div class="app-main"><div class="app-nav"><span class="av"></span></div><div class="page"><div class="pagenav"><span class="back"></span><span style="font-size:var(--text-s);font-weight:500">https://lihi.vn/bang-gia-thang-10</span></div></div></div>
+      <div class="overlay" style="align-items:flex-start;padding-top:24px">
+        <div class="dialog sm">
+          <span class="x">×</span>
+          <h4>Cập nhật nội dung</h4>
+          <p class="desc">Thay file của “Bảng giá tháng 10”.</p>
+          <div class="body">
+            <div class="dropzone" style="padding:20px"><span class="t">bang-gia-thang-11.pptx · 6,8 MB</span><span class="badge gray">PowerPoint</span><span class="hint" style="text-decoration:underline">Chọn file khác</span></div>
+            <span class="hint">File PowerPoint được Microsoft tải về để hiển thị bản xem trước.</span>
+            <div class="diff">
+              <div class="r"><span class="l">Đang phục vụ</span><span>Bảng giá tháng 10</span><span class="badge gray">PDF</span><span class="hint">2,3 MB</span></div>
+              <div class="r"><span class="l">Sẽ thay bằng</span><span>bang-gia-thang-11.pptx</span><span class="badge gray">PowerPoint</span><span class="hint">6,8 MB</span></div>
+            </div>
+            <div class="notice warning"><span class="ni"></span><div><b>Loại nội dung đổi từ PDF sang PowerPoint</b>Người quét sẽ thấy bản xem trước slide thay vì trang xem PDF như trước. Mã QR và link ngắn vẫn giữ nguyên.</div></div>
+            <div>
+              <div style="display:flex;justify-content:space-between" class="hint"><b style="color:var(--slate-600)">Dung lượng sau khi đổi</b><span>8,6 MB → 13,1 MB / 30 MB</span></div>
+              <div class="bar" style="margin:6px 0"><i style="width:29%"></i><i class="add" style="left:29%;width:15%"></i></div>
+              <span class="hint">File mới nặng hơn file cũ 4,5 MB — chỉ phần chênh đó tính thêm. Số nội dung đã xuất bản không đổi: vẫn 2 / 3. Còn trống 16,9 MB.</span>
+            </div>
+            <div class="notice success"><span class="ni"></span><div><b>Mã QR và link ngắn giữ nguyên</b>Standee, tờ rơi và bao bì đã in vẫn mở ra nội dung mới. Lượt quét đã ghi vẫn còn.</div></div>
+            <div class="notice neutral"><span class="ni"></span><div><b>File cũ bị thay hẳn</b>Sau khi bấm Cập nhật, Bảng giá tháng 10 không lấy lại được. Nếu còn cần, tải nó về trước.<div style="margin-top:4px;color:var(--secondary-blue);text-decoration:underline;font-weight:500">⤓ Tải bản đang chạy về</div></div></div>
+            <div class="foot"><span class="btn tertiary sm">Huỷ</span><span class="btn primary sm">Cập nhật</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <div class="dialog sm" style="width:460px;border:1px solid var(--doc-line)">
+        <h4>Cập nhật nội dung</h4><p class="desc">Thay file của “Bảng giá tháng 10”.</p>
+        <div class="body">
+          <div><div style="display:flex;justify-content:space-between" class="hint"><b style="color:var(--slate-600)">Đang tải lên</b><span>64%</span></div><div class="bar" style="margin:6px 0"><i style="width:64%"></i></div><span class="hint">Đã gửi 4,4 MB / 6,8 MB. Đóng tab lúc này thì lihi.vn/bang-gia-thang-10 vẫn mở ra bản cũ — không hỏng gì, chỉ là chưa đổi.</span></div>
+          <div class="foot"><span class="btn tertiary sm">Huỷ</span><span class="btn primary sm"><span class="spin"></span>Đang cập nhật…</span></div>
+        </div>
+      </div>
+      <div class="dialog sm" style="width:460px;border:1px solid var(--doc-line)">
+        <h4>Cập nhật nội dung</h4>
+        <div class="body">
+          <div style="display:flex;align-items:center;gap:8px;font-weight:600;color:var(--semantic-success)">✓ <span style="color:var(--slate-800)">Đã thay nội dung</span></div>
+          <div class="notice neutral"><span class="ni"></span><div><b>Đã đổi</b>lihi.vn/bang-gia-thang-10 giờ mở ra bang-gia-thang-11.pptx (6,8 MB). Dung lượng còn dùng: 13,1 MB / 30 MB.</div></div>
+          <div class="notice success"><span class="ni"></span><div><b>Không đổi</b>Mã QR, link ngắn và lượt quét đã ghi. Standee và tờ rơi đã in vẫn mở ra bản mới.</div></div>
+          <div class="foot"><span class="btn secondary sm">Mở link kiểm tra</span><span class="btn primary sm">Xong</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi</h4>
+    <ul>
+      <li><span class="k keep">giữ</span>Toàn bộ 5 pha và 10 trạng thái (S1–S10) của artifact-replace-dialog.tsx:177-421 giữ nguyên. Copy từ <code>update.*</code> trong artifact.json.</li>
+      <li><span class="k keep">giữ</span>Bảng diff, thanh dung lượng hai lớp, ô vàng đổi loại, khối xanh/xám là một họ <code>NoticeBlock</code> cùng 8px.</li>
+      <li><span class="k chg">đổi</span>Điểm gọi: nút chính ở header mới và mục ⋮ trong <code>TableActionProvider</code> của danh sách. Không còn dialog gắn bên trong từng card.</li>
+      <li><span class="k keep">giữ</span>Nút đang chạy có con quay, không mờ (spec 1.D ràng buộc 3). Draft dùng khối xám "Chưa xuất bản nên chưa có link hay mã QR".</li>
+    </ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.8 ACCESS DIALOGS -->
+<h2 id="access">2.8 Hộp thoại Đổi quyền xem và Đổi mật khẩu</h2>
+<div class="screen">
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div class="dialog sm" style="width:520px;border:1px solid var(--doc-line)">
+      <span class="x">×</span><h4>Đổi quyền xem</h4>
+      <div class="body">
+        <div class="radio-card"><span class="rd"></span><div><div class="t">Công khai</div><div class="d">Bất kỳ ai có link đều xem được.</div></div></div>
+        <div class="radio-card"><span class="rd"></span><div><div class="t">Riêng tư</div><div class="d">Chỉ thành viên tổ chức của bạn, sau khi đăng nhập li2.</div></div></div>
+        <div class="radio-card on"><span class="rd"></span><div><div class="t">Mật khẩu</div><div class="d">Ai biết mật khẩu đều xem được. Bạn tự gửi mật khẩu cho họ.</div></div></div>
+        <div class="field"><span class="label">Mật khẩu</span><div style="display:flex;gap:8px"><div class="input" style="flex:1"><span class="ph">Ít nhất 8 ký tự</span><span class="ad">◉</span></div><span class="btn secondary">⇄ Tạo ngẫu nhiên</span></div><span class="hint">Người xem nhập mật khẩu này một lần rồi xem được trong một tuần.</span></div>
+        <div class="radio-card"><span class="rd"></span><div><div class="t">Đăng nhập Google</div><div class="d">Ai có tài khoản Google đều xem được. Email của họ được ghi lại.</div></div></div>
+        <div class="notice info"><span class="ni"></span><div><b>Mã QR và link ngắn không đổi</b>Đổi chế độ xem có hiệu lực ngay, không sinh link mới.</div></div>
+        <div class="foot"><span class="btn tertiary sm">Huỷ</span><span class="btn primary sm disabled">Lưu</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="dialog" style="width:420px;border:1px solid var(--doc-line)">
+        <span class="x">×</span><h4>Đổi mật khẩu</h4>
+        <div class="body">
+          <div class="field"><span class="label">Mật khẩu mới</span><div style="display:flex;gap:8px"><div class="input mono" style="flex:1">r4t8wq2zx9mk1npb<span class="ad">◉</span></div><span class="btn secondary">⇄ Tạo ngẫu nhiên</span></div><span class="hint">Đặt lúc 3 ngày trước</span></div>
+          <div class="notice warning"><span class="ni"></span><div>Mọi người đang xem sẽ phải nhập lại mật khẩu mới. Mã QR và link ngắn không đổi.</div></div>
+          <div class="foot"><span class="btn tertiary sm">Huỷ</span><span class="btn primary sm">Lưu</span></div>
+        </div>
+      </div>
+      <div class="dialog" style="width:420px;border:1px solid var(--doc-line)">
+        <h4>Đã đổi mật khẩu</h4>
+        <div class="body">
+          <div class="field"><span class="label" style="color:var(--slate-600)">Mật khẩu</span><div class="input mono">r4t8wq2zx9mk1npb<span class="ad" style="color:var(--semantic-success)">✓</span></div><span class="hint">Đây là lần duy nhất mật khẩu hiện ra. Sao chép và gửi cho người cần xem.</span></div>
+          <div class="foot"><span class="btn primary sm">Xong</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi</h4>
+    <ul>
+      <li><span class="k keep">giữ</span>Cả hai dialog giữ nguyên (artifact-access-dialog.tsx, artifact-password-dialog.tsx): chế độ hiện tại chọn sẵn, khối xanh "QR không đổi", câu rời mật khẩu, pha <code>done</code> hiện <code>ArtifactPasswordReveal</code> một lần.</li>
+      <li><span class="k keep">giữ</span>Nút Lưu khoá kèm lý do "Nhập mật khẩu mới trước đã" khi ô trống; lỗi "Mật khẩu cần ít nhất 8 ký tự." dưới ô.</li>
+      <li><span class="k chg">đổi</span>Điểm gọi chuyển vào tab Quyền xem của trang chi tiết. Không đổi gì về nội dung.</li>
+    </ul>
+    <h4>Tái dùng</h4>
+    <ul><li><code>CustomDialogV2</code>, <code>RadioGroup</code>, <code>Input endAdornment</code>, <code>LoadingButton busy</code>.</li></ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 2.9 DELETE -->
+<h2 id="delete">2.9 Xoá và trạng thái removed</h2>
+<div class="screen">
+  <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+    <div class="dialog" style="width:440px;border:1px solid var(--doc-line)">
+      <h4>Xoá artifact này?</h4>
+      <p class="desc">File sẽ bị xoá khỏi kho và không khôi phục lại được. Link rút gọn và mã QR đã in vẫn hoạt động — người quét sẽ thấy trang thông báo nội dung đã được gỡ.</p>
+      <div class="body" style="padding-bottom:0"><div class="foot"><span class="btn secondary sm">Huỷ</span><span class="btn danger sm">Xoá vĩnh viễn</span></div></div>
+    </div>
+    <div class="row-card" style="width:560px;opacity:.95">
+      <span class="chk" style="visibility:hidden"></span>
+      <div class="qr"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#94a3b8"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM9 0h1v2H9zM11 1h2v1h-2zM9 3h3v1H9zM0 9h2v1H0zM3 8h1v3H3zM9 8h1v3H9zM14 8h2v1h-2zM9 14h2v1H9zM12 14h1v2h-1zM9 16h1v3H9zM14 17h1v3h-1zM9 20h3v1H9z"/></svg></div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;padding:0 8px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:var(--text-sm);font-weight:500">Bảng giá tháng 10</span><span class="badge neutral">Đã gỡ</span></div>
+        <div class="hint">Nội dung đã xoá khỏi kho. Link rút gọn và mã QR vẫn hoạt động — người quét thấy trang thông báo đã gỡ.</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi</h4>
+    <ul>
+      <li><span class="k chg">đổi</span>Hộp xác nhận chuyển từ <code>AlertDialog</code> shadcn sang <code>useConfirmDialog</code> như short-link-detail-header.tsx:72-84, truyền <code>confirmButtonText: 'Xoá vĩnh viễn'</code>. Copy <code>detail.delete_confirm_*</code> giữ nguyên vì nó nói hệ quả ngoài hệ thống.</li>
+      <li><span class="k keep">giữ</span>Sau xoá: toast "Đã xoá artifact." và về danh sách. Hàng <code>removed</code> không hiện trong danh sách; nếu mở trực tiếp thấy badge trung tính, không nút, note "QR vẫn hoạt động" (artifact-status.ts:110-115).</li>
+      <li><span class="k new">mới</span>Xoá hàng loạt từ header bảng dùng cùng hộp xác nhận với số lượng.</li>
+    </ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 3.1 PUBLIC -->
+<h2 id="public">3.1 Trang công khai <code>/a/&lt;token&gt;</code></h2>
+<p class="lead">Chế độ Công khai: không có cổng, nội dung hiện ngay. HTML được phục vụ thẳng trong sandbox; PDF, slide và video đi qua khung <code>landingShell</code> với brand mark li2.</p>
+<div class="screen">
+  <div class="phones">
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div>
+        <h1>Bảng giá tháng 10</h1>
+        <div class="viewer">PDF viewer của trình duyệt</div>
+        <span class="download">Tải về</span>
+        <p class="note">Không hiện ở đây? Mở trong tab mới.</p>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Công khai · PDF</b> <span class="http">200</span> · light</span>
+    </div>
+    <div>
+      <div class="phone darkshell"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div>
+        <h1>Video hướng dẫn lắp ráp</h1>
+        <div class="viewer">▶ video · poster</div>
+        <span class="download">Tải về</span>
+        <p class="note">Trình duyệt này không phát được video. Bấm Tải về để xem.</p>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Công khai · video</b> <span class="http">200</span> · <code>prefers-color-scheme: dark</code></span>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi so với hiện trạng</h4>
+    <ul>
+      <li><span class="k keep">giữ</span>Khung <code>landingShell</code> (artifact-landing-shell.ts:18-86): font hệ thống, <code>color-scheme: light dark</code>, không script. CSP <code>default-src 'none'</code> nên không có token app ở đây.</li>
+      <li><span class="k chg">đổi</span>Brand mark li2 SVG nội tuyến lên đầu trang (wave2 §C.6), nút Tải về đổi <code>#111</code> sang hex của <code>--color-primary</code> kèm comment trỏ globals.css:56.</li>
+      <li><span class="k chg">đổi</span>Khung xem trước tràn mép trên mobile (<code>padding: 0 0 16px</code>), <code>poster</code> cho video, <code>&lt;html lang&gt;</code> theo ngôn ngữ đã chọn (wave2 §A, §C.8, §C.10).</li>
+      <li><span class="k keep">giữ</span>Artifact <code>kind=html</code> không qua shell này: HTML của người dùng được phục vụ nguyên trong sandbox.</li>
+    </ul>
+  </aside>
+</div>
+
+<!-- ====================================================== 3.2 GATES -->
+<h2 id="gates">3.2 Bốn cổng và bia mộ 410</h2>
+<p class="lead">Copy lấy nguyên văn từ <code>artifact-landing.ts:40-68</code>. Không nêu tên artifact, không nêu tên tổ chức ở bất kỳ cổng nào. Bia mộ 410 đứng trước mọi cổng.</p>
+<div class="screen">
+  <div class="phones">
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon"></div>
+        <h1>Nội dung này cần mật khẩu</h1>
+        <p class="gate-lead">Người gửi link đã đặt mật khẩu. Nhập mật khẩu để xem.</p>
+        <span class="gate-label">Mật khẩu</span><div class="gate-input">••••••••</div>
+        <div class="gate-btn">Xem nội dung</div>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Mật khẩu · lần đầu</b> <span class="http">401</span> · form POST <code>/a/&lt;token&gt;</code></span>
+    </div>
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon"></div>
+        <h1>Nội dung này cần mật khẩu</h1>
+        <p class="gate-lead">Người gửi link đã đặt mật khẩu. Nhập mật khẩu để xem.</p>
+        <span class="gate-label">Mật khẩu</span><div class="gate-input bad">••••••</div>
+        <p class="gate-err">Mật khẩu không đúng. Còn 2 lần thử.</p>
+        <div class="gate-btn">Xem nội dung</div>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Mật khẩu · sai</b> <span class="http">401</span> · tối đa 3 lần (<code>ARTIFACT_GATE_MAX_TRIES</code>)</span>
+    </div>
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon" style="border-radius:999px"></div>
+        <h1>Đã thử quá nhiều lần</h1>
+        <p class="gate-lead">Thử lại sau 15 phút, hoặc hỏi người gửi link mật khẩu đúng.</p>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Mật khẩu · khoá</b> <span class="http">429</span> · không ô nhập</span>
+    </div>
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon"></div>
+        <h1>Nội dung này cần mật khẩu</h1>
+        <p class="gate-lead">Người gửi link đã đặt mật khẩu. Nhập mật khẩu để xem.</p>
+        <span class="gate-label">Mật khẩu</span><div class="gate-input"></div>
+        <p class="gate-hint">Mật khẩu đã được đổi. Nhập mật khẩu mới.</p>
+        <div class="gate-btn">Xem nội dung</div>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Mật khẩu · phiên cũ chết</b> <span class="http">401</span> · sau khi chủ đổi mật khẩu</span>
+    </div>
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon"></div>
+        <h1>Đăng nhập để xem nội dung này</h1>
+        <p class="gate-lead">Người gửi link yêu cầu đăng nhập. Email của bạn được ghi lại cho người gửi.</p>
+        <div class="gate-btn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2.5 24 .5 14.6.5 6.5 5.8 2.6 13.6l7.8 6.1C12.3 13.2 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-2.8-.4-4.1H24v8.2h12.6c-.3 2.1-1.6 5.2-4.6 7.3l7.6 5.9c4.5-4.2 6.5-10.2 6.5-17.3z"/><path fill="#FBBC05" d="M10.4 28.3A14.6 14.6 0 0 1 9.6 24c0-1.5.3-3 .7-4.3l-7.8-6.1A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.8-6.4z"/><path fill="#34A853" d="M24 47.5c6.2 0 11.5-2 15.6-5.6l-7.6-5.9c-2 1.4-4.7 2.4-8 2.4-6.4 0-11.7-3.7-13.6-9.1l-7.8 6.4C6.5 42.2 14.6 47.5 24 47.5z"/></svg>Tiếp tục với Google</div>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Google</b> <span class="http">401</span> · huỷ ở Google → thêm dòng "Bạn đã dừng việc đăng nhập…"</span>
+    </div>
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon"></div>
+        <h1>Nội dung này dành cho thành viên</h1>
+        <p class="gate-lead">Đăng nhập li2 để xem. Nếu bạn không có tài khoản li2, hỏi người gửi link.</p>
+        <div class="gate-btn li2">Đăng nhập li2</div>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Riêng tư · chưa đăng nhập</b> <span class="http">401</span> · <code>redirect_to=/a/&lt;token&gt;</code></span>
+    </div>
+    <div>
+      <div class="phone"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon"></div>
+        <h1>Tài khoản của bạn không mở được nội dung này</h1>
+        <p class="gate-email">Đang đăng nhập: ban@congty-khac.vn</p>
+        <p class="gate-lead">Nội dung này chỉ dành cho thành viên của tổ chức đã đăng nó. Hỏi người gửi link, hoặc đăng nhập bằng tài khoản khác.</p>
+        <div class="gate-btn">Đăng nhập bằng tài khoản khác</div>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Riêng tư · không thuộc org</b> <span class="http">403</span> · form POST <code>/switch-account</code></span>
+    </div>
+    <div>
+      <div class="phone darkshell"><div class="scr">
+        <div class="gone-brand"><i></i>li2</div><div class="gone-icon"></div>
+        <h1>Nội dung này đã được gỡ</h1>
+        <p class="gate-lead">Người đăng đã gỡ nội dung ở đường dẫn này xuống.</p>
+        <div class="gone-reassure"><b>Mã QR của bạn không hỏng.</b> Bạn đã quét đúng. Hãy liên hệ nơi đặt mã này để nhận nội dung mới nhất.</div>
+        <p class="gone-foot">Đường dẫn này chạy trên <a>Li2</a></p>
+      </div></div>
+      <span class="cap"><b>Đã gỡ (removed)</b> <span class="http">410</span> · đứng trước mọi cổng · dark</span>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>Thay đổi so với hiện trạng</h4>
+    <ul>
+      <li><span class="k keep">giữ</span>Cả bốn cổng đã code trong artifact-gate-pages.ts:60-168 và dùng chung <code>landingShell</code>. Không script, không tên artifact, form <code>action</code> tường minh.</li>
+      <li><span class="k keep">giữ</span>Sai mật khẩu: "Còn {n} lần thử", khoá sau 3 lần → 429 không ô nhập (spec M2.5, số lần theo <code>artifact.type.ts:80</code>, không phải 5).</li>
+      <li><span class="k keep">giữ</span>Google: câu "Email của bạn được ghi lại cho người gửi" đứng trước nút. Logo Google bốn màu là ngoại lệ duy nhất với quy tắc token.</li>
+      <li><span class="k chg">đổi</span>Nút "Đăng nhập li2" dùng hex của <code>--color-primary</code> để phân biệt với nút hành động chung màu <code>#111</code>; cân nhắc áp cho mọi <code>.gate-btn</code> theo wave2 §A màu.</li>
+      <li><span class="k keep">giữ</span>Bia mộ 410 đã nghiệm thu trên LiHi, không sửa (spec M2.8). Thứ tự kiểm: token → hàng → removed → live → cổng.</li>
+    </ul>
+    <h4>Không có màn hình</h4>
+    <ul><li><code>/file</code> và <code>/download</code> trả byte hoặc 401/404 không body; 503 "Chưa kiểm tra được" khi Redis lỗi (fail closed).</li></ul>
+  </aside>
+</div>
+
+<p class="hint" style="margin:40px 0 24px">Tệp này không tải tài nguyên ngoài. Mở trực tiếp bằng trình duyệt. Chi tiết lý lẽ từng thay đổi nằm ở <code>01-phan-tich-shortlink-vs-artifact.md</code> §3 và §4.</p>
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    function apply(dark) {
+      root.classList.toggle('dark', dark);
+      btn.textContent = dark ? 'Chuyển light mode' : 'Chuyển dark mode';
+      btn.setAttribute('aria-pressed', String(dark));
+    }
+    btn.addEventListener('click', function () { apply(!root.classList.contains('dark')); });
+    apply(false);
+  })();
+</script>
+</body>
+</html>

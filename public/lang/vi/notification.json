@@ -1,0 +1,131 @@
+{
+  "title": "Thông báo",
+  "unread": "chưa đọc",
+  "mark_all_read": "Đánh dấu tất cả đã đọc",
+  "mark_as_read": "Đánh dấu đã đọc",
+  "delete": "Xóa",
+  "no_notifications": "Chưa có thông báo",
+  "view_all": "Xem tất cả thông báo ({{count}})",
+  "view_all_link": "Xem tất cả",
+  "all_notifications": "Tất cả thông báo",
+  "showing": "Hiển thị {{from}}–{{to}} trong tổng số {{total}}",
+  "mark_all_as_read": "Đánh dấu tất cả đã đọc",
+  "show": "Hiển thị:",
+  "filters": "Bộ lọc:",
+  "category": "Danh mục",
+  "priority": "Ưu tiên",
+  "status": "Trạng thái",
+  "all_categories": "Tất cả danh mục",
+  "all_priorities": "Tất cả mức độ",
+  "all": "Tất cả",
+  "unread_filter": "Chưa đọc",
+  "read": "Đã đọc",
+  "clear_filters": "Xóa bộ lọc ({{count}})",
+  "failed_to_load": "Không thể tải thông báo.",
+  "retry": "Thử lại",
+  "no_match_filters": "Không có thông báo phù hợp với bộ lọc",
+  "try_clear_filters": "Thử điều chỉnh hoặc xóa bộ lọc.",
+  "page_of": "Trang {{page}} trong tổng số {{total}}",
+  "previous": "Trước",
+  "next": "Tiếp",
+  "new": "Mới",
+  "categories": {
+    "touchpoint": "Touchpoint",
+    "billing": "Thanh toán",
+    "system": "Hệ thống",
+    "security": "Bảo mật"
+  },
+  "priorities": {
+    "urgent": "Khẩn cấp",
+    "high": "Cao",
+    "medium": "Trung bình",
+    "low": "Thấp"
+  },
+  "priority_label": "Mức độ ưu tiên {{priority}}",
+  "types": {
+    "invitation": {
+      "received": {
+        "title": "Nhận được lời mời",
+        "message": "Bạn đã nhận được lời mời tham gia {{orgName}}."
+      }
+    },
+    "collection": {
+      "user_added": {
+        "title": "Đã thêm vào Space",
+        "message": "{{addedBy}} đã thêm bạn vào space {{collectionName}}"
+      },
+      "user_removed": {
+        "title": "Đã xóa khỏi Space",
+        "message": "{{removedBy}} đã xóa bạn khỏi space {{collectionName}}"
+      }
+    },
+    "touchpoint": {
+      "bulk_import": {
+        "completed": {
+          "title": "Nhập hàng loạt hoàn tất",
+          "message": "Quá trình nhập hàng loạt đã hoàn tất."
+        },
+        "failed": {
+          "title": "Nhập hàng loạt thất bại",
+          "message": "Quá trình nhập hàng loạt đã thất bại."
+        }
+      },
+      "export": {
+        "completed": {
+          "title": "Xuất dữ liệu thành công",
+          "message": "Dữ liệu của bạn đã được xuất sang {{exportType}} thành công!"
+        },
+        "failed": {
+          "title": "Xuất dữ liệu thất bại",
+          "message": "Gặp lỗi khi xuất dữ liệu, nguyên nhân: {{errorMessage}}"
+        }
+      }
+    },
+    "quota": {
+      "exceeded": {
+        "touchpoint": {
+          "title": "Vượt quá hạn mức điểm chạm",
+          "message": "Hạn mức điểm chạm của tổ chức đã vượt quá"
+        },
+        "ai_credit": {
+          "title": "Vượt quá hạn mức tín dụng AI",
+          "message": "Hạn mức tín dụng AI của tổ chức đã vượt quá"
+        }
+      }
+    },
+    "billing": {
+      "plan": {
+        "expired": {
+          "title": "Gói dịch vụ đã hết hạn",
+          "message": "Gói dịch vụ của bạn đã hết hạn"
+        }
+      },
+      "payment": {
+        "failed": {
+          "title": "Thanh toán thất bại",
+          "message": "Thanh toán của bạn đã thất bại"
+        }
+      }
+    },
+    "system": {
+      "alert": {
+        "title": "Cảnh báo hệ thống"
+      },
+      "notification": {
+        "title": "Thông báo hệ thống"
+      }
+    },
+    "security": {
+      "touchpoint_safety_violation": {
+        "title": "Cảnh báo an toàn liên kết",
+        "message": "Liên kết \"{{touchPointName}}\" đã bị đánh dấu không an toàn ({{threats}}). Cảnh báo được cung cấp bởi Google. Liên kết đã bị vô hiệu hóa."
+      }
+    },
+    "domain": {
+      "verified": {
+        "title": "Tên miền đã xác minh",
+        "message": "Tên miền {{domain}} đã được xác minh thành công."
+      }
+    }
+  }
+}

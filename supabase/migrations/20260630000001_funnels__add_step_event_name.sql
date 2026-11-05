@@ -1,0 +1,1 @@
+ALTER TABLE funnel_steps ADD COLUMN IF NOT EXISTS event_name VARCHAR(255) NULL;

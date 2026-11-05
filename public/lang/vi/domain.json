@@ -1,0 +1,318 @@
+{
+  "labels": {
+    "systemDefault": "Tên miền hệ thống",
+    "claimed": "Tên miền miễn phí",
+    "custom": "Tên miền tùy chỉnh"
+  },
+  "column": {
+    "domain": "Domain",
+    "type": "Loại",
+    "is_verified": "Trạng thái",
+    "verification_status": "Trạng thái",
+    "created_at": "Ngày thêm",
+    "setAsDefault": "Đặt làm Mặc định",
+    "actions": "Hành động"
+  },
+  "statusBadge": {
+    "verified": "Đã xác thực",
+    "failed": "Xác thực thất bại",
+    "verifying": "Đang xác thực (1/2)",
+    "generatingSsl": "Đang xác thực (2/2)",
+    "verifyingPhase1Tooltip": "Hệ thống Li2 đang xác minh bản ghi CNAME/TXT DNS của bạn được cấu hình đúng",
+    "verifyingPhase2Tooltip": "Cloudflare đang xác minh và tạo chứng chỉ SSL cho {{domain}}"
+  },
+  "tabs": {
+    "customDomains": "Domain Tùy chỉnh",
+    "defaultDomains": "Domain Mặc định",
+    "systemDefaultDomains": "Domain hệ thống"
+  },
+  "defaultDomains": {
+    "title": "Domain Rút gọn Mặc định",
+    "description": "Sử dụng các domain đã được xác thực này cho liên kết rút gọn của bạn. Có sẵn cho tất cả người dùng mà không cần thiết lập.",
+    "availableToAll": "Có sẵn cho tất cả người dùng",
+    "noDnsRequired": "Không cần cấu hình DNS",
+    "instantUse": "Sẵn sàng sử dụng ngay",
+    "tableEmpty": "Không có domain mặc định nào"
+  },
+  "forms": {
+    "addDomainStep": {
+      "title": "Bước 1: Thêm Domain",
+      "description": "Nhập tên Domain của bạn để sử dụng nó cho các liên kết rút gọn",
+      "inputLabel": "Tên Domain",
+      "inputPlaceholder": "Ví dụ: tenmiencuatoi.com"
+    },
+    "verifyDomainStep": {
+      "title": "Bước 2: Xác thực Domain",
+      "description": "Xác thực quyền sở hữu Domain của bạn bằng cách thêm các bản ghi DNS được cung cấp",
+      "dnsInstruction": "Thêm các bản ghi DNS vào domain của bạn",
+      "notices": {
+        "domainVerifiedTitle": "Xác thực thành công",
+        "domainVerifiedDescription": "Domain của bạn đã được xác minh và sẵn sàng để sử dụng.",
+        "domainVerificationFailedTitle": "Xác thực không thành công - Lần thử cuối vào lúc {{ time }}",
+        "domainVerificationFailedDescription": "Nguyên nhân",
+        "generatingSslTitle": "Đang tạo chứng chỉ SSL",
+        "generatingSslDescription": "DNS của bạn đã được xác nhận. Cloudflare đang cấp chứng chỉ SSL cho domain — quá trình này thường mất 5–15 phút. Chúng tôi sẽ tự động kiểm tra và thông báo khi hoàn tất. Bạn cũng có thể nhấn \"Xác thực Domain\" để kiểm tra trạng thái hiện tại."
+      },
+      "cfProxyToggle": {
+        "label": "CNAME của bạn có đang được proxy qua Cloudflare (đám mây cam) không?",
+        "description": "Bật tùy chọn này nếu bản ghi DNS của bạn có biểu tượng đám mây cam — chúng tôi sẽ hiển thị bản ghi TXT để xác thực quyền sở hữu"
+      },
+      "cnameRecord": {
+        "label": "CNAME Record",
+        "description": "Bản ghi này trỏ domain của bạn đến dịch vụ của chúng tôi",
+        "fields": {
+          "name": "Name",
+          "target": "Target"
+        }
+      },
+      "txtRecord": {
+        "label": "TXT Record",
+        "description": "Bản ghi này xác thực quyền sở hữu domain của bạn",
+        "fields": {
+          "name": "Name",
+          "content": "Content"
+        }
+      },
+      "verificationNotice": {
+        "title": "Mẹo nhỏ về xác thực",
+        "message": "Sau khi thêm bản ghi DNS, quá trình xác thực thường mất 5-10 phút. Bạn có thể nhấn 'Xác thực Domain' để kiểm tra ngay, hoặc thư giãn - chúng tôi sẽ tự động kiểm tra vài phút một lần cho đến khi được xác thực."
+      }
+    },
+    "buttons": {
+      "skip": "Bỏ qua",
+      "verifyDomain": "Xác thực Domain"
+    },
+    "toasts": {
+      "verifyFailed": "Xác thực thất bại, vui lòng kiểm tra cấu hình DNS của bạn"
+    }
+  },
+  "actions": {
+    "setDefault": "Đặt mặc định"
+  },
+  "hero": {
+    "title": "Domain thương hiệu của bạn",
+    "subtitle": "Tăng nhận diện thương hiệu với domain riêng của bạn cho từng link rút gọn",
+    "benefit_1_title": "Xây dựng uy tín và nhận diện thương hiệu",
+    "benefit_3_title": "Toàn quyền kiểm soát thương hiệu",
+    "benefit_2_title": "Tăng tỷ lệ Click chuột",
+    "benefit_1_subtitle": "Sử dụng Domain riêng để mỗi Link của bạn trông chuyên nghiệp và đáng tin cậy hơn",
+    "benefit_2_subtitle": "Domain gắn thương hiệu giúp tăng độ tin cậy — và thu hút nhiều lượt click hơn",
+    "benefit_3_subtitle": "Giữ cho mọi Link đồng nhất với trải nghiệm thương hiệu của bạn"
+  },
+  "table": {
+    "title": "Domains có sẵn",
+    "subtitle": "Bạn có thể dùng các Domain này cho link rút gọn hoặc thêm Domain riêng của bạn."
+  },
+  "domainSelection": {
+    "title": "Thêm Domain",
+    "subtitle": "Chọn cách bạn muốn thêm domain",
+    "description": "Chọn một tùy chọn bên dưới để bắt đầu",
+    "customDomain": {
+      "title": "Thêm Domain Riêng",
+      "description": "Sử dụng domain riêng của bạn để kiểm soát thương hiệu tối đa",
+      "features": {
+        "professional": "Chuyên nghiệp",
+        "fullControl": "Toàn quyền kiểm soát"
+      }
+    },
+    "subdomain": {
+      "title": "Nhận Subdomain Miễn phí",
+      "description": "Bắt đầu ngay lập tức với subdomain miễn phí",
+      "features": {
+        "free": "Miễn phí",
+        "instant": "Thiết lập ngay",
+        "noDns": "Không cần DNS"
+      }
+    }
+  },
+  "claimSubdomain": {
+    "title": "Nhận Subdomain Miễn phí",
+    "subtitle": "Chọn subdomain cho các link rút gọn của bạn",
+    "description": "Chọn domain gốc và tạo subdomain độc đáo của bạn. Subdomain sẽ khả dụng ngay lập tức.",
+    "fields": {
+      "baseDomain": {
+        "label": "Domain Gốc",
+        "placeholder": "Chọn domain",
+        "description": "Chọn từ các domain có sẵn của chúng tôi"
+      },
+      "subdomain": {
+        "label": "Subdomain Của Bạn",
+        "placeholder": "congtycuatoi",
+        "description": "Chọn subdomain độc đáo (3-63 ký tự, chữ thường, số và dấu gạch ngang)"
+      }
+    },
+    "availability": {
+      "available": "{{domain}} có sẵn!",
+      "unavailable": "{{domain}} đã được sử dụng"
+    },
+    "preview": {
+      "label": "Domain đầy đủ của bạn sẽ là:"
+    },
+    "buttons": {
+      "claim": "Nhận Subdomain"
+    }
+  },
+  "messages": {
+    "success": {
+      "subdomain_claimed": "Nhận subdomain {{domain}} thành công!"
+    },
+    "error": {
+      "subdomain_unavailable": "Subdomain {{domain}} không khả dụng"
+    }
+  },
+  "deepLink": {
+    "title": "Cấu hình Deep Link",
+    "description": "Cấu hình các ứng dụng di động để mở trực tiếp từ liên kết trên {{domain}}.",
+    "cachingWarning": "iOS và Android có thể cache cấu hình này trong tối đa 48 giờ. Thay đổi có thể không có hiệu lực ngay lập tức.",
+    "enabled": {
+      "label": "Bật Deep Links",
+      "description": "Khi bật, các liên kết trên domain này sẽ mở ứng dụng di động của bạn thay vì trình duyệt."
+    },
+    "addIos": "Thêm ứng dụng iOS",
+    "addAndroid": "Thêm ứng dụng Android",
+    "clearConfig": "Xóa cấu hình",
+    "ios": {
+      "teamId": {
+        "description": "Tìm thấy trong Apple Developer Portal → Membership → Team ID"
+      },
+      "appStoreUrl": {
+        "description": "Tùy chọn. Được dùng làm fallback cho người dùng chưa cài ứng dụng."
+      }
+    },
+    "android": {
+      "sha256": {
+        "description": "Lấy từ chứng chỉ ký ứng dụng của bạn. Thêm mỗi fingerprint trên một dòng (debug + release)."
+      },
+      "playStoreUrl": {
+        "description": "Tùy chọn. Được dùng làm fallback cho người dùng chưa cài ứng dụng."
+      }
+    },
+    "errors": {
+      "domain_not_verified": "Cấu hình deep link yêu cầu domain đã được xác thực.",
+      "not_configured": "Deep link chưa được bật cho domain này.",
+      "subdomain_not_eligible": "Deep link không khả dụng cho subdomain miễn phí. Thêm một domain tùy chỉnh để bật deep link.",
+      "attribution_plan_required": "Ghi nhận deep link yêu cầu gói Pro.",
+      "missing_resolution_input": "Cần cung cấp deepLink hoặc li2Domains",
+      "invalid_click_id": "Định dạng Click ID không hợp lệ",
+      "invalid_clipboard_status": "Giá trị clipboardStatus không hợp lệ",
+      "invalid_domain": "Định dạng tên miền không hợp lệ"
+    },
+    "attribution": {
+      "callout_title": "Mobile SDK đã sẵn sàng",
+      "callout_body": "Ứng dụng di động của bạn có thể sử dụng publishable key này với Li2 SDK để theo dõi lượt mở deep link và chuyển đổi.",
+      "generate_key_cta": "Tạo publishable key",
+      "analytics_locked": "Phân tích (Pro)",
+      "analytics_coming_soon": "Phân tích",
+      "analytics_phase_5_note": "Phân tích deep link sẽ ra mắt trong bản phát hành sắp tới.",
+      "upsell_body": "Theo dõi cách lượt mở ứng dụng di động chuyển đổi thành leads và doanh thu. Nâng cấp lên Pro để mở khóa."
+    },
+    "analytics": {
+      "clicks": "Lượt click",
+      "clicks_sub": "Lượt click Link từ người chưa cài app",
+      "deferred_opens": "Lượt cài đặt mới",
+      "deferred_opens_sub": "Lần đầu mở app sau khi cài mới",
+      "matched": "Lượt khôi phục Link",
+      "matched_sub": "Đã đưa người dùng đến đúng nội dung của Link",
+      "direct_opens": "Mở app",
+      "direct_opens_sub": "Người dùng đã có app sẵn",
+      "coverage": "Tỷ lệ dẫn đúng đích",
+      "coverage_sub": "Trong số lượt cài đặt mới, có bao nhiêu được dẫn đúng nội dung",
+      "funnel_note": "Lượt click và Mở app là hai nhóm người dùng riêng biệt, không cộng dồn. Tỷ lệ chỉ tính trên Lượt cài đặt mới.",
+      "funnel_note_perlink": "Chỉ hiển thị một Link. Số liệu chỉ gồm các lượt cài đặt khớp được với Link này, nên tổng thấp hơn bản tổng quan.",
+      "per_link_view": "Xem theo từng Link",
+      "picker_empty_title": "Chưa có Link nào bật deep link.",
+      "picker_empty_cta": "Thiết lập tên miền tùy chỉnh →",
+      "timeseries_title": "Lượt cài đặt được khôi phục theo thời gian",
+      "timeseries_note": "Lượt cài đặt mới (lần đầu mở app) so với Lượt khôi phục Link — phần chênh là lượt cài chưa khôi phục được. Lượt click chỉ là số liệu tham chiếu, không cộng dồn.",
+      "sdk_cta": "Có lượt click nhưng chưa có lượt mở ứng dụng? Tích hợp Li2 SDK để đo lượt mở ứng dụng và chuyển đổi.",
+      "empty": "Chưa có hoạt động deep link nào.",
+      "error": "Không thể tải phân tích deep link.",
+      "miss_reasons_title": "Vì sao một số lượt cài đặt không khôi phục được",
+      "platform_title": "Nền tảng",
+      "open_method_title": "Cách ứng dụng được mở",
+      "open_method_group": {
+        "already_installed": "Đã cài đặt sẵn",
+        "new_install": "Cài đặt mới"
+      },
+      "clicks_segment_title": "Lượt click theo phân khúc",
+      "clicks_channel_title": "Lượt click theo kênh",
+      "miss_reason": {
+        "clipboard_denied": "Người dùng bỏ qua bước copy",
+        "clipboard_empty": "Không có dữ liệu để khôi phục",
+        "opt_out": "Người dùng từ chối",
+        "no_candidate": "Không tìm thấy lượt nhấp khớp",
+        "no_candidate_tooltip": "Người dùng cài app mà chưa nhấp link nào trước đó, hoặc lượt nhấp đã quá lâu để hệ thống còn lưu.",
+        "ambiguous_candidate": "Trùng nhiều khả nghi",
+        "ua_mismatch": "Thiết bị không khớp",
+        "cross_tenant_blocked": "Khác tài khoản (đã chặn)"
+      },
+      "method": {
+        "universal_link": "Universal Link",
+        "app_link": "App Link",
+        "clipboard": "Clipboard",
+        "ip": "IP",
+        "ip_ua": "IP + UA",
+        "install_referrer": "Install Referrer",
+        "unknown": "Không xác định"
+      },
+      "platform": {
+        "ios": "iOS",
+        "android": "Android",
+        "unknown": "Không xác định"
+      },
+      "segment": {
+        "default": "Tiêu chuẩn",
+        "targeting": "Smart Targeting"
+      },
+      "ranking": {
+        "top_links_title": "Top Deep link",
+        "click_sources_title": "Click sources",
+        "empty": "Chưa có dữ liệu cho mục này.",
+        "prev": "Trước",
+        "next": "Sau",
+        "page": "Trang {{page}} / {{total}}",
+        "tab": {
+          "by_link": "Theo Link",
+          "tags": "Tags",
+          "spaces": "Spaces",
+          "referrer": "Referrer",
+          "utm": "UTM",
+          "channel": "Channel"
+        },
+        "utm": {
+          "source": "Source",
+          "medium": "Medium",
+          "campaign": "Campaign"
+        },
+        "col": {
+          "clicks": "Lượt click",
+          "direct_opens": "Mở app",
+          "matched": "Lượt khôi phục"
+        }
+      }
+    },
+    "badge": {
+      "attribution_ready": "Sẵn sàng ghi nhận — /track/open hoạt động trên domain này."
+    },
+    "configureButton": "Cấu hình Deep Links",
+    "configured": "Deep Links đang hoạt động",
+    "landing": {
+      "eyebrow": "Chỉ một thao tác nữa",
+      "heading": "Mở trong ứng dụng",
+      "subheading": "Cài ứng dụng và tiếp tục đúng nơi bạn vừa dừng.",
+      "cta_primary": "Sao chép & Mở App Store",
+      "cta_secondary": "Tiếp tục mà không sao chép",
+      "trust_no_account": "Không cần tài khoản",
+      "trust_clipboard": "Khay nhớ tạm chỉ được dùng để khôi phục liên kết sau khi cài",
+      "flow_step1_title": "Trình duyệt",
+      "flow_step1_sub": "Bạn đang ở đây",
+      "flow_step2_title": "Sao chép",
+      "flow_step2_sub": "Lưu liên kết",
+      "flow_step3_title": "Cài đặt",
+      "flow_step3_sub": "Từ App Store",
+      "flow_step4_title": "Mở ứng dụng",
+      "flow_step4_sub": "Liên kết đã được khôi phục",
+      "footer": "Cung cấp bởi li2.ai"
+    }
+  }
+}

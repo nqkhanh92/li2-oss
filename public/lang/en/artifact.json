@@ -1,0 +1,374 @@
+{
+  "module": "Artifacts",
+  "status": {
+    "draft": {
+      "badge": "Not published",
+      "note": "No public link yet. Publish it to get a link and a QR code."
+    },
+    "scanning": {
+      "badge": "Safety check running",
+      "note": "Safety check running — usually 1–3 seconds"
+    },
+    "live": {
+      "badge": "Live"
+    },
+    "blocked": {
+      "badge": "Could not publish",
+      "note": "This file never had a public link. Upload a different file to try again."
+    },
+    "expired": {
+      "badge": "Expired",
+      "note": "The link stopped serving. Publish again to bring printed QR codes back to life."
+    },
+    "quarantined": {
+      "badge": "Taken out of circulation",
+      "note": "The link and any printed QR code no longer work. Appeal if you think this is wrong."
+    },
+    "removed": {
+      "badge": "Taken down",
+      "note": "The content is gone from storage. The short link and QR code still work — scanners see a page saying it was taken down."
+    }
+  },
+  "actions": {
+    "publish": "Publish",
+    "reupload": "Upload a different file",
+    "republish": "Publish again",
+    "appeal": "Send an appeal",
+    "open": "Open link",
+    "not_available_yet": "This build cannot do that yet — contact support and someone will help",
+    "copy_link": "Copy link",
+    "download": "Download",
+    "open_new_tab": "Open in a new tab",
+    "delete": "Delete",
+    "update_content": "Update content",
+    "copy_link_locked": "Not published yet, so there is no link.",
+    "more": "More actions"
+  },
+  "list": {
+    "title": "Artifacts",
+    "create_cta": "New artifact",
+    "link_deleted": "Link was deleted",
+    "empty": {
+      "title": "No artifacts yet",
+      "description": "Upload an HTML page, a PDF, a slide deck or a video to get a link and a QR code you can put on packaging, a standee or a flyer.",
+      "cta": "Create your first artifact"
+    },
+    "menu": {
+      "make_public": "Make public",
+      "make_public_tip": "Currently {{mode}}. Press to let anyone with the link view it.",
+      "public_now_sub": "Anyone with the link can view"
+    },
+    "made_public": "{{name}}: anyone with the link can view it. The QR code and short link are unchanged.",
+    "tools": {
+      "search_placeholder": "Search by name or path",
+      "filter": "Filters",
+      "status": "Status"
+    },
+    "select_all": "Select all",
+    "selected_count": "{{count}} selected",
+    "bulk_delete": "Delete selected",
+    "bulk_delete_title": "Delete the {{count}} selected artifacts?",
+    "bulk_deleted": "Deleted {{count}} artifacts.",
+    "summary": "{{total}} artifacts · {{live}}/{{liveQuota}} published · {{used}}/{{quota}}",
+    "updated_rel": "Updated {{time}}",
+    "created_rel": "Created {{time}}"
+  },
+  "create": {
+    "title": "New artifact",
+    "dropzone": {
+      "label": "Drop a file here or click to choose",
+      "hint": "HTML, Markdown, PDF, Word, Excel, PowerPoint, image or video — up to {{max}}",
+      "change": "Choose a different file",
+      "selected": "{{name}} · {{size}}"
+    },
+    "name": {
+      "label": "Name",
+      "hint": "Only you and your teammates see this name.",
+      "placeholder": "Name it so you can find it later"
+    },
+    "slug": {
+      "label": "Path",
+      "hint": "You can change it later on the detail page; the QR code is regenerated for the new path.",
+      "placeholder": "example-path",
+      "invalid": "The path must be {{min}}–{{max}} characters, lowercase letters, digits and single hyphens only, and cannot start with \"f-\".",
+      "taken": "This path is already taken. Pick another one.",
+      "available": "This path is available",
+      "regenerate": "Generate another path"
+    },
+    "submit": "Publish",
+    "uploading": "Uploading",
+    "no_file_reason": "Choose a file first",
+    "office_notice": "Word, Excel and PowerPoint files are fetched by Microsoft to render the preview.",
+    "too_large_video": "The file is {{size}}, over the {{max}} limit — record at a lower quality or trim it, then try again.",
+    "sections": {
+      "basic": "Basic settings",
+      "access": "Who can view",
+      "access_badge": "important",
+      "qr": "QR code",
+      "tags": "Tags",
+      "short_link_only": "Short link only",
+      "short_link_only_hint": "This setting exists on the Short link tab only; it does not apply to artifacts."
+    },
+    "quota_note": "{{live}}/{{liveQuota}} artifacts · {{used}}/{{quota}}",
+    "access_lead": "Who can view this page?",
+    "access_sub": "You can change this any time after publishing. Printed QR codes keep working.",
+    "qr": {
+      "section_note": "The QR code is built from the path you are setting. Change the path and the code changes with it.",
+      "publish_first": "Publish first — you can download and copy the QR code after that."
+    },
+    "tags": {
+      "unavailable": "Artifacts cannot be tagged yet: the artifacts table has no tag column. Tags are for short links only for now."
+    },
+    "viewer": {
+      "title": "What the viewer gets",
+      "public": {
+        "headline": "Opens right away",
+        "body": "No step in between.",
+        "warning": "You will not know who opened it. Choose \"Sign in with Google\" if you want to know."
+      },
+      "password": {
+        "headline": "Password first",
+        "body": "The viewer gets a password box and only sees the content after entering it."
+      },
+      "google": {
+        "headline": "Sign in with Google",
+        "body": "The viewer signs in with Google and their email is recorded in Customers."
+      },
+      "private": {
+        "headline": "Sign-in page",
+        "body": "People outside your organization get a sign-in page, not the content."
+      }
+    }
+  },
+  "created_dialog": {
+    "title": "Published",
+    "description": "The link and QR code are ready to print or share.",
+    "link": "Short link",
+    "continue": "View artifact"
+  },
+  "detail": {
+    "title": "Artifact",
+    "preview_label": "Content preview",
+    "preview_unavailable": "Publish it first to see a preview.",
+    "responsibility": "Uploaded by a user. Li2 does not review content before publishing and is not responsible for it.",
+    "already_published": "This artifact is already published",
+    "not_found": "We could not find this artifact, or it belongs to another organization.",
+    "meta": {
+      "kind": "Kind",
+      "type": "Content type",
+      "size": "Size",
+      "created_at": "Created",
+      "updated_at": "Updated",
+      "name": "Name"
+    },
+    "back_to_list": "Back to list",
+    "preview": {
+      "open_direct": "Not showing here? Open it in a new tab.",
+      "download_to_view": "Download it to open in your own app.",
+      "published_updated": "Published {{published}} · updated {{updated}}",
+      "created": "Created {{created}}",
+      "serving_note": "The version currently served to scanners."
+    },
+    "office_viewer_loading": "Opening with Office viewer…",
+    "office_viewer_privacy": "To display these slides, Microsoft downloads this file. Use Download instead if you would rather it did not.",
+    "delete_confirm_title": "Delete this artifact?",
+    "delete_confirm_description": "The file will be deleted from storage and cannot be recovered. The short link and any printed QR codes keep working — scanners will see a page saying the content was taken down.",
+    "delete_confirm_action": "Delete permanently",
+    "deleted": "Artifact deleted.",
+    "link": {
+      "title": "Link",
+      "lead_live": "The short link is what gets printed on the QR code. The origin link is the page scanners land on.",
+      "lead_draft": "Not published yet, so there is no link. The path below is used when you publish.",
+      "short_label": "Short link",
+      "origin_label": "Origin link",
+      "open": "Open",
+      "hint_live": "Change the path, then press Update content. The old path still redirects, and the QR code is regenerated for the new path.",
+      "hint_draft": "{{min}}–{{max}} characters, lowercase letters, digits and single hyphens only.",
+      "hint_changed_draft": "The new path will be used when you publish.",
+      "origin_hint": "Unchanged when you change the path or replace the file. Use it when you need to embed directly.",
+      "warn_title": "Printed QR codes keep working",
+      "warn_body": "The old path {{slug}} still redirects to this content. New QR codes are generated for the new path.",
+      "empty": "The path cannot be empty",
+      "unchanged": "Nothing changed yet",
+      "taken": "The path “{{slug}}” is already taken."
+    },
+    "replace": {
+      "lead_live": "The QR code and short link stay the same.",
+      "lead_draft": "Not published yet, so nothing outside is affected."
+    },
+    "file_info": "File info",
+    "qr": {
+      "publish_first": "Publish it first",
+      "publish_first_hint": "Publish it first — the QR code is generated from the short link."
+    },
+    "apply": {
+      "label_count": "Update content ({{count}})",
+      "tooltip": "Apply: {{parts}}",
+      "tooltip_empty": "Pick a file or change the view permission below, then press this button",
+      "part_file": "replace file",
+      "part_access": "change view permission",
+      "part_slug": "change path",
+      "nothing_pending": "Pick a new file or change the view permission below, then press Update content.",
+      "success": "Updated {{parts}}. {{note}}",
+      "success_content": "content",
+      "success_access": "view permission ({{mode}})",
+      "success_slug": "path ({{url}})",
+      "slug_note": "The QR code is regenerated for the new path; the old path still redirects.",
+      "partial_access": "The content was replaced but the view permission could not be changed: {{reason}}",
+      "partial_slug": "Earlier changes were applied, but the path could not be changed: {{reason}}"
+    }
+  },
+  "update": {
+    "title": "Update content",
+    "description": "Replace the file behind “{{name}}”.",
+    "status_refuses": "This content is on hold and cannot be replaced right now. Follow the action shown for its current status, then try again.",
+    "serving": "Currently serving",
+    "will_replace": "Will be replaced by",
+    "size_after": "Storage after the change",
+    "size_after_values": "{{before}} → {{after}} / {{quota}}",
+    "delta_heavier": "The new file is {{delta}} heavier than the old one — only that difference counts.",
+    "delta_lighter": "The new file is {{delta}} lighter than the old one — that difference is given back.",
+    "delta_same": "The new file is the same size — storage does not change.",
+    "live_unchanged": "Published count is unchanged: still {{live}} / {{quota}}.",
+    "free_remaining": "{{free}} free.",
+    "keep_qr_title": "QR code and short link stay the same",
+    "keep_qr_body": "Printed standees, flyers and packaging open the new content. Recorded scans are kept.",
+    "draft_no_link_title": "Not published yet, so no link or QR code",
+    "draft_no_link_body": "Replacing the file now changes nothing outside.",
+    "lose_old_title": "The old file is replaced for good",
+    "lose_old_body": "After you press Update, {{name}} cannot be recovered. Download it first if you still need it.",
+    "lose_old_download": "Download the current version",
+    "kind_change_title": "Content type changes from {{from}} to {{to}}",
+    "kind_change_body": "Scanners will see {{to_viewer}} instead of {{from_viewer}}. The QR code and short link stay the same.",
+    "kind_change_body_draft": "Once published, scanners will see {{to_viewer}}.",
+    "viewer": {
+      "html": "an HTML page",
+      "pdf": "the PDF viewer",
+      "slides": "a slide preview",
+      "video": "a video player"
+    },
+    "wrong_type": "Cannot open {{ext}} files. HTML, PDF, PowerPoint or video are accepted — export to one of those and try again.",
+    "quota_delta": "This change needs {{delta}} more but only {{free}} is free. Taking down one other piece of content is enough.",
+    "quota_view_usage": "See what is taking up space",
+    "progress_sent": "Sent {{sent}} / {{total}}.",
+    "progress_note": "If you close this tab now, {{link}} still opens the old version — nothing breaks, it just has not changed yet.",
+    "progress_note_draft": "If you close this tab now, nothing breaks — the old version is still there, it just has not changed yet.",
+    "submitting": "Updating…",
+    "done_title": "Content replaced",
+    "changed": "Changed",
+    "changed_body": "{{link}} now opens {{name}} ({{size}}).",
+    "changed_body_draft": "The content is now {{name}} ({{size}}).",
+    "storage_in_use": "Storage in use: {{used}} / {{quota}}.",
+    "unchanged": "Unchanged",
+    "unchanged_body": "QR code, short link and recorded scans. Printed standees and flyers open the new version.",
+    "unchanged_body_draft": "Name and unpublished status. The link and QR code arrive when you publish.",
+    "done": "Done",
+    "open_link": "Open the link to check",
+    "failed_title": "Content was not replaced",
+    "failed_old_kept": "The QR code and short link still open {{name}} as before — nothing is broken. Please try again; if it keeps failing, contact support.",
+    "failed_old_kept_draft": "The old version {{name}} is untouched — nothing is broken. Please try again; if it keeps failing, contact support.",
+    "retry": "Try again",
+    "gone_title": "This content has been taken down",
+    "gone_mid_flight": "Someone took it down while this dialog was open. Printed QR codes now lead to a taken-down notice. Create a new artifact if you need to publish again.",
+    "close": "Close",
+    "create_new": "Create a new artifact"
+  },
+  "errors": {
+    "wrong_type": "Only HTML, Markdown, PDF, Word, Excel, PowerPoint, image or video — up to {{max}}",
+    "file_too_large": "This file is {{size}}, over the {{max}} limit. Please choose a smaller one.",
+    "upload_failed": "The upload did not go through, please try again",
+    "publish_failed_draft_kept": "The file was uploaded but not published yet. Publish it from the detail page to try again.",
+    "generic": "Something went wrong, please try again",
+    "quota_live": "You already have {{limit}} published artifacts, the maximum. Delete one and try again.",
+    "removed": "This artifact has been taken down and cannot be updated. Publish a new one.",
+    "status_refuses_publish": "This content is on hold and cannot be published right now. Follow the action shown for its current status, then try again.",
+    "scan_infected": "This file did not pass the safety check, so it was not uploaded. If you believe that is a mistake, please contact support.",
+    "scan_encrypted": "This file is protected by a password, so the system cannot open it for the safety check. Please upload a copy without a password.",
+    "scan_unavailable": "The file could not be safety-checked right now. Please try again in a few minutes."
+  },
+  "kind": {
+    "html": "HTML page",
+    "pdf": "PDF",
+    "slides": "PowerPoint",
+    "video": "Video",
+    "unknown": "Unrecognized format",
+    "markdown": "Markdown",
+    "document": "Word document",
+    "sheet": "Spreadsheet",
+    "image": "Image"
+  },
+  "access": {
+    "conflict": "Someone else just changed the view permission. Reload the page and try again.",
+    "title": "Who can view",
+    "detail_title": "View permission",
+    "mode": {
+      "public": {
+        "label": "Public",
+        "description": "Anyone with the link can view."
+      },
+      "private": {
+        "label": "Private",
+        "description": "Only members of your organization, after signing in to li2."
+      },
+      "password": {
+        "label": "Password",
+        "description": "Anyone who knows the password can view. You send it to them yourself."
+      },
+      "google": {
+        "label": "Google sign-in",
+        "description": "Anyone with a Google account can view. Their email is recorded."
+      }
+    },
+    "private_note": "People outside {{org}} who scan the code see a page saying it cannot be opened — not the content.",
+    "google_note": "Viewer emails show up under Customers. Only the email and the time are stored.",
+    "draft_note": "This mode takes effect the moment you publish.",
+    "password_label": "Password",
+    "password_placeholder": "At least 8 characters",
+    "password_generate": "Generate",
+    "password_show": "Show password",
+    "password_hide": "Hide password",
+    "password_viewer_note": "Viewers enter this password once and can view for a week.",
+    "password_required_reason": "Set a password first",
+    "password_too_short": "The password needs at least 8 characters.",
+    "password_once": "This is the only time the password is shown. Copy it and send it to whoever needs to view.",
+    "copy_password": "Copy password",
+    "viewer_count": "{{count}} people have opened this",
+    "created_mode": "View permission: {{mode}}",
+    "dialog": {
+      "keep_qr_title": "QR code and short link stay the same",
+      "keep_qr_body": "Changing the view mode takes effect immediately and creates no new link.",
+      "leaving_password": "Anyone currently viewing with the old password will have to authenticate again.",
+      "success": "View permission is now {{mode}}. QR code and short link are unchanged.",
+      "failed": "Could not change the view permission. The link is still {{mode}}. Please try again."
+    },
+    "password_dialog": {
+      "new_label": "New password",
+      "done_title": "Password changed",
+      "done": "Done"
+    },
+    "section_lead": "Currently {{mode}}",
+    "section_set_at": " · set {{time}}",
+    "section_live_note": "Changing the mode takes effect right away and does not create a new link.",
+    "current_badge": "current",
+    "unchanged": "Nothing changed yet",
+    "who_viewed": "Who has viewed",
+    "who_viewed_link": "· see the list",
+    "viewers": {
+      "none": "Nobody has opened this yet",
+      "none_hint": "Once someone signs in with Google to view it, their email shows up under Customers.",
+      "anonymous": "Li2 collects no emails — viewers stay anonymous",
+      "anonymous_hint": "With {{mode}} access, viewers never say who they are, so Li2 has no email for them. This is not \"nobody has opened it\": people may well have viewed it and we cannot tell who. Switch to Google sign-in and every viewer from that point on is recorded.",
+      "anonymous_link": "Check under Customers"
+    },
+    "leaving_password_title": "The old password stops working"
+  },
+  "quick": {
+    "title": "Drop a file here to publish it right away",
+    "hint": "Gets a random public path. Use the Create button if you need a name or password.",
+    "choose": "Choose file",
+    "working": "Working on {{name}}",
+    "uploading": "Uploading {{percent}}%",
+    "published_no_link": "Published, but no link came back. Open the detail page to see it.",
+    "publish_failed_draft": "Upload finished but publishing failed. The file is a draft in the list."
+  }
+}

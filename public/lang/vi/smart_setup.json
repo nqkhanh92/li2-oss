@@ -1,0 +1,76 @@
+{
+  "title": "Thiết Lập Thông Minh",
+  "subtitle": "Để AI phân tích website và gợi ý cấu hình analytics cho bạn",
+  "analyze_button": "Phân tích",
+  "reanalyze": "Phân tích lại (1 credit)",
+  "apply_selected": "Áp dụng {{count}} gợi ý",
+  "skip": "Bỏ qua",
+  "cancel": "Hủy",
+  "select_all": "Chọn tất cả",
+  "deselect_all": "Bỏ chọn tất cả",
+  "loading": {
+    "fetching": "Đang tải nội dung trang",
+    "analyzing": "AI đang phân tích cấu trúc",
+    "generating": "Đang tạo gợi ý",
+    "time_hint": "Thường mất 5–10 giây",
+    "almost_done": "Sắp xong…"
+  },
+  "results": {
+    "analyzed_url": "Đã phân tích: {{url}}",
+    "cached_until": "Lưu cache đến: {{date}}",
+    "selected_count": "Đã chọn {{selected}} trong {{total}} gợi ý",
+    "skippedInfo": "{{funnels}} funnel và {{rules}} rule đã tồn tại và được bỏ qua.",
+    "alreadyExists": "Đã tồn tại"
+  },
+  "funnels": {
+    "section_title": "Funnels Gợi Ý",
+    "section_hint": "Funnel theo dõi cách khách truy cập di chuyển qua các trang quan trọng — giúp bạn phát hiện nơi họ rời đi.",
+    "card_subtitle": "Theo dõi khách truy cập qua {{count}} giai đoạn:",
+    "count": "{{count}} gợi ý"
+  },
+  "event_rules": {
+    "section_title": "Event Rules Gợi Ý",
+    "section_hint": "Event rules tự động phát hiện các hành động quan trọng trên trang — như click nút hoặc gửi form.",
+    "count": "{{count}} gợi ý"
+  },
+  "trigger": {
+    "suggest_funnels": "AI Gợi Ý Funnels",
+    "suggest_rules": "AI Gợi Ý Rules",
+    "view_suggestions": "Xem Gợi Ý AI ({{count}})",
+    "beta": "BETA",
+    "premium": "Premium+"
+  },
+  "onboarding": {
+    "title": "Để AI thiết lập analytics cho bạn",
+    "description": "Chúng tôi sẽ phân tích website và gợi ý funnels cùng event tracking rules phù hợp với cấu trúc trang của bạn.",
+    "prefilled_hint": "Đã điền sẵn từ Bước 1. Bạn có thể thay đổi URL để phân tích trang khác."
+  },
+  "badge": {
+    "ai": "AI"
+  },
+  "warnings": {
+    "truncated": "Trang này rất lớn. Chúng tôi đã phân tích phần đầu — một số phần tử ở cuối trang có thể không được đưa vào gợi ý."
+  },
+  "dependency": {
+    "ruleNeeded": "Cần cho funnel \"{{funnels}}\". Nếu không có rule này, bước funnel đó sẽ không theo dõi được dữ liệu.",
+    "bottomBarWarning_one": "{{count}} funnel đã chọn có bước sự kiện cần event rule chưa được chọn",
+    "bottomBarWarning_other": "{{count}} funnel đã chọn có bước sự kiện cần event rule chưa được chọn"
+  },
+  "success": {
+    "description": "Funnels và event rules đã sẵn sàng. Bạn có thể xem và quản lý chúng từ thanh bên.",
+    "continue": "Tiếp tục"
+  },
+  "messages": {
+    "analysis_complete": "Phân tích website hoàn tất",
+    "cached_results": "Hiển thị kết quả đã lưu",
+    "applied": "Đã tạo {{funnels}} funnels và {{rules}} event rules"
+  },
+  "errors": {
+    "fetch_failed": "Không thể truy cập website này. Vui lòng kiểm tra URL và thử lại.",
+    "fetch_timeout": "Website phản hồi quá lâu. Vui lòng thử lại.",
+    "page_too_small": "Trang này không đủ nội dung để phân tích. Vui lòng thử trang khác.",
+    "insufficient_credits": "Bạn đã dùng hết AI credits. Nâng cấp gói để có thêm.",
+    "invalid_url": "Vui lòng nhập URL hợp lệ (VD: https://trang-cua-ban.com)",
+    "analysis_failed": "Phân tích AI tạm thời không khả dụng. Vui lòng thử lại sau."
+  }
+}

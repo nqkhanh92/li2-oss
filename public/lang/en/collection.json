@@ -1,0 +1,172 @@
+{
+  "module": {
+    "collection": "Space",
+    "collections": "Spaces"
+  },
+  "form": {
+    "name_placeholder": "Enter space name",
+    "description_placeholder": "Describe this space...",
+    "org_permission_label": "Access Mode",
+    "org_permission_description": "Control who in your organization can access this space",
+    "select_permission_placeholder": "Select organization access",
+    "create_title": "Create Space",
+    "edit_title": "Edit Space",
+    "create_description": "Create a new space to organize your links",
+    "edit_description": "Update space information",
+    "create_button": "Create Space",
+    "update_button": "Update Space",
+    "success": {
+      "created": "Space created successfully",
+      "updated": "Space updated successfully"
+    },
+    "error": {
+      "create": "Failed to create space",
+      "update": "Failed to update space"
+    }
+  },
+  "messages": {
+    "delete_warning": "Are you sure you want to delete this space? Links in this space will not be deleted.",
+    "created": "Space created successfully",
+    "updated": "Space updated successfully",
+    "deleted": "Space deleted successfully",
+    "member_added": "Member added successfully",
+    "members_added": "{{count}} member(s) added successfully",
+    "member_removed": "Member removed successfully",
+    "member_role_updated": "Member role updated successfully",
+    "leave_success": "You have left the space",
+    "links_added": "Links added to space",
+    "links_added_count": "{{count}} link(s) added to space",
+    "links_removed": "Links removed from space"
+  },
+  "errors": {
+    "cannot_change_last_owner_role": "Cannot change role of the last owner. Add another owner first.",
+    "cannot_remove_last_owner": "Cannot remove the last owner from the space",
+    "last_owner_cannot_leave": "You are the last owner. Transfer ownership before leaving.",
+    "cannot_change_own_role": "You cannot change your own role",
+    "cannot_remove_self": "You cannot remove yourself. Use the leave space option instead.",
+    "not_a_member": "You are not a member of this space",
+    "creator_cannot_leave": "Space creator cannot leave. Delete the space instead.",
+    "new_owner_must_be_member": "New owner must be a member of the space first",
+    "only_owners_can_transfer": "Only owners can transfer ownership",
+    "user_already_member": "User is already a member of this space",
+    "name_already_exists": "A space with this name already exists in your organization",
+    "collection_not_found": "Space not found",
+    "member_not_found": "Member not found in this space",
+    "access_denied": "Space not found or access denied",
+    "no_access_to_collection": "You do not have access to this space",
+    "cannot_view_collection": "You do not have permission to view this space",
+    "cannot_edit_collection": "You do not have permission to edit this space",
+    "cannot_delete_collection": "You do not have permission to delete this space",
+    "cannot_manage_members": "You do not have permission to manage space members",
+    "user_not_org_member": "User is not a member of this organization",
+    "can_only_add_own_touchpoints": "You can only add your own touch-points to this space",
+    "can_only_remove_own_touchpoints": "You can only remove your own touch-points from this space",
+    "can_only_move_own_touchpoints": "You can only move your own touch-points",
+    "cannot_add_touchpoints": "You do not have permission to add links to this space",
+    "max_collections_reached": "Your organization has reached the maximum number of spaces allowed by your plan"
+  },
+  "search_placeholder": "Search space...",
+  "permissions": {
+    "can_edit": {
+      "label": "Public",
+      "description": "Organization members can view and edit this space"
+    },
+    "can_view": {
+      "label": "View Only",
+      "description": "Organization members can view but not edit this space"
+    },
+    "no_access": {
+      "label": "Private",
+      "description": "Only assigned members can access this space"
+    }
+  },
+  "roles": {
+    "owner": {
+      "label": "Owner",
+      "description": "Full access including member management"
+    },
+    "editor": {
+      "label": "Editor",
+      "description": "Can add, edit, and remove links in this space"
+    },
+    "viewer": {
+      "label": "Viewer",
+      "description": "Can only view the collection"
+    },
+    "no_access": {
+      "label": "No Access",
+      "description": "Cannot view or edit"
+    }
+  },
+  "tabs": {
+    "overview": "Overview",
+    "touch_points": "Links",
+    "members": "Members"
+  },
+  "stats": {
+    "touch_points": "Links",
+    "members": "Members",
+    "org_permission": "Org's Access Mode"
+  },
+  "details": {
+    "title": "Space Details",
+    "name": "Name",
+    "description": "Description",
+    "color": "Color",
+    "created_at": "Created",
+    "updated_at": "Last Updated",
+    "edit_button": "Edit Space",
+    "delete_buttons": "Delete Space"
+  },
+  "touch_points": {
+    "title": "Links in Space",
+    "description": "Manage links assigned to this space",
+    "add_button": "Add Links",
+    "add_dialog_title": "Add Links",
+    "add_dialog_description": "Select links to add to this space",
+    "select_at_least_one": "Please select at least one link",
+    "no_results": "No links found",
+    "all_added": "All links are already in this space",
+    "empty_title": "No links yet",
+    "empty_description": "Add links to organize them in this space",
+    "add_first": "Add your first link",
+    "in_collection": "in this space",
+    "select_all": "Select all",
+    "search_placeholder": "Search links..."
+  },
+  "members": {
+    "title": "Space Members",
+    "description": "Manage who has access to this space",
+    "add_button": "Add Member",
+    "leave_button": "Leave",
+    "add_dialog_title": "Add Members",
+    "add_dialog_description": "Select team members to add to this space",
+    "select_at_least_one": "Please select at least one member",
+    "search_placeholder": "Search members...",
+    "no_results": "No members found",
+    "all_added": "All team members are already in this space",
+    "empty_title": "No additional members",
+    "empty_description": "Add team members to collaborate on this space",
+    "add_first": "Add your first member",
+    "with_access": "with access to this space",
+    "role": "Role"
+  },
+  "field": {
+    "collection": "Space",
+    "select_collection": "Select a space",
+    "no_collection": "No space"
+  },
+  "select_collection": "Select Space",
+  "no_collections": "No spaces available",
+  "confirm_delete_dialog": "Confirm your deletion",
+  "deleting": "Deleting...",
+  "no_collections_description": "Create your first space to organize links",
+  "empty_state_description": "Your Spaces is empty. Add a new Space to get started.",
+  "no_results": "No spaces found",
+  "all_in_current": "All links are in the current space",
+  "available_collections": "Available spaces",
+  "plan_upgrade": {
+    "title": "Spaces is not available on your plan",
+    "description": "Upgrade your plan to organize your links into spaces and collaborate with your team."
+  }
+}

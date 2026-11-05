@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>By Location — đề xuất bố cục</title>
+<style>
+  :root{
+    --ink:#0f172a; --muted:#64748b; --faint:#94a3b8; --line:#e2e8f0;
+    --bg:#f8fafc; --card:#fff; --accent:#4125b9; --accent-soft:#ede9fe;
+    --empty:#f1f5f9; --stroke:#cbd5e1;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+  h1{font-size:28px;margin:0 0 8px;letter-spacing:-.02em}
+  h2{font-size:19px;margin:48px 0 14px;letter-spacing:-.01em}
+  h3{font-size:15px;margin:0 0 10px}
+  .lede{color:var(--muted);margin:0 0 4px;max-width:70ch}
+  .meta{color:var(--faint);font-size:13px;margin-top:6px}
+
+  /* ---- liệt kê vấn đề ---- */
+  .issues{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));margin-top:14px}
+  .issue{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .issue b{display:block;margin-bottom:3px;font-size:14px}
+  .issue span{color:var(--muted);font-size:13.5px}
+  .tagno{display:inline-block;min-width:20px;height:20px;line-height:20px;text-align:center;
+         background:#fee2e2;color:#b91c1c;border-radius:5px;font-size:11px;font-weight:700;margin-right:7px}
+
+  /* ---- chuyển phương án ---- */
+  .switch{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap}
+  .switch button{border:1px solid var(--line);background:var(--card);color:var(--muted);
+      padding:9px 16px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:500;font-family:inherit}
+  .switch button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* ---- khung card giống app ---- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+  .card-title{font-size:16px;font-weight:600;color:#334155;margin:0 0 14px}
+  .row{display:grid;gap:22px;align-items:start}
+  .layout-wide{grid-template-columns:6fr 4fr}
+  .layout-tall{grid-template-columns:3fr 7fr}
+  @media(max-width:860px){.layout-wide,.layout-tall{grid-template-columns:1fr}}
+
+  /* ---- tab kiểu hiện tại ---- */
+  .tabs{display:flex;gap:26px;border-bottom:1px solid var(--line);margin-bottom:4px}
+  .tabs button{border:0;background:0;padding:9px 0;cursor:pointer;color:var(--muted);
+               font-size:14.5px;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+
+  /* ---- breadcrumb phương án A ---- */
+  .crumbs{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:14px;flex-wrap:wrap}
+  .crumbs button{border:0;background:0;padding:0;cursor:pointer;color:var(--accent);
+                 font-size:14px;font-family:inherit;text-decoration:underline;text-underline-offset:3px}
+  .crumbs .sep{color:var(--faint)}
+  .crumbs .here{font-weight:600}
+
+  /* ---- bảng ---- */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:8px 10px 8px 0;
+     border-bottom:1px solid var(--line);white-space:nowrap}
+  td{padding:11px 10px 11px 0;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+  tr.clickable{cursor:pointer}
+  tr.clickable:hover td{background:#fafafa}
+  tr.hot td{background:var(--accent-soft)}
+  tr.muted td{color:var(--faint)}
+  .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .bar{position:relative;height:17px;background:var(--empty);border-radius:4px;overflow:hidden;min-width:70px}
+  .bar i{position:absolute;inset:0 auto 0 0;background:#34a853;border-radius:4px}
+  .bar.gray i{background:var(--faint)}
+  .bar b{position:absolute;right:6px;top:0;line-height:17px;font-size:11.5px;font-weight:600;color:#334155}
+  .chev{color:var(--faint);font-size:16px}
+  .foot{color:var(--faint);font-size:12.5px;margin-top:12px}
+
+  /* ---- bản đồ ---- */
+  .mapbox{position:relative;background:#fcfcfd;border-radius:10px;overflow:hidden}
+  svg{display:block;width:100%;height:auto}
+  path{stroke:#9fb0bd;stroke-width:.3;transition:fill .12s}
+  path.hot{fill:var(--accent)!important}
+  .legend{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{width:19px;height:11px;border-radius:2px;display:inline-block;border:1px solid #d9e2ea}
+  .tip{position:absolute;top:10px;left:10px;background:#fff;border:1px solid var(--line);
+       border-radius:9px;padding:8px 12px;font-size:13px;box-shadow:0 4px 14px rgba(15,23,42,.1);pointer-events:none}
+  .tip b{display:block;font-size:14px}
+  .tip span{color:var(--muted);font-size:12.5px}
+
+  .note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+        border-radius:0 10px 10px 0;padding:14px 18px;margin-top:16px}
+  .note b{font-size:14px}
+  .note p{margin:5px 0 0;color:var(--muted);font-size:13.5px}
+  .verdict{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:18px 20px;margin-top:16px}
+  .verdict b{color:#166534}
+  .ask{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:18px 20px;margin-top:14px}
+  .ask b{color:#92400e}
+  .dim{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>By Location — đề xuất bố cục</h1>
+  <p class="lede">Bản đồ và bảng dùng dữ liệu thật của LiHi, khoảng 7 ngày gần nhất: 90 lượt, trong đó
+     86 ở Việt Nam và 4 không xác định được quốc gia. Bản đồ là hình thật, dựng từ chính tệp
+     <code>src/public/json/vietnam.json</code> trong repo — 63 tỉnh cũ, gộp lại thành 34 tỉnh hiện hành.</p>
+  <p class="meta" style="color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:9px 13px;display:inline-block">
+     Lưu ý: bản mô phỏng này vẽ Việt Nam ở cả hai mức cho nhẹ file. Trên app thật, mức quốc gia là bản đồ
+     thế giới (nó tự phóng tới nước nhiều lượt nhất, nên thực tế đang hiển thị Đông Nam Á).</p>
+  <p class="meta">Soạn 22/10/2026 · bấm thử được: đổi phương án, chọn tab, trỏ chuột lên bản đồ, bấm vào dòng trong bảng</p>
+
+  <h2>Vấn đề của bố cục hiện tại</h2>
+  <div class="issues" id="issues"></div>
+
+  <h2>Thử ba bố cục</h2>
+  <div class="switch" id="switch"></div>
+  <div id="stage"></div>
+  <div id="explain"></div>
+
+  <h2>Khuyến nghị</h2>
+  <div class="verdict">
+    <b>Chọn phương án A.</b>
+    <p class="dim" style="margin:6px 0 0">Lý do không phải thẩm mỹ: ba tab hiện tại đang mô tả sai cấu trúc dữ liệu.
+    Dữ liệu chỉ có hai mức — quốc gia, và vùng bên trong quốc gia — nhưng giao diện bày ra ba mức ngang hàng.
+    Chính chỗ sai đó sinh ra tab City trùng lặp với Province, và một bản đồ không khớp với bảng bên cạnh.
+    Breadcrumb mô tả đúng hai mức và tự nhiên bỏ được tab thừa.</p>
+  </div>
+  <div class="ask">
+    <b>Một câu cần chốt nếu chọn A.</b>
+    <p class="dim" style="margin:6px 0 0">Bấm vào một nước chưa có bản đồ cấp tỉnh — ví dụ Hàn Quốc — thì hiện gì?
+    Tôi nghiêng về: giữ bản đồ thế giới, chỉ đổi bảng sang danh sách vùng của nước đó
+    (<code>Seoul</code>, <code>Jeollabuk-do</code> đã có sẵn trong dữ liệu), vì danh sách vùng vẫn đáng xem
+    dù chưa vẽ được hình. Cách còn lại là không cho bấm.</p>
+  </div>
+</div>
+
+<script>
+const BOXES     = {"vn": [300, 346], "world": [600, 582]};
+const VN_ENC    = {"VN-89": "M62 264L64 267L65 269L68 271L70 274L68 276L65 278L61 277L56 275L54 273L57 270L60 268L59 265Z", "VN-24": "M82 39L84 42L86 44L88 42L90 39L93 40L96 42L98 44L98 48L94 49L91 48L88 47L85 48L81 47L77 47L78 43L79 41L82 39Z", "VN-6": "M82 22L83 26L82 29L80 32L77 33L74 35L74 31L70 30L68 28L67 25L69 22L70 19L69 16L72 15L74 17L76 19L79 18L81 21Z", "VN-95": "M66 291L70 291L71 295L75 295L73 299L69 300L67 302L64 301L64 298L64 294L64 290Z", "VN-27": "M85 50L83 52L79 52L77 50L78 47L82 48L84 49Z", "VN-83": "M94 279L93 282L92 285L88 284L86 282L83 280L81 278L84 276L88 276L92 278Z", "VN-52": "M141 188L141 192L143 195L144 200L145 203L143 206L141 208L139 210L136 209L135 204L134 202L133 198L132 195L131 191L132 188L135 186L139 186Z", "VN-74": "M97 256L98 259L95 261L95 265L92 263L90 261L88 259L86 257L86 253L90 252L92 255L94 252L96 254Z", "VN-70": "M106 246L104 248L102 252L100 254L98 256L95 254L91 254L88 252L88 248L87 244L91 242L94 240L98 239L101 237L103 235L103 239L105 241L107 244Z", "VN-60": "M136 255L134 257L130 258L128 260L126 262L123 263L120 265L118 268L114 269L111 270L109 268L110 263L107 261L108 258L110 255L113 255L117 255L120 256L123 255L124 251L128 251L132 252L135 254Z", "VN-96": "M64 295L63 298L65 301L66 304L64 308L61 309L58 311L55 312L56 308L54 305L55 300L55 296L55 292L62 294Z", "VN-92": "M72 280L75 282L72 284L67 282L65 280L67 277L71 278Z", "VN-4": "M90 21L87 23L84 21L81 22L80 18L77 20L74 18L73 14L70 16L68 14L66 13L66 9L69 7L73 7L75 9L79 10L82 9L84 12L88 11L92 12L95 13L94 15L92 18L90 20Z", "VN-66": "M132 221L135 224L138 225L137 228L136 232L132 233L131 236L127 236L124 238L120 237L118 235L119 232L117 229L116 225L111 225L109 223L109 218L111 214L114 213L118 213L122 212L126 214L127 217L129 219L132 221Z", "VN-67": "M121 238L118 240L120 242L118 246L116 244L112 243L110 246L107 244L105 241L103 239L103 235L106 236L110 234L110 231L110 226L114 225L117 227L117 231L117 234L120 236Z", "VN-11": "M28 31L29 35L30 37L29 40L27 43L27 47L27 51L24 52L22 54L19 52L17 50L16 47L17 43L18 40L17 37L14 34L13 38L11 35L9 32L7 29L5 27L3 25L1 22L3 20L6 22L8 25L11 27L14 28L17 30L20 28L23 29L25 27L27 29Z", "VN-75": "M110 254L108 257L107 260L110 262L109 266L106 267L103 267L101 269L99 272L97 270L94 268L96 266L94 263L96 261L97 258L99 255L101 252L104 251L108 252L109 255Z", "VN-87": "M68 263L71 265L74 269L77 271L75 275L77 278L72 280L69 276L70 273L67 271L65 269L64 266L66 264Z", "VN-64": "M130 188L132 190L132 194L133 198L134 201L135 204L136 208L133 210L135 213L136 216L134 218L132 221L129 220L128 217L126 214L123 213L120 212L116 213L112 214L111 210L110 206L108 204L109 200L112 199L113 196L116 194L121 193L124 192L126 190L129 189Z", "VN-2": "M70 6L68 9L65 10L66 13L68 15L66 17L62 16L61 19L60 22L59 25L56 23L55 26L52 25L49 23L47 20L47 17L48 14L51 12L54 11L55 7L57 5L60 3L63 3L65 0L67 3L69 5Z", "VN-35": "M81 60L82 63L79 65L76 63L75 60L79 59L81 60Z", "VN-1": "M76 45L77 49L79 52L76 54L78 57L76 60L74 62L72 59L71 56L69 54L66 52L64 49L66 46L68 48L72 47L74 45Z", "VN-42": "M74 100L75 104L77 107L79 109L82 111L85 113L87 116L85 117L81 118L79 116L76 114L73 116L70 114L68 112L65 111L62 109L60 107L62 103L65 104L69 104L72 103L74 100Z", "VN-30": "M89 47L87 51L91 51L89 54L88 58L85 59L82 57L81 54L84 52L85 49L88 47Z", "VN-31": "M94 56L92 59L89 60L87 59L88 56L89 53L92 52L94 55Z", "VN-93": "M73 283L76 285L74 288L71 290L68 291L66 289L67 286L69 284L72 283Z", "VN-17": "M65 52L68 53L70 55L72 59L74 61L76 64L72 65L69 66L65 65L63 63L61 62L58 61L55 59L59 58L58 54L56 52L59 52L63 53Z", "VN-33": "M81 53L82 57L84 59L81 60L78 58L77 55L79 52Z", "VN-62": "M124 179L125 181L127 183L129 186L128 188L125 191L123 192L120 195L116 194L112 195L111 199L108 201L106 199L107 195L107 191L109 189L110 186L110 182L108 180L111 178L111 174L111 171L113 173L115 175L119 176L120 179L122 178Z", "VN-12": "M29 18L30 21L34 23L35 26L37 28L37 32L37 36L33 35L32 32L29 30L26 29L23 29L20 28L17 30L14 29L13 25L8 25L7 22L5 20L6 17L8 14L11 16L14 17L16 19L18 21L21 19L23 16L24 14L27 16Z", "VN-68": "M133 238L132 241L131 245L132 248L130 250L127 251L124 252L122 256L120 257L118 255L114 254L109 255L108 252L105 250L106 247L109 246L112 244L116 244L119 245L119 241L121 238L124 237L127 236L131 235L133 238Z", "VN-20": "M90 21L92 24L93 27L92 31L97 31L100 33L101 36L105 37L104 40L104 44L100 45L97 43L96 40L93 39L89 40L87 43L84 42L82 39L83 37L81 35L81 31L82 28L83 25L83 21L85 22L89 22Z", "VN-10": "M45 15L47 17L48 21L50 23L51 27L47 26L47 30L45 33L43 32L39 32L37 30L36 27L34 24L31 22L30 19L29 15L33 16L35 18L38 19L39 16L40 13L44 12L45 15Z", "VN-80": "M82 262L86 262L89 264L88 267L90 269L93 270L92 273L88 274L86 272L83 271L78 272L75 269L70 265L68 263L72 262L76 264L80 266L81 263Z", "VN-36": "M82 63L84 66L87 67L90 69L87 69L83 73L81 75L82 71L80 68L78 67L79 64Z", "VN-40": "M75 89L73 92L71 94L72 98L74 102L72 104L69 103L64 103L61 102L59 100L55 100L52 98L50 96L47 95L44 93L42 91L38 90L36 88L38 86L41 85L40 81L42 80L47 80L49 82L52 80L54 78L55 76L58 75L62 76L61 79L63 81L64 85L67 86L70 87L73 88Z", "VN-37": "M76 65L78 67L80 69L82 71L80 74L78 72L75 71L72 69L70 67L72 65Z", "VN-58": "M143 245L142 249L139 250L139 255L135 254L132 252L130 250L132 248L131 245L132 242L133 238L135 240L137 242L140 243L142 245Z", "VN-25": "M65 41L66 44L65 48L64 51L63 54L60 52L57 51L56 48L56 44L56 40L58 37L62 38L64 40Z", "VN-54": "M147 224L143 224L140 226L136 225L134 222L134 218L136 215L135 212L137 210L141 209L143 206L145 209L143 212L145 215L146 219L148 222Z", "VN-44": "M89 117L87 120L89 123L90 126L93 129L95 131L98 133L96 136L94 138L90 138L87 137L85 134L84 131L81 130L76 124L73 122L72 119L73 116L76 115L79 116L81 118L85 117L89 117Z", "VN-49": "M115 157L118 158L122 160L127 161L129 166L131 168L133 170L131 172L127 173L125 175L123 178L122 180L118 179L118 176L114 175L112 172L110 171L107 169L106 166L104 164L105 161L107 159L110 158L114 157Z", "VN-51": "M141 188L138 186L134 186L132 188L129 187L128 184L126 182L124 179L125 176L126 173L130 172L133 171L137 172L137 177L138 180L140 184L140 188Z", "VN-22": "M108 46L111 47L109 49L106 51L108 48ZM96 56L94 53L91 52L88 51L89 47L93 49L96 48L98 46L102 44L104 42L105 39L108 38L112 39L115 38L118 40L120 42L117 41L114 43L112 44L108 46L106 48L106 52L103 53L98 53L95 54Z", "VN-45": "M106 143L105 146L101 146L100 149L99 152L97 150L95 147L94 149L92 148L90 145L90 140L92 138L95 137L97 135L101 136L104 140L106 143Z", "VN-94": "M78 285L81 288L83 290L82 293L81 296L76 297L74 295L70 294L69 291L72 289L75 288L76 284Z", "VN-14": "M37 37L40 38L44 38L44 42L47 44L50 43L53 45L55 47L57 50L57 54L59 56L56 57L54 60L51 59L48 58L46 56L44 54L41 53L38 54L34 55L33 58L29 57L25 56L23 55L24 52L26 50L27 46L25 44L27 41L29 39L29 35L28 32L31 31L33 33L34 36Z", "VN-72": "M88 248L87 252L85 255L86 258L87 262L83 263L80 260L78 258L76 255L76 251L78 249L79 246L83 247L87 248Z", "VN-34": "M91 60L90 64L90 68L87 67L84 65L82 63L81 60L84 59L88 60Z", "VN-19": "M80 32L81 35L83 37L80 39L79 43L77 44L73 43L71 41L69 39L68 35L69 32L72 30L74 32L78 32Z", "VN-38": "M69 66L71 68L74 70L77 71L80 72L78 75L77 79L75 82L75 86L73 89L71 87L68 85L65 84L64 81L61 79L62 76L58 75L57 71L54 69L51 68L52 65L48 66L46 64L48 62L51 60L54 61L56 59L59 62L62 62L64 65L68 66Z", "VN-46": "M123 154L119 154L116 156L113 158L110 158L107 157L104 156L102 154L99 152L101 149L103 146L105 144L109 145L111 146L114 148L116 150L120 152L122 154Z", "VN-82": "M93 272L95 276L94 278L90 277L87 276L83 276L78 276L75 275L77 272L81 271L85 271L87 273L91 273Z", "VN-79": "M95 264L94 267L96 269L98 271L97 275L94 273L93 270L90 269L88 267L89 264L86 263L87 259L90 261L92 264Z", "VN-84": "M91 287L90 290L87 292L83 290L81 288L79 286L81 284L83 282L87 284L90 286Z", "VN-8": "M68 17L70 19L69 22L67 25L68 28L70 31L68 35L69 39L67 41L64 40L62 38L59 36L59 33L57 30L56 27L57 24L60 23L61 19L61 15L64 17L68 17Z", "VN-86": "M84 281L81 283L78 284L75 283L74 281L76 279L78 276L81 278L83 280Z", "VN-26": "M74 44L73 47L70 49L67 47L66 44L68 41L71 42L74 44Z", "VN-15": "M55 27L57 29L59 32L60 35L59 37L56 39L57 43L54 45L51 44L48 45L45 43L44 40L41 38L38 38L37 34L38 31L41 33L45 32L47 30L47 26L49 29L51 26L54 27Z", "VN-48": "M123 154L123 157L122 160L118 160L116 157L117 154L121 155Z", "VN-56": "M143 245L140 243L137 242L135 240L133 237L133 234L134 231L136 228L140 226L142 224L146 224L147 228L146 225L143 227L144 231L146 233L142 232L144 235L143 239L144 242L142 239L142 243Z", "VN-91": "M54 272L56 275L61 277L64 279L67 282L69 285L67 287L66 291L64 293L58 291L55 288L57 286L59 284L58 280L55 279L51 280L50 277L47 275L49 273L52 271ZM39 274L40 277L39 281L37 278L35 275L38 273Z", "VN-77": "M109 267L110 270L108 272L104 274L101 275L99 273L99 269L102 267L105 268L107 267Z"};
+
+const VN_PATHS = VN_ENC;
+const PROVINCES   = [{"code": "VN-1", "nameVi": "Hà Nội", "nameEn": "Ha Noi", "legacy": ["VN-1"]}, {"code": "VN-46", "nameVi": "Huế", "nameEn": "Hue", "legacy": ["VN-46"]}, {"code": "VN-31", "nameVi": "Hải Phòng", "nameEn": "Hai Phong", "legacy": ["VN-31", "VN-30"]}, {"code": "VN-48", "nameVi": "Đà Nẵng", "nameEn": "Da Nang", "legacy": ["VN-48", "VN-49"]}, {"code": "VN-92", "nameVi": "Cần Thơ", "nameEn": "Can Tho", "legacy": ["VN-92", "VN-94", "VN-93"]}, {"code": "VN-79", "nameVi": "TP. Hồ Chí Minh", "nameEn": "Ho Chi Minh City", "legacy": ["VN-79", "VN-74", "VN-77"]}, {"code": "VN-12", "nameVi": "Lai Châu", "nameEn": "Lai Chau", "legacy": ["VN-12"]}, {"code": "VN-11", "nameVi": "Điện Biên", "nameEn": "Dien Bien", "legacy": ["VN-11"]}, {"code": "VN-14", "nameVi": "Sơn La", "nameEn": "Son La", "legacy": ["VN-14"]}, {"code": "VN-20", "nameVi": "Lạng Sơn", "nameEn": "Lang Son", "legacy": ["VN-20"]}, {"code": "VN-22", "nameVi": "Quảng Ninh", "nameEn": "Quang Ninh", "legacy": ["VN-22"]}, {"code": "VN-38", "nameVi": "Thanh Hóa", "nameEn": "Thanh Hoa", "legacy": ["VN-38"]}, {"code": "VN-40", "nameVi": "Nghệ An", "nameEn": "Nghe An", "legacy": ["VN-40"]}, {"code": "VN-42", "nameVi": "Hà Tĩnh", "nameEn": "Ha Tinh", "legacy": ["VN-42"]}, {"code": "VN-4", "nameVi": "Cao Bằng", "nameEn": "Cao Bang", "legacy": ["VN-4"]}, {"code": "VN-8", "nameVi": "Tuyên Quang", "nameEn": "Tuyen Quang", "legacy": ["VN-8", "VN-2"]}, {"code": "VN-10", "nameVi": "Lào Cai", "nameEn": "Lao Cai", "legacy": ["VN-10", "VN-15"]}, {"code": "VN-19", "nameVi": "Thái Nguyên", "nameEn": "Thai Nguyen", "legacy": ["VN-19", "VN-6"]}, {"code": "VN-25", "nameVi": "Phú Thọ", "nameEn": "Phu Tho", "legacy": ["VN-25", "VN-26", "VN-17"]}, {"code": "VN-27", "nameVi": "Bắc Ninh", "nameEn": "Bac Ninh", "legacy": ["VN-27", "VN-24"]}, {"code": "VN-33", "nameVi": "Hưng Yên", "nameEn": "Hung Yen", "legacy": ["VN-33", "VN-34"]}, {"code": "VN-37", "nameVi": "Ninh Bình", "nameEn": "Ninh Binh", "legacy": ["VN-37", "VN-35", "VN-36"]}, {"code": "VN-45", "nameVi": "Quảng Trị", "nameEn": "Quang Tri", "legacy": ["VN-45", "VN-44"]}, {"code": "VN-51", "nameVi": "Quảng Ngãi", "nameEn": "Quang Ngai", "legacy": ["VN-51", "VN-62"]}, {"code": "VN-64", "nameVi": "Gia Lai", "nameEn": "Gia Lai", "legacy": ["VN-64", "VN-52"]}, {"code": "VN-56", "nameVi": "Khánh Hòa", "nameEn": "Khanh Hoa", "legacy": ["VN-56", "VN-58"]}, {"code": "VN-68", "nameVi": "Lâm Đồng", "nameEn": "Lam Dong", "legacy": ["VN-68", "VN-67", "VN-60"]}, {"code": "VN-66", "nameVi": "Đắk Lắk", "nameEn": "Dak Lak", "legacy": ["VN-66", "VN-54"]}, {"code": "VN-75", "nameVi": "Đồng Nai", "nameEn": "Dong Nai", "legacy": ["VN-75", "VN-70"]}, {"code": "VN-72", "nameVi": "Tây Ninh", "nameEn": "Tay Ninh", "legacy": ["VN-72", "VN-80"]}, {"code": "VN-86", "nameVi": "Vĩnh Long", "nameEn": "Vinh Long", "legacy": ["VN-86", "VN-83", "VN-84"]}, {"code": "VN-87", "nameVi": "Đồng Tháp", "nameEn": "Dong Thap", "legacy": ["VN-87", "VN-82"]}, {"code": "VN-89", "nameVi": "An Giang", "nameEn": "An Giang", "legacy": ["VN-89", "VN-91"]}, {"code": "VN-96", "nameVi": "Cà Mau", "nameEn": "Ca Mau", "legacy": ["VN-96", "VN-95"]}];
+const DATA        = {"totalVisits": 90, "countries": [{"alpha2": "VN", "iso": "704", "name": "Viet Nam", "count": 86, "regions": [{"raw": "Ho Chi Minh", "province": "VN-79", "count": 78}, {"raw": "Ho Chi Minh City", "province": "VN-79", "count": 8}]}, {"alpha2": "ZZ", "iso": null, "name": "Unknown", "count": 4, "regions": []}]};
+
+const legacyToProvince = {};
+PROVINCES.forEach(p => p.legacy.forEach(c => legacyToProvince[c] = p));
+const provinceByCode = Object.fromEntries(PROVINCES.map(p => [p.code, p]));
+
+const vn = DATA.countries.find(c => c.alpha2 === 'VN');
+const unknownCountry = DATA.countries.find(c => c.alpha2 === 'ZZ');
+const TOTAL = DATA.totalVisits;
+
+// gộp các cách viết tên về một tỉnh — đúng việc bảng ánh xạ trong code đang làm
+const provinceRows = (() => {
+  const by = new Map();
+  vn.regions.forEach(r => {
+    const cur = by.get(r.province) || { province: provinceByCode[r.province], count: 0, raws: [] };
+    cur.count += r.count; cur.raws.push(r.raw);
+    by.set(r.province, cur);
+  });
+  return [...by.values()].sort((a, b) => b.count - a.count);
+})();
+const provinceMax = provinceRows[0]?.count || 1;
+const offMap = TOTAL - vn.count;
+
+const pct = n => (n / TOTAL * 100).toFixed(2) + '%';
+const el = (h) => { const d = document.createElement('div'); d.innerHTML = h.trim(); return d.firstElementChild; };
+
+/* ---------- vấn đề ---------- */
+const ISSUES = [
+  ['Tab City hiện hai dòng trùng nhau',
+   '<code>Ho Chi Minh</code> 78 và <code>Ho Chi Minh City</code> 8 là cùng một nơi. Tab Province đã gộp đúng thành 86, nhưng tab City ngay cạnh lại phơi ra dữ liệu thô.'],
+  ['Ba tab là ba mức của một phân cấp, nhưng bày ngang hàng',
+   'Country → Province → City là phóng to dần, không phải ba lựa chọn song song. Phải bấm qua lại mới ghép được bức tranh.'],
+  ['Bản đồ không khớp bảng',
+   'Ở tab City, bản đồ hiển thị cả thế giới trong khi mọi dòng trong bảng đều là tỉnh Việt Nam.'],
+  ['Khung ngang không hợp hình Việt Nam',
+   'Khung khoảng 660×370 px. Việt Nam dài theo chiều dọc nên vừa chiều cao xong chỉ chiếm chừng 150 px bề ngang — hơn 60% khung bỏ trắng, TP.HCM nhỏ tới mức không thấy đang được tô đậm.'],
+  ['Thang màu của bản đồ thế giới vẫn cố định 0–1000',
+   'Việt Nam 86 lượt rơi vào bậc thấp nhất nên gần như trắng. Bản đồ tỉnh đã sửa thang theo giá trị lớn nhất thật, bản đồ thế giới thì chưa.'],
+  ['Nửa phải trống mênh mông',
+   'Chỉ một đến ba dòng dữ liệu mà chiếm 40% chiều ngang của card.'],
+];
+document.getElementById('issues').innerHTML = ISSUES.map(([t, d], i) =>
+  `<div class="issue"><b><span class="tagno">${i + 1}</span>${t}</b><span>${d}</span></div>`).join('');
+
+/* ---------- bản đồ ---------- */
+function countrySvg(highlight, onHover) {
+  // Cùng hình Việt Nam, nhưng mọi tỉnh một màu: ở mức quốc gia, cả nước là MỘT giá trị.
+  const svg = el(`<svg viewBox="0 0 ${BOXES.vn[0]} ${BOXES.vn[1]}" role="img" aria-label="Việt Nam"></svg>`);
+  const fill = shade(vn.count, vn.count);
+  for (const d of Object.values(VN_PATHS)) {
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('fill', fill);
+    if (highlight === 'VN') p.classList.add('hot');
+    if (onHover) {
+      p.style.cursor = 'pointer';
+      p.addEventListener('mouseenter', () => onHover({ name: 'Viet Nam', count: vn.count }));
+      p.addEventListener('mouseleave', () => onHover(null));
+    }
+    svg.appendChild(p);
+  }
+  return svg;
+}
+
+const STOPS = ['#e8f5e9', '#a5d6a7', '#66bb6a', '#2e7d32', '#1b5e20'];
+function shade(count, max) {
+  if (!count) return '#f1f5f9';
+  const i = Math.min(STOPS.length - 1, Math.ceil(count / Math.max(max, 1) * STOPS.length) - 1);
+  return STOPS[Math.max(0, i)];
+}
+
+function vnSvg(highlightCode, onHover) {
+  const svg = el(`<svg viewBox="0 0 ${BOXES.vn[0]} ${BOXES.vn[1]}" role="img" aria-label="Bản đồ các tỉnh Việt Nam"></svg>`);
+  const countByProvince = Object.fromEntries(provinceRows.map(r => [r.province.code, r.count]));
+  for (const [legacy, d] of Object.entries(VN_PATHS)) {
+    const prov = legacyToProvince[legacy];
+    const count = prov ? (countByProvince[prov.code] || 0) : 0;
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('fill', shade(count, provinceMax));
+    if (prov && highlightCode === prov.code) p.classList.add('hot');
+    if (prov && onHover) {
+      p.addEventListener('mouseenter', () => onHover({ name: prov.nameVi, count }));
+      p.addEventListener('mouseleave', () => onHover(null));
+    }
+    svg.appendChild(p);
+  }
+  return svg;
+}
+
+function legend(max) {
+  const step = Math.ceil(max / STOPS.length);
+  const labels = STOPS.map((c, i) => {
+    const lo = i * step + 1, hi = Math.min((i + 1) * step, max);
+    return `<i style="background:${c}"></i>${lo === hi ? lo : lo + '–' + hi}`;
+  }).join(' ');
+  return `<div class="legend"><i style="background:#f1f5f9"></i>0 ${labels}</div>`;
+}
+
+function mapBox(svg, max) {
+  const box = el(`<div><div class="mapbox"></div>${legend(max)}</div>`);
+  const inner = box.querySelector('.mapbox');
+  inner.appendChild(svg);
+  return { box, inner };
+}
+
+function tipFor(inner) {
+  let node = null;
+  return (info) => {
+    if (node) { node.remove(); node = null; }
+    if (!info) return;
+    node = el(`<div class="tip"><b>${info.name}</b><span>${info.count} lượt · ${pct(info.count)}</span></div>`);
+    inner.appendChild(node);
+  };
+}
+
+/* ---------- bảng ---------- */
+function table(cols, rows) {
+  return `<table><thead><tr>${cols.map(c => `<th${c.num ? ' class="num"' : ''}>${c.label}</th>`).join('')}</tr></thead>
+          <tbody>${rows}</tbody></table>`;
+}
+function barCell(count, max, gray) {
+  const w = Math.max(3, count / Math.max(max, 1) * 100);
+  return `<td><div class="bar${gray ? ' gray' : ''}"><i style="width:${w}%"></i><b>${pct(count)}</b></div></td>`;
+}
+
+/* ---------- ba bố cục ---------- */
+function renderCurrent(stage) {
+  let tab = 'countries';
+  const draw = () => {
+    stage.innerHTML = '';
+    const card = el(`<div class="card"><p class="card-title">By Location</p>
+                     <div class="row layout-wide"><div class="left"></div><div class="right"></div></div></div>`);
+    const left = card.querySelector('.left'), right = card.querySelector('.right');
+
+    const max = tab === 'provinces' ? provinceMax : 1000;   // thang cố định 1000 đúng như bản đang chạy
+    const svg = tab === 'provinces' ? vnSvg(null, null) : countrySvg(null, null);
+    const { box } = mapBox(svg, max);
+    left.appendChild(box);
+
+    const tabs = el(`<div class="tabs">
+        <button aria-selected="${tab === 'countries'}" data-t="countries">Country</button>
+        <button aria-selected="${tab === 'provinces'}" data-t="provinces">Province</button>
+        <button aria-selected="${tab === 'cities'}" data-t="cities">City</button></div>`);
+    tabs.querySelectorAll('button').forEach(b => b.onclick = () => { tab = b.dataset.t; draw(); });
+    right.appendChild(tabs);
+
+    const body = el('<div></div>');
+    if (tab === 'countries') {
+      body.innerHTML = table(
+        [{ label: 'N.O' }, { label: 'Country' }, { label: 'Visit', num: 1 }, { label: 'Visit Rate', num: 1 }],
+        DATA.countries.map((c, i) =>
+          `<tr><td>${i + 1}</td><td>${c.name}</td><td class="num">${c.count}</td><td class="num">${pct(c.count)}</td></tr>`).join(''));
+    } else if (tab === 'provinces') {
+      body.innerHTML = table(
+        [{ label: 'N.O' }, { label: 'Province' }, { label: 'Visit', num: 1 }, { label: 'Visit Rate', num: 1 }],
+        provinceRows.map((r, i) =>
+          `<tr><td>${i + 1}</td><td>${r.province.nameVi}</td><td class="num">${r.count}</td><td class="num">${pct(r.count)}</td></tr>`).join(''))
+        + `<p class="foot">${offMap} visits (${pct(offMap)}) are not on this map: outside Vietnam, or province unknown.</p>`;
+    } else {
+      const rows = [...vn.regions.map(r => ({ name: r.raw, count: r.count })),
+                    { name: 'Unknown', count: unknownCountry.count }].sort((a, b) => b.count - a.count);
+      body.innerHTML = table(
+        [{ label: 'N.O' }, { label: 'City' }, { label: 'Visit', num: 1 }, { label: 'Visit Rate', num: 1 }],
+        rows.map((r, i) =>
+          `<tr><td>${i + 1}</td><td>${r.name}</td><td class="num">${r.count}</td><td class="num">${pct(r.count)}</td></tr>`).join(''));
+    }
+    right.appendChild(body);
+    stage.appendChild(card);
+  };
+  draw();
+  return `<div class="note"><b>Đây là bản đang chạy trên LiHi.</b>
+    <p>Bấm sang tab <b>City</b> để thấy vấn đề số 1: hai dòng cho cùng một thành phố. Trên app thật, tab đó
+    còn kéo bản đồ về thế giới trong khi bảng toàn tỉnh Việt Nam (vấn đề số 3). Khung ngang 6/4 ở đây
+    cho thấy vấn đề số 4: hình dọc nằm trong khung ngang thì thừa chỗ hai bên.</p></div>`;
+}
+
+function renderA(stage) {
+  let level = 'world';
+  let hot = null;
+  const draw = () => {
+    stage.innerHTML = '';
+    const inVN = level === 'vn';
+    const card = el(`<div class="card"><p class="card-title">By Location</p>
+      <div class="crumbs">
+        ${inVN ? '<button data-go="world">Việt Nam (toàn quốc)</button><span class="sep">›</span><span class="here">theo tỉnh</span>'
+               : '<span class="here">Việt Nam (toàn quốc)</span>'}
+      </div>
+      <div class="row layout-tall"><div class="left"></div><div class="right"></div></div></div>`);
+    card.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { level = 'world'; hot = null; draw(); });
+    const left = card.querySelector('.left'), right = card.querySelector('.right');
+
+    const max = inVN ? provinceMax : vn.count;
+    const { box, inner } = mapBox(
+      inVN ? vnSvg(hot, (i) => tip(i)) : countrySvg(hot, (i) => tip(i)), max);
+    left.appendChild(box);
+    const tip = tipFor(inner);
+
+    let rows, cols;
+    if (inVN) {
+      cols = [{ label: 'Tỉnh/thành' }, { label: 'Lượt', num: 1 }, { label: 'Tỷ lệ' }];
+      rows = provinceRows.map(r =>
+        `<tr data-code="${r.province.code}"><td>${r.province.nameVi}</td>
+         <td class="num">${r.count}</td>${barCell(r.count, provinceMax)}</tr>`).join('')
+        + `<tr class="muted"><td>⊘ Không xác định</td><td class="num">${offMap}</td>${barCell(offMap, provinceMax, true)}</tr>`;
+    } else {
+      cols = [{ label: 'Quốc gia' }, { label: 'Lượt', num: 1 }, { label: 'Tỷ lệ' }];
+      rows = DATA.countries.map(c =>
+        `<tr ${c.alpha2 === 'VN' ? 'class="clickable" data-drill="vn"' : 'class="muted"'} data-iso="${c.alpha2 === 'VN' ? 'VN' : ''}">
+           <td>${c.alpha2 === 'VN' ? c.name + ' <span class="chev">›</span>' : '⊘ ' + c.name}</td>
+           <td class="num">${c.count}</td>${barCell(c.count, vn.count, c.alpha2 !== 'VN')}</tr>`).join('');
+    }
+    const body = el(`<div>${table(cols, rows)}${
+      inVN ? `<p class="foot">${34 - provinceRows.length} tỉnh chưa có lượt nào</p>` :
+             `<p class="foot">Bấm vào Viet Nam để xem từng tỉnh</p>`}</div>`);
+
+    body.querySelectorAll('tbody tr').forEach(tr => {
+      const code = tr.dataset.code, iso = tr.dataset.iso;
+      tr.addEventListener('mouseenter', () => { hot = code || iso || null; repaint(); });
+      tr.addEventListener('mouseleave', () => { hot = null; repaint(); });
+      if (tr.dataset.drill) tr.onclick = () => { level = 'vn'; hot = null; draw(); };
+    });
+    function repaint() {
+      left.querySelectorAll('path').forEach(p => p.classList.remove('hot'));
+      if (!hot) return;
+      const svgEl = left.querySelector('svg');
+      const ps = [...svgEl.querySelectorAll('path')];
+      if (inVN) {
+        Object.entries(VN_PATHS).forEach(([legacy], idx) => {
+          if (legacyToProvince[legacy]?.code === hot) ps[idx]?.classList.add('hot');
+        });
+      } else {
+        if (hot === 'VN') ps.forEach(p => p.classList.add('hot'));
+      }
+    }
+    right.appendChild(body);
+    stage.appendChild(card);
+  };
+  draw();
+  return `<div class="note"><b>Phương án A — một bản đồ, đi sâu dần.</b>
+    <p>Bấm dòng <b>Viet Nam</b> trong bảng để đi xuống mức tỉnh, bấm <b>Việt Nam (toàn quốc)</b> để quay ra.
+    Khung đổi sang dọc 3/7 cho hợp hình Việt Nam — hết khoảng trắng hai bên, bản đồ đủ lớn để đọc,
+    và bảng rộng ra đủ chỗ cho thanh so sánh. Tab City biến mất vì với Việt Nam, "city" chính là tỉnh.
+    Dòng <b>⊘ Không xác định</b> nằm trong bảng thay vì là cước chú.</p></div>`;
+}
+
+function renderB(stage) {
+  let tab = 'provinces';
+  let hot = null;
+  const draw = () => {
+    stage.innerHTML = '';
+    const inProv = tab === 'provinces';
+    const card = el(`<div class="card"><p class="card-title">By Location</p>
+      <div class="row layout-tall"><div class="left"></div><div class="right"></div></div></div>`);
+    const left = card.querySelector('.left'), right = card.querySelector('.right');
+
+    const max = inProv ? provinceMax : vn.count;
+    const { box, inner } = mapBox(inProv ? vnSvg(hot, i => tip(i)) : countrySvg(hot, i => tip(i)), max);
+    left.appendChild(box);
+    const tip = tipFor(inner);
+
+    const tabs = el(`<div class="tabs">
+      <button aria-selected="${!inProv}" data-t="countries">Quốc gia</button>
+      <button aria-selected="${inProv}" data-t="provinces">Tỉnh/thành</button></div>`);
+    tabs.querySelectorAll('button').forEach(b => b.onclick = () => { tab = b.dataset.t; hot = null; draw(); });
+    right.appendChild(tabs);
+
+    let rows, cols;
+    if (inProv) {
+      cols = [{ label: 'Tỉnh/thành' }, { label: 'Lượt', num: 1 }, { label: 'Tỷ lệ' }];
+      rows = provinceRows.map(r =>
+        `<tr><td>${r.province.nameVi}</td><td class="num">${r.count}</td>${barCell(r.count, provinceMax)}</tr>`).join('')
+        + `<tr class="muted"><td>⊘ Không xác định</td><td class="num">${offMap}</td>${barCell(offMap, provinceMax, true)}</tr>`;
+    } else {
+      cols = [{ label: 'Quốc gia' }, { label: 'Lượt', num: 1 }, { label: 'Tỷ lệ' }];
+      rows = DATA.countries.map(c =>
+        `<tr${c.alpha2 === 'VN' ? '' : ' class="muted"'}><td>${c.alpha2 === 'VN' ? c.name : '⊘ ' + c.name}</td>
+         <td class="num">${c.count}</td>${barCell(c.count, vn.count, c.alpha2 !== 'VN')}</tr>`).join('');
+    }
+    right.appendChild(el(`<div>${table(cols, rows)}${
+      inProv ? `<p class="foot">${34 - provinceRows.length} tỉnh chưa có lượt nào</p>` : ''}</div>`));
+    stage.appendChild(card);
+  };
+  draw();
+  return `<div class="note"><b>Phương án B — giữ tab, chỉ sửa chỗ sai.</b>
+    <p>Bỏ tab City, sửa tỷ lệ khung, thêm thanh so sánh, đưa "không xác định" vào bảng.
+    Rẻ hơn A đáng kể. Nhưng bấm qua lại hai tab vẫn là hai bản đồ nhảy qua nhảy lại
+    mà không có quan hệ nhìn thấy được — vấn đề số 2 còn nguyên.</p></div>`;
+}
+
+/* ---------- điều phối ---------- */
+const VIEWS = [
+  ['current', 'Hiện tại (đang chạy)', renderCurrent],
+  ['a', 'Phương án A — đi sâu dần', renderA],
+  ['b', 'Phương án B — giữ tab', renderB],
+];
+const stage = document.getElementById('stage'), explain = document.getElementById('explain');
+const sw = document.getElementById('switch');
+sw.innerHTML = VIEWS.map(([k, label]) => `<button data-k="${k}">${label}</button>`).join('');
+function show(key) {
+  sw.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === key));
+  const view = VIEWS.find(v => v[0] === key);
+  explain.innerHTML = view[2](stage);
+}
+sw.querySelectorAll('button').forEach(b => b.onclick = () => show(b.dataset.k));
+show('a');
+</script>
+</body>
+</html>

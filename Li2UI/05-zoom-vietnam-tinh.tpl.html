@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bấm vào Việt Nam để xem 34 tỉnh — bản thử</title>
+<style>
+  :root{--ink:#0f172a;--muted:#64748b;--faint:#94a3b8;--line:#e2e8f0;--card:#fff;--accent:#4125b9}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);
+       font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 22px 70px}
+  h1{font-size:25px;margin:0 0 8px;letter-spacing:-.02em}
+  p.lede{color:var(--muted);margin:0;max-width:72ch}
+  .warn{color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+        padding:9px 13px;font-size:13px;margin-top:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-top:20px}
+  .card-title{font-size:16px;font-weight:600;color:#334155;margin:0 0 12px}
+  .crumbs{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px;min-height:24px}
+  .crumbs button{border:0;background:0;padding:0;cursor:pointer;color:var(--accent);font:inherit;
+                 font-size:14px;text-decoration:underline;text-underline-offset:3px}
+  .crumbs .sep{color:var(--faint)}
+  .crumbs .here{font-weight:600}
+  .row{display:grid;grid-template-columns:7fr 5fr;gap:20px;align-items:start}
+  @media(max-width:880px){.row{grid-template-columns:1fr}}
+  .mapbox{position:relative;background:#fcfcfd;border-radius:10px;overflow:hidden}
+  svg{display:block;width:100%;height:auto}
+  path{stroke:#9fb0bd;stroke-width:.35;vector-effect:non-scaling-stroke}
+  #world path{cursor:default}
+  #world path.vn{cursor:zoom-in}
+  #vn{opacity:0;pointer-events:none;transition:opacity .25s}
+  #vn.on{opacity:1;pointer-events:auto}
+  #vn path{cursor:pointer}
+  path.hot{fill:var(--accent)!important}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:7px 10px 7px 0;
+     border-bottom:1px solid var(--line)}
+  td{padding:10px 10px 10px 0;border-bottom:1px solid #f1f5f9}
+  tr.go{cursor:zoom-in}
+  tr.go:hover td,tr.hl td{background:#f6f4ff}
+  tr.dim td{color:var(--faint)}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{position:relative;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;min-width:64px}
+  .bar i{position:absolute;inset:0 auto 0 0;background:#34a853;border-radius:4px}
+  .bar.g i{background:var(--faint)}
+  .bar b{position:absolute;right:5px;top:0;line-height:16px;font-size:11px;font-weight:600;color:#334155}
+  .legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:9px;flex-wrap:wrap}
+  .legend i{width:18px;height:10px;border-radius:2px;display:inline-block;border:1px solid #dde4ea}
+  .tip{position:absolute;top:8px;left:8px;background:#fff;border:1px solid var(--line);border-radius:8px;
+       padding:7px 11px;font-size:13px;box-shadow:0 4px 14px rgba(15,23,42,.1);pointer-events:none}
+  .tip b{display:block}.tip span{color:var(--muted);font-size:12px}
+  .foot{color:var(--faint);font-size:12.5px;margin-top:10px}
+  .hint{font-size:13px;color:var(--accent);margin-top:10px}
+  .box{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+       border-radius:0 10px 10px 0;padding:13px 17px;margin-top:18px}
+  .box b{font-size:14px}.box p{margin:5px 0 0;color:var(--muted);font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bấm vào Việt Nam để xem 34 tỉnh</h1>
+  <p class="lede">Bản thử đúng cơ chế đã bàn: giữ nguyên bản đồ thế giới, bấm vào Việt Nam thì phóng dần
+     và các tỉnh hiện ra <b>đúng vị trí</b> — vì hai bản đồ dùng cùng phép chiếu Mercator nên chồng khít.
+     Dữ liệu là số thật của tổ chức khanh.qn, toàn bộ thời gian.</p>
+  <div class="warn">Đường nét đã được làm thô bớt để nhét vừa một tệp HTML: trang artifact có
+     <code>connect-src 'none'</code> nên không tải được tệp bản đồ từ ngoài. Bản chạy thật trong app dùng
+     đúng <code>countries-110m.json</code> và <code>vietnam.json</code> nguyên gốc, mịn hơn hẳn.</div>
+
+  <div class="card">
+    <p class="card-title">By Location</p>
+    <div class="crumbs" id="crumbs"></div>
+    <div class="row">
+      <div>
+        <div class="mapbox" id="mapbox">
+          <svg id="svg" viewBox="0 0 __WW__ __WH__" role="img" aria-label="Bản đồ">
+            <g id="world"></g>
+            <g id="vn" transform="translate(__TX__ __TY__) scale(__K__)"></g>
+          </svg>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div id="side"></div>
+    </div>
+  </div>
+
+  <div class="box"><b>Thử ba thao tác này</b>
+    <p>1. Bấm thẳng vào hình Việt Nam trên bản đồ, hoặc bấm dòng <b>Viet Nam</b> trong bảng.<br>
+       2. Khi đã vào mức tỉnh, rê chuột lên một dòng trong bảng — tỉnh tương ứng sáng lên, và ngược lại.<br>
+       3. Bấm <b>Thế giới</b> ở breadcrumb để lùi ra; để ý bản đồ thu nhỏ dần chứ không nhảy.</p>
+  </div>
+  <div class="box"><b>Vì sao tỉnh hiện đúng chỗ</b>
+    <p>Bản đồ tỉnh được chiếu bằng cùng công thức Mercator với bản đồ thế giới, nên quan hệ giữa hai hệ
+       toạ độ chỉ là một phép tịnh tiến cộng co giãn đều:
+       <code>translate(__TX__ __TY__) scale(__K__)</code>. Đặt đúng con số đó là hai lớp chồng khít,
+       không cần căn tay.</p>
+  </div>
+</div>
+
+<script>
+const WORLD = __WORLD__;
+const VN    = __VN__;
+const PROV  = __PROV__;
+const DATA  = __DATA__;
+const VNVB  = __VNVB__;
+const WVB   = [0, 0, __WW__, __WH__];
+
+const legacyToProv = {};
+PROV.forEach(p => p.legacy.forEach(c => legacyToProv[c] = p));
+const provByCode = Object.fromEntries(PROV.map(p => [p.code, p]));
+
+const vnCountry = DATA.countries.find(c => c.a2 === 'VN');
+const TOTAL = DATA.total;
+const pct = n => (n / TOTAL * 100).toFixed(1) + '%';
+
+// Gộp các cách viết tên về một tỉnh: "Ho Chi Minh" và "Ho Chi Minh City" là cùng một nơi.
+const provRows = (() => {
+  const by = new Map();
+  vnCountry.regions.forEach(r => {
+    const cur = by.get(r.p) || { prov: provByCode[r.p], count: 0, raws: [] };
+    cur.count += r.n; cur.raws.push(r.raw);
+    by.set(r.p, cur);
+  });
+  return [...by.values()].sort((a, b) => b.count - a.count);
+})();
+const provMax = provRows[0]?.count || 1;
+const countByProv = Object.fromEntries(provRows.map(r => [r.prov.code, r.count]));
+const offMap = TOTAL - vnCountry.count;
+
+const STOPS = ['#e8f5e9', '#a5d6a7', '#66bb6a', '#2e7d32', '#1b5e20'];
+const shade = (n, max) => {
+  if (!n) return '#f1f5f9';
+  const i = Math.ceil(n / Math.max(max, 1) * STOPS.length) - 1;
+  return STOPS[Math.max(0, Math.min(STOPS.length - 1, i))];
+};
+
+const svg = document.getElementById('svg');
+const gWorld = document.getElementById('world');
+const gVN = document.getElementById('vn');
+const mapbox = document.getElementById('mapbox');
+const NS = 'http://www.w3.org/2000/svg';
+
+let level = 'world';
+let hot = null;
+
+/* ---- vẽ hai lớp ---- */
+for (const [iso, d] of Object.entries(WORLD)) {
+  const p = document.createElementNS(NS, 'path');
+  p.setAttribute('d', d);
+  const isVN = iso === '704';
+  p.setAttribute('fill', isVN ? shade(vnCountry.count, vnCountry.count) : '#f1f5f9');
+  if (isVN) {
+    p.classList.add('vn');
+    p.addEventListener('click', () => goVN());
+    p.addEventListener('mouseenter', () => tip('Viet Nam', vnCountry.count));
+    p.addEventListener('mouseleave', () => tip(null));
+  }
+  gWorld.appendChild(p);
+}
+
+const vnPaths = [];
+for (const [legacy, d] of Object.entries(VN)) {
+  const prov = legacyToProv[legacy];
+  const p = document.createElementNS(NS, 'path');
+  p.setAttribute('d', d);
+  p.setAttribute('fill', shade(prov ? (countByProv[prov.code] || 0) : 0, provMax));
+  if (prov) {
+    p.dataset.code = prov.code;
+    p.addEventListener('mouseenter', () => { setHot(prov.code); tip(prov.nameVi, countByProv[prov.code] || 0); });
+    p.addEventListener('mouseleave', () => { setHot(null); tip(null); });
+  }
+  gVN.appendChild(p);
+  vnPaths.push(p);
+}
+
+/* ---- tooltip ---- */
+let tipNode = null;
+function tip(name, count) {
+  if (tipNode) { tipNode.remove(); tipNode = null; }
+  if (!name) return;
+  tipNode = document.createElement('div');
+  tipNode.className = 'tip';
+  tipNode.innerHTML = `<b>${name}</b><span>${count} lượt · ${pct(count)}</span>`;
+  mapbox.appendChild(tipNode);
+}
+
+/* ---- phóng to: nội suy viewBox từng khung, nên mắt thấy nó đi vào chứ không nhảy ---- */
+let anim = null;
+function animateViewBox(to, after) {
+  if (anim) cancelAnimationFrame(anim);
+  const from = svg.getAttribute('viewBox').split(' ').map(Number);
+  const t0 = performance.now(), DUR = 650;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / DUR), e = ease(t);
+    svg.setAttribute('viewBox', from.map((v, i) => v + (to[i] - v) * e).join(' '));
+    // tỉnh hiện dần từ giữa chặng, lúc Việt Nam đã đủ lớn để nhìn ra ranh giới
+    if (to === VNVB) gVN.style.opacity = String(Math.max(0, (e - .45) / .55));
+    if (t < 1) anim = requestAnimationFrame(step);
+    else { anim = null; after && after(); }
+  };
+  anim = requestAnimationFrame(step);
+}
+
+function goVN() {
+  if (level === 'vn') return;
+  level = 'vn';
+  gVN.classList.add('on');
+  gVN.style.opacity = '0';
+  animateViewBox(VNVB, () => { gVN.style.opacity = '1'; });
+  render();
+}
+function goWorld() {
+  if (level === 'world') return;
+  level = 'world';
+  hot = null;
+  gVN.classList.remove('on');
+  animateViewBox(WVB, () => { gVN.style.opacity = '0'; });
+  render();
+}
+
+function setHot(code) {
+  hot = code;
+  vnPaths.forEach(p => p.classList.toggle('hot', !!code && p.dataset.code === code));
+  document.querySelectorAll('#side tr').forEach(tr => tr.classList.toggle('hl', !!code && tr.dataset.code === code));
+}
+
+/* ---- breadcrumb + bảng ---- */
+function render() {
+  const inVN = level === 'vn';
+  document.getElementById('crumbs').innerHTML = inVN
+    ? '<button id="back">Thế giới</button><span class="sep">›</span><span class="here">Việt Nam</span>'
+    : '<span class="here">Thế giới</span>';
+  const back = document.getElementById('back');
+  if (back) back.onclick = goWorld;
+
+  const side = document.getElementById('side');
+  const bar = (n, max, gray) =>
+    `<td><div class="bar${gray ? ' g' : ''}"><i style="width:${Math.max(3, n / max * 100)}%"></i><b>${pct(n)}</b></div></td>`;
+
+  if (inVN) {
+    side.innerHTML = `<table><thead><tr><th>Tỉnh/thành</th><th class="num">Lượt</th><th>Tỷ lệ</th></tr></thead><tbody>
+      ${provRows.map(r => `<tr data-code="${r.prov.code}"><td>${r.prov.nameVi}</td>
+         <td class="num">${r.count}</td>${bar(r.count, provMax)}</tr>`).join('')}
+      <tr class="dim"><td>⊘ Không xác định</td><td class="num">${offMap}</td>${bar(offMap, provMax, 1)}</tr>
+      </tbody></table>
+      <p class="foot">${34 - provRows.length} tỉnh chưa có lượt nào. TP. Hồ Chí Minh gộp từ
+      ${provRows[0].raws.map(r => `<code>${r}</code>`).join(' + ')} — hai cách GeoIP viết cùng một nơi.</p>`;
+    side.querySelectorAll('tr[data-code]').forEach(tr => {
+      tr.onmouseenter = () => setHot(tr.dataset.code);
+      tr.onmouseleave = () => setHot(null);
+    });
+  } else {
+    side.innerHTML = `<table><thead><tr><th>Quốc gia</th><th class="num">Lượt</th><th>Tỷ lệ</th></tr></thead><tbody>
+      ${DATA.countries.map(c => c.a2 === 'VN'
+        ? `<tr class="go" id="rowvn"><td>${c.name} ›</td><td class="num">${c.count}</td>${bar(c.count, vnCountry.count)}</tr>`
+        : `<tr class="dim"><td>⊘ ${c.name}</td><td class="num">${c.count}</td>${bar(c.count, vnCountry.count, 1)}</tr>`).join('')}
+      </tbody></table>
+      <p class="hint">↑ bấm dòng Viet Nam, hoặc bấm thẳng vào hình trên bản đồ</p>`;
+    const row = document.getElementById('rowvn');
+    if (row) row.onclick = goVN;
+  }
+
+  const max = inVN ? provMax : vnCountry.count;
+  const step = Math.ceil(max / STOPS.length);
+  document.getElementById('legend').innerHTML =
+    `<i style="background:#f1f5f9"></i>0 ` + STOPS.map((c, i) => {
+      const lo = i * step + 1, hi = Math.min((i + 1) * step, max);
+      return `<i style="background:${c}"></i>${lo === hi ? lo : lo + '–' + hi}`;
+    }).join(' ');
+}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artifact — tính năng ứng viên đợt sau · li2-app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Token lấy từ src/app/globals.css của li2-app — không tự chế màu. */
+:root{
+  --bg:oklch(0.9759 0.0029 264.54); --surface:#fff;
+  --ink:#1e293b; --ink-soft:#475569; --ink-mute:#64748b; --rule:#e2e8f0; --rule-strong:#cbd5e1;
+  --primary:oklch(0.165 0.059 257.19);
+  --info:oklch(0.6184 0.1917 262.62); --warn:oklch(0.6806 0.1423 75.83);
+  --err:oklch(0.5771 0.2152 27.33); --ok:oklch(0.6271 0.1699 149.21);
+  --sans:"Be Vietnam Pro",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1218;--surface:#161a22;--ink:#e6e9ef;--ink-soft:#b4bac6;--ink-mute:#8a93a3;--rule:#262c38;--rule-strong:#333b4a;--primary:#c7d2fe}
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--ink)}
+body{margin:0;font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+main{max-width:76rem;margin:0 auto;padding:3rem 1.5rem 6rem}
+.prose{max-width:72ch}
+h1{font-size:2rem;line-height:1.2;letter-spacing:-.01em;margin:0 0 .4rem;font-weight:700}
+h2{font-size:1.35rem;margin:3.2rem 0 .8rem;font-weight:600;letter-spacing:-.005em}
+h3{font-size:1.05rem;margin:2rem 0 .6rem;font-weight:600}
+p{margin:.6rem 0}
+.meta{color:var(--ink-mute);font-size:.875rem}
+.tldr{border-left:3px solid var(--primary);padding:.6rem 1rem;margin:1.4rem 0 0;background:var(--surface);border-radius:0 8px 8px 0}
+.tldr p{margin:.35rem 0}
+code{font-family:var(--mono);font-size:.86em;background:var(--surface);border:1px solid var(--rule);padding:.05em .4em;border-radius:4px}
+a{color:inherit}
+hr{border:0;border-top:1px solid var(--rule);margin:3rem 0}
+
+/* chip */
+.chip{display:inline-block;font-size:.75rem;line-height:1.25rem;padding:0 .55rem;border-radius:999px;font-weight:500;white-space:nowrap}
+.c-ok{background:color-mix(in oklab,var(--ok) 12%,transparent);color:var(--ok)}
+.c-no{background:color-mix(in oklab,var(--err) 10%,transparent);color:var(--err)}
+.c-warn{background:color-mix(in oklab,var(--warn) 16%,transparent);color:oklch(0.5 0.12 75)}
+.c-info{background:color-mix(in oklab,var(--info) 12%,transparent);color:var(--info)}
+.c-mute{background:color-mix(in oklab,var(--ink-mute) 14%,transparent);color:var(--ink-soft)}
+
+/* figure */
+figure{margin:1.4rem 0;background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:1.25rem}
+figcaption{font-size:.875rem;color:var(--ink-mute);margin-top:.75rem}
+svg text{font-family:var(--sans)}
+.node{cursor:pointer}
+.node rect{fill:var(--surface);stroke:currentColor;stroke-width:1.2;transition:stroke-width .15s}
+.node:hover rect,.node.active rect{stroke-width:2.2}
+.node.gap rect{stroke:var(--err);stroke-dasharray:4 3}
+.flow-detail{margin-top:1rem;padding:.9rem 1rem;border:1px solid var(--rule);border-radius:8px;background:var(--bg);font-size:.9rem;min-height:3.2rem}
+.flow-detail b{color:var(--ink)}
+.flow-detail .k{font-family:var(--mono);font-size:.8rem;color:var(--ink-mute)}
+
+/* table */
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:.6rem .7rem;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--ink-soft);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;border-bottom-color:var(--rule-strong)}
+tr:last-child td{border-bottom:0}
+.wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:.25rem 1rem}
+td.ft{font-weight:600;white-space:nowrap}
+details{margin:.35rem 0}
+summary{cursor:pointer;color:var(--ink-soft);font-size:.86rem;list-style:none;display:inline-flex;gap:.35rem;align-items:center}
+summary::before{content:"";width:.45rem;height:.45rem;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin-right:.1rem}
+details[open] summary::before{transform:rotate(45deg)}
+details p{font-size:.88rem;color:var(--ink-soft);margin:.4rem 0 .2rem 1rem}
+
+/* two col */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+@media (max-width:820px){.cols{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:1.1rem 1.25rem;font-size:.92rem}
+.card h4{margin:0 0 .5rem;font-size:.95rem;font-weight:600}
+.card ul{margin:.3rem 0;padding-left:1.1rem}
+.card li{margin:.25rem 0}
+
+/* bars */
+.bars{list-style:none;margin:1rem 0;padding:0;display:grid;gap:.55rem}
+.bar{display:grid;grid-template-columns:minmax(10rem,18rem) 1fr 3.5rem;gap:.8rem;align-items:center;font-size:.9rem}
+.bar .track{height:10px;background:var(--rule);border-radius:999px;overflow:hidden}
+.bar .fill{height:100%;background:var(--ink-mute);border-radius:999px}
+.bar.hi .fill{background:var(--primary)}
+.bar.lo .fill{background:var(--err)}
+.bar .n{font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-soft)}
+.bar small{display:block;color:var(--ink-mute);font-size:.78rem}
+@media (max-width:600px){.bar{grid-template-columns:1fr 3.5rem}.bar .track{grid-column:1/-1;order:3}}
+
+ol.unv{padding-left:1.3rem}
+ol.unv li{margin:.45rem 0}
+footer{margin-top:4rem;padding-top:1.2rem;border-top:1px solid var(--rule);font-size:.8rem;color:var(--ink-mute)}
+</style>
+</head>
+<body>
+<main>
+
+<header class="prose">
+  <h1>Artifact — tính năng ứng viên cho đợt sau</h1>
+  <p class="meta">li2-app · nhánh <code>feat/artifact</code> · 2026-10-04 · chỉ liệt kê và mô tả, không xếp ưu tiên</p>
+  <div class="tldr">
+    <p><b>Tóm tắt.</b> Short link đã có mật khẩu, hết hạn, giới hạn lượt mở, UTM, pixel… và artifact thiếu <em>tất cả</em> chỉ vì một dòng payload — backend không chặn gì. Nhưng bật chúng lên <em>không đủ</em>: mọi tính năng bảo vệ của short link được kiểm ở li2-be, còn <code>/a/&lt;token&gt;</code> <b>không đi qua li2-be</b>. Ai có link trực tiếp sẽ đi vòng qua.</p>
+    <p>Về MCP: li2-app <b>đã có</b> MCP server first-party kèm OAuth — việc "Claude đẩy HTML lên li2 thành QR" là thêm một tool, không phải dựng hạ tầng. Thị trường 23 sản phẩm: mật khẩu có ở 15 nhưng <b>0 ở gói free</b>; giới hạn lượt mở chỉ 1.</p>
+  </div>
+  <p class="meta" style="margin-top:.9rem">Nguồn: <code>docs/artifact-feature-research-internal.md</code> (code, 7 nhóm) · <code>docs/artifact-feature-research-external.md</code> (23 sản phẩm) · ba điểm nặng nhất đã kiểm lại trực tiếp.</p>
+</header>
+
+<h2>0 · Một sự thật nền chi phối mọi tính năng bảo vệ</h2>
+<p class="prose">Bấm vào từng chặng để xem nó làm gì và kiểm gì. Chặng nét đứt đỏ là chỗ mọi lớp bảo vệ của short link <b>không với tới</b>.</p>
+
+<figure>
+  <svg viewBox="0 0 980 190" role="img" aria-labelledby="flowt" style="width:100%;height:auto;color:var(--ink)">
+    <title id="flowt">Chuỗi từ QR tới nội dung artifact, và chỗ lớp bảo vệ dừng lại</title>
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+
+    <g class="node" data-k="qr"><rect x="20" y="60" width="120" height="48" rx="8"/><text x="80" y="89" text-anchor="middle" font-size="14" font-weight="600">QR / short link</text></g>
+    <line x1="140" y1="84" x2="190" y2="84" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/>
+
+    <g class="node" data-k="be"><rect x="190" y="60" width="170" height="48" rx="8"/><text x="275" y="83" text-anchor="middle" font-size="14" font-weight="600">li2-be (Go) resolve</text><text x="275" y="99" text-anchor="middle" font-size="11" fill="var(--ink-mute)">mật khẩu · hết hạn · limit</text></g>
+    <text x="275" y="38" text-anchor="middle" font-size="11" fill="var(--ok)" font-weight="600">▼ lớp bảo vệ của short link kiểm ở đây</text>
+    <line x1="360" y1="84" x2="410" y2="84" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/>
+    <text x="385" y="76" text-anchor="middle" font-size="11" fill="var(--ink-mute)">302</text>
+
+    <g class="node gap" data-k="route"><rect x="410" y="60" width="200" height="48" rx="8"/><text x="510" y="83" text-anchor="middle" font-size="14" font-weight="600">/a/&lt;token&gt; · li2-app</text><text x="510" y="99" text-anchor="middle" font-size="11" fill="var(--err)">không li2-be · không middleware · không cookie</text></g>
+    <line x1="610" y1="84" x2="660" y2="84" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/>
+
+    <g class="node" data-k="bytes"><rect x="660" y="60" width="120" height="48" rx="8"/><text x="720" y="89" text-anchor="middle" font-size="14" font-weight="600">bytes</text></g>
+
+    <!-- đường vòng -->
+    <path d="M 80 108 C 80 165, 510 165, 510 108" fill="none" stroke="var(--err)" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+    <text x="295" y="160" text-anchor="middle" font-size="11.5" fill="var(--err)">ai có link trực tiếp — token lộ trên thanh địa chỉ ngay sau 302 — đi thẳng vào đây</text>
+
+    <g transform="translate(810,60)" font-size="11" fill="var(--ink-mute)">
+      <text y="12">Nguồn:</text>
+      <text y="30" font-family="var(--mono)" font-size="10.5">middleware.ts:38</text>
+      <text y="45" font-family="var(--mono)" font-size="10.5">route.ts:47-141</text>
+      <text y="60" font-family="var(--mono)" font-size="10.5">casdoor/middleware.ts:101</text>
+    </g>
+  </svg>
+  <div class="flow-detail" id="flowd"><span class="k">bấm một chặng ở trên</span></div>
+  <figcaption>Luồng thật hôm nay. Hệ quả: muốn bảo vệ artifact thì phải kiểm <b>trong chính route handler</b> <code>/a/</code>. Việc li2-be cưỡng chế ở đâu là <em>suy ra</em> từ chỗ li2-app không có code đó — repo li2-be không nằm trong workspace.</figcaption>
+</figure>
+
+<h2>1 · Danh sách tính năng ứng viên</h2>
+<div class="wrap">
+<table>
+  <thead><tr><th>Tính năng</th><th>Short link</th><th>Artifact</th><th>Thị trường /23</th><th>Vướng gì khi áp lên artifact</th></tr></thead>
+  <tbody>
+  <tr><td class="ft">Mật khẩu</td><td><span class="chip c-ok">có</span> <code>password</code></td><td><span class="chip c-no">không</span></td><td>15 · <span class="chip c-warn">0 ở free</span></td>
+    <td>Bật ở touch point chỉ chặn short link; <code>/a/</code> vẫn 200. Cần form nhập + kiểm trong route handler + cookie riêng để nhớ (route này không có session).
+      <details><summary>chi tiết</summary><p>Vercel tính $20/tháng cho mỗi project · Carrd ở tier cao nhất · Tiiny ở tier Solo $13. Chưa xác minh li2 hash mật khẩu ở DB hay li2-be.</p></details></td></tr>
+  <tr><td class="ft">Hết hạn theo ngày</td><td><span class="chip c-ok">có</span> <code>expires_at</code></td><td><span class="chip c-no">không</span></td><td>8</td>
+    <td>Cùng bẫy tầng kiểm. <code>ArtifactStatus.expired</code> tồn tại nhưng <b>không code nào đặt nó</b> — nhánh chết. Phải quyết trang "đã hết hạn" ≠ trang "đã gỡ" (410 bia mộ dùng <code>removed</code>).</td></tr>
+  <tr><td class="ft">Giới hạn lượt mở</td><td><span class="chip c-ok">có</span> <code>click_limit</code></td><td><span class="chip c-no">không</span></td><td><span class="chip c-warn">1</span> (Uniqode)</td>
+    <td><b>Nặng nhất:</b> <code>/a/</code> không ghi <code>visits</code> (<code>route.ts:47-141</code> không insert). Limit áp ở li2-be sẽ đếm thiếu đúng bằng số người mở link trực tiếp.</td></tr>
+  <tr><td class="ft">Public / private, đăng nhập</td><td><span class="chip c-mute">không có</span></td><td><span class="chip c-no">không</span></td><td>23 công khai — mẫu số chung</td>
+    <td>Không tái dùng <code>publicPath</code> (so chuỗi con). Middleware chạy <b>Edge</b>, <code>/a/</code> chạy <b>Node</b> và stream bytes — hai runtime, không chép code sang. Phải gọi <code>getSession</code> trong route handler.</td></tr>
+  <tr><td class="ft">UTM · pixel · cloaking · targeting · OG</td><td><span class="chip c-ok">có cả</span></td><td><span class="chip c-no">không</span></td><td>—</td>
+    <td>Thiếu chỉ vì payload 6 field (<code>artifact.service.ts:373-385</code>). Nhưng: pixel không chạy cho link trực tiếp; targeting không có gì để rẽ (1 đích); OG không chèn được vào HTML của người dùng.
+      <details><summary>từng cái</summary><p><b>UTM</b> — gắn vào <code>/a/&lt;token&gt;?utm_…</code>; chưa kiểm route có bỏ qua query khi tra token không. <b>Pixel</b> — chạy ở trang trung gian li2-be, <code>/a/</code> không có trang đó. <b>Cloaking</b> — iframe lồng iframe với kind <code>html</code> có <code>sandbox</code>, chưa đo. <b>OG</b> — hữu ích thật cho Zalo/Facebook, chèn được vào <code>landingShell</code> cho pdf/slides/video, không chèn được cho html.</p></details></td></tr>
+  <tr><td class="ft">E2EE</td><td><span class="chip c-ok">có</span></td><td><span class="chip c-no">xung đột</span></td><td>—</td>
+    <td><b>Không tương thích về cấu trúc</b>, không phải thiếu: <code>e2ee-toggle.tsx:60</code> ghi đè <code>content_value = 'https://li2.ai'</code> — đúng field nối short link với <code>/a/</code>. Bật là cắt đứt.</td></tr>
+  <tr><td class="ft">Lượt xem trên UI</td><td><span class="chip c-ok">có</span> <code>touchpoint-card:292</code></td><td><span class="chip c-no">chưa hiện</span></td><td>18 · hầu hết trả phí</td>
+    <td>Dữ liệu đã chứng minh thật (quét iPhone → <code>visits</code> +1, kể cả sau khi gỡ). Chỉ còn đường đọc. <b>Không</b> nối vào <code>enrichWithVisitCounts</code>.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>MCP — Claude / ChatGPT đẩy nội dung thẳng lên li2</h3>
+<div class="cols">
+  <div class="card">
+    <h4>li2-app hiện có <span class="chip c-info">2 MCP server</span></h4>
+    <ul>
+      <li><code>li2-shortlink-mcp/</code> — chạy ngoài, stdio, xác thực <b>cookie Casdoor</b>.</li>
+      <li><b><code>li2-mcp</code> first-party</b> — <code>src/app/api/mcp/route.ts</code>, 500 dòng, OAuth + trang consent, 9 tool (8 đọc 1 ghi), <b>PASETO v4, TTL 15 phút</b>. Cơ chế xác thực thứ ba, song song cookie và <code>x-api-key</code>.</li>
+      <li>Chưa có tool artifact. Back-hop (<code>call-tool.ts:321</code>) chỉ chuyển JSON, <b>không multipart</b> → file phải đi dạng base64; giới hạn body chưa xác minh.</li>
+      <li>Plan gate <code>MCP_ACCESS</code> kiểm per-org ở <code>call-tool.ts</code>, không ở route — vì <code>org_id</code> là tool argument không tin cậy.</li>
+      <li>Ràng buộc có sẵn lợi cho agent: magic bytes 16 byte, lớp 0 đọc <code>content-length</code>, quota 3/30MB nguyên tử.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Mẫu gần nhất ngoài: Tiiny Host <span class="chip c-ok">đã xác minh</span></h4>
+    <ul>
+      <li><code>https://mcp.tiiny.host</code>, Streamable HTTP, có trên <b>mọi gói kể cả free</b>.</li>
+      <li>Ba động từ: <b>publish · update in place · delete</b>. "Same link, new version."</li>
+      <li>OAuth qua tài khoản — "không có API key để copy". Claude.ai: Settings → Connectors → dán URL.</li>
+      <li>REST tương đương: <code>PUT</code> cùng domain để thay file giữ link.</li>
+      <li>Họ AI-artifact (v0, Bolt, Lovable) <b>không có</b> MCP để nhận nội dung đẩy vào. Dub chỉ có bản không chính thức.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>2 · Thị trường — số đếm trên 23 sản phẩm</h2>
+<p class="prose meta">11 host file (Tiiny, Netlify Drop, Vercel, Gamma, Notion, Drive, Dropbox Transfer, WeTransfer, Carrd, Canva, Pitch) · 7 QR/short link (Dub, Bitly, Short.io, Rebrandly, Uniqode, QRCG, Linktree) · 5 AI artifact (Claude, ChatGPT Canvas, v0, Bolt, Lovable). Đếm "tồn tại ở gói nào đó".</p>
+<ul class="bars">
+  <li class="bar hi"><span>Link công khai không cần đăng nhập<small>mẫu số chung duy nhất</small></span><span class="track"><span class="fill" style="width:100%"></span></span><span class="n">23</span></li>
+  <li class="bar"><span>Đo lường lượt xem / quét<small>gần như luôn trả phí</small></span><span class="track"><span class="fill" style="width:78%"></span></span><span class="n">18</span></li>
+  <li class="bar"><span>Có API công khai</span><span class="track"><span class="fill" style="width:74%"></span></span><span class="n">17</span></li>
+  <li class="bar"><span>Mật khẩu<small><b>0/23 ở gói free</b></small></span><span class="track"><span class="fill" style="width:65%"></span></span><span class="n">15</span></li>
+  <li class="bar"><span>Thay file giữ link<small>Bitly free không sửa được đích</small></span><span class="track"><span class="fill" style="width:57%"></span></span><span class="n">13</span></li>
+  <li class="bar"><span>QR tích hợp<small>họ QR 7/7 · họ AI 0/5</small></span><span class="track"><span class="fill" style="width:41%"></span></span><span class="n">9–10</span></li>
+  <li class="bar"><span>Hết hạn theo ngày</span><span class="track"><span class="fill" style="width:35%"></span></span><span class="n">8</span></li>
+  <li class="bar"><span>MCP chính thức<small>Tiiny, Netlify, Vercel, Canva, Notion</small></span><span class="track"><span class="fill" style="width:22%"></span></span><span class="n">5</span></li>
+  <li class="bar lo"><span>Giới hạn số lượt mở<small>gần như không ai làm</small></span><span class="track"><span class="fill" style="width:4.5%"></span></span><span class="n">1</span></li>
+</ul>
+
+<div class="cols">
+  <div class="card">
+    <h4>QR + host file + mật khẩu cùng một chỗ?</h4>
+    <p>Có, <b>2 sản phẩm</b> — không phải khoảng trống hoàn toàn.</p>
+    <ul>
+      <li><b>Uniqode</b> — đủ bộ trong một dashboard, từ $9/tháng; hết subscription thì QR <b>ngừng chạy</b>.</li>
+      <li><b>Tiiny Host</b> — đủ bộ nhưng ở <b>ba tier khác nhau</b> (QR $5, mật khẩu $13); free 3 MB không có gì.</li>
+    </ul>
+    <p>Khoảng trống đọc được: không ai cho mật khẩu ở free cùng QR + host; họ AI không ai tự làm mật khẩu (v0, Bolt vay từ Vercel/Netlify).</p>
+  </div>
+  <div class="card">
+    <h4>Trang hiển thị khi link chết</h4>
+    <p>Chỉ <b>3/23</b> nói rõ: Bitly (410 hoặc trang lỗi tuỳ chỉnh), Uniqode (trang tuỳ chỉnh), Lovable. Netlify Drop xoá site sau 1 tuần; WeTransfer Free xoá vĩnh viễn.</p>
+    <p>Trang bia mộ 410 có thương hiệu mà li2 vừa làm là <b>hiếm trong nhóm</b>.</p>
+  </div>
+</div>
+
+<h2>3 · Chưa xác minh — đừng coi là sự thật</h2>
+<ol class="unv prose">
+  <li>li2-be cưỡng chế password / expiry / click-limit <b>ở đâu và thế nào</b> — repo không trong workspace. Muốn chắc: đọc <code>QQuik/li2-be</code>, nhánh <code>stag</code>.</li>
+  <li><code>li2-shortlink-mcp</code> gọi upload artifact bằng cookie hiện có chạy được không — chưa thử request thật.</li>
+  <li>Giới hạn body của đường PASETO back-hop khi truyền file base64.</li>
+  <li>Route <code>/a/&lt;token&gt;</code> có bỏ qua query string khi tra token không (ảnh hưởng UTM).</li>
+  <li>Short.io "storage 10 MB" có phải host file thật không.</li>
+  <li>10 URL fetch thất bại ở bản ngoài — số liệu free-tier của Dub, Carrd, Linktree chỉ có nguồn bên thứ ba.</li>
+  <li>Claim <code>surface</code> phân biệt <code>chat</code>/<code>mcp</code> trong PASETO — không thấy trong <code>mcp/route.ts</code>, có thể ở helper.</li>
+</ol>
+
+<footer>
+  Tổng hợp từ hai agent <code>researcher</code> chạy song song 2026-10-04 · chi tiết và <code>file:line</code> đầy đủ trong hai file research · bản này không xếp ưu tiên, không đề xuất.
+</footer>
+</main>
+
+<script>
+const D={
+ qr:['QR trên standee / short link','Người quét mở <code>example.com/&lt;slug&gt;</code>. Đây là địa chỉ in trên vật lý, không thu hồi được.','touch_points.short_url'],
+ be:['li2-be (Go) resolve short link','Tra <code>touch_points</code>, enqueue <code>visits</code>, trả <b>302</b> tới <code>content_value</code>. Mật khẩu / hết hạn / click-limit của short link được kiểm ở đây — <em>suy ra</em>, vì li2-app không có code đó.','QQuik/li2-be · nhánh stag · không có trong workspace'],
+ route:['/a/&lt;token&gt; — route handler của li2-app','Tra <code>artifacts</code> theo <code>serve_token</code> rồi trả nội dung. <b>Không</b> gọi li2-be, <b>không</b> qua middleware (<code>middleware.ts:38</code> loại <code>a/</code> có chủ ý), <b>không</b> đọc cookie, <b>không</b> ghi <code>visits</code>. Muốn bảo vệ artifact thì kiểm ở đây.','src/app/(artifact)/a/[token]/route.ts:47-141'],
+ bytes:['Nội dung','HTML trong sandbox · PDF inline · slides qua Office viewer · video stream có Range. CSP theo kind.','artifact-csp.ts']
+};
+const box=document.getElementById('flowd');
+document.querySelectorAll('.node').forEach(n=>n.addEventListener('click',()=>{
+  document.querySelectorAll('.node').forEach(m=>m.classList.remove('active'));n.classList.add('active');
+  const [t,b,k]=D[n.dataset.k];box.innerHTML=`<b>${t}</b><br>${b}<br><span class="k">${k}</span>`;
+}));
+</script>
+</body>
+</html>

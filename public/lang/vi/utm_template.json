@@ -1,0 +1,24 @@
+{
+  "labels": {
+    "name": "Tên mẫu",
+    "description": "Mô tả"
+  },
+  "placeholders": {
+    "description": "Mô tả mẫu này (không bắt buộc)",
+    "medium": "Kênh marketing (ví dụ: cpc, email, organic) ",
+    "source": "Nguồn giới thiệu (ví dụ: newsletter, mạng xã hội) ",
+    "campaign": "Tên hoặc ID chiến dịch",
+    "term": "Từ khóa quảng cáo tìm kiếm",
+    "content": "Dùng để phân biệt quảng cáo (ví dụ: nút bấm vs. banner)"
+  },
+  "help": {
+    "source": "Xác định nguồn lưu lượng truy cập của bạn đến từ đâu, chẳng hạn như công cụ tìm kiếm, bản tin email hoặc nguồn giới thiệu khác.",
+    "medium": "Xác định phương tiện marketing, chẳng hạn như email, CPC (chi phí mỗi lần nhấp), mạng xã hội hoặc tìm kiếm tự nhiên.",
+    "campaign": "Xác định một chiến dịch quảng bá sản phẩm hoặc chiến dịch chiến lược cụ thể để theo dõi hiệu suất.",
+    "term": "Xác định từ khóa tìm kiếm có trả phí. Được sử dụng cho các chiến dịch tìm kiếm có trả phí để theo dõi từ khóa nào đang tạo lưu lượng truy cập.",
+    "content": "Được sử dụng để phân biệt nội dung hoặc liên kết tương tự trong cùng một quảng cáo để xác định phiên bản nào hoạt động tốt hơn."
+  },
+  "buttons": {
+    "create": "Tạo mẫu"
+  }
+}

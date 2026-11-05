@@ -1,0 +1,237 @@
+{
+  "labels": {
+    "orgEditSectionTitle": "Chỉnh sửa Tổ chức"
+  },
+  "sidebar": {
+    "profile": {
+      "label": "Cài đặt hồ sơ",
+      "sub_label": {
+        "edit_profile": "Chỉnh sửa thông tin hồ sơ",
+        "update_password": "Cập nhật mật khẩu",
+        "mfa": "Mật khẩu 2FA"
+      }
+    },
+    "organization": {
+      "label": "Cài đặt tổ chức",
+      "sub_label": {
+        "member": "Thành viên",
+        "update_organization": "Cập nhật tổ chức",
+        "delete_organization": "Xóa tổ chức",
+        "audit_logs": "Audit Logs"
+      }
+    },
+    "subscription": {
+      "label": "Chi tiết dịch vụ",
+      "sub_label": {
+        "planning": "Gói dịch vụ",
+        "usage": "Mức sử dụng"
+      }
+    },
+    "developer": {
+      "label": "Nhà phát triển",
+      "sub_label": {
+        "analytics": "Phân tích",
+        "conversion_settings": "Cài đặt chuyển đổi",
+        "api_keys": "API Keys"
+      }
+    }
+  },
+  "conversion_settings": {
+    "title": "Cài đặt chuyển đổi",
+    "currency": {
+      "title": "Đơn vị tiền tệ mặc định",
+      "description": "Đơn vị tiền tệ được sử dụng để theo dõi chuyển đổi khi không được chỉ định trong các sự kiện bán hàng. Điều này ảnh hưởng đến cách doanh thu được hiển thị trên toàn bộ phân tích của bạn.",
+      "select_placeholder": "Chọn đơn vị tiền tệ",
+      "saved": "Đã lưu cài đặt đơn vị tiền tệ thành công"
+    }
+  },
+  "profile_form": {
+    "profile_settings": "Cài đặt hồ sơ",
+    "profile_infor": "Thông tin hồ sơ",
+    "profile": "Hồ sơ",
+    "password": "Mật khẩu",
+    "security": "Bảo mật",
+    "update_password": "Cập nhật mật khẩu",
+    "update_password_description": "Thay đổi mật khẩu để bảo mật tài khoản của bạn",
+    "mfa_description": "Thêm một lớp bảo mật bổ sung cho tài khoản của bạn",
+    "multi-factor_authentication": {
+      "label": "Xác thực đa lớp",
+      "app": "Ứng dụng Authenticator",
+      "description": "Thêm một lớp bảo mật khi bạn đăng nhập. Nếu mã xác thực không đúng, bạn vẫn có thể khôi phục tài khoản qua email."
+    }
+  },
+  "subscription": {
+    "label": "Gói dịch vụ",
+    "usage": "Mức sử dụng",
+    "include_title": "Quyền lợi trong gói của bạn",
+    "max_tps_per_month": "Links/Tháng",
+    "max_tags_per_org": "Tags/Tổ chức",
+    "max_domains_per_org": "Domain tùy chỉnh/Tổ chức",
+    "no_custom_domain": "Không Tùy chỉnh tên miền",
+    "max_slugs_per_tp": "Giữ tối đa {{ count }} phiên bản tùy chỉnh đường dẫn/Link",
+    "no_custom_link_ending": "Không Tùy chỉnh đuôi liên kết",
+    "max_tags_per_tp": "Tags/Link",
+    "no_allow_custom_utm_tags": "Không Cho phép Custom UTM Tags",
+    "allow_custom_utm_tags": "Cho phép Custom UTM Tags",
+    "no_allow_custom_meta_tags": "Không Cho phép Custom Meta Tags",
+    "allow_custom_meta_tags": "Cho phép Custom Meta Tags",
+    "usage_details": "Mức sử dụng hiện tại",
+    "section_monthly": "Theo tháng",
+    "section_total": "Giới hạn chung",
+    "usage_details_for_module": "Bạn đã sử dụng {{ type }} {{ field }}."
+  },
+  "mfa": {
+    "dialog_title": "Bật xác thực đa yếu tố",
+    "label": "Xác thực đa lớp",
+    "title": "Đã bật Xác thực Đa lớp",
+    "heading": "Quét mã QR bằng bất kỳ ứng dụng xác thực nào (Authy, Google Authenticator, 1Password, v.v.):",
+    "description": "Nếu quét không thành công, bạn có thể nhập thủ công mã bên dưới.",
+    "then": "Sau đó",
+    "one_time_code": "Nhập mã xác thực một lần của bạn:",
+    "one_time_code_placeholder": "Nhập mã xác thực một lần của bạn",
+    "cancel": "Hủy",
+    "enable_mfa": "Bật xác thực đa lớp",
+    "disable_mfa": "Tắt xác thực đa lớp",
+    "finish_description": "Bạn vui lòng lưu mã khôi phục ở một nơi an toàn. Bạn sẽ cần mã này để đăng nhập nếu mất quyền truy cập vào ứng dụng xác thực. ( MFA App)",
+    "downloaded": "Tải xuống hoàn tất",
+    "recovery_code_downloaded": "Mã khôi phục đã được tải xuống"
+  },
+  "please_type": "Vui lòng nhập",
+  "to_confirm": " để xác nhận ",
+  "role_permissions": {
+    "title": "Quyền theo vai trò",
+    "table": {
+      "permission": "Quyền"
+    },
+    "scope": {
+      "all": "Tất cả tài nguyên",
+      "own": "Chỉ tài nguyên của mình",
+      "none": "Không có quyền"
+    },
+    "roles": {
+      "member": "Thành viên",
+      "owner": "Chủ sở hữu"
+    },
+    "groups": {
+      "view": "Xem",
+      "add": "Thêm",
+      "edit": "Sửa",
+      "delete": "Xóa",
+      "other": "Khác"
+    },
+    "permissions": {
+      "view_dashboard": "Xem Dashboard",
+      "view_analytics": "Xem Analytics",
+      "view_touch_points": "Xem Links/Qr Codes",
+      "view_tags": "Xem Tags",
+      "view_integrations": "Xem Tích hợp",
+      "view_assets": "Xem Tài sản",
+      "view_campaign": "Xem Chiến dịch",
+      "view_organization": "Xem Tổ chức",
+      "view_members": "Xem Thành viên",
+      "view_utm_templates": "Xem Mẫu UTM",
+      "view_collections": "Xem Spaces",
+      "view_audit_logs": "Xem Audit Logs",
+      "add_touch_point": "Thêm Link/Qr Code",
+      "add_tag": "Thêm Tag",
+      "add_integration": "Thêm Tích hợp",
+      "add_asset": "Thêm Tài sản",
+      "add_campaign": "Thêm Chiến dịch",
+      "add_utm_template": "Thêm Mẫu UTM",
+      "add_collection": "Thêm Space",
+      "edit_touch_point": "Sửa Link/Qr Code",
+      "edit_tag": "Sửa Tag",
+      "edit_integration": "Sửa Tích hợp",
+      "edit_asset": "Sửa Tài sản",
+      "edit_campaign": "Sửa Chiến dịch",
+      "edit_utm_template": "Sửa Mẫu UTM",
+      "edit_collection": "Sửa Space",
+      "delete_touch_point": "Xóa Link/Qr Code",
+      "delete_tag": "Xóa Tag",
+      "delete_integration": "Xóa Tích hợp",
+      "delete_asset": "Xóa Tài sản",
+      "delete_campaign": "Xóa Chiến dịch",
+      "delete_utm_template": "Xóa Mẫu UTM",
+      "delete_collection": "Xóa Space",
+      "manage_organization": "Quản lý Tổ chức",
+      "manage_members": "Quản lý Thành viên",
+      "manage_collection_members": "Quản lý Thành viên Space",
+      "manage_domains": "Quản lý Tên miền",
+      "manage_api_keys": "Quản lý API Keys",
+      "delete_organization": "Xóa Tổ chức",
+      "export_audit_logs": "Xuất Audit Logs",
+      "view_funnels": "Xem Funnels",
+      "add_funnel": "Thêm Funnel",
+      "edit_funnel": "Sửa Funnel",
+      "delete_funnel": "Xóa Funnel",
+      "view_event_rules": "Xem Quy tắc sự kiện",
+      "add_event_rule": "Thêm Quy tắc sự kiện",
+      "edit_event_rule": "Sửa Quy tắc sự kiện",
+      "delete_event_rule": "Xóa Quy tắc sự kiện"
+    }
+  },
+  "analytics_settings": {
+    "save_btn": "Lưu",
+    "tabs": {
+      "publishable_key": "Publishable Key",
+      "features": "Tính năng",
+      "tracking": "Tracking",
+      "allowed_domains": "Domain được phép",
+      "data_collection": "Thu thập dữ liệu",
+      "debug": "Debug",
+      "scripts": "Scripts"
+    },
+    "data_collection_rules": {
+      "description": "Kiểm soát những trang nào trên website của bạn sẽ được theo dõi. Bạn có thể chọn loại trừ hoặc chỉ bao gồm các trang cụ thể.",
+      "help": "Sử dụng đường dẫn chính xác (/checkout) hoặc biểu thức chính quy (^/admin/.*) để khớp nhiều trang. Đường dẫn phân biệt chữ hoa và chữ thường.",
+      "mode_label": "Chế độ thu thập",
+      "exclude_mode": "Loại trừ trang",
+      "exclude_description": "Theo dõi tất cả trang trừ các trang được liệt kê",
+      "include_mode": "Chỉ bao gồm trang",
+      "include_description": "Chỉ theo dõi các trang được liệt kê",
+      "excluded_paths": "Đường dẫn bị loại trừ",
+      "included_paths": "Đường dẫn được bao gồm",
+      "no_excluded": "Chưa có đường dẫn nào bị loại trừ",
+      "no_included": "Chưa có đường dẫn nào được bao gồm",
+      "no_excluded_hint": "Tất cả các trang sẽ được theo dõi",
+      "no_included_hint": "Không có trang nào được theo dõi cho đến khi bạn thêm vào",
+      "add_path": "Thêm",
+      "empty_error": "Đường dẫn không được để trống",
+      "duplicate_error": "Đường dẫn đã tồn tại",
+      "saved": "Đã cập nhật quy tắc thu thập dữ liệu thành công",
+      "example_exact": "Khớp chính xác /checkout",
+      "example_regex": "Khớp tất cả đường dẫn bắt đầu bằng /admin/"
+    }
+  },
+  "members": {
+    "title": "Mời thành viên mới",
+    "list_title": "Danh sách thành viên",
+    "table": {
+      "email": "Email",
+      "status": "Trạng thái",
+      "role": "Vai trò"
+    },
+    "status": {
+      "member": "Thành viên",
+      "invited": "Đã mời",
+      "rejected": "Đã từ chối"
+    },
+    "actions": {
+      "delete": "Xóa",
+      "delete_title": "Xóa thành viên",
+      "delete_description": "Bạn có chắc chắn muốn xóa thành viên này không?",
+      "resend_invite": "Gửi lại lời mời",
+      "remove": "Xóa",
+      "select_role": "Chọn vai trò"
+    },
+    "form": {
+      "email_placeholder": "Email",
+      "invite_button": "Mời"
+    },
+    "leave": {
+      "title": "Rời tổ chức",
+      "button": "Rời",
+      "description": "Bạn có chắc chắn muốn rời tổ chức này không? Bạn sẽ mất quyền truy cập ngay lập tức."
+    }
+  }
+}

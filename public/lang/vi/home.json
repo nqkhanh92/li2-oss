@@ -1,0 +1,251 @@
+{
+  "login": "Đăng nhập",
+  "fre_register": "Đăng ký miễn phí",
+  "register": "Đăng ký",
+  "menu": {
+    "solution": "Giải pháp",
+    "features": "Tính năng",
+    "support_contact": "Hỗ trợ & Liên hệ"
+  },
+  "solution": {
+    "heading": "Tối ưu liên kết - Tối đa hóa tiếp cận",
+    "benefittitle": "Chỉ cần đăng nhập, bạn sẽ nhận được những quyền lợi này:",
+    "description": "$t(common:appName) giúp bạn tạo <strong>Short Link & mã QR</strong> chuyên nghiệp, nhanh chóng chỉ với vài thao tác đơn giản. Dễ thiết lập, dễ chỉnh sửa và dễ theo dõi các số liệu.",
+    "input": {
+      "title": "Tạo QR nhanh, rút link gọn gàng",
+      "description": "Nhập URL mà bạn muốn rút gọn:",
+      "placeholder": "Ex: https://example.com/",
+      "button": "Rút gọn link"
+    },
+    "benefit": [
+      "Không giới hạn lượt xem báo cáo chi tiết",
+      "Miễn phí 6 Short Links & QR code động",
+      "Không giới hạn số lần Click & Scan"
+    ]
+  },
+  "tool": {
+    "heading": "$t(common:appName) – Nền tảng kết nối đa điểm chạm",
+    "description": "Chia sẻ nhanh chóng, kết nối dễ dàng chỉ với một lượt Click hay một lần Scan",
+    "description_desktop": "Tận dụng các công nghệ tiên tiến giúp tăng cường khả năng tiếp cận, thu hút khách hàng và phân tích dữ liệu theo thời gian thực",
+    "buttons": {
+      "free_experience": "Trải nghiệm miễn phí",
+      "other_solution": "Giải pháp khác"
+    },
+    "card": [
+      {
+        "id": 1,
+        "name": "Tối ưu liên kết",
+        "icon": "/images/home_page/tool_2.webp",
+        "description": "Đừng để những liên kết dài làm chậm bước tiến của bạn. Rút gọn link nhanh chóng, theo dõi hiệu suất theo thời gian thực chỉ trong vài cú click.",
+        "quote": "Biết khách hàng đến từ đâu – và điều gì khiến họ hành động"
+      },
+      {
+        "id": 2,
+        "name": "Tạo QR Code động",
+        "icon": "/images/home_page/tool_1.webp",
+        "description": "Tùy chỉnh link theo từng chiến dịch mà không cần in lại, giúp tiết kiệm chi phí và tối ưu quy trình thiết lập.",
+        "quote": "Tiết kiệm - Linh hoạt - Hiệu quả"
+      },
+      {
+        "id": 3,
+        "name": "Thống kê - Báo cáo",
+        "icon": "/images/home_page/tool_5.webp",
+        "description": "Theo dõi lượt click và scan theo thời gian thực, lọc dữ liệu theo ngày, vị trí, thiết bị để biết nội dung có hiệu suất cao nhất vào thời điểm nào tối ưu chiến dịch kịp thời.",
+        "quote": "Mở khóa thông tin chi tiết từ mọi kết nối"
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "Vượt xa giới hạn của một công cụ",
+    "description": "$t(common:appName) không chỉ là giúp bạn rút gọn liên kết hay tạo mã QR. Bạn có thể dễ dàng theo dõi hiệu suất, phân tích hành vi người dùng để tối ưu hóa từng chiến dịch của doanh nghiệp trong <strong>một giao diện trực quan và duy nhất.</strong>",
+    "buttons": {
+      "free_experience": "Trải nghiệm miễn phí"
+    },
+    "cards": [
+      {
+        "id": 1,
+        "name": "Target đúng đối tượng",
+        "icon": "/images/home_page/sol_1.webp",
+        "description": "$t(common:appName) giúp bạn <strong>tiếp cận đúng khách hàng tiềm năng</strong> và <strong>hoàn thiện hồ sơ khách hàng</strong> một cách trực quan sau những lần tương tác. Từ đó <strong>cá nhân hóa thông điệp</strong> đúng người, đúng thời điểm, đúng nhu cầu.",
+        "image_config_tablet": {
+          "className": "md:min-w-[286px] md:h-[233px] object-cover md:aspect-286/233"
+        },
+        "image_config_desktop": {
+          "className": "lg:min-w-[535px] lg:max-w-[535px] lg:h-[436px] lg:aspect-535/436"
+        }
+      },
+      {
+        "id": 2,
+        "name": "Phân tích chi tiết",
+        "icon": "/images/home_page/sol_2.webp",
+        "description": "Mỗi cú click không chỉ là một lượt truy cập, mà còn là nguồn dữ liệu giá trị giúp bạn thấu hiểu hành vi khách hàng. $t(common:appName) giúp bạn <strong>thu thập, phân tích và báo cáo dữ liệu chi tiết, chuyên sâu</strong> để bạn điều chỉnh chiến lược marketing kịp thời.",
+        "image_config_tablet": {
+          "className": "md:min-w-[286px] md:h-[386px] object-cover md:rounded-[36px] md:aspect-143/193"
+        },
+        "image_config_desktop": {
+          "className": "lg:min-w-[535px] lg:min-h-[722px] object-cover md:rounded-[36px] lg:aspect-535/722"
+        }
+      },
+      {
+        "id": 3,
+        "name": "Trải nghiệm liền mạch",
+        "icon": "/images/home_page/sol_3.webp",
+        "description": "Từ điểm chạm đầu tiên đến hành động cuối cùng, $t(common:appName) mang đến hành trình <strong>kết nối không gián đoạn</strong>. Mọi trải nghiệm đều được thiết kế mượt mà, an toàn và ổn định – giúp bạn <strong>không chỉ tiếp cận khách hàng mà còn khiến họ hành động.</strong>",
+        "image_config_tablet": {
+          "className": "md:w-[100px] md:h-[235px] object-cover md:rounded-[36px] md:aspect-348/235",
+          "style": {
+            "width": "-webkit-fill-available"
+          }
+        },
+        "image_config_desktop": {
+          "className": "lg:max-w-[647px] lg:min-h-[436px] object-contain md:rounded-[36px] lg:aspect-535/722",
+          "style": {
+            "width": "-webkit-fill-available"
+          }
+        }
+      }
+    ]
+  },
+  "feedback": {
+    "heading": "Khách hàng nói gì về $t(common:appName)?",
+    "cards": [
+      {
+        "id": 1,
+        "author": "Trần Minh Khang",
+        "role": "Marketing Manager",
+        "company": "Công ty Công nghệ Fivetech",
+        "description": "$t(common:appName) giúp tôi tạo mã QR nhanh chóng và dễ dàng tích hợp vào các chiến dịch marketing. Điều tôi đánh giá cao là khả năng theo dõi lượt quét và hiệu quả từng mã theo thời gian thực – rất hữu ích cho việc tối ưu chiến dịch, đặc biệt khi triển khai song song cả offline và digital."
+      },
+      {
+        "id": 2,
+        "author": "Lê Minh Khoa",
+        "role": "Digital Strategist",
+        "company": "Công ty CP Ga Thanh Xuân",
+        "description": "Tôi rất ấn tượng với nền tảng quản lý liên kết của $t(common:appName). Việc tạo mã QR và rút gọn link cho các chiến dịch email, Zalo và SMS trở nên nhanh chóng, dễ theo dõi."
+      },
+      {
+        "id": 3,
+        "author": "Nguyễn Mai",
+        "role": "Chủ quán cafe",
+        "company": "Lavie",
+        "description": "Đội ngũ $t(common:appName) hỗ trợ rất nhanh chóng khi tôi cần giúp đỡ ngoài giờ hành chính, và tốc độ chuyển link cũng rất nhanh, rất phù hợp với một người Low-key như tôi."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "FAQ",
+    "description": "Sử dụng dễ dàng hơn bao giờ hết",
+    "accordion": [
+      {
+        "id": 1,
+        "name": "1. Tôi có thể theo dõi lượt quét mã QR không?",
+        "answer": "Có. $t(common:appName) cung cấp thống kê lượt quét mã QR theo thời gian thực, bao gồm: tổng số lần quét, thiết bị sử dụng,... Điều này giúp bạn dễ dàng đánh giá hiệu quả từng chiến dịch cụ thể."
+      },
+      {
+        "id": 2,
+        "name": "2. Short link có an toàn không? Có bị đánh dấu spam không?",
+        "answer": "Hoàn toàn an toàn. $t(common:appName) sử dụng hệ thống mã hóa và domain thân thiện để đảm bảo link không bị đánh dấu spam khi gửi qua email, SMS hay các kênh khác."
+      },
+      {
+        "id": 3,
+        "name": "3. Tôi có thể nhúng short link vào email/SMS/zalo không?",
+        "answer": "Có thể. Các link rút gọn từ $t(common:appName) tương thích tốt với mọi nền tảng phổ biến hiện nay như: email marketing, tin nhắn SMS, Zalo OA hoặc social media. Link ngắn gọn giúp tăng tỷ lệ click và giảm rủi ro chặn link."
+      },
+      {
+        "id": 4,
+        "name": "4. Có bị chèn quảng cáo trong link rút gọn không?",
+        "answer": "Không. Short Link và QR Code của $t(common:appName) không chứa quảng cáo của bên thứ ba. Doanh nghiệp hoàn toàn kiểm soát được nội dung điều hướng, giao diện hiển thị, và không bị làm phiền bởi pop-up hay banner ngoài ý muốn."
+      }
+    ],
+    "buttons": {
+      "view_more": "Xem thêm",
+      "view_less": "Ẩn bớt"
+    }
+  },
+  "question": {
+    "heading": "Bạn thắc mắc về $t(common:appName)<br class='md:flex hidden' /> cần được giải đáp?",
+    "button": {
+      "register": "Đăng ký tư vấn ngay"
+    }
+  },
+  "contact": {
+    "breadcumb": "TRANG CHỦ/Liên hệ",
+    "heading": "Liên hệ với chúng tôi",
+    "form": {
+      "heading": "Đăng ký tư vấn & hợp tác",
+      "description": "Vui lòng điền thông tin, chúng tôi sẽ liên hệ bạn trong thời gian sớm nhất"
+    },
+    "input": {
+      "name": "Họ và tên",
+      "phone_number": "Số điện thoại",
+      "email": "Email",
+      "company": "Doanh nghiệp",
+      "industry": "Ngành",
+      "question_about": "Nội dung cần giải đáp"
+    },
+    "button": "Gửi thông tin",
+    "agree_policy": "Đồng ý với chính sách bảo mật của chúng tôi",
+    "options": [
+      {
+        "id": 1,
+        "name": "Bán lẻ & TMĐT"
+      },
+      {
+        "id": 2,
+        "name": "Nhà hàng, quán cafe"
+      },
+      {
+        "id": 3,
+        "name": "Khách sạn & Du lịch"
+      },
+      {
+        "id": 4,
+        "name": "Sự kiện & Hội nghị"
+      },
+      {
+        "id": 5,
+        "name": "Bệnh viện & Y tế"
+      },
+      {
+        "id": 6,
+        "name": "Khác"
+      }
+    ],
+    "thank_you": {
+      "heading": "Cảm ơn bạn đã quan tâm và đăng ký tư vấn!",
+      "description": "Đội ngũ của $t(common:appName) sẽ liên hệ để hỗ trợ bạn trong thời gian sớm nhất."
+    }
+  },
+  "footer": {
+    "description": "Nền tảng ứng dụng công nghệ như QR Code, Wifi Marketing, NFC,... để truyền tải thông điệp cá nhân hóa đến từng khách hàng một cách thông minh và hiệu quả",
+    "website": "dev.example.com",
+    "submenu_title": "Liên kết nhanh",
+    "submenu_item": [
+      {
+        "id": 1,
+        "name": "Giaỉ pháp",
+        "link": "/#solution"
+      },
+      {
+        "id": 2,
+        "name": "Tính năng",
+        "link": "/#features"
+      },
+      {
+        "id": 3,
+        "name": "Bảng giá",
+        "link": "#pricing"
+      },
+      {
+        "id": 4,
+        "name": "Hỗ trợ & Liên hệ",
+        "link": "/contact"
+      }
+    ],
+    "input": {
+      "title": "Theo dõi để nhận được thông tin mới nhất",
+      "placeholder": "Nhập email của bạn...",
+      "button": "Gửi"
+    }
+  }
+}

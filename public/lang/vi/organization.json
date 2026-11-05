@@ -1,0 +1,106 @@
+{
+  "form": {
+    "organization_name": "Tên tổ chức",
+    "organization_slug": "Slug tổ chức",
+    "slug_placeholder": "slug-to-chuc",
+    "slug_description": "Định danh thân thiện với URL (chỉ chữ thường, số và dấu gạch ngang)",
+    "slug_available": "Slug này có thể sử dụng",
+    "slug_unavailable": "Slug này đã được sử dụng",
+    "url_preview": "URL tổ chức của bạn sẽ là:",
+    "url_preview_description": "Đây là URL mà tổ chức của bạn có thể truy cập",
+    "default_currency": "Tiền tệ mặc định",
+    "default_currency_description": "Tiền tệ được sử dụng cho theo dõi chuyển đổi khi không được chỉ định trong sự kiện bán hàng",
+    "select_currency": "Chọn tiền tệ"
+  },
+  "create": {
+    "title": "Tạo tổ chức",
+    "button": "Tạo tổ chức",
+    "cancel": "Hủy",
+    "setup_title": "Thiết lập tổ chức của bạn",
+    "setup_subtitle": "Một bước cuối để bắt đầu quản lý liên kết và theo dõi hiệu suất.",
+    "org_url_label": "URL tổ chức",
+    "org_url_hint": "(dùng để đăng nhập, chia sẻ)",
+    "slug_placeholder": "Tên công ty hoặc nhóm của bạn",
+    "hint_length": "3–64 ký tự",
+    "hint_format": "Dùng chữ thường, số hoặc dấu gạch ngang (-)",
+    "hint_available": "URL này có thể sử dụng",
+    "hint_unavailable": "URL này đã tồn tại trong hệ thống",
+    "error_failed": "Tạo tổ chức thất bại. Vui lòng thử lại."
+  },
+  "setup": {
+    "title": "Hoàn tất thiết lập tổ chức",
+    "description": "Tổ chức của bạn cần một slug duy nhất để tiếp tục. Slug này sẽ được sử dụng trong URL của tổ chức.",
+    "button": "Hoàn tất thiết lập",
+    "welcome_title": "Hoàn tất thiết lập tổ chức của bạn",
+    "welcome_description": "Bạn gần hoàn tất rồi! Chỉ còn một bước nữa để bắt đầu với tổ chức của bạn.",
+    "getting_started": "Bắt đầu",
+    "migration_title": "Yêu cầu thiết lập tổ chức",
+    "migration_description": "Chúng tôi đã nâng cấp lên phiên bản mới! Tổ chức của bạn cần được thiết lập với một slug duy nhất để tiếp tục. Đây là thiết lập một lần và chỉ mất vài phút."
+  },
+  "onboarding": {
+    "title": {
+      "behavior_analytics_setup": "Thiết lập phân tích Behavior",
+      "link_attribution_setup": "Thiết lập Link Attribution"
+    },
+    "navigation": {
+      "change_product": "Đổi sản phẩm"
+    },
+    "welcome_title": "Chào mừng đến với Li2",
+    "welcome_description": "Hãy tạo tổ chức của bạn và bắt đầu xây dựng những trải nghiệm tuyệt vời",
+    "product_type": {
+      "title": "Bạn muốn thiết lập gì?",
+      "description": "Chọn sản phẩm phù hợp với nhu cầu của bạn. Bạn có thể khám phá cả hai sau.",
+      "link_attribution": {
+        "title": "Link Attribution",
+        "description": "Đường link ngắn & mã QR để theo dõi chuyển đổi offline-to-online",
+        "badge": "Đề xuất",
+        "features": {
+          "short_link": "Đường link ngắn",
+          "qr_code": "Mã QR động",
+          "advanced": "Định tuyến nâng cao",
+          "conversion": "Theo dõi chuyển đổi",
+          "link_journey": "Hành trình Link",
+          "customers": "Hồ sơ khách hàng"
+        }
+      },
+      "behavior_activity": {
+        "title": "Behavior Activity",
+        "description": "Phân tích website, heatmap, phễu và theo dõi phiên truy cập",
+        "features": {
+          "heatmap": "Bản đồ nhiệt (Heatmap)",
+          "funnel": "Phễu chuyển đổi",
+          "event_rule": "Quy tắc sự kiện",
+          "form": "Theo dõi Form",
+          "session": "Nhật ký phiên (Session Logs)"
+        }
+      },
+      "included_features": "Tính năng bao gồm",
+      "select": "Chọn",
+      "getting_started": "Bắt đầu",
+      "try_demo_hint": "Chưa biết dữ liệu hiển thị thế nào? Khám phá demo trực tiếp trước khi quyết định.",
+      "try_now": "Thử ngay",
+      "mockup": {
+        "short_link_performance": "Hiệu suất đường dẫn ngắn",
+        "clicks": "Lượt click",
+        "unique": "Lượt truy cập duy nhất",
+        "recent_conversions": "Chuyển đổi gần đây",
+        "purchase": "Purchase",
+        "interaction_heatmap": "Bản đồ nhiệt tương tác",
+        "conversion_funnel": "Phễu chuyển đổi",
+        "visited_landing_page": "Truy cập trang đích",
+        "viewed_pricing": "Xem giá",
+        "started_checkout": "Bắt đầu thanh toán",
+        "purchased": "Đã thanh toán"
+      }
+    }
+  },
+  "popover": {
+    "organization_label": "Tổ chức",
+    "members_count": "{{count}} Thành viên",
+    "settings": "Cài đặt",
+    "invite_members": "Mời thành viên",
+    "organizations_list": "Tổ chức",
+    "create_organization": "Tạo tổ chức",
+    "upgrade_plan": "Nâng cấp gói"
+  }
+}

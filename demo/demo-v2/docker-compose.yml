@@ -1,0 +1,26 @@
+version: '3.8'
+
+networks:
+  devnet:
+    external: true
+
+services:
+  speednet-demo:
+    image: registry.example.com/ftc/speednet_demo:latest
+    container_name: speednet-demo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 5000
+    restart: unless-stopped
+    networks:
+      - devnet
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=devnet
+      - traefik.http.routers.speednet-demo.rule=Host(`demo.li2.ai`)
+      - traefik.http.routers.speednet-demo.entrypoints=websecure
+      - traefik.http.routers.speednet-demo.tls=true
+      - traefik.http.routers.speednet-demo.tls.certresolver=letsencrypt
+      - traefik.http.services.speednet-demo.loadbalancer.server.port=5000

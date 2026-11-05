@@ -1,0 +1,34 @@
+{
+  "tag_list": {
+    "label": "Danh sách Tag",
+    "table_header_filter": {
+      "create_button": "Tạo Tag",
+      "search_label": "Tìm kiếm",
+      "created_date": "Ngày tạo",
+      "cancel_button": "Hủy",
+      "create_dialog_title": "Tạo Tag",
+      "tag": "Tag"
+    }
+  },
+  "tag_create": {
+    "label": "Tạo Tag",
+    "form": {
+      "name": "Tên Tag",
+      "color": "Màu sắc",
+      "description": "Mô tả"
+    }
+  },
+  "tag_edit": {
+    "label": "Thông tin Tag",
+    "form": {
+      "name": "Tên Tag",
+      "color": "Màu sắc",
+      "description": "Mô tả"
+    },
+    "delete_dialog_title": "Bạn sắp xóa Tag",
+    "delete_dialog": "Không thể hoàn tác một khi đã xóa. Bạn có chắc chắn không?",
+    "save_button": "Lưu thay đổi",
+    "delete_button": "Xóa tag",
+    "cancel_button": "Hủy"
+  }
+}

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bấm vào Việt Nam để xem 34 tỉnh — bản thử</title>
+<style>
+  :root{--ink:#0f172a;--muted:#64748b;--faint:#94a3b8;--line:#e2e8f0;--card:#fff;--accent:#4125b9}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f8fafc;color:var(--ink);
+       font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 22px 70px}
+  h1{font-size:25px;margin:0 0 8px;letter-spacing:-.02em}
+  p.lede{color:var(--muted);margin:0;max-width:72ch}
+  .warn{color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+        padding:9px 13px;font-size:13px;margin-top:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-top:20px}
+  .card-title{font-size:16px;font-weight:600;color:#334155;margin:0 0 12px}
+  .crumbs{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px;min-height:24px}
+  .crumbs button{border:0;background:0;padding:0;cursor:pointer;color:var(--accent);font:inherit;
+                 font-size:14px;text-decoration:underline;text-underline-offset:3px}
+  .crumbs .sep{color:var(--faint)}
+  .crumbs .here{font-weight:600}
+  .row{display:grid;grid-template-columns:7fr 5fr;gap:20px;align-items:start}
+  @media(max-width:880px){.row{grid-template-columns:1fr}}
+  .mapbox{position:relative;background:#fcfcfd;border-radius:10px;overflow:hidden}
+  svg{display:block;width:100%;height:auto}
+  path{stroke:#9fb0bd;stroke-width:.35;vector-effect:non-scaling-stroke}
+  #world path{cursor:default}
+  #world path.vn{cursor:zoom-in}
+  #vn{opacity:0;pointer-events:none;transition:opacity .25s}
+  #vn.on{opacity:1;pointer-events:auto}
+  #vn path{cursor:pointer}
+  path.hot{fill:var(--accent)!important}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:7px 10px 7px 0;
+     border-bottom:1px solid var(--line)}
+  td{padding:10px 10px 10px 0;border-bottom:1px solid #f1f5f9}
+  tr.go{cursor:zoom-in}
+  tr.go:hover td,tr.hl td{background:#f6f4ff}
+  tr.dim td{color:var(--faint)}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{position:relative;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;min-width:64px}
+  .bar i{position:absolute;inset:0 auto 0 0;background:#34a853;border-radius:4px}
+  .bar.g i{background:var(--faint)}
+  .bar b{position:absolute;right:5px;top:0;line-height:16px;font-size:11px;font-weight:600;color:#334155}
+  .legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:9px;flex-wrap:wrap}
+  .legend i{width:18px;height:10px;border-radius:2px;display:inline-block;border:1px solid #dde4ea}
+  .tip{position:absolute;top:8px;left:8px;background:#fff;border:1px solid var(--line);border-radius:8px;
+       padding:7px 11px;font-size:13px;box-shadow:0 4px 14px rgba(15,23,42,.1);pointer-events:none}
+  .tip b{display:block}.tip span{color:var(--muted);font-size:12px}
+  .foot{color:var(--faint);font-size:12.5px;margin-top:10px}
+  .hint{font-size:13px;color:var(--accent);margin-top:10px}
+  .box{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+       border-radius:0 10px 10px 0;padding:13px 17px;margin-top:18px}
+  .box b{font-size:14px}.box p{margin:5px 0 0;color:var(--muted);font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bấm vào Việt Nam để xem 34 tỉnh</h1>
+  <p class="lede">Bản thử đúng cơ chế đã bàn: giữ nguyên bản đồ thế giới, bấm vào Việt Nam thì phóng dần
+     và các tỉnh hiện ra <b>đúng vị trí</b> — vì hai bản đồ dùng cùng phép chiếu Mercator nên chồng khít.
+     Dữ liệu là số thật của tổ chức khanh.qn, toàn bộ thời gian.</p>
+  <div class="warn">Đường nét đã được làm thô bớt để nhét vừa một tệp HTML: trang artifact có
+     <code>connect-src 'none'</code> nên không tải được tệp bản đồ từ ngoài. Bản chạy thật trong app dùng
+     đúng <code>countries-110m.json</code> và <code>vietnam.json</code> nguyên gốc, mịn hơn hẳn.</div>
+
+  <div class="card">
+    <p class="card-title">By Location</p>
+    <div class="crumbs" id="crumbs"></div>
+    <div class="row">
+      <div>
+        <div class="mapbox" id="mapbox">
+          <svg id="svg" viewBox="0 0 900 528" role="img" aria-label="Bản đồ">
+            <g id="world"></g>
+            <g id="vn" transform="translate(705.36 288.79) scale(0.06169)"></g>
+          </svg>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div id="side"></div>
+    </div>
+  </div>
+
+  <div class="box"><b>Thử ba thao tác này</b>
+    <p>1. Bấm thẳng vào hình Việt Nam trên bản đồ, hoặc bấm dòng <b>Viet Nam</b> trong bảng.<br>
+       2. Khi đã vào mức tỉnh, rê chuột lên một dòng trong bảng — tỉnh tương ứng sáng lên, và ngược lại.<br>
+       3. Bấm <b>Thế giới</b> ở breadcrumb để lùi ra; để ý bản đồ thu nhỏ dần chứ không nhảy.</p>
+  </div>
+  <div class="box"><b>Vì sao tỉnh hiện đúng chỗ</b>
+    <p>Bản đồ tỉnh được chiếu bằng cùng công thức Mercator với bản đồ thế giới, nên quan hệ giữa hai hệ
+       toạ độ chỉ là một phép tịnh tiến cộng co giãn đều:
+       <code>translate(705.36 288.79) scale(0.06169)</code>. Đặt đúng con số đó là hai lớp chồng khít,
+       không cần căn tay.</p>
+  </div>
+</div>
+
+<script>
+const WORLD = {"834": "M535 351l9 6l3 8l3 9l-8 4l-7-5l-8-3l-3-7l3-8l8-4Z", "732": "M428 277l-8 5l-3 8l-9 4l7-6l5-6l8-4Z", "124": "M143 208l-7-5l-6-6l-3-7l-2-10l-7-9l-5-7l-11-4l-4-33l0-25l8 6l8-5l12-4l10 5l7-3l7 4l9 4l7 7l9-2l8-4l6 4l11 2l6-6l4 9l4-12l-5-7l3-14l6 4l3 9l3 12l8 9l4-11l4-7l7 4l0 11l-5 8l-10 7l-3 6l-6 7l-6 5l-4 10l4 6l2 8l11 3l7 5l7 5l2 9l6-9l5-7l0-10l-1-14l0-9l12 2l8 6l1 10l10-4l7 8l1 9l6 5l7 6l-1 10l-7 4l-13 0l-8 5l-7 8l6-5l9-4l2 11l10-3l-7 9l-7 4l4-6l-8-7l-7 4l-7 4l-8 3l-6 4l-9 4l0-13l-6-4l-7-5l-10-1l-8-2l-15-1l-16 0l-14 0l-11 0l-14 0ZM251 78l-3-7l11 5l-8 3ZM230 64l-11-4l-1-10l-8-6l3-7l8 3l4 10l9 4l9-3l7 4l-5 9l-10 0ZM311 199l5 8l1 10l-8-4l-7-3l5-9ZM240 133l6 6l-10 5l-2-10ZM253 82l11 5l8 7l8 5l-2 10l6 5l7 7l-1 12l-7-8l3 10l1 11l-9-6l6 9l-12-4l-5-7l-11 0l4-7l5-6l3-9l-5-5l-6-9l-10 0l-9-1l-10-4l-4-14l5-11l7 9l8-11l5 9ZM214 67l10 2l-4 8l-6 8l-4-8l4-10ZM143 47l4-8l5-7l7 7l-9 9ZM186 10l12 6l3 11l-8-5l-7-7ZM146 64l10 2l5 7l-9 8l-3 9l-7 4l-7-8l3-9l0-12ZM180 50l4 8l-15 6l-10-6l0-12l14 7l3-13l4 10ZM184 76l4 11l5 10l4 6l-8 5l-12 1l-10 2l-7-5l2-7l-8-5l0-12l8-8l10 7l8 7l-1-12ZM199 79l0-10l8 4l1 15l-14-7ZM204 41l2 10l-6 9l-6-7l2-8l8-3ZM210 -9l4-6l8 4l8 6l2 10l-5 18l-9-1l-3-10l-5-8l0-13ZM221 -30l7-4l8-10l6 6l2-10l8-3l16 0l11 0l12 2l4 10l-6 8l-8 8l-1 9l-8 17l-7 5l-6 5l0 11l-5 8l-5 15l-14-2l-9-1l5-8l7-4l-4-8l3-10l-3-10l6-7l-9-5l-7-11l-3-11Z", "840": "M143 208l14 0l11 0l14 0l16 0l14 0l9 3l10 1l7 4l6 5l-1 11l10-2l6-4l8-3l7-4l5-5l3 8l-7 5l-5 8l-5 6l-5 8l-3 8l-8 6l-1 10l2 8l-7-4l-3-7l-11-1l-8 2l-10 3l-4 6l-7-4l-6-5l-8-4l-14-1l-9-3l-8-3l-7-5l-4-7l-4-8l-1-10l1-9l-2-10ZM98 102l0 25l0 32l6 4l10 3l7 11l3 7l-5-6l-4-9l-10-1l-5-5l-10-3l-8-4l-6 6l-3-8l-4 6l-5 9l-5 6l-8 6l-9 4l7-6l5-5l3-8l-10 1l-7-6l-3-6l2-11l9-4l-7-4l-8-3l6-9l-2-10l5-9l3-7l7-4l10-2l7 4l12 3l10 0Z", "398": "M668 207l-4 7l-8 7l-4 8l-12 1l-10 0l-7 5l-8-5l-10-2l-8-7l-7 14l-8-2l-5-7l6-8l-10 0l-7-8l3-8l8-5l9 3l13 2l3-8l11-8l7-2l8 3l8 3l6-4l8 15l11 2l7 4Z", "860": "M590 235l0-12l11 0l7 4l7 6l6 5l5-5l7 4l-10 2l-3 10l-7-4l-7-5l-6-5l-10 0Z", "598": "M803 355l8 4l8 5l3 8l-10-4l-7 4l-2-8Z", "360": "M803 355l0 17l-9-2l-4-10l-8-2l-5-5l9 3l8-3l9 2ZM745 339l2 8l-6 6l-4 6l-8-3l-6-6l6-3l9-5l7-3ZM757 347l-7 3l6 7l-5 6l-4-7l3-7ZM721 365l11 1l7 4l-10 0l-13-3ZM711 352l4 8l-10-2l-5-7l-4-7l-5-5l11 5l8 5Z", "032": "M306 428l-2 9l3 8l-5 9l-8 5l-6 6l-2 10l-1 12l-5 6l-2 8l-9-2l-3-8l4-9l2-9l-2-12l3-7l1-11l0-11l2-9l3-11l5-7l9 1l7 5l6 4l10 2l-7 7Z", "152": "M278 504l3 10l-12-2l-6-7l9 5l5-6ZM276 394l3 10l0 13l-4 9l0 11l-3 11l-1 10l-1 12l0 12l-4 9l3 8l10 4l-7 6l-6-4l-3-7l-2-9l4-7l-1-10l2-14l1-9l3-10l2-11l1-12l2-12l1-10Z", "180": "M523 360l4 10l-6 6l-9 1l-7-4l-5-7l-9-2l-10 0l7-4l4-8l3-7l2-8l9 2l7-3l8 2l6 5l-3 7l-1 10Z", "706": "M554 353l-2-11l7-5l10-8l3-8l3 8l-4 7l-5 6l-6 4l-5 7Z", "404": "M548 361l-13-9l1-11l9-1l10-1l-3 12l-2 7Z", "729": "M511 328l-4-6l-1-9l4-14l13-6l19 0l2 9l-3 9l-4 9l-9 4l-10 1l-8 2Z", "148": "M510 299l0 10l-5 7l-2 9l-8 4l-9-3l0-9l2-10l2-10l10-3l10 5Z", "643": "M684 -16l11 5l5 14l0 12l-13-2l-6-15l3-14ZM707 10l6 7l-14 10l4-16ZM797 47l16 6l-11 7l-10-4l5-9ZM562 -9l9-3l7 4l-6 5l-10-6ZM584 70l6-8l5-9l8-7l8-2l9-5l-8 12l-8 5l-8 9l-4 9l-3 8l5 13l-10-4l-5-6l7-14ZM807 189l2 12l-3 11l-1-12l-1-9ZM777 232l1-9l6-4l4-9l-11 3l-4-7l-5-5l-3-8l-9-3l-6 8l-5 8l-9-3l-7 4l-9-2l-11-1l-7-6l-6 5l-9 1l-10-1l-8 4l-8-4l-10-4l-6-9l-11 0l-7-7l-13 2l-10 3l-4 8l-8 4l-11-3l-9 5l-6 8l6 5l-5 9l4 10l-7-3l-8-2l-9-4l-3-8l6-6l-5-6l-7-6l-7-4l-3-8l-3-7l-6-6l1-10l6-13l-1-9l1-14l-3-7l-2-9l7-8l13 3l10 8l-1 11l-15-4l2 9l4 7l8-2l6-12l5-9l6 8l10-9l8-5l9 2l10-3l6-4l12 10l-4-10l0-11l4-7l4-10l7 7l0 15l-1 9l2 9l-5 9l7-6l2-11l-1-12l1-12l4 8l3-9l10 4l-3-16l11-1l6-13l8-5l7-4l14-4l8-9l6-5l6 8l11 3l5 5l2 9l-10 9l5 6l17 2l11 5l5-5l8 4l3 15l7-5l13 4l4-8l26 1l8 11l11-1l7 4l2 7l13 0l9 6l2-10l8 2l12 3l-896 3l6 5l7 7l12 7l-6 9l-9-2l-7-5l897 4l-3 10l-11 8l-6 5l-8 1l-6 4l-8 3l0 15l-7 7l-5 6l-4 8l-2-9l-1-9l3-9l8-9l9-9l-9 3l-8-5l-6 9l-8 4l-14-2l-17 10l-9 11l7 4l8 3l-2 12l-5 12l-4 6l-5 6l-10 3Z", "578": "M488 5l16 9l-6 5l-2 9l-3 12l-9-6l-6-19l-2-10l7-5ZM528 104l-9-5l-5 8l-8 2l-11 2l-5 8l-6 15l-4 10l2 10l-3 9l-8 6l-8-7l-1-12l9-8l5-6l5-8l6-12l11-14l10-3l3-6l9-2l8 6ZM519 -1l-4 8l-15-1l-7-11l8-4l13 3l5 5ZM512 28l-6 5l-4-10l10 5Z", "304": "M333 -44l8-7l12 0l29 0l16 5l-5 8l-9 0l-14 2l10 2l8 6l5-6l-1 16l6-6l13-7l7 4l-9 18l-9 6l3 11l-2 9l0 14l3 7l-8 4l4 6l-2 9l4 8l-4 8l-4 7l2 15l-10-5l-2 9l10 0l-7 7l-6 5l-10 3l-7 9l-7 5l-9 6l-5 12l-1 14l-8-4l-7-3l-6-12l-2-9l-2-10l1-10l4-6l-9-3l3-9l-6-6l3-8l-3-9l-3-10l-3-8l-7-6l-12 0l-9-2l-5-7l7-4l-11-8l10-11l9-7l-6-10l11-17l2-9l6-5l8-3l10 6l7-10l6 7l9 7l-6-10Z", "710": "M491 424l9-11l6 3l8-2l6-6l9 2l-2 7l4 7l-6 7l-6 6l-10 2l-9 3l-5-7l-2-8Z", "484": "M157 263l10 1l10 2l10 2l9 3l5 6l6 5l-2 9l4 7l7 4l8-4l7-4l-3 10l-7 4l-11 1l-9-2l-7-4l-8-5l-3-10l-6-5l-5-7l-4-6l-5-5l3 8l5 7l4 6l-6-4l-7-5l-3-9Z", "858": "M306 428l8 4l1 9l-10 0l0-10Z", "076": "M317 439l-6-9l3-10l0-9l-5-5l-4-8l-5-8l-4-7l-10-5l-10-1l-7-4l-2-9l6-4l3-7l4-8l10-1l5-5l6 4l9 1l9-1l6 3l9 5l7 4l13 3l7 4l1 10l-6 8l-3 9l-2 10l-5 7l-9 4l-8 6l-3 9l-5 8l-4 6Z", "068": "M276 377l11-4l5 8l7 4l5 5l1 10l-9-1l-6 6l-10 3l-1-10l-2-9l-1-12Z", "604": "M275 360l-7 3l-1 10l7 4l4 6l-2 11l-10-4l-6-4l-5-11l-4-8l-5-6l9-5l7-5l7 4l6 5Z", "170": "M283 346l-8 3l0 11l-4-6l-7-4l-8-3l1-10l-1-9l5-6l8-3l0 10l8 5l4 5Z", "591": "M257 327l-8 3l-6-4l9-1Z", "558": "M241 321l-8-3l4-6l4 7Z", "340": "M242 311l-8 3l-7-3l8-2Z", "320": "M219 312l3-7l6 4l-6 5Z", "862": "M298 336l-8 3l-3 7l-7-4l-2-9l-8-2l0-11l9 2l9 2l10 1l-2 9Z", "328": "M309 344l-9-2l-4-8l5-6l5 5l3 11Z", "740": "M314 343l-8-2l4-6l5 5Z", "250": "M465 206l4 7l-2 10l-6 5l-6 4l-9-2l1-11l-4-6l2-8l9-5l7 5Z", "218": "M262 349l-7 7l-6 4l0-10l10-2Z", "192": "M244 289l10 2l7 4l-9-1l-9-3Z", "716": "M528 406l-9-4l-4-5l6-6l11 0l-1 10Z", "072": "M524 406l-7 5l-6 4l-9 4l-2-14l2-10l11-1l5 7Z", "516": "M500 413l0 10l-11-2l-3-11l-3-8l-4-7l17-2l12 0l-6 12l-2 8Z", "686": "M408 315l4-8l8 5l-9 5Z", "466": "M421 318l4-8l11 0l-1-14l-1-11l12 5l9 6l6 10l-8 4l-8 2l-6 5l-4 7l-7-5Z", "478": "M407 295l11-1l2-12l8-4l10 6l-3 12l1 12l-10 2l-10-2l-7-3l-2-10Z", "562": "M487 290l1 13l-4 10l-9 2l-11-1l-5 6l-7-5l7-5l2-10l10-6l9-5Z", "566": "M457 333l2-9l2-10l12 3l10-2l0 10l-4 6l-7 4l-7 3l-6-5Z", "120": "M486 317l0 9l0 11l4 6l-11 0l-7-4l3-8l7-4l4-7Z", "288": "M450 321l1 9l-6 7l-1-9l3-7Z", "384": "M430 323l9 2l3 8l-8 4l-5-5Z", "324": "M416 317l9 2l5 6l-10-1l-8-3Z", "854": "M436 323l3-7l8-5l6 6l-6 4l-8 4Z", "140": "M518 336l-10 1l-9-1l-8 5l-5-6l5-5l7-4l6-4l6 5l6 6Z", "178": "M496 340l-2 9l-4 7l-6 4l2-10l-3-7l8-2Z", "266": "M478 343l8 3l-3 9l-11-3l6-6Z", "894": "M527 370l7 5l-2 9l-6 4l-7 5l-11 0l-3-12l6-4l7 3l3-8Z", "454": "M532 372l4 6l3 8l-7-5Z", "508": "M536 378l10-1l5 8l-5 7l-6 5l-2 9l-2 7l-6 5l-2-12l4-7l-2-9l5-5Z", "024": "M481 364l10 0l5 5l9 2l5 5l-5 14l-8 4l-11-1l-7-4l4-9l0-10Z", "450": "M574 380l2 9l-3 9l-3 8l-4 8l-7-4l2-10l0-10l8-4l4-7Z", "788": "M474 269l-5-9l2-9l6 5l-2 10Z", "012": "M428 278l4-7l9-3l6-5l-2-8l6-4l11-1l9 4l2 10l2 9l0 10l5 6l-9 5l-7 5l-9-1l-9-8l-8-6l-10-6Z", "400": "M539 263l8-3l-4 6l-6 6l2-9Z", "368": "M548 264l5-7l3-8l8 3l1 9l5 6l-8 6l-7-6Z", "512": "M588 291l7-3l0 9l-4 7l-8 3l4-9Z", "116": "M706 318l7-5l6 5l-8 5Z", "764": "M713 313l-7 5l-7 4l2 8l-5-6l2-9l-2-9l3-9l4 7l9 3Z", "418": "M718 313l-6-6l-7-4l-5-6l5-6l6 5l4 9l4 6Z", "104": "M700 297l-6 5l2 8l3 9l-5-8l-9-3l-1-8l-1-9l4-7l4-6l3 9l6 6Z", "704": "M711 323l8-5l-3-11l-6-7l-5-9l8-2l7 5l-5 5l3 8l5 8l-5 8Z", "408": "M777 232l-4 6l-4 7l-6-4l4-7l8-4Z", "410": "M765 247l9 3l-6 7l-3-7Z", "496": "M669 207l8-4l10 1l9-1l6-5l7 6l11 1l9 2l7-4l3 8l10 4l-7 3l-8 5l-6 5l-9 3l-11 2l-9-2l-10-2l-5-6l-7-7l-7-6Z", "356": "M693 275l-5 5l-3 8l-8-4l-5 6l-4 6l-8 6l-6 6l-3 6l-3 9l-4 6l-5-8l-3-9l-3-9l-1-9l-9-2l5-6l-4-7l8-6l4-8l3-8l8 3l2 8l4 7l9 3l8 2l10-1l6-7Z", "050": "M682 292l-10-2l-1-10l8 4l3 8Z", "586": "M645 254l-9 2l0 11l-7 9l-1 10l-9 1l-8-3l-4-6l-5-7l11 1l4-6l7-5l5-6l6-5l10 4Z", "004": "M616 248l10-1l9 1l-7 4l-2 8l-7 6l-6 6l-11-1l-1-9l5-7l6-6Z", "762": "M620 249l3-10l11 3l-2 7l-10-1Z", "417": "M627 232l9-3l12 1l-6 6l-7 4l-11 1l9-4Z", "795": "M581 234l9 1l7-4l7 5l5 6l7 4l-5 5l-8 2l-5-5l-9-2l-6-4l1-9Z", "364": "M571 270l-3-7l-4-7l-3-10l8-5l6 7l10 1l7-3l9 5l1 9l2 8l3 10l-8 5l-7-4l-11-2l-6-7Z", "760": "M539 262l1-9l9-3l4 7l-11 7Z", "752": "M478 166l4-12l-2-10l5-8l3-10l4-12l8-2l9 3l1 12l-7 6l-4 8l-6 12l4 7l-5 7l-2 12l-8 3l-3-9Z", "112": "M520 178l7 5l5 8l-5 6l-11 0l-8-3l6-7l4-7Z", "804": "M529 196l9 3l7 6l5 6l-6 4l-6 5l-9-2l-7 4l1-10l-11 1l-6-4l4-6l6-6l9 2Z", "616": "M509 188l1 13l-6 5l-8-2l-7-3l-3-7l5-8l11 1Z", "040": "M492 211l-4 6l-10-1l5-6l9 1Z", "348": "M505 210l-2 8l-11 0l5-6l8-2Z", "642": "M521 221l-6 5l-9-1l-5-6l4-6l10-1l5 6Z", "440": "M516 181l-5 7l-5-4l6-6Z", "428": "M518 172l-2 9l-11-3l6-7Z", "233": "M520 163l-2 9l-7-4l6-5Z", "276": "M485 189l3 11l-7 3l2 10l-12-1l-6-6l1-9l4-8l5-5l9 4Z", "100": "M507 225l11 1l-3 8l-9-2Z", "300": "M507 235l2 9l-8-2l4-6Z", "792": "M562 249l-10 0l-9 1l-12 2l-9-2l-6-5l6-7l9-4l11 1l12 0l7 5Z", "191": "M491 217l7 5l-9 1l5 7l-6-5l3-8Z", "620": "M427 233l6 6l-2 9l-5-6Z", "724": "M431 249l1-10l-3-7l7-4l10 2l9 2l-5 7l-4 9l-8 3Z", "372": "M435 189l-6 9l-3-10l5-5Z", "554": "M892 458l-7-3l-2-12l5 6l8 5ZM874 470l5-6l4 7l-6 7l-10 2l4-8Z", "036": "M765 434l-6 5l-11 2l-10-1l0-11l-3-9l-1-10l5-6l8-3l7-4l5-6l5-5l10 1l4-7l10 0l3 8l7 4l6-5l1-10l5 9l4 6l5 7l5 7l6 6l3 8l0 10l-5 9l-3 8l-7 6l-9 1l-9-4l-5-6l-7-3l-6-7l-11-1Z", "156": "M651 232l4-10l3-8l6-4l12 3l1 9l10 3l7 6l11 0l7 3l11-3l7-4l6-5l8-5l-5-6l6-5l5-8l6-8l9 3l3 8l5 5l4 7l11-3l-4 9l-6 4l-4 9l-9 4l-8 5l-9 1l6 6l-5 6l4 9l2 10l-6 9l-6 6l-8 4l-8 2l-9-1l-9-2l-8 3l-4-7l-1-10l-6-5l-9 4l-9 2l-7-3l-9-5l-9-4l-2-12l-7-5l-4-7l7-4l9-5Z", "380": "M476 216l8 3l1 11l7 6l-2 10l-3-8l-7-4l-4-8l-9-3l6-5Z", "208": "M475 184l-5-7l6-6l-2 11Z", "826": "M442 190l-4-5l-3-9l2-9l8 5l-3 7l5 6l4 7l-3 9l-9 2l-1-10Z", "352": "M414 124l2 8l-10 9l-13-2l-4-9l6-5l10 2l9-3Z", "031": "M566 234l8 4l-8 6l-3-8Z", "268": "M550 228l9 3l8 5l-10-2l-6-5Z", "608": "M756 303l-2 8l6 5l-8-3l0-11Z", "458": "M700 333l8 4l3 8l-8-4l-3-8ZM745 339l-7 3l-7 3l5-7l6-6l6 4Z", "246": "M521 107l4 9l1 12l0 10l3 7l-9 13l-9 2l-8-3l0-10l3-7l6-6l-3-9l-4-15l9-3l5-8l2 8Z", "203": "M488 200l6 4l-7 4l-6-4l7-4Z", "232": "M541 313l4-8l8 7l-12 1Z", "392": "M805 242l-3 9l-9 6l-10 0l-5 9l-4-5l6-5l9-2l8-7l3-9ZM812 226l-4 7l-8-2l4-7l8 2Z", "600": "M305 400l6 6l3 8l-5 7l-6-8l-10-7l7-8Z", "887": "M580 301l-2 10l-7 3l-8 2l-6-4l6-7l10-3Z", "682": "M537 272l8-3l6-4l11 8l9 1l5 7l4 9l9 3l-9 8l-10 2l-10 2l-7-4l-5-7l-3-7l-4-7l-4-7Z", "010": "M328 672l12 6l2 13l-4 12l-9 7l-11 3l-3-12l8-9l2-10l3-10ZM284 702l11 2l3-11l2 13l-6 5l-8-4ZM265 607l6-7l1-9l5 7l2 10l-4 7l-10 1ZM41 679l10 6l-4 8l-5-10ZM0 749l10 0l15 0l15 0l15 0l18 0l12 0l-10 0l-8-3l1-15l-6-11l8-7l12-5l1-11l-7-8l-9-3l-7-6l-5-8l-1-13l8 3l10 3l6-6l7-5l-1-11l12-3l10-3l8-4l12 1l10 1l11 0l9-5l9-3l4 10l9 2l14 0l6-4l-6-7l-1-10l11 2l7 7l10-4l8-5l5 5l8 3l9-4l9 5l10-2l10-4l4-8l-2-9l-1-11l2-8l2-11l6-6l6-6l7-5l-5 5l-3 8l-5 6l-3 7l4 7l4 7l2 9l1 10l1 11l-6 8l-7 11l-6 3l-6 7l-12 1l3 9l-5 7l-4 8l3 10l4 11l9 6l9 10l12 8l9 11l2 9l9-5l4-6l10-10l12 2l7-3l9-5l10-7l11-5l2-9l-1-10l-10 2l-6-5l2-12l7-5l7-7l5-6l9-3l7-4l6-4l5-7l2-12l7-6l4-6l6-5l9-3l10 1l12-1l8-4l8-3l6 4l7-4l11-1l7 4l10 0l10-4l7-4l5-5l8 6l7-4l8-5l6-4l9-3l4-6l10-2l6 7l7 4l8-1l7 3l7 7l-4 10l1 8l4 7l5-7l3-8l6-4l6-5l5-7l7-6l10 0l10 1l11-1l11 1l5-6l11 4l11-2l6-4l7 4l7 3l10-4l12 0l9-1l10-1l7 5l11-1l10 3l7 7l9 4l9 1l8 4l6 7l11 1l9 4l4 7l-4 9l-6 9l-4 5l-3 7l-2 13l1 8l2 9l5 7l-8 5l-7 8l-1 12l2 12l3 13l7 12l9 6l11 0l13 0l-896 0Z", "504": "M445 255l2 8l-6 5l-9 3l-4 7l-7 3l-6 7l-8 6l4-8l5-6l7-6l3-10l7-6l8-4Z", "818": "M542 293l-19 0l-10 0l0-11l0-10l3-6l11 0l10 5l-2 10l4 6Z", "434": "M513 293l-13 1l-10-5l-11-2l-6-6l2-9l2-8l11 0l7 4l7-6l10 3l1 17l0 11Z", "231": "M569 329l-7 7l-7 3l-10 1l-5-4l-6-6l3-8l4-7l7-3l7 5l3 8l9 4Z", "800": "M535 351l-10 2l2-9l6-5l2 9Z", "688": "M497 219l7 5l2 8l-7-4l-2-9Z", "728": "M527 340l-9-4l-5-6l5-5l10-1l5-6l2 9l3 8l-6 4Z"};
+const VN    = {"VN-89": "M123 531l2 3l1 2l2 3l1 2l2 4l3 0l4 1l1 4l-2 3l-1 1l-3 2l-4 3l-3-1l-2 3l-3-3l-5-3l-4-1l-3-2l-1-3l2-2l3-4l6-4l-1-4l-1-3l2-3l3 1Z", "VN-24": "M164 78l-1 4l3 1l2 2l2 2l3 0l2-1l2-3l2-4l4-1l2 2l3 0l3 1l1 2l1 3l4 0l0 4l-1 2l-1 4l-3 1l-2 1l-5 0l-3-1l-4-1l-2-1l-3 1l-3 1l-2 2l-2-2l-3 0l-3-1l-2-2l-4 1l-1-3l0-4l2-2l2 2l1-3l1-4l0-3l4 0Z", "VN-6": "M164 44l0 4l2 1l-1 3l-1 4l-2 1l-2 3l1 3l-4 0l-2 1l-2 2l-2 2l-3 2l-1-4l0-3l-3-3l-3 1l-2 2l-3-2l-1-3l1-3l-3-3l2-3l1-3l2-3l2-3l-1-3l-2-3l2-2l3-1l3-2l2 2l-1 2l1 3l2 2l3 1l3-1l3-1l2 1l0 4l2 2Z", "VN-95": "M131 585l3 0l4 1l0 5l3 2l3 1l2-1l3 1l0 4l-3 3l-3 1l-5 2l-3 2l-2 2l-3-1l-2-1l-2-2l-1-3l3-3l-2-2l2-3l0-3l1-2l-1-3l3 0Z", "VN-27": "M168 99l0 4l-2 2l-3 1l-3-2l-4 1l-1-3l-2-3l0-3l3-2l4 1l3 2l3 0l2 2Z", "VN-83": "M188 560l0 4l-1 2l-3 1l-1 4l1 3l-2 2l-4-3l-3-2l-4-2l-2-2l-2-3l-2-2l-2-1l-2-2l-3-1l3-1l4-2l3 0l4-1l3 2l3 1l6 1l3 2Z", "VN-52": "M281 378l1 4l1 4l2 4l1 5l0 3l2 3l0 5l2 3l-1 4l-1-3l0-3l-1 4l0 3l-3 2l-1 2l-2 2l-2 2l-4 0l-3-2l-1-3l0-4l-1-3l-2-3l0-4l-1-3l-2-2l0-4l-1-3l-1-3l-1-4l1-4l2-2l3 0l0-4l3-1l4 0l3 1l2 2l1 2Z", "VN-74": "M194 514l-1 3l2 4l0 4l-2 1l-3-2l-2 3l1 3l-2 2l-3-2l-1-2l-3-2l-2-2l-1-3l-3-1l-2-3l-2-2l1-5l2-2l3-2l2 2l0 3l3 1l3-1l2-2l3-2l-1 2l1 2l2 2l2-1Z", "VN-70": "M213 495l-4 1l-1 4l1 2l-2 3l-4 1l-2 1l-2 3l-2 3l-2 2l-2-3l-1 2l-1-3l-4-1l2-2l-3 1l-2 2l-3 1l-3-1l2-3l-4-2l-2-1l2-2l-1-3l-1-3l0-4l-1-6l4-1l5 1l3 0l2-3l3-2l3 1l4-1l2-2l2-2l1-2l3-3l1 6l0 4l2 2l3 2l1 2l2 2l-1 3Z", "VN-60": "M272 513l-3 1l-1 3l-2 3l-3-1l-3 1l-3 2l-1 3l-4 1l-2 3l-4 0l-2 1l-4 1l-1 3l-1 4l-2 1l-3-1l-3 2l-2 1l-3 1l-3 2l-3-4l-2-3l3-2l0-5l-3-4l-2 0l0-4l1-3l2-2l1-4l3 0l4 0l3-1l4 0l4 1l2 3l3-1l5-2l3-3l-2-2l2-3l4 0l4 0l2-1l4 2l3 1l3 4l2 1Z", "VN-96": "M126 593l0 4l-1 4l2 2l-1 2l3 1l4 2l-2 3l-1 3l-3 5l-3 1l-2 2l-2 2l-4 2l-6 1l-4-1l-2-2l4-1l1-3l2-2l-3 0l-1-4l1-4l0-6l0-3l1-6l0-8l3-1l4 1l7 4l3 2Z", "VN-92": "M143 563l2 1l3 2l1 2l-2 2l-4 1l-4-3l-2 4l-3-4l-4-3l-1-3l-4-2l3-3l4 1l3-3l5 3l3 4Z", "VN-4": "M179 43l-3 1l-1 2l-4 0l-1-3l-4-2l-2 3l-3 0l0-3l-1-4l-3 0l-3 1l-3 0l-3-1l-2-2l1-4l-2-2l-3 2l-3 1l-3 1l-1-3l-1-2l-2-2l-2-1l-3-1l1-3l2-1l3-2l3-1l1-3l2-2l2 2l4 0l2 2l3 2l1 3l3-1l2-2l4-1l4 1l2 2l2 3l3-1l3 0l3-2l3 0l2 2l3 1l2 2l3 1l-2 2l-1 3l-1 2l-2 3l-3 0l-1 3l-1 4Z", "VN-66": "M265 444l2 2l3 4l2 1l3 1l2 2l0 3l-3 1l-2 2l1 3l-1 2l-3 0l-3 1l-2 2l1 4l-2 2l-4-1l-3 1l-3 2l-3 1l-3 2l-3-2l-3-1l-2-2l-3-1l-1-3l0-3l2-1l-2-2l-2-2l1-3l-1-3l-2-3l-3 0l-6-1l-3-1l-2-2l-1-3l3-8l2-7l4-2l4-1l4 0l4 0l2-1l4 0l3 2l5 1l1 3l2 2l2 2l2 4l2 2l5 1Z", "VN-67": "M242 478l-2 2l-3 1l1 2l1 3l2 3l-1 3l-3 2l-4 0l-2-3l-3 1l-2-2l-4 1l-2 2l-4 1l-2 2l0-5l-2-2l-1-2l-2-2l-3-2l0-4l-1-5l2-1l4-1l2 2l3-1l3-2l1-4l1-5l-1-3l-1-5l3-2l6 1l3-1l3 3l0 3l1 3l-2 2l3 2l-1 2l0 3l1 3l3 1l2 2l1 2Z", "VN-11": "M55 62l0 5l2 2l2 6l-2 2l-1 3l-3 3l0 3l-5 0l2 3l2 2l0 4l-1 3l1 4l-3-1l-3 1l1 4l-1 3l-4 0l-3-1l-2-3l-2-3l-2-2l-2-3l-1-3l-3-1l3-1l1-5l-1-3l2-2l2-3l0-4l-1-3l-3 2l-1-5l-1 4l-3 2l-3 1l-2-3l1-4l-2-2l-2-3l-3-3l-1-2l-1-3l-3-2l-2-2l-3-1l-3-3l-1-4l2-2l3 1l0-3l2-3l1 3l2 2l1 3l2 2l2 2l4 2l1 2l2-2l3 1l-1 3l2 2l3 1l3-1l1 2l4-1l3-1l3 1l3 1l1-3l3-2l2 3l2 3l1 2Z", "VN-75": "M219 512l-1 3l-1 3l-2 2l0 3l-2 2l3 2l3 1l0 4l-1 4l-3-1l-3 2l-1 3l-2-3l-4 0l-3 2l-1 2l-4 1l0 3l-2-1l-2-2l-4-1l-2-1l2-3l2-1l0-3l-2-3l-2-2l2-2l4 0l2-3l-1-4l0-5l3-1l2-3l2-3l2-1l4-1l3-1l3 1l3 2l-1 3l3 1Z", "VN-87": "M136 529l3 2l2 3l6 7l6 5l-2 5l-2 4l3 2l1 3l-2 2l-4-2l-4 2l-2-2l-3-4l-2-2l1-1l2-3l-1-3l-2-1l-4-1l-2-2l0-4l-3-1l-1-3l-2-2l1-2l4 2l2-3l2-2l3 1Z", "VN-64": "M260 378l1 1l2 3l0 4l1 5l1 3l0 4l2 2l1 3l0 3l1 3l2 2l0 4l0 4l-3 2l-2 2l2 2l2 3l1 3l1 4l-1 2l-3 1l0 5l-3 1l-4-1l-3-2l-2-2l-1-3l-2-3l-2-3l-3-1l-3-1l-3-1l-4 1l-4 0l-3-1l-3 2l-5 1l-1-8l-2-4l-1-3l-2-3l-1-3l-1-3l3-3l2-1l3-2l1-3l1-4l2 1l4-1l2-2l3 2l3-2l2-2l3-1l2-2l3 0l2-3l1-2l0-3l3 1l4 0Z", "VN-2": "M139 12l-2 2l-1 3l-3 1l-3 2l-2 1l-1 2l2 2l3 1l2 2l1 2l1 3l-4 1l-3-1l-4-1l-3-1l0 3l-2 2l0 4l0 3l-1 3l-1 3l-3-2l-3-1l-1 3l1 4l-4 1l-3-2l-2-2l-3-1l-2 2l1-3l-2-3l-1-2l-2-1l-1-3l1-3l-1-2l-2-3l-2-1l3-1l3-2l2-3l3 1l4 0l2-1l2-3l2-3l-2-2l0-4l3-1l3-1l2-2l2-2l4 0l3-1l1-3l3-2l2 3l2 2l3 2l2 2l1 3Z", "VN-35": "M161 121l2 3l1 3l-3 1l-4 1l-2 1l-1 2l-3-2l-2-3l-2-3l2-2l2-2l2-1l3-1l2 2l3 1Z", "VN-1": "M152 91l1 2l-1 3l2 4l2 2l-1 3l-2 1l-1 3l2 2l1 3l0 4l-3 1l-3 0l-1 3l-4 0l-1-3l-1-3l-1-3l-3-3l-1-3l-3 0l-2-2l-3-1l0-4l-2-2l3-2l0-3l4 0l1 3l2 2l4-1l1-2l4-1l1-2l1-4l3 3Z", "VN-42": "M146 201l2 4l2 4l2 3l1 3l3 2l2 3l3 2l3 1l2 2l3 2l1 3l3-1l1 3l2 3l-3 0l-4 0l-1 2l-4 0l-5 0l-1-4l-2-2l-4-1l-3 1l-2 2l-3 1l-3-1l-2-3l-2-2l-1-2l-4 1l-2-1l-1-3l-3-1l-2-2l-2-3l-2-2l1-4l0-2l4-1l2-1l2 2l4 0l3-1l2 2l3-1l3-2l3-2l-1-3Z", "VN-30": "M177 95l-1 3l-2 3l3 1l4 1l-2 2l1 2l-2 1l-2 2l1 3l-2 3l-3 1l-4 1l-3-1l-1-2l-2-2l0-4l0-3l4-1l2-2l0-4l1-3l4 0l3-1Z", "VN-31": "M195 110l3 1l3 2l-2 2l-2 2l-3-4ZM187 113l1 3l-3 2l-2 3l-4 0l-3 1l-2-3l-1-3l3-1l0-3l3-2l1-3l-1-3l4 0l3 1l1 3l-1 3l1 2Z", "VN-93": "M146 570l4-1l2 2l-1 3l-1 5l-3 1l-3 2l-2 2l-3 0l-3 1l-3 0l-2-3l1-3l1-2l4-3l2-5l2 1l4 0Z", "VN-17": "M129 104l3 1l2 2l3 0l2 1l0 4l2 2l2 4l0 3l2 1l3 4l2 1l-1 3l-3-1l-2 1l1 3l-2 2l-4-3l-3 0l-3-1l-5-1l-2-2l-2-2l-4-2l-3 0l-3-2l-2-3l-3-1l2-3l3 1l2-2l-1-5l-2-3l-3-2l1-4l2 2l3 1l3 2l2 2l3 0l3 1l3-1l-1-3Z", "VN-33": "M161 105l2 3l-1 3l1 3l2 2l1 2l-1 2l-4 0l-2 2l-1-4l-3-1l-2-3l1-3l-1-4l2-2l4-1l2 1Z", "VN-62": "M247 359l2 3l1 2l3 3l2 2l3 1l-1 3l0 3l3 2l-3 2l-3-1l-1 2l-2 2l-2 3l-3 0l-2 2l-3 0l-1 3l-3 1l-4-1l-2 2l-3 1l-4 1l-1 5l-2 1l-3 1l-2 2l-3-1l-1-3l-1-4l2-3l0-4l1-2l3-2l0-3l1-3l1-4l-1-3l0-4l3-2l-3-2l-2-2l2-3l3-1l1-3l-2-3l2-4l-1-3l3 1l2 3l2 2l4 1l3 1l2 2l-1 3l2 3l3 1l3-1l1-3Z", "VN-12": "M56 35l2 3l-1 3l2 2l4 0l3 3l2 3l1 3l3 3l1 2l1 4l-1 4l-2 2l2 2l1 3l-2 2l-4-2l-2-1l-3-2l0-4l-1-2l-3-2l-3-1l-2 2l-1-3l-2-3l-3-2l-2 3l-1 2l-3-1l-3-1l-3 2l-2 1l-2-2l-3 0l-3-1l-2-2l1-3l-3-2l0 4l-3-1l-2-3l-4-3l-2-2l-1-2l-1-3l-2-3l2-2l1-4l2-2l2-2l2 1l5 3l3 1l2 2l3 1l1 2l2 3l2 1l4 0l2-3l2-1l0-4l3-1l1-3l2-4l3 2l2 2l0 2l1 3Z", "VN-68": "M267 479l-2 2l1 2l-1 3l-1 3l-2 5l2 1l2 3l-3 2l-3 1l1 3l-2 2l-3 0l-4 0l-3 0l-1 3l0 3l-3 2l-3 2l-2 2l-1-3l-3-3l-7 0l-3 0l-2 1l-3 0l-3-2l-2-2l-1-3l-3-1l-2-1l-2-3l0-4l4-2l3 1l3-2l3-2l3-2l4 2l3-1l2 2l4 1l3-2l2-2l-2-2l-2-3l-2-2l2-3l3 0l3-3l3 2l2-2l2-2l4 0l2-2l4 1l3-1l2 3l1 3Z", "VN-20": "M179 43l0 3l4 1l1 2l0 3l1 4l0 4l3 1l3 1l3 1l3 1l2 2l-2 2l2 1l3 3l3 1l3 0l3 2l0 4l-3 1l-3 1l2 3l1 3l-4 1l-3 1l-3 2l-1-3l-2-2l-3-1l-2-3l-2-2l-3 0l-2-2l-3 1l-2 1l-2 4l-2 2l-2 2l-2-2l-2-3l-5-1l0-3l2-3l1-3l-4-1l-2-3l1-3l0-5l-1-3l3-2l3-2l0-5l-2-1l0-4l1-3l3 1l2 2l3 1l3-1l3-1Z", "VN-10": "M89 30l2 1l2 3l1 2l-2 2l2 2l1 3l3 2l1 3l-1 3l3 1l-2 1l-1 4l-3-2l-2-2l-2 2l0 3l1 3l1 3l-3 3l-3-3l-3-1l-1 3l-3-1l-4 0l-3-4l0-4l-1-2l-2-2l-1-3l-2-2l-1-4l-5 0l-4-3l2-3l-2-3l1-3l1-4l2-1l4 3l3 3l2 3l2 2l4 0l0-4l1-5l2-3l3-1l4-1l0 4l2 1Z", "VN-80": "M163 528l4 0l4-1l4 2l3 2l-1 4l-2 2l2 1l2 3l3 1l3-1l1 3l0 4l-2 2l-4 0l-4 1l-3-1l-2-2l-1-2l-5-2l-5 0l-4 2l-3 0l-3-4l-10-8l-3-4l5-2l3-2l4 3l2 2l3 3l0-4l3 3l2 1l4 1l-1-5l1-2Z", "VN-36": "M164 127l1 3l3 2l3 1l3 2l4-1l2 3l-3 1l-3 1l-3 1l-5 6l-2 2l-3 2l0-4l2-3l-1-5l-2-1l-2 1l-2-3l-2-2l1-3l2 1l2-3l3-2Z", "VN-40": "M148 179l-1 2l-2 2l0 4l-3 1l-1 4l0 3l3 2l2 4l1 3l-3 2l-1 3l-3 0l-4-1l-3 1l-4 0l-2-2l-2 2l-1-3l-3-2l-3 0l-3-2l-3-2l-5 0l-2-1l-3-2l-3-2l-2-2l-2-2l-3-1l-2-2l-3-2l-3 0l-1-3l-3-2l-4 0l-4-2l1-3l2-2l3-1l1-3l1-3l-2-3l2-1l2-2l4 0l2 1l4-1l2 2l3 2l3-1l2-2l2-3l2-1l3-2l0-3l1-3l2-2l4 2l4 1l3 1l-1 3l-1 4l1 3l3 1l2 2l0 3l3 0l2 4l4-1l3 3l2 1l2 3l3 0Z", "VN-37": "M151 130l1 2l2 2l2 3l2 1l4 0l1 4l-1 3l-2 4l-1 3l-2-3l2-2l-3-2l-3-1l-3-2l-2-1l-4-3l-2-2l-2-2l-2-2l3 1l3 2l0-4l2-1l5 0Z", "VN-58": "M286 493l1 3l-2 3l-1 4l-4 0l-1-2l0 3l-1 3l0 4l-2 3l-3-1l-3-2l-2-3l-3-1l-2-3l-2-1l2-3l3-2l-2-3l-2-1l2-3l0-4l1-3l0-3l2-2l2 1l1 3l2 2l2 3l2 1l3 0l2 3l2 2Z", "VN-25": "M129 83l1 3l2 2l1 2l-3 2l0 4l-3 2l2 2l-1 4l2 3l-3 1l-3-1l-3 0l-2-2l-3-2l-3-1l-1-2l-2-2l-1-3l0-4l3-1l0-5l-1-2l1-3l1-4l3-1l4 0l4 1l1 2l2 2l2 3Z", "VN-54": "M294 451l-5 0l-3 0l-2 2l-3 2l-3 1l-1-3l-4-1l-3-3l-2-2l-3-2l3-2l0-4l3-2l1-2l-1-4l-1-3l-1-4l-3 1l1-4l2-1l4 2l3 1l4-2l3-1l1-2l2-3l2 4l1 2l-2-2l1 3l2 3l-1 2l-1-3l-1 3l2 2l0 3l1 4l1 4l2 3l2 3l1 3l-2 2Z", "VN-44": "M177 235l-2 4l0 5l1 2l2 3l1 2l2 4l2 2l2 3l2 2l2 2l4 2l2 2l-1 4l-3 1l-2 2l-1 2l-2 3l-2-2l-3 1l-2-2l-4 0l-2-2l-1-3l-2-2l-1-3l0-3l-3 2l-2-2l-3-2l-10-12l-3-2l-2-2l-3-4l-1-2l-1-4l3-2l2-2l3 0l3-2l2 1l4 2l0 3l4 1l3 0l3-1l2-2l4 1Z", "VN-49": "M230 316l3 1l3-1l0 3l1 3l5-1l3-1l3 0l3 2l2 1l1 3l4 7l3 4l2 3l3 1l1 3l-2 1l-4 1l-2 1l-4 0l-3 1l-2 2l0 3l-2 3l-1 3l-3-1l-1 4l-3 0l-3-1l-1-3l1-2l-2-3l-3-1l-4-1l-2-2l-1-2l-1-3l-3-1l-3 1l-2-3l-4-1l0-3l-2-3l-2-1l-1-3l-1-3l3-3l3-1l2-2l2-4l3 1l3-2l2 2l4-2Z", "VN-51": "M281 378l-1-2l-2-2l-3-1l-3 1l-4 0l0 4l-3 0l-2 2l-3-2l-3-2l1-2l0-4l-2-1l-3-2l-2-3l-2-2l-1-2l0-4l2-3l-1-3l1-2l4 0l4-1l3-1l4-1l2-1l2 2l1-2l2 2l1 3l3 2l-2 2l0 4l1 3l2 6l2 5l2 2l0 5Z", "VN-22": "M219 107l-1 3l-2 3l1-3l2-4ZM219 104l-1 4l-2 1l1-3l2-3ZM221 103l-1 3l1-4l1-3l-1 4ZM216 93l2 2l3 1l-2 2l-3 3l-3 2l1-4l2-2l-1-3ZM191 112l-2-1l-3 0l1-3l0-3l-4-1l-3-2l-4 0l-2-2l3-4l3 0l5 1l3 1l3-1l3 0l2-2l1-3l2-2l4-1l3-1l0-3l-1-4l3-1l3-1l3-2l3 1l3 0l4 0l3-1l4 0l2 2l2 2l3 3l-2 2l-1-3l-3-1l-4 0l0 3l-3 2l-2 2l-2 2l-3-1l-2 1l-2 2l-2-2l0 4l-1 3l1 3l-1 4l-4 0l-3 2l-3 0l-5 0l-2 2l-4 0l1 3Z", "VN-45": "M213 287l-3 3l-1 4l-3 0l-3 0l-4 2l3 2l-2 2l-2 3l0 3l-3-2l-2-2l-1-3l-2-4l-1 4l-2 2l-3-2l-1-3l-2-3l-2-3l0-3l0-5l-2-3l2-3l2 3l3-1l2 2l2-3l1-2l2-2l3-1l2-3l3 2l2 3l3 5l3 3l4 4Z", "VN-94": "M155 573l3 3l3 2l3 3l2 3l3 1l-2 3l-3 2l0 4l-2 1l-4 1l-6 2l-3 1l0-4l1-1l-3-1l-3 1l-2-1l-4-2l0-5l2-2l4-2l3-2l3-1l0-4l1-3l4 0Z", "VN-14": "M72 74l3 1l4 2l4 0l4-1l0 4l0 3l1 3l3 1l4 2l2-2l3 0l3 1l2-1l1 3l3 1l1 4l0 3l2 2l-2 1l1 3l2 4l3 3l-1 4l-4 0l-2 2l-1 3l-1 3l-4-1l-2-2l-2-2l-4-1l-1-3l-3-1l-3-2l-1-3l-4-1l-3-1l-3 1l-2 2l-4 0l-2 2l-3 2l-2 3l-2 3l-2-2l-3-1l-2-1l-2-3l-2 2l-4-1l-3-1l2-3l1-3l-1-3l1-2l3 1l1-4l1-2l1-3l-3-3l-2-3l3-1l2-3l3-1l1-3l1-4l-1-3l-1-4l-2-3l2-3l3-1l3 2l1 2l0 4l2 2l2 2l2 2Z", "VN-72": "M175 499l1 3l-2 2l-1 4l-2 2l-1 3l1 2l1 4l2 2l-1 4l-2 2l-3-1l-2 2l-3 0l1-3l-1-2l-5-1l-1-3l-3-1l-1-3l-1-3l0-3l-1-3l-2-3l1-3l3 0l2-2l2-2l4 0l4 1l3 2l4-1l3 1Z", "VN-34": "M182 121l-2 3l0 3l0 5l0 4l-2-2l-3 1l-2-1l-3-2l-2 2l-3-4l-1-3l-1-3l-2-3l3-1l3-2l3-1l3-1l1 3l1 3l3-1Z", "VN-19": "M160 64l1 3l0 4l3 1l1 3l-1 3l-4 0l-2 1l0 4l0 4l-3-1l-1 3l-3 1l-2-1l-2-2l-3-2l-3-1l-1-2l-2-2l-2-2l-1-4l1-2l0-3l1-3l1-3l2-2l3-1l3 0l1 3l0 4l3 1l3-2l2-2l2-1l3 1Z", "VN-38": "M138 132l1 3l3 1l2 2l2 2l4 2l3 2l3 1l3 0l-1 3l-2 2l-2 3l-1 3l-1 4l-2 3l-1 3l-1 4l0 3l0 3l-2 2l-3-1l-2-2l-2-1l-2-3l-3 1l-3-2l-3 1l-1-4l-1-3l-3-2l-2-3l0-4l2-1l-1-3l-4 0l-3-2l-3-2l3-2l-2-2l-4-1l-3-3l-4 0l-2-2l0-4l2-2l0-3l-3 2l-3 1l-2 1l-2-1l-2-3l3-2l2-2l2-2l3-1l3 1l3 1l2-3l3-1l3 1l1 3l3 1l4 1l3 1l2 2l3 3l4 1l4 0Z", "VN-46": "M245 310l-2 1l-4-1l-5 0l-2 2l-1 2l-3 2l-2 2l-4-1l-3 1l-3-1l-3-2l-3 1l-2-3l-2 0l-3-2l0-3l-3-3l-4-1l2-3l4-1l-1-3l2-3l3 0l3 0l1-4l2-3l5 4l5 3l4 3l2 1l2 2l3 3l2 1l3 1l3 4l3 1Z", "VN-82": "M186 548l3 3l1 4l-3 2l1 3l-3-1l-5-1l-3-1l-3-1l-3-2l-6 1l-3 1l-4 0l-5 1l-3-1l-1-3l5-5l2-2l4 1l5-3l3 0l2 2l2 3l3 1l3 0l4 0l3-1Z", "VN-79": "M190 531l2 4l-2 2l-3 2l2 2l4 1l2 2l1 2l-1 5l-2 2l-3 2l-1-4l-3-3l0-4l-1-3l-3 1l-3-1l-2-3l-2-1l2-2l1-4l-3-2l-4-1l2-2l1-5l4 1l0 3l3 1l2 4l1 2l3-1Z", "VN-84": "M181 576l-2 3l1 3l-2 4l-3 1l-3 1l-2-3l-4-1l-2-3l-2-2l-3-2l-2-2l-3-3l4-1l4-1l2-3l2-2l3 2l2 2l3 2l2 1l3 3Z", "VN-8": "M136 33l2 2l2 2l-2 4l-1 3l-1 3l-3 3l1 3l1 3l1 3l1 3l1 3l-1 3l-1 3l-1 3l1 3l2 3l-2 2l-3 1l-3-1l-3-1l-1-3l-2-2l-2-2l-3-1l0-3l-1-3l-2-3l-1-3l-2-2l-3-2l0-4l2-1l1-4l2-1l1 3l2-3l1-3l1-3l1-3l0-4l2-3l4 2l2 2l2-1l3 1Z", "VN-86": "M168 566l-3 2l-3-1l-1 4l-4 0l-2 2l-2-2l-3-2l-2-3l-3-2l-2-1l2-3l3 2l3-2l1-3l3-2l2 2l3 1l2 2l3 1l2 3Z", "VN-26": "M148 89l-2 3l-2 3l-3 1l-2 2l-4-1l-1-3l-1-4l-1-2l-2-2l-1-3l3-1l4 0l2-2l2 2l1 1l3 2l2 2l1 2Z", "VN-15": "M110 53l0 4l3 2l2 2l1 3l2 3l2 2l-1 3l1 3l-4 0l-3 1l-2 2l-1 3l2 3l-1 4l-1 2l-3 1l-2-3l-4 0l-2-2l-3 2l-4 1l-2-2l-3-1l0-4l0-3l2-3l-3 0l-4 0l-5 0l-2-1l-3-1l2-2l-1-3l-2-2l1-3l3-1l2 2l4 1l4-1l2-1l2 2l4-2l-1-3l-1-3l0-3l2-2l2 2l3 2l1-3l1-2l-1-2l3-1l3 2l1 3l4-1Z", "VN-48": "M245 310l-1 2l1 3l2-1l3-1l-2 1l1 6l-3 1l-3 0l-3 0l-3 1l0-4l-3-1l-4-1l1-2l1-4l4 1l4 0l4-1ZM423 316l-2 2l-4-1l5-2ZM391 306l-1 3l-4-2l-3 2l2-2l4-1Z", "VN-56": "M286 493l-4 1l-2-3l-2-2l-3-1l-3-1l-1-3l-1-2l-1-3l-3-1l0-5l-1-3l1-3l2-2l3 1l2-2l-1-3l2-2l2-2l4-2l2-2l2-2l4 0l5-1l0 3l1 3l2 2l-1 3l-1-3l-2 1l1-3l-1-4l-2 2l-2 2l-2 3l0 3l2 3l1 2l3 2l-2 2l-3-2l-2-2l1 2l2 4l-2 2l-1 2l2 2l-1 3l1 3l2 3l0 3l-3-1l1-3l-2-4l1 3l-2 4l-2 2l3-1ZM487 660l-3 2l-3 2l-2 1l3-1l1-2l3-2ZM500 652l-4 1l-3 2l1-3l3 0ZM510 643l3 2l-4 0l-3 0l3 2l3-1l-3 1l-3-1l-4 0l3-1l4-2ZM454 641l-4 6l2-4l2-3ZM478 616l3 1l2 2l-7-3ZM442 581l-2 2l-3 2l1-3l3-1ZM556 536l1 4l-1-3l-1 5l-1-3l0-4Z", "VN-91": "M107 547l1 3l2 4l6 1l5 3l3 3l3 1l3 2l4 4l3 4l-2 3l-3 3l-2 2l2 2l-2 3l-2-2l0 3l0 4l-2 3l-3-2l-7-5l-4 0l-1 3l-2-3l1-6l1-5l3-1l2-2l3-2l-3-5l-4 0l-3-4l-3-2l-3 1l-2 3l-2-2l-1-4l-2-3l-3-1l2-2l2-2l2-3l4 0l4 1ZM77 551l1 3l1 4l-2 4l-1 3l1 3l-2-2l-1-5l-2-5l-3-2l4-1l1-3Z", "VN-77": "M183 619l-1 3l-2 2l0-3l3-2ZM217 536l2 3l1 4l-2 4l-3 2l-4 0l-3 2l-4 1l-3 2l1-3l-1-3l-2 2l-2-3l1-3l0-3l4-1l2-4l3 1l2 2l3-1l3-3l2 1Z"};
+const PROV  = [{"code": "VN-1", "nameVi": "Hà Nội", "legacy": ["VN-1"]}, {"code": "VN-46", "nameVi": "Huế", "legacy": ["VN-46"]}, {"code": "VN-31", "nameVi": "Hải Phòng", "legacy": ["VN-31", "VN-30"]}, {"code": "VN-48", "nameVi": "Đà Nẵng", "legacy": ["VN-48", "VN-49"]}, {"code": "VN-92", "nameVi": "Cần Thơ", "legacy": ["VN-92", "VN-94", "VN-93"]}, {"code": "VN-79", "nameVi": "TP. Hồ Chí Minh", "legacy": ["VN-79", "VN-74", "VN-77"]}, {"code": "VN-12", "nameVi": "Lai Châu", "legacy": ["VN-12"]}, {"code": "VN-11", "nameVi": "Điện Biên", "legacy": ["VN-11"]}, {"code": "VN-14", "nameVi": "Sơn La", "legacy": ["VN-14"]}, {"code": "VN-20", "nameVi": "Lạng Sơn", "legacy": ["VN-20"]}, {"code": "VN-22", "nameVi": "Quảng Ninh", "legacy": ["VN-22"]}, {"code": "VN-38", "nameVi": "Thanh Hóa", "legacy": ["VN-38"]}, {"code": "VN-40", "nameVi": "Nghệ An", "legacy": ["VN-40"]}, {"code": "VN-42", "nameVi": "Hà Tĩnh", "legacy": ["VN-42"]}, {"code": "VN-4", "nameVi": "Cao Bằng", "legacy": ["VN-4"]}, {"code": "VN-8", "nameVi": "Tuyên Quang", "legacy": ["VN-8", "VN-2"]}, {"code": "VN-10", "nameVi": "Lào Cai", "legacy": ["VN-10", "VN-15"]}, {"code": "VN-19", "nameVi": "Thái Nguyên", "legacy": ["VN-19", "VN-6"]}, {"code": "VN-25", "nameVi": "Phú Thọ", "legacy": ["VN-25", "VN-26", "VN-17"]}, {"code": "VN-27", "nameVi": "Bắc Ninh", "legacy": ["VN-27", "VN-24"]}, {"code": "VN-33", "nameVi": "Hưng Yên", "legacy": ["VN-33", "VN-34"]}, {"code": "VN-37", "nameVi": "Ninh Bình", "legacy": ["VN-37", "VN-35", "VN-36"]}, {"code": "VN-45", "nameVi": "Quảng Trị", "legacy": ["VN-45", "VN-44"]}, {"code": "VN-51", "nameVi": "Quảng Ngãi", "legacy": ["VN-51", "VN-62"]}, {"code": "VN-64", "nameVi": "Gia Lai", "legacy": ["VN-64", "VN-52"]}, {"code": "VN-56", "nameVi": "Khánh Hòa", "legacy": ["VN-56", "VN-58"]}, {"code": "VN-68", "nameVi": "Lâm Đồng", "legacy": ["VN-68", "VN-67", "VN-60"]}, {"code": "VN-66", "nameVi": "Đắk Lắk", "legacy": ["VN-66", "VN-54"]}, {"code": "VN-75", "nameVi": "Đồng Nai", "legacy": ["VN-75", "VN-70"]}, {"code": "VN-72", "nameVi": "Tây Ninh", "legacy": ["VN-72", "VN-80"]}, {"code": "VN-86", "nameVi": "Vĩnh Long", "legacy": ["VN-86", "VN-83", "VN-84"]}, {"code": "VN-87", "nameVi": "Đồng Tháp", "legacy": ["VN-87", "VN-82"]}, {"code": "VN-89", "nameVi": "An Giang", "legacy": ["VN-89", "VN-91"]}, {"code": "VN-96", "nameVi": "Cà Mau", "legacy": ["VN-96", "VN-95"]}];
+const DATA  = {"total": 137, "countries": [{"a2": "VN", "name": "Viet Nam", "count": 106, "regions": [{"raw": "Ho Chi Minh", "p": "VN-79", "n": 87}, {"raw": "Ho Chi Minh City", "p": "VN-79", "n": 14}, {"raw": "Hanoi", "p": "VN-1", "n": 5}]}, {"a2": "ZZ", "name": "Unknown", "count": 31, "regions": []}]};
+const VNVB  = [700.4, 283.8, 47.0, 52.8];
+const WVB   = [0, 0, 900, 528];
+
+const legacyToProv = {};
+PROV.forEach(p => p.legacy.forEach(c => legacyToProv[c] = p));
+const provByCode = Object.fromEntries(PROV.map(p => [p.code, p]));
+
+const vnCountry = DATA.countries.find(c => c.a2 === 'VN');
+const TOTAL = DATA.total;
+const pct = n => (n / TOTAL * 100).toFixed(1) + '%';
+
+// Gộp các cách viết tên về một tỉnh: "Ho Chi Minh" và "Ho Chi Minh City" là cùng một nơi.
+const provRows = (() => {
+  const by = new Map();
+  vnCountry.regions.forEach(r => {
+    const cur = by.get(r.p) || { prov: provByCode[r.p], count: 0, raws: [] };
+    cur.count += r.n; cur.raws.push(r.raw);
+    by.set(r.p, cur);
+  });
+  return [...by.values()].sort((a, b) => b.count - a.count);
+})();
+const provMax = provRows[0]?.count || 1;
+const countByProv = Object.fromEntries(provRows.map(r => [r.prov.code, r.count]));
+const offMap = TOTAL - vnCountry.count;
+
+const STOPS = ['#e8f5e9', '#a5d6a7', '#66bb6a', '#2e7d32', '#1b5e20'];
+const shade = (n, max) => {
+  if (!n) return '#f1f5f9';
+  const i = Math.ceil(n / Math.max(max, 1) * STOPS.length) - 1;
+  return STOPS[Math.max(0, Math.min(STOPS.length - 1, i))];
+};
+
+const svg = document.getElementById('svg');
+const gWorld = document.getElementById('world');
+const gVN = document.getElementById('vn');
+const mapbox = document.getElementById('mapbox');
+const NS = 'http://www.w3.org/2000/svg';
+
+let level = 'world';
+let hot = null;
+
+/* ---- vẽ hai lớp ---- */
+for (const [iso, d] of Object.entries(WORLD)) {
+  const p = document.createElementNS(NS, 'path');
+  p.setAttribute('d', d);
+  const isVN = iso === '704';
+  p.setAttribute('fill', isVN ? shade(vnCountry.count, vnCountry.count) : '#f1f5f9');
+  if (isVN) {
+    p.classList.add('vn');
+    p.addEventListener('click', () => goVN());
+    p.addEventListener('mouseenter', () => tip('Viet Nam', vnCountry.count));
+    p.addEventListener('mouseleave', () => tip(null));
+  }
+  gWorld.appendChild(p);
+}
+
+const vnPaths = [];
+for (const [legacy, d] of Object.entries(VN)) {
+  const prov = legacyToProv[legacy];
+  const p = document.createElementNS(NS, 'path');
+  p.setAttribute('d', d);
+  p.setAttribute('fill', shade(prov ? (countByProv[prov.code] || 0) : 0, provMax));
+  if (prov) {
+    p.dataset.code = prov.code;
+    p.addEventListener('mouseenter', () => { setHot(prov.code); tip(prov.nameVi, countByProv[prov.code] || 0); });
+    p.addEventListener('mouseleave', () => { setHot(null); tip(null); });
+  }
+  gVN.appendChild(p);
+  vnPaths.push(p);
+}
+
+/* ---- tooltip ---- */
+let tipNode = null;
+function tip(name, count) {
+  if (tipNode) { tipNode.remove(); tipNode = null; }
+  if (!name) return;
+  tipNode = document.createElement('div');
+  tipNode.className = 'tip';
+  tipNode.innerHTML = `<b>${name}</b><span>${count} lượt · ${pct(count)}</span>`;
+  mapbox.appendChild(tipNode);
+}
+
+/* ---- phóng to: nội suy viewBox từng khung, nên mắt thấy nó đi vào chứ không nhảy ---- */
+let anim = null;
+function animateViewBox(to, after) {
+  if (anim) cancelAnimationFrame(anim);
+  const from = svg.getAttribute('viewBox').split(' ').map(Number);
+  const t0 = performance.now(), DUR = 650;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / DUR), e = ease(t);
+    svg.setAttribute('viewBox', from.map((v, i) => v + (to[i] - v) * e).join(' '));
+    // tỉnh hiện dần từ giữa chặng, lúc Việt Nam đã đủ lớn để nhìn ra ranh giới
+    if (to === VNVB) gVN.style.opacity = String(Math.max(0, (e - .45) / .55));
+    if (t < 1) anim = requestAnimationFrame(step);
+    else { anim = null; after && after(); }
+  };
+  anim = requestAnimationFrame(step);
+}
+
+function goVN() {
+  if (level === 'vn') return;
+  level = 'vn';
+  gVN.classList.add('on');
+  gVN.style.opacity = '0';
+  animateViewBox(VNVB, () => { gVN.style.opacity = '1'; });
+  render();
+}
+function goWorld() {
+  if (level === 'world') return;
+  level = 'world';
+  hot = null;
+  gVN.classList.remove('on');
+  animateViewBox(WVB, () => { gVN.style.opacity = '0'; });
+  render();
+}
+
+function setHot(code) {
+  hot = code;
+  vnPaths.forEach(p => p.classList.toggle('hot', !!code && p.dataset.code === code));
+  document.querySelectorAll('#side tr').forEach(tr => tr.classList.toggle('hl', !!code && tr.dataset.code === code));
+}
+
+/* ---- breadcrumb + bảng ---- */
+function render() {
+  const inVN = level === 'vn';
+  document.getElementById('crumbs').innerHTML = inVN
+    ? '<button id="back">Thế giới</button><span class="sep">›</span><span class="here">Việt Nam</span>'
+    : '<span class="here">Thế giới</span>';
+  const back = document.getElementById('back');
+  if (back) back.onclick = goWorld;
+
+  const side = document.getElementById('side');
+  const bar = (n, max, gray) =>
+    `<td><div class="bar${gray ? ' g' : ''}"><i style="width:${Math.max(3, n / max * 100)}%"></i><b>${pct(n)}</b></div></td>`;
+
+  if (inVN) {
+    side.innerHTML = `<table><thead><tr><th>Tỉnh/thành</th><th class="num">Lượt</th><th>Tỷ lệ</th></tr></thead><tbody>
+      ${provRows.map(r => `<tr data-code="${r.prov.code}"><td>${r.prov.nameVi}</td>
+         <td class="num">${r.count}</td>${bar(r.count, provMax)}</tr>`).join('')}
+      <tr class="dim"><td>⊘ Không xác định</td><td class="num">${offMap}</td>${bar(offMap, provMax, 1)}</tr>
+      </tbody></table>
+      <p class="foot">${34 - provRows.length} tỉnh chưa có lượt nào. TP. Hồ Chí Minh gộp từ
+      ${provRows[0].raws.map(r => `<code>${r}</code>`).join(' + ')} — hai cách GeoIP viết cùng một nơi.</p>`;
+    side.querySelectorAll('tr[data-code]').forEach(tr => {
+      tr.onmouseenter = () => setHot(tr.dataset.code);
+      tr.onmouseleave = () => setHot(null);
+    });
+  } else {
+    side.innerHTML = `<table><thead><tr><th>Quốc gia</th><th class="num">Lượt</th><th>Tỷ lệ</th></tr></thead><tbody>
+      ${DATA.countries.map(c => c.a2 === 'VN'
+        ? `<tr class="go" id="rowvn"><td>${c.name} ›</td><td class="num">${c.count}</td>${bar(c.count, vnCountry.count)}</tr>`
+        : `<tr class="dim"><td>⊘ ${c.name}</td><td class="num">${c.count}</td>${bar(c.count, vnCountry.count, 1)}</tr>`).join('')}
+      </tbody></table>
+      <p class="hint">↑ bấm dòng Viet Nam, hoặc bấm thẳng vào hình trên bản đồ</p>`;
+    const row = document.getElementById('rowvn');
+    if (row) row.onclick = goVN;
+  }
+
+  const max = inVN ? provMax : vnCountry.count;
+  const step = Math.ceil(max / STOPS.length);
+  document.getElementById('legend').innerHTML =
+    `<i style="background:#f1f5f9"></i>0 ` + STOPS.map((c, i) => {
+      const lo = i * step + 1, hi = Math.min((i + 1) * step, max);
+      return `<i style="background:${c}"></i>${lo === hi ? lo : lo + '–' + hi}`;
+    }).join(' ');
+}
+render();
+</script>
+</body>
+</html>

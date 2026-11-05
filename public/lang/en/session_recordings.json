@@ -1,0 +1,45 @@
+{
+  "title": "Session Replay",
+  "columns": {
+    "started_at": "Started",
+    "duration": "Duration",
+    "visitor": "Visitor",
+    "session": "Session",
+    "pages": "Pages",
+    "entry_page": "Entry Page",
+    "device": "Device",
+    "location": "Location",
+    "bounce": "Bounce"
+  },
+  "bounce": "Bounce",
+  "filters": {
+    "title": "Filters",
+    "clear_all": "Clear all",
+    "device_type": "Device",
+    "all_devices": "All Devices",
+    "browser": "Browser",
+    "os": "Operating System",
+    "country": "Country",
+    "country_placeholder": "e.g. VN, US, SG",
+    "country_hint": "Comma-separated ISO codes",
+    "session_type": "Session Type",
+    "bounce": "Session Type",
+    "all_sessions": "All Sessions",
+    "engaged": "Engaged",
+    "bounced": "Bounced",
+    "search_placeholder": "IP / Visitor / Session ID",
+    "date_range": "Date range"
+  },
+  "device": {
+    "desktop": "Desktop",
+    "mobile": "Mobile",
+    "tablet": "Tablet"
+  },
+  "min_duration_note": "Sessions shorter than 5 seconds are not shown.",
+  "empty": "No sessions found",
+  "unknown": "Unknown",
+  "plan_upgrade": {
+    "title": "Session Replay",
+    "description": "Upgrade your plan to watch session recordings and understand how visitors interact with your site."
+  }
+}

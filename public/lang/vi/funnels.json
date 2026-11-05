@@ -1,0 +1,237 @@
+{
+  "page": {
+    "subtitle": "Theo dõi hành trình người dùng và tìm điểm khách truy cập rời đi."
+  },
+  "list": {
+    "tableHeader": {
+      "name": "Tên",
+      "totalEntered": "Tổng truy cập",
+      "conversions": "Chuyển đổi",
+      "dropOff": "Thoát nhiều nhất",
+      "cvr": "CVR",
+      "action": "Thao tác",
+      "search": "Tìm kiếm funnel..."
+    },
+    "noFunnels": "Chưa có Funnel nào",
+    "noFunnelsDesc": "Tạo Funnel đầu tiên để theo dõi hành trình khách truy cập trên website.",
+    "createFunnel": "Tạo Funnel",
+    "newFunnel": "Funnel mới",
+    "deleteTitle": "Xóa Funnel",
+    "deleteDesc": "Bạn có chắc muốn xóa \"{{name}}\"? Hành động này không thể hoàn tác.",
+    "delete": "Xóa",
+    "cancel": "Hủy"
+  },
+  "card": {
+    "active": "Đang hoạt động",
+    "inactive": "Không hoạt động",
+    "step_one": "{{count}} Step",
+    "step_other": "{{count}} Steps",
+    "report": "Báo cáo",
+    "edit": "Chỉnh sửa"
+  },
+  "form": {
+    "namePlaceholder": "vd. Luồng mua hàng",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Mô tả Funnel này theo dõi gì",
+    "steps": "Steps ({{count}})",
+    "addStep": "Thêm Step",
+    "saveFunnel": "Lưu Funnel",
+    "createFunnel": "Tạo Funnel",
+    "updateFunnel": "Cập nhật Funnel",
+    "cancel": "Hủy",
+    "step": "Step {{index}}",
+    "stepName": "Tên Step *",
+    "stepNamePlaceholder": "vd. Trang sản phẩm",
+    "compare": "So sánh",
+    "condition": "Điều kiện",
+    "requiredStep": "Step bắt buộc",
+    "firstStepRequired": "Step đầu tiên phải bắt buộc — nó xác định ai vào Funnel này.",
+    "lastStepRequired": "Step cuối phải bắt buộc — đây là mục tiêu chuyển đổi.",
+    "requiredVsOptional": "Bắt buộc vs Tùy chọn",
+    "requiredDetail": "Bắt buộc: Funnel chờ Step này qua tất cả lượt xem trang. Phiên không đến Step này được tính là thoát.",
+    "optionalDetail": "Tùy chọn: Nếu không khớp ngay, Step này được bỏ qua và Funnel tiếp tục. Dùng cho các Step chỉ một số người dùng thực hiện.",
+    "sourceAlert": "Đang tạo Funnel cho lưu lượng từ link cụ thể. Step 1 đã được điền sẵn — thêm các Step để theo dõi đường dẫn chuyển đổi.",
+    "noEventMatch": "Chưa có sự kiện nào khớp tên này. Đảm bảo có Event Rule hoặc lệnh gọi trackEvent() tạo ra \"{{name}}\".",
+    "eventRulePaused": "Event rule \"{{name}}\" đang tạm dừng. Bật lại trong Event Rules để tiếp tục theo dõi.",
+    "separateWithCommas": "Phân cách nhiều giá trị bằng dấu phẩy",
+    "lead": "Khách tiềm năng",
+    "sale": "Doanh số",
+    "patternTypes": {
+      "page_path": "Page Path",
+      "page_path_help": "Khớp với đường dẫn URL (vd. /products/shoes)",
+      "page_url": "Page URL",
+      "page_url_help": "Khớp với URL đầy đủ bao gồm tên miền",
+      "page_title": "Page Title",
+      "page_title_help": "Khớp với tiêu đề trang (document.title)",
+      "event": "Event",
+      "event_help": "Khớp với tên sự kiện tùy chỉnh được SDK theo dõi",
+      "search_query": "Search Query",
+      "search_query_help": "Khớp với các tham số truy vấn URL",
+      "link": "Link",
+      "link_help": "Khớp khách truy cập đến từ short link cụ thể",
+      "conversion": "Conversion",
+      "conversion_help": "Khớp khách truy cập đã hoàn thành chuyển đổi khách tiềm năng hoặc doanh số"
+    },
+    "conditions": {
+      "contains": "Contains",
+      "equals": "Equals",
+      "starts_with": "Starts With",
+      "ends_with": "Ends With",
+      "matches_regex": "Matches Regex",
+      "in": "In"
+    },
+    "conditionLabels": {
+      "contains": "contains",
+      "equals": "equals",
+      "starts_with": "starts with",
+      "ends_with": "ends with",
+      "matches_regex": "matches regex"
+    },
+    "patternInputs": {
+      "pattern": "Pattern",
+      "patternPlaceholder": "vd. /products",
+      "pageUrlPlaceholder": "vd. https://example.com/products",
+      "pageTitlePlaceholder": "vd. Trang giá",
+      "eventNameLabel": "Event Name",
+      "eventNamePlaceholder": "vd. signup_click",
+      "searchQueryPlaceholder": "vd. utm_source=google",
+      "touchPointLabel": "Touch Point",
+      "touchPointPlaceholder": "Chọn link...",
+      "conversionTypeLabel": "Conversion Type",
+      "conversionTypePlaceholder": "Chọn loại...",
+      "conversionEventNameLabel": "Tên sự kiện",
+      "conversionEventNamePlaceholder": "Tất cả tên sự kiện (tùy chọn)",
+      "conversionEventNameAll": "Tất cả tên sự kiện"
+    }
+  },
+  "report": {
+    "selectDateRange": "Chọn khoảng thời gian",
+    "funnelSteps": "Funnel Steps",
+    "stepDetails": "Step Details",
+    "stateNoVisitors": "Chưa có dữ liệu khách truy cập. Có thể chưa có khách truy cập, hoặc cài đặt theo dõi cần được kiểm tra.",
+    "stateNoVisitorsCta": "Kiểm tra cài đặt",
+    "stateProcessing": "Dữ liệu Funnel đang được xử lý. Thường mất vài phút.",
+    "stateNoMatches": "Chưa tìm thấy phiên khớp nào. Dữ liệu Funnel cập nhật hàng đêm — nếu các Step đúng, kết quả mới sẽ xuất hiện khi khách truy cập hoàn thành Funnel.",
+    "eventStepsWarning": "Funnel này có Step Sự kiện — đảm bảo các Event Rule hoặc lệnh trackEvent() tương ứng đang hoạt động.",
+    "noStepsConfigured": "Chưa cấu hình Step nào"
+  },
+  "summary": {
+    "totalEntries": "Tổng lượt vào",
+    "conversions": "Chuyển đổi",
+    "conversionRate": "Tỷ lệ chuyển đổi"
+  },
+  "dropOff": {
+    "title": "Điểm thoát nhiều nhất",
+    "low": "Thấp",
+    "moderate": "Vừa",
+    "critical": "Nghiêm trọng",
+    "droppedOff": "{{num}} khách thoát ({{rate}}%)"
+  },
+  "table": {
+    "step": "Step",
+    "name": "Tên",
+    "visits": "Lượt truy cập",
+    "entries": "Lượt vào",
+    "proceeds": "Tiến tới",
+    "dropOff": "Thoát",
+    "rate": "Tỷ lệ"
+  },
+  "visitors": {
+    "stepTitle": "Step {{position}}: {{name}}",
+    "visitorsReached_one": "{{count}} khách đến Step này",
+    "visitorsReached_other": "{{count}} khách đến Step này",
+    "all": "Tất cả",
+    "proceeded": "Tiếp tục",
+    "droppedOff": "Đã thoát",
+    "noVisitors": "Không tìm thấy khách truy cập",
+    "tryDifferentFilter": "Thử bộ lọc khác",
+    "noSessionsPeriod": "Không có phiên nào đến Step này trong khoảng thời gian đã chọn",
+    "visitor": "Khách truy cập",
+    "progress": "Tiến độ",
+    "device": "Thiết bị",
+    "location": "Vị trí",
+    "time": "Thời gian",
+    "pagination": "Trang {{page}} / {{total}} ({{count}} tổng cộng)",
+    "done": "Hoàn thành",
+    "drop": "Thoát"
+  },
+  "mainCard": {
+    "entries": "lượt vào",
+    "conversions": "chuyển đổi",
+    "dropped": "thoát",
+    "scrollHint": "Cuộn để xem thêm"
+  },
+  "chart": {
+    "visits": "Lượt truy cập",
+    "funnelConversion": "Funnel Conversion",
+    "dropOff": "Thoát",
+    "noSessionsReached": "Không có phiên nào đến Step này trong khoảng thời gian đã chọn.",
+    "noEventFound": "Chưa có event rule nào tên \"{{pattern}}\".",
+    "createEventRuleHint": "hoặc gọi trackEvent('{{pattern}}') trong SDK của bạn.",
+    "eventRule": "Tạo Event Rule",
+    "eventRulePaused": "Event rule \"{{pattern}}\" đang tạm dừng.",
+    "eventRuleEnableHint": "Bật lại trong Event Rules để bắt đầu theo dõi.",
+    "eventActiveNoMatches": "Event rule \"{{pattern}}\" đang hoạt động nhưng chưa phát hiện kết quả nào. Hãy đợi khách truy cập kích hoạt sự kiện.",
+    "eventRulePausedHistorical": "Event rule này đang tạm dừng — chỉ hiển thị dữ liệu lịch sử."
+  },
+  "visitorDetail": {
+    "backToVisitors": "Quay lại danh sách khách",
+    "sessionNotFound": "Không tìm thấy phiên",
+    "sessionSummary": "Tóm tắt phiên",
+    "browser": "Trình duyệt",
+    "device": "Thiết bị",
+    "location": "Vị trí",
+    "source": "Nguồn",
+    "direct": "Trực tiếp",
+    "started": "Bắt đầu",
+    "duration": "Thời lượng",
+    "pagesViewed": "Số trang đã xem",
+    "entryPage": "Trang vào",
+    "exitPage": "Trang ra",
+    "funnelProgress": "Funnel Progress",
+    "stepsOf": "{{matched}} / {{total}} Steps",
+    "noFunnelSteps": "Không có Funnel Steps",
+    "completed": "Hoàn thành",
+    "dropped": "Đã thoát",
+    "pageJourney": "Hành trình trang",
+    "noPageviews": "Không có lượt xem trang nào được ghi lại cho phiên này.",
+    "exit": "Thoát",
+    "entry": "Vào",
+    "droppedBefore": "Thoát trước Step {{position}}: {{name}}",
+    "sessionLabel": "Phiên:",
+    "visitorLabel": "Khách:",
+    "stepBadge": "Step {{position}}",
+    "matched": "Khớp:"
+  },
+  "demo": {
+    "badge": "Tính năng Pro",
+    "demoNotice": "Đây là báo cáo mẫu với dữ liệu demo.",
+    "getStarted": { "cta": "Tiếp tục" },
+    "hero": {
+      "title": "Hiểu rõ cách khách truy cập chuyển đổi",
+      "desc": "Funnel Analytics giúp bạn lập bản đồ từng bước trong hành trình khách truy cập, tìm điểm thoát và tối ưu hóa để tăng chuyển đổi."
+    },
+    "features": {
+      "trackJourney": {
+        "title": "Theo dõi hành trình khách truy cập",
+        "desc": "Xem chính xác cách khách truy cập di chuyển qua các trang từ lúc vào đến lúc chuyển đổi."
+      },
+      "findDropOff": {
+        "title": "Tìm điểm thoát",
+        "desc": "Xác định bước nào làm mất nhiều khách nhất và ưu tiên cải thiện."
+      },
+      "visitorDrilldown": {
+        "title": "Xem chi tiết khách truy cập",
+        "desc": "Nhấp vào bất kỳ bước nào để xem danh sách khách truy cập thực tế đã đến hoặc thoát tại bước đó."
+      },
+      "multiStep": {
+        "title": "Funnel nhiều bước",
+        "desc": "Xây dựng funnel với bất kỳ số bước nào bằng URL trang hoặc sự kiện tùy chỉnh."
+      }
+    }
+  },
+  "plan_upgrade": {
+    "title": "Funnels không có trong gói hiện tại của bạn",
+    "description": "Nâng cấp gói để theo dõi hành trình khách truy cập và trực quan hóa phễu chuyển đổi."
+  }
+}

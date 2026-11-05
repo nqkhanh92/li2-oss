@@ -1,0 +1,76 @@
+{
+  "title": "Smart Setup",
+  "subtitle": "Let AI analyze your website and suggest analytics configuration",
+  "analyze_button": "Analyze",
+  "reanalyze": "Re-analyze (1 credit)",
+  "apply_selected": "Apply {{count}} suggestions",
+  "skip": "Skip",
+  "cancel": "Cancel",
+  "select_all": "Select All",
+  "deselect_all": "Deselect All",
+  "loading": {
+    "fetching": "Fetching page content",
+    "analyzing": "AI analyzing structure",
+    "generating": "Generating suggestions",
+    "time_hint": "Usually takes 5–10 seconds",
+    "almost_done": "Almost done…"
+  },
+  "results": {
+    "analyzed_url": "Analyzed: {{url}}",
+    "cached_until": "Cached until: {{date}}",
+    "selected_count": "{{selected}} of {{total}} suggestions selected",
+    "skippedInfo": "{{funnels}} funnel(s) and {{rules}} rule(s) already existed and were skipped.",
+    "alreadyExists": "Already exists"
+  },
+  "funnels": {
+    "section_title": "Suggested Funnels",
+    "section_hint": "A funnel tracks how visitors move through key pages — helping you spot where they drop off.",
+    "card_subtitle": "Track visitors through {{count}} stages:",
+    "count": "{{count}} suggestions"
+  },
+  "event_rules": {
+    "section_title": "Suggested Event Rules",
+    "section_hint": "Event rules automatically detect important actions on your site — like button clicks or form submissions.",
+    "count": "{{count}} suggestions"
+  },
+  "trigger": {
+    "suggest_funnels": "AI Suggest Funnels",
+    "suggest_rules": "AI Suggest Rules",
+    "view_suggestions": "View AI Suggestions ({{count}})",
+    "beta": "BETA",
+    "premium": "Premium+"
+  },
+  "onboarding": {
+    "title": "Let AI set up your analytics",
+    "description": "We'll analyze your website and suggest funnels and event tracking rules tailored to your site's structure.",
+    "prefilled_hint": "Pre-filled from Step 1. You can change the URL to analyze a different page."
+  },
+  "badge": {
+    "ai": "AI"
+  },
+  "warnings": {
+    "truncated": "This page is very large. We analyzed the first portion — some elements near the bottom may not be included in suggestions."
+  },
+  "dependency": {
+    "ruleNeeded": "Required by funnel \"{{funnels}}\". Without this rule, that funnel step won't track any data.",
+    "bottomBarWarning_one": "{{count}} selected funnel has an event step that requires an unselected event rule",
+    "bottomBarWarning_other": "{{count}} selected funnels have event steps that require unselected event rules"
+  },
+  "success": {
+    "description": "Your funnels and event rules are ready. You can view and manage them from the sidebar.",
+    "continue": "Continue"
+  },
+  "messages": {
+    "analysis_complete": "Website analysis complete",
+    "cached_results": "Showing cached results",
+    "applied": "Created {{funnels}} funnels and {{rules}} event rules"
+  },
+  "errors": {
+    "fetch_failed": "We couldn't reach this website. Please check the URL and try again.",
+    "fetch_timeout": "The website took too long to respond. Please try again.",
+    "page_too_small": "This page doesn't have enough content to analyze. Try a different page.",
+    "insufficient_credits": "You've used all your AI credits. Upgrade your plan for more.",
+    "invalid_url": "Please enter a valid website URL (e.g. https://your-site.com)",
+    "analysis_failed": "AI analysis temporarily unavailable. Please try again later."
+  }
+}

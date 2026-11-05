@@ -1,0 +1,102 @@
+{
+  "title": "Khóa API",
+  "description": "Quản lý khóa API để truy cập lập trình vào tổ chức của bạn",
+  "create_button": "Tạo Khóa API",
+  "create_dialog": {
+    "title": "Tạo Khóa API",
+    "description": "Tạo khóa API mới để truy cập lập trình vào tổ chức của bạn",
+    "name_label": "Tên",
+    "name_placeholder": "vd: Khóa Server Production",
+    "type_label": "Loại",
+    "type_user": "Bạn",
+    "type_user_description": "Khóa API cá nhân",
+    "type_bot": "Máy",
+    "type_bot_description": "Tài khoản dịch vụ",
+    "type_help_user": "Khóa này sẽ ghi nhận các hoạt động dưới tên bạn",
+    "type_help_bot": "Một người dùng bot sẽ được tạo và thêm vào tổ chức của bạn như một thành viên",
+    "permissions_label": "Quyền",
+    "preset_read_only": "Chỉ đọc",
+    "preset_read_only_desc": "Chỉ xem",
+    "preset_standard": "Tiêu chuẩn",
+    "preset_standard_desc": "Đọc & Ghi",
+    "preset_full": "Đầy đủ",
+    "preset_full_desc": "Tất cả quyền",
+    "preset_custom": "Tùy chỉnh",
+    "preset_custom_desc": "Chọn cụ thể",
+    "permissions_summary": "Khóa API này sẽ có quyền truy cập {{preset}} vào một số tài nguyên",
+    "permissions_more": "+{{count}} quyền khác",
+    "expiration_label": "Thời hạn",
+    "expiration_7days": "7 ngày",
+    "expiration_30days": "30 ngày",
+    "expiration_365days": "365 ngày",
+    "expiration_never": "Không bao giờ",
+    "expiration_custom": "Tùy chỉnh",
+    "pick_date": "Chọn ngày",
+    "expires_on": "Hết hạn vào {{date}}",
+    "advanced_settings": "Cài Đặt Nâng Cao",
+    "cancel_button": "Hủy",
+    "create_button": "Tạo Khóa API",
+    "creating_button": "Đang tạo..."
+  },
+  "detail_dialog": {
+    "title": "Chi Tiết Khóa API",
+    "name_label": "Tên",
+    "type_label": "Loại",
+    "status_label": "Trạng thái",
+    "status_active": "Hoạt động",
+    "status_inactive": "Không hoạt động",
+    "created_label": "Đã tạo",
+    "last_used_label": "Sử dụng lần cuối",
+    "never_used": "Chưa bao giờ",
+    "expires_label": "Hết hạn",
+    "never_expires": "Không bao giờ",
+    "permissions_label": "Quyền",
+    "permissions_count": "{{count}} quyền",
+    "close_button": "Đóng",
+    "deactivate_button": "Vô hiệu hóa",
+    "activate_button": "Kích hoạt",
+    "delete_button": "Xóa"
+  },
+  "created_dialog": {
+    "title": "Đã tạo API Key thành công",
+    "description": "Hãy sao chép API key của bạn ngay bây giờ. Bạn sẽ không thể xem lại nó!",
+    "key_label": "API Key",
+    "copy_button": "Sao chép",
+    "copied": "Đã sao chép",
+    "close_button": "Tôi đã lưu API key của mình"
+  },
+  "list": {
+    "empty_title": "Không có khóa API",
+    "empty_description": "Tạo khóa API đầu tiên của bạn để bắt đầu",
+    "name_column": "Tên",
+    "type_column": "Loại",
+    "status_column": "Trạng thái",
+    "created_column": "Đã tạo",
+    "last_used_column": "Sử dụng lần cuối",
+    "actions_column": "Hành động"
+  },
+  "types": {
+    "user": "Người dùng",
+    "bot": "Bot"
+  },
+  "status": {
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động"
+  },
+  "actions": {
+    "view_details": "Xem Chi Tiết",
+    "delete": "Xóa",
+    "confirm_delete": "Bạn có chắc chắn muốn xóa khóa API này?",
+    "delete_success": "Đã xóa khóa API thành công",
+    "delete_error": "Không thể xóa khóa API",
+    "update_success": "Đã cập nhật khóa API thành công",
+    "update_error": "Không thể cập nhật khóa API"
+  },
+  "toast": {
+    "status_updated": "Đã Cập Nhật Trạng Thái",
+    "status_activated": "Khóa API đã được kích hoạt",
+    "status_deactivated": "Khóa API đã bị vô hiệu hóa",
+    "deleted": "Đã Xóa Khóa API",
+    "deleted_description": "Khóa API đã được xóa vĩnh viễn"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Tổng quan"
+  },
+  "title": "Tổng quan",
+  "subtitle": "7 ngày gần nhất · so với 7 ngày trước đó",
+  "trend": {
+    "new": "Mới"
+  },
+  "chart": {
+    "title": "Hiệu suất 7 ngày",
+    "legend": {
+      "clicks": "Lượt nhấp",
+      "pageviews": "Lượt xem trang",
+      "conversions": "Chuyển đổi"
+    }
+  },
+  "columns": {
+    "links": {
+      "title": "Liên kết",
+      "totalClicks": "Tổng lượt nhấp",
+      "unique": "Duy nhất",
+      "avgPerDay": "TB/Ngày",
+      "channels": "Theo kênh",
+      "topLinks": "Nổi bật nhất",
+      "empty": {
+        "title": "Không có lượt nhấp",
+        "description": "Không có dữ liệu lượt nhấp trong 7 ngày qua."
+      }
+    },
+    "website": {
+      "title": "Website",
+      "pageviews": "Lượt xem trang",
+      "visitors": "Khách truy cập",
+      "sessions": "Phiên",
+      "topSources": "Nguồn truy cập hàng đầu",
+      "topPages": "Trang phổ biến nhất",
+      "empty": {
+        "title": "Không có lượt xem",
+        "description": "Không có dữ liệu lượt xem trang trong 7 ngày qua."
+      }
+    },
+    "conversions": {
+      "title": "Chuyển đổi",
+      "totalConversions": "Tổng chuyển đổi",
+      "leads": "Khách tiềm năng",
+      "sales": "Đơn hàng",
+      "rates": "Tỷ lệ chuyển đổi",
+      "clickToLead": "Nhấp→KTN",
+      "leadToSale": "KTN→Đơn",
+      "empty": {
+        "title": "Không có chuyển đổi",
+        "description": "Không có dữ liệu chuyển đổi trong 7 ngày qua."
+      }
+    }
+  },
+  "locked": {
+    "website": {
+      "title": "Phân tích Website",
+      "description": "Theo dõi lượt xem trang, khách truy cập, trang phổ biến và nguồn truy cập"
+    },
+    "conversions": {
+      "title": "Theo dõi chuyển đổi",
+      "description": "Theo dõi khách tiềm năng, đơn hàng, doanh thu và phễu chuyển đổi"
+    },
+    "upgradeCta": "Nâng cấp lên Pro"
+  },
+  "planFooter": {
+    "expires": "HH {{date}}",
+    "upgradeCta": "Nâng cấp",
+    "manage": "Quản lý",
+    "quotas": {
+      "links": "Links",
+      "members": "Thành viên",
+      "domains": "Tên miền",
+      "spaces": "Spaces"
+    }
+  },
+  "error": {
+    "message": "Không thể tải dữ liệu tổng quan.",
+    "retry": "Thử lại"
+  }
+}

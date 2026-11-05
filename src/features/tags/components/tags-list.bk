@@ -1,0 +1,191 @@
+'use client'
+import { useFilters } from '@/shared/hooks/use-filters'
+import { DataFilterItem } from '../../../shared/components/customize/data-filters/data-filter-item'
+import { CalendarFoldIcon, PlusIcon, TagIcon } from 'lucide-react'
+import { LoadingButton } from '../../../shared/components/customize/loading-button'
+import { useParams, useRouter } from 'next/navigation'
+import { CustomDialog } from '../../../shared/components/customize/custom-dialog'
+import { TableActionProvider } from '@/shared/providers/table-action-provider'
+import { useGetTags } from '@/features/tags/hooks/queries'
+import { useBulkDeleteTag, useCreateTag } from '@/features/tags/hooks/mutations'
+import { CreateTagForm } from './form/tag-form'
+import { tagColumns } from './tag-table-column'
+import { CustomTable } from '../../../shared/components/customize/table/custom-table'
+import { Button } from '../../../shared/components/ui/button'
+import { useTranslation } from 'react-i18next'
+import { Suspense } from 'react'
+
+interface TagListProps {
+  blocked: boolean
+}
+export const TagsList = ({ blocked }: TagListProps) => {
+  const { pagination, setPagination, sorting, filters, search, setSorting, setFilter, setSearch } =
+    useFilters({
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+      search: '',
+      sorting: [
+        {
+          id: 'created_at',
+          desc: true,
+        },
+      ],
+    })
+  const { org_id }: { org_id: string } = useParams()
+  const { data, isLoading } = useGetTags(org_id, {
+    pagination,
+    search,
+    sorting,
+    filters,
+  })
+  const { mutate: bulkDelete, isPending: isDeleting } = useBulkDeleteTag(org_id)
+  const onDeleteBulk = ({
+    selectedRows,
+    callback,
+  }: {
+    selectedRows: Record<string, boolean>
+    callback?: () => void
+  }) => {
+    const selectedIds = Object.entries(selectedRows)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([id]) => id)
+    bulkDelete(selectedIds, {
+      onSuccess: () => {
+        callback?.()
+      },
+    })
+  }
+  const router = useRouter()
+  const { mutate: createTag, isPending: isCreatingTag } = useCreateTag(org_id)
+
+  const { t } = useTranslation('tag')
+  return (
+    <div className="flex flex-col">
+      <TableActionProvider
+        actions={[
+          {
+            name: 'edit',
+            label: t('common:buttons.edit', { field: '' }),
+            action: (row) => {
+              router.push(`/org/${org_id}/tags/${row.id}`)
+            },
+          },
+          {
+            name: 'delete',
+            label: t('common:buttons.delete', {
+              field: t('common:module.tag'),
+            }),
+            warnTitle: t('common:buttons.delete', {
+              field: t('common:module.tag'),
+            }),
+            warnDesc: t('common:messages.delete_dialog', {
+              field: t('common:module.tag'),
+            }),
+            warnType: 'dialog',
+            action: (row, options) => {
+              bulkDelete([row.id], {
+                onSuccess: () => {
+                  options?.onSuccess?.()
+                  router.refresh()
+                },
+              })
+            },
+            isLoading: isDeleting,
+          },
+        ]}
+      >
+        <CustomTable
+          className="bg-background rounded-2xl"
+          extras={
+            <div className="lg:flex items-center gap-4 lg:space-y-0 space-y-4">
+              <CustomDialog
+                title={t('common:buttons.create', {
+                  field: t('common:module.tag'),
+                })}
+                size="sm"
+                noFooter
+                button={
+                  <LoadingButton
+                    isLoading={isCreatingTag}
+                    variant={'default'}
+                    className="gap-1"
+                    iconLeft={<PlusIcon />}
+                  >
+                    {t('common:buttons.create', {
+                      field: t('common:module.tag'),
+                    })}
+                  </LoadingButton>
+                }
+              >
+                {({ close }) => (
+                  <div className="flex flex-col gap-6 p-0 items-center w-full">
+                    <Suspense>
+                      <CreateTagForm
+                        isPending={isCreatingTag}
+                        close={close}
+                        onSubmit={(values) => {
+                          createTag(values, {
+                            onSuccess: () => {
+                              close()
+                              router.refresh()
+                            },
+                          })
+                        }}
+                        className="px-0 pb-0 w-full"
+                        blocked={blocked}
+                      />
+                    </Suspense>
+                    {blocked && (
+                      <Button
+                        type="button"
+                        onClick={close}
+                        variant="secondary"
+                        className={`gap-[6px] flex-1 max-w-fit`}
+                      >
+                        {t('common:buttons.cancel')}
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </CustomDialog>
+
+              <div className="flex gap-4 w-full lg:w-auto">
+                <DataFilterItem
+                  className="w-52"
+                  name="search"
+                  placeholder={t('common:filter.search_by_name')}
+                  type="search"
+                  setSearch={setSearch}
+                  search={search}
+                />
+                <DataFilterItem
+                  name="created_at"
+                  label={t('common:filter.created_at')}
+                  placeholder={t('common:filter.search_by_created_at')}
+                  type="date_range"
+                  setFilter={setFilter}
+                  filters={filters}
+                  Icon={CalendarFoldIcon}
+                />
+              </div>
+            </div>
+          }
+          pagination={pagination}
+          setPagination={setPagination}
+          setSorting={setSorting}
+          sorting={sorting}
+          columns={tagColumns}
+          data={data?.data || []}
+          rowCount={data?.rowCount}
+          enableRowSelection={true}
+          onDeleteSelected={onDeleteBulk}
+          isLoading={isLoading}
+          isDeleting={isDeleting}
+        />
+      </TableActionProvider>
+      <div className="flex flex-col gap-4 items-start md:h-0 h-[calc(20svh-60px)]"></div>
+    </div>
+  )
+}

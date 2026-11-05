@@ -1,0 +1,8 @@
+[
+  { "value": "AS", "label": "Asia" },
+  { "value": "EU", "label": "Europe" },
+  { "value": "AF", "label": "Africa" },
+  { "value": "OC", "label": "Oceania" },
+  { "value": "NA", "label": "Americas" },
+  { "value": "AP", "label": "Polar" }
+]

@@ -1,0 +1,34 @@
+{
+  "sessions": {
+    "sessionsOverTime": "Sessions Over Time",
+    "deviceType": "Device Type",
+    "browser": "Browser",
+    "operatingSystem": "Operating System",
+    "marketingChannel": "Channel",
+    "topCountries": "Top Countries",
+    "topReferrers": "Top Referrers",
+    "utmSources": "UTM Sources",
+    "noDeviceData": "No device data",
+    "noBrowserData": "No browser data",
+    "noOsData": "No OS data",
+    "noChannelData": "No channel data",
+    "noCountryData": "No country data",
+    "noReferrerData": "No referrer data",
+    "noUtmSourceData": "No UTM source data"
+  },
+  "url_bar": {
+    "open_tab": "Open in new tab",
+    "all_pages": "All pages",
+    "validate_idle": "Validate Script",
+    "validate_checking": "Checking…",
+    "validate_success": "Script found",
+    "validate_fail": "Not found",
+    "no_recent_title": "No activity in the last 3 days",
+    "no_recent_page": "Check that the tracking script is installed on this page.",
+    "no_recent_domain": "No pages on this domain have recorded recent interactions."
+  },
+  "plan_upgrade": {
+    "title": "Site Analytics is not available on your plan",
+    "description": "Upgrade your plan to unlock heatmaps, click tracking, scroll analytics, and session data for your pages."
+  }
+}

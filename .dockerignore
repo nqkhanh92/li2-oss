@@ -1,0 +1,26 @@
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+README.md
+.next
+.git
+
+# ⚠ File env của MÁY LẬP TRÌNH, không được lọt vào image.
+#
+# `COPY . .` ở stage builder mang mọi thứ trong thư mục vào, và Next nạp `.env.local` cho MỌI
+# môi trường — nó **ghi đè cả `.env.production`**. Hệ quả đã đo được: build trên máy lập trình
+# cho ra image mang `NEXT_PUBLIC_*` của instance LiHi (gồm cả URL và khoá Supabase), và chúng
+# nằm trong `/app/.env` của image chạy.
+#
+# `.env.production` thì KHÔNG loại: bản deploy nội bộ dựa vào nó để lấy `NEXT_PUBLIC_*` lúc
+# build (xem ghi chú ở `Dockerfile` stage deps). Bản self-host không có file đó và truyền giá
+# trị qua `--build-arg`.
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+
+# Thư mục self-host có .env riêng của người cài — cũng không được vào image.
+self-host/.env

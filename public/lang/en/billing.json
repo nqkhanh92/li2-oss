@@ -1,0 +1,59 @@
+{
+  "heading_prefix": "Upgrade to",
+  "tagline": "Unlock more capabilities for your team",
+  "whats_included": "What's included",
+  "total_due": "Total due today",
+  "back_to_pricing": "Back to pricing",
+  "per_year": "/year",
+  "per_month": "/month",
+
+  "feature": {
+    "orgs": "{{count}} organization",
+    "orgs_plural": "{{count}} organizations",
+    "members": "Up to {{count}} team members",
+    "domains": "{{count}} custom domain",
+    "domains_plural": "{{count}} custom domains",
+    "retention": "{{days}} days data retention",
+    "ai_credits": "{{count}} AI credits / month",
+    "meta_tags": "Custom meta tags",
+    "utm_tags": "Custom UTM tags",
+    "advanced_analytics": "Advanced analytics"
+  },
+
+  "checkout": {
+    "heading": "Complete your order",
+    "subheading": "Choose a billing cycle to continue",
+    "monthly_label": "Monthly",
+    "monthly_sub": "Billed monthly · 30 days",
+    "yearly_label": "Yearly",
+    "yearly_sub_savings": "Billed annually · Save {{amount}}/year",
+    "yearly_sub_default": "Billed annually · 365 days",
+    "save_badge": "Save {{pct}}%",
+    "days_access": "{{days}} days access",
+    "confirm": "Confirm Purchase",
+    "processing": "Processing...",
+    "terms": "By confirming, you agree to our terms of service"
+  },
+
+  "qr": {
+    "heading": "Scan to pay",
+    "subheading": "Open your banking app and scan the QR below",
+    "bank": "Bank",
+    "bank_name": "Techcombank",
+    "account": "Account",
+    "amount": "Amount",
+    "description": "Description",
+    "copy": "Copy",
+    "warning": "<bold>Không thay đổi nội dung chuyển khoản này.</bold> Hệ thống sẽ không thể xác nhận thanh toán nếu nội dung bị thay đổi.",
+    "email_notice": "After a successful transfer, just sit back and relax.",
+    "email_notice_bold": "We'll email you",
+    "email_notice_suffix": "once your plan is activated — usually within a few minutes.",
+    "self_confirm": "I have transferred",
+    "self_confirm_processing": "Confirming...",
+    "confirmed_heading": "Waiting for verification",
+    "confirmed_body": "We've received your notification. The system will automatically verify the payment and activate your plan — usually within a few minutes. Check your email for updates.",
+    "go_dashboard": "Go to Dashboard",
+    "redirect_countdown": "Redirecting to Dashboard in {{seconds}}s...",
+    "confirm_error": "This order has already been processed or does not exist."
+  }
+}

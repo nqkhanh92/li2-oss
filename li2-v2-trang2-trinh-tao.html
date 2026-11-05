@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Li2 v2 — Trang 2: Trình tạo + Nói để chỉnh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F7FA;--card:#FFFFFF;--line:#E3E7EC;--line2:#EEF1F5;--ink:#0F172A;--muted:#4A5568;--blue:#2F5BEA;--dark:#0B1220;--green:#1B6B3D;--warn:#F0B455;--warnbg:#FFFAF0;--field:#F8FAFC;--fline:#D5DBE3}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,sans-serif;color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+  button,input,select,textarea{font:inherit;color:inherit}
+  a{color:var(--blue)}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 32px;border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:20px;font-weight:600}
+  .back{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+  .seg{display:flex;gap:4px;padding:4px;background:#E6EAEF;border-radius:12px}
+  .seg button{height:44px;padding:0 18px;border:0;border-radius:9px;cursor:pointer;font-size:15px;font-weight:600;background:transparent;color:#3B4556}
+  .seg button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(15,23,42,.14)}
+  .seg small{font-weight:400;font-size:13px;color:var(--muted)}
+  .wrap{max-width:1280px;width:100%;margin:0 auto;padding:24px 32px 16px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+  nav{flex:0 1 260px;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:2px}
+  nav button{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:44px;padding:0 14px;border:0;border-radius:10px;background:transparent;text-align:left;cursor:pointer;font-size:15px;font-weight:500}
+  nav button[aria-current="page"]{background:var(--line2);font-weight:600}
+  .bd{font-size:11px;font-weight:600;color:var(--green);background:#E6F4EA;border-radius:6px;padding:3px 7px;white-space:nowrap}
+  .bd.flash{color:#8A4B00;background:#FFE8C2}
+  main{flex:999 1 460px;min-width:0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:18px}
+  main h2{margin:0;font-size:18px;font-weight:600}
+  .desc{margin:0;font-size:14px;color:var(--muted)}
+  .col{display:flex;flex-direction:column;gap:16px}
+  label.fld{display:flex;flex-direction:column;gap:6px}
+  label.fld>span{font-size:14px;font-weight:500}
+  .in,select{height:48px;padding:0 14px;border:1px solid var(--fline);border-radius:10px;background:var(--field);font-size:15px;outline:none;width:100%}
+  .in.flash{border:2px solid var(--warn);background:var(--warnbg)}
+  .g2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:10px}
+  .radio{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:#fff;text-align:left;cursor:pointer;width:100%}
+  .radio[aria-checked="true"]{border:2px solid var(--dark);background:#F3F5F8}
+  .radio.flash{border:2px solid var(--warn);background:var(--warnbg)}
+  .dot{width:18px;height:18px;border-radius:999px;border:2px solid var(--dark);flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center}
+  .dot i{width:8px;height:8px;border-radius:999px;background:transparent}
+  .radio[aria-checked="true"] .dot i{background:var(--dark)}
+  .tg{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .tg.flash{border:2px solid var(--warn);background:var(--warnbg)}
+  .tg-h{display:flex;align-items:center;gap:12px;padding:14px 16px}
+  .tg-h .t{flex:1;display:flex;flex-direction:column;gap:2px}
+  .tg-h .t b{font-size:15px;font-weight:600}.tg-h .t span{font-size:13px;color:var(--muted)}
+  .sw{width:48px;height:28px;flex:none;border:0;border-radius:999px;background:#C9D1DB;position:relative;cursor:pointer;padding:0}
+  .sw i{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.25);transition:left .15s}
+  .sw[aria-pressed="true"]{background:var(--dark)}.sw[aria-pressed="true"] i{left:23px}
+  .tg-b{padding:14px 16px;border-top:1px solid var(--line2);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .tg-b label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#3B4556}
+  .tg-b input{height:44px;padding:0 12px;border:1px solid var(--fline);border-radius:10px;background:#fff;font-size:14px;outline:none}
+  .tag{font-size:11px;font-weight:700;color:#8A4B00;background:#FFE8C2;border-radius:6px;padding:3px 7px}
+  aside{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:16px}
+  .sec{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px}
+  .sec h3{margin:0;font-size:15px;font-weight:600}
+  .qr{width:104px;height:104px;flex:none;padding:8px;border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:repeat(21,1fr)}
+  .qr i{display:block;aspect-ratio:1}
+  .sum{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:6px 8px;border-radius:8px}
+  .sum.flash{background:#FFF1DC}
+  .sum span:first-child{color:var(--muted)}.sum span:last-child{font-weight:500;text-align:right}
+  .chat{max-width:880px;width:100%;margin:0 auto 20px;padding:0 24px}
+  .chat-in{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);padding:16px;display:flex;flex-direction:column;gap:12px}
+  .log{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto}
+  .m{display:flex}.m.u{justify-content:flex-end}
+  .m div{max-width:600px;padding:9px 13px;border-radius:14px 14px 14px 4px;background:#F2FAF5;font-size:14px;line-height:1.5;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .m.u div{background:#EEF1F5;border-radius:14px 14px 4px 14px}
+  .undo{height:30px;padding:0 10px;border:1px solid #C9D1DB;border-radius:8px;background:#fff;font-size:12px;cursor:pointer}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:13px;cursor:pointer}
+  .inp{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 14px;border:1.5px solid var(--fline);border-radius:14px}
+  .inp input{flex:1;min-width:0;height:42px;border:0;outline:none;font-size:15px;background:transparent}
+  .send{width:42px;height:42px;border:0;border-radius:10px;background:#A7AFBA;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .send.on{background:var(--dark)}
+  footer{display:flex;justify-content:center;gap:12px;padding:14px 32px;border-top:1px solid var(--line);background:#fff;margin-top:auto}
+  .btn{height:48px;padding:0 26px;border:0;border-radius:10px;background:var(--dark);color:#fff;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;text-decoration:none}
+  .btn.ghost{background:transparent;color:var(--ink);font-weight:500}
+  .hint{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a class="back" href="li2-v2-trang1-danh-sach-chat.html" aria-label="Quay lại"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+    <h1 id="title">Tạo link rút gọn</h1>
+  </div>
+  <div class="seg" role="tablist" aria-label="Loại cần tạo">
+    <button role="tab" data-kind="link" aria-selected="true">Link rút gọn</button>
+    <button role="tab" data-kind="art" aria-selected="false">Artifact <small>· file / trang</small></button>
+  </div>
+  <span style="width:160px" aria-hidden="true"></span>
+</header>
+
+<div class="wrap">
+  <nav id="nav" aria-label="Cài đặt"></nav>
+  <main id="main"></main>
+  <aside>
+    <section class="sec">
+      <h3>QR code</h3>
+      <div style="display:flex;gap:14px;align-items:center">
+        <div id="qr"></div>
+        <span id="short" style="font-size:15px;font-weight:600;color:var(--blue);overflow-wrap:anywhere"></span>
+      </div>
+    </section>
+    <section class="sec">
+      <h3>Tóm tắt cấu hình</h3>
+      <div id="summary" style="display:flex;flex-direction:column;gap:4px"></div>
+    </section>
+  </aside>
+</div>
+
+<section class="chat" aria-label="Chỉnh bằng chat">
+  <div class="chat-in">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="width:28px;height:28px;border-radius:8px;background:var(--dark);color:#fff;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18 9.5l-4.2 1.8L12 16l-1.8-4.7L6 9.5l4.2-1.8z"/></svg></span>
+      <span style="font-size:14px;font-weight:600">Nói để chỉnh</span>
+      <span class="hint">form phía trên tự điền theo, ô vừa đổi được đánh dấu</span>
+    </div>
+    <div class="log" id="log"></div>
+    <div class="chips" id="chips"></div>
+    <div class="inp">
+      <input id="say" placeholder="VD: hết hạn cuối tháng, gắn UTM facebook…" aria-label="Nói để chỉnh cấu hình">
+      <button class="send" id="send" aria-label="Gửi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a class="btn ghost" href="li2-v2-trang1-danh-sach-chat.html">Hủy</a>
+  <button class="btn" id="cta">Tạo link</button>
+</footer>
+
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const T=(id,label,desc,opts)=>({id,label,desc,opts:opts||[]});
+  const O=(id,label,desc,fields)=>({id,label,desc,fields:fields||[]});
+  const F=(label,ph)=>({label,ph});
+
+  const LINK=[
+    T('basic','Cài đặt cơ bản','Link đích, domain, đuôi link, tên và tag.'),
+    T('target','Nhắm mục tiêu','Đích khác nhau theo thiết bị hoặc quốc gia.',[O('target','Bật nhắm mục tiêu','iOS, Android, máy tính, quốc gia',[F('iOS','https://apps.apple.com/…'),F('Android','https://play.google.com/…')])]),
+    T('utm','UTM Builder','Gắn tham số UTM vào link đích.',[O('utm','Bật UTM','Tự nối vào link đích khi redirect',[F('utm_source','facebook'),F('utm_medium','social'),F('utm_campaign','sale-1111'),F('utm_content','banner-a')])]),
+    T('fb','Facebook Pixel','Bắn sự kiện khi có người bấm.',[O('fb','Bật Facebook Pixel','',[F('Pixel ID','123456789012345'),F('Sự kiện','PageView')])]),
+    T('ga','Google Analytics','Gửi sự kiện tới GA4.',[O('ga','Bật Google Analytics','',[F('Measurement ID','G-XXXXXXX'),F('Tên sự kiện','link_click')])]),
+    T('tt','TikTok Pixel','Bắn sự kiện cho quảng cáo TikTok.',[O('tt','Bật TikTok Pixel','',[F('Pixel ID','C4ABCDEF…'),F('Sự kiện','ViewContent')])]),
+    T('pw','Bảo vệ mật khẩu','Yêu cầu mật khẩu trước khi chuyển hướng.',[O('pw','Bật mật khẩu','Bạn tự gửi mật khẩu cho người nhận',[F('Mật khẩu','••••••'),F('Gợi ý','')])]),
+    T('exp','Hết hạn','Tự tắt link vào một thời điểm.',[O('exp','Bật hết hạn','Sau đó chuyển tới trang thay thế',[F('Ngày giờ','30/11/2026 23:59'),F('Chuyển tới','https://…')])]),
+    T('clk','Giới hạn lượt','Khóa link sau một số lượt bấm.',[O('clk','Bật giới hạn','',[F('Số lượt tối đa','500'),F('Chuyển tới khi đủ','https://…')])]),
+    T('code','Mã redirect','301, 302 hoặc 307.',[O('code','Dùng mã tùy chỉnh','Mặc định 302',[F('Mã','301'),F('Ghi chú','')])]),
+    T('nf','Trang 404 tùy chỉnh','Khi link bị tắt hoặc gỡ.',[O('nf','Bật trang 404','',[F('Chuyển tới','https://…'),F('Ghi chú','')])]),
+    T('e2ee','Mã hóa link','Mã hóa đầu-cuối.',[O('e2ee','Bật E2EE','',[F('Gợi ý khóa',''),F('Ghi chú','')])]),
+    T('cloak','Link cloaking','Giữ link ngắn trên thanh địa chỉ.',[O('cloak','Bật cloaking','',[F('Tiêu đề trang',''),F('Favicon','')])])
+  ];
+  const ART=[
+    T('content','Nội dung & đường dẫn','File hoặc HTML / Markdown, rồi tên, đường dẫn và tag.'),
+    T('access','Ai được xem','Chọn ai được mở artifact này.'),
+    T('display','Hiển thị','Người xem được làm gì với nội dung.',[O('dl','Cho phép tải về','Hiện nút tải file gốc'),O('brand','Gắn logo thương hiệu','',[F('Logo','Chọn ảnh'),F('Link khi bấm logo','https://…')]),O('noindex','Ẩn khỏi Google','Thêm noindex'),O('wm','Watermark','Đóng dấu email người xem',[F('Nội dung','{email} · {ngày}'),F('Độ mờ','20%')])]),
+    T('versions','Phiên bản','Thay nội dung mà không đổi link hay QR.'),
+    T('limit','Hết hạn & giới hạn','Tự gỡ theo thời gian hoặc lượt xem.',[O('aexp','Hết hạn vào ngày','',[F('Ngày giờ','30/11/2026 23:59'),F('Thông báo','Nội dung đã hết hạn')]),O('alim','Giới hạn lượt xem','',[F('Số lượt tối đa','200'),F('Thông báo','')])]),
+    T('track','Theo dõi','Pixel và Analytics khi có người mở.',[O('afb','Facebook Pixel','',[F('Pixel ID','123456789012345'),F('Sự kiện','ViewContent')]),O('aga','Google Analytics','',[F('Measurement ID','G-XXXXXXX'),F('Tên sự kiện','artifact_view')])])
+  ];
+  const ACC=[['public','Public','Ai có link đều xem được.'],['org','Riêng tư','Chỉ thành viên tổ chức, sau khi đăng nhập Li2.'],['password','Mật khẩu','Ai biết mật khẩu đều xem được.'],['google','Đăng nhập Google','Ai có tài khoản Google đều xem được. Email được ghi nhận.']];
+  const ACCL={public:'Public',org:'Riêng tư',password:'Mật khẩu',google:'Google'};
+  const FLASHTAB={exp:'exp',utm:'utm',pw:'pw',slug:'basic',dl:'display',wm:'display',google:'access',aexp:'limit'};
+
+  const ACTIONS={
+    exp:{k:'link',chip:'Hết hạn cuối tháng',say:'cho hết hạn cuối tháng',reply:'Đã bật Hết hạn: 30/11/2026 23:59, sau đó chuyển về trang chủ.',apply:s=>{s.on.exp=true;s.vals.exp0='30/11/2026 23:59';s.vals.exp1='https://adpia.vn';s.tab.link='exp';}},
+    utm:{k:'link',chip:'Đổi UTM sang Facebook',say:'đổi UTM sang facebook ads',reply:'Đã đổi UTM: facebook · cpc · sale-1111.',apply:s=>{s.on.utm=true;s.vals.utm0='facebook';s.vals.utm1='cpc';s.vals.utm2='sale-1111';s.tab.link='utm';}},
+    pw:{k:'link',chip:'Thêm mật khẩu',say:'thêm mật khẩu cho link này',reply:'Đã bật mật khẩu và tạo sẵn một mật khẩu ngẫu nhiên.',apply:s=>{s.on.pw=true;s.vals.pw0='Li2-7Q4K';s.tab.link='pw';}},
+    slug:{k:'link',chip:'Đuôi ngắn hơn',say:'đổi đuôi ngắn hơn',reply:'Đã đổi đuôi thành sale-1111 (còn trống).',apply:s=>{s.vals.slug='sale-1111';s.tab.link='basic';}},
+    dl:{k:'art',chip:'Không cho tải về',say:'không cho người xem tải file về',reply:'Đã tắt nút tải về.',apply:s=>{s.on.dl=false;s.tab.art='display';}},
+    google:{k:'art',chip:'Chỉ người đăng nhập Google',say:'chỉ cho người đăng nhập Google xem',reply:'Đã đổi quyền xem sang Đăng nhập Google, email người xem sẽ được ghi nhận.',apply:s=>{s.access='google';s.tab.art='access';}},
+    wm:{k:'art',chip:'Đóng dấu email người xem',say:'đóng dấu email lên file',reply:'Đã bật watermark {email} · {ngày}. Nên dùng cùng Đăng nhập Google.',apply:s=>{s.on.wm=true;s.vals.wm0='{email} · {ngày}';s.vals.wm1='20%';s.tab.art='display';}},
+    aexp:{k:'art',chip:'Gỡ sau 7 ngày',say:'tự gỡ sau 7 ngày',reply:'Đã bật hết hạn sau 7 ngày: 02/11/2026 23:59.',apply:s=>{s.on.aexp=true;s.vals.aexp0='02/11/2026 23:59';s.vals.aexp1='Nội dung đã hết hạn';s.tab.art='limit';}}
+  };
+
+  let st={kind:'link',tab:{link:'basic',art:'content'},access:'public',on:{utm:true,dl:true},vals:{slug:'kiem-tien-1111',utm0:'email',utm1:'newsletter',utm2:'sale-1111'},flash:null,log:[],prev:null};
+  const snap=()=>({on:{...st.on},vals:{...st.vals},access:st.access,tab:{...st.tab}});
+
+  function qr(seed){
+    let n=21,out='',x=seed*9301+49297;
+    const finder=(r,c)=>{for(const [br,bc] of [[0,0],[0,14],[14,0]]){const dr=r-br,dc=c-bc;if(dr>=0&&dr<7&&dc>=0&&dc<7){const e=dr===0||dr===6||dc===0||dc===6,k=dr>=2&&dr<=4&&dc>=2&&dc<=4;return e||k?1:0;}if(dr>=-1&&dr<=7&&dc>=-1&&dc<=7)return 0;}return -1;};
+    for(let r=0;r<n;r++)for(let c=0;c<n;c++){const f=finder(r,c);let on;if(f>=0)on=f===1;else{x=(x*1103515245+12345)%2147483648;on=((x>>16)%100)<46;}out+=`<i style="background:${on?'#0B1220':'transparent'}"></i>`;}
+    return `<div class="qr" aria-hidden="true">${out}</div>`;
+  }
+  const isLink=()=>st.kind==='link';
+  const list=()=>isLink()?LINK:ART;
+  const cur=()=>list().find(t=>t.id===st.tab[isLink()?'link':'art'])||list()[0];
+  const slug=()=>isLink()?st.vals.slug:'catalog-thu-dong';
+
+  function renderNav(){
+    const c=cur(), ft=FLASHTAB[st.flash];
+    $('#nav').innerHTML=list().map(t=>{
+      const cnt=t.opts.filter(o=>st.on[o.id]).length;
+      let badge=t.id==='access'?ACCL[st.access]:(cnt?(t.opts.length>1?cnt+' bật':'Bật'):'');
+      const fl=ft===t.id;
+      return `<button data-tab="${t.id}" aria-current="${t.id===c.id?'page':'false'}"><span>${t.label}</span>${(badge||fl)?`<span class="bd${fl?' flash':''}">${fl?'Vừa đổi':badge}</span>`:''}</button>`;
+    }).join('');
+  }
+  function fld(label,val,ph,extra){return `<label class="fld"><span>${label}</span><input class="in${extra||''}" value="${esc(val||'')}" placeholder="${esc(ph||'')}"></label>`;}
+  function renderMain(){
+    const c=cur(); let body='';
+    if(isLink()&&c.id==='basic'){
+      body=`<div class="col">${fld('Dán link của bạn <span style="color:#B42318">*</span>','https://adpia.vn/kiem-tien-online')}
+        <div class="g2"><label class="fld"><span>Domain</span><select><option>li2.sh</option><option>li2.link</option></select></label>${fld('Đuôi link',st.vals.slug,'',st.flash==='slug'?' flash':'')}</div>
+        ${fld('Tên link','Email 11.11 — Kiếm tiền online')}${fld('Tag','email MKT')}</div>`;
+    } else if(!isLink()&&c.id==='content'){
+      body=`<div class="col"><div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px"><div style="width:40px;height:40px;border-radius:10px;background:#FDECEC;color:#A3261F;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">PDF</div><div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:500">catalog-thu-dong-2026.pdf</div><div style="font-size:13px;color:var(--muted)">2,4 MB · 12 trang · thả file khác để thay</div></div></div>
+        <div class="col" style="padding-top:16px;border-top:1px solid var(--line2)">${fld('Tên','Catalog thu đông 2026')}${fld('Đường dẫn','li2.sh/catalog-thu-dong')}${fld('Tag','','Chọn hoặc gõ để tạo tag')}</div></div>`;
+    } else if(!isLink()&&c.id==='access'){
+      body=`<div class="col" style="gap:10px">${ACC.map(a=>`<button class="radio${st.access===a[0]&&st.flash==='google'?' flash':''}" role="radio" aria-checked="${st.access===a[0]}" data-access="${a[0]}"><span class="dot"><i></i></span><span style="display:flex;flex-direction:column;gap:2px"><b style="font-size:15px">${a[1]}</b><span style="font-size:13px;color:var(--muted)">${a[2]}</span></span></button>`).join('')}</div>`;
+    } else if(!isLink()&&c.id==='versions'){
+      body=`<div style="padding:14px 16px;border-radius:12px;background:#F2FAF5;border:1px solid #CBE9D6;font-size:14px;color:var(--green)">Thay nội dung bất cứ lúc nào, đường dẫn và QR đã in giữ nguyên.</div>`;
+    }
+    if(c.opts.length){
+      body+=`<div class="col" style="gap:10px">${c.opts.map(o=>{const on=!!st.on[o.id],fl=st.flash===o.id;return `<div class="tg${fl?' flash':''}"><div class="tg-h"><div class="t"><b>${o.label}</b><span>${o.desc}</span></div>${fl?'<span class="tag">Vừa đổi qua chat</span>':''}<button class="sw" aria-pressed="${on}" aria-label="${o.label}" data-toggle="${o.id}"><i></i></button></div>${on&&o.fields.length?`<div class="tg-b">${o.fields.map((f,i)=>`<label>${f.label}<input value="${esc(st.vals[o.id+i]||'')}" placeholder="${esc(f.ph)}"></label>`).join('')}</div>`:''}</div>`;}).join('')}</div>`;
+    }
+    $('#main').innerHTML=`<div><h2>${c.label}</h2><p class="desc">${c.desc}</p></div>${body}`;
+  }
+  function renderAside(){
+    $('#qr').innerHTML=qr(slug().length); $('#short').textContent='li2.sh/'+slug();
+    const rows=isLink()?[['Đích','adpia.vn/kiem-tien-online',''],['UTM',st.on.utm?[st.vals.utm0,st.vals.utm1,st.vals.utm2].join(' · '):'Tắt','utm'],['Hết hạn',st.on.exp?st.vals.exp0:'Không','exp'],['Mật khẩu',st.on.pw?'Có':'Không','pw']]
+      :[['Nội dung','PDF · 12 trang',''],['Ai được xem',ACCL[st.access],'google'],['Tải về',st.on.dl?'Cho phép':'Tắt','dl'],['Watermark',st.on.wm?'Bật':'Tắt','wm'],['Hết hạn',st.on.aexp?st.vals.aexp0:'Không','aexp']];
+    $('#summary').innerHTML=rows.map(r=>`<div class="sum${r[2]&&r[2]===st.flash?' flash':''}"><span>${r[0]}</span><span>${esc(r[1])}</span></div>`).join('');
+  }
+  function renderChat(){
+    const k=isLink()?'link':'art';
+    $('#chips').innerHTML=Object.keys(ACTIONS).filter(x=>ACTIONS[x].k===k).map(x=>`<button class="chip" data-act="${x}">${ACTIONS[x].chip}</button>`).join('');
+    let lastA=-1; st.log.forEach((m,i)=>{if(m.who==='a')lastA=i;});
+    $('#log').innerHTML=st.log.length?st.log.map((m,i)=>`<div class="m ${m.who}"><div><span>${esc(m.text)}</span>${m.who==='a'&&i===lastA&&st.prev?'<button class="undo" id="undo">Hoàn tác</button>':''}</div></div>`).join('')
+      :`<div class="m a"><div><span>${isLink()?'Link đã được điền từ cuộc trò chuyện ở trang danh sách. Muốn đổi gì cứ nói, mình sửa thẳng vào form.':'Nói mình nghe bạn muốn ai xem và xem thế nào, mình chỉnh form giúp.'}</span></div></div>`;
+    const l=$('#log'); l.scrollTop=l.scrollHeight;
+  }
+  function render(){
+    $('#title').textContent=isLink()?'Tạo link rút gọn':'Tạo artifact';
+    $('#cta').textContent=isLink()?'Tạo link':'Publish';
+    document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-selected',b.dataset.kind===st.kind));
+    renderNav(); renderMain(); renderAside(); renderChat();
+  }
+  function run(id,text){
+    const a=ACTIONS[id]; const prev=snap(); const s=snap(); a.apply(s);
+    Object.assign(st,s,{flash:id,prev,log:st.log.concat([{who:'u',text:text||a.say},{who:'a',text:a.reply}])});
+    $('#say').value=''; $('#send').classList.remove('on'); render();
+  }
+  function match(t){
+    const map=isLink()?[[/hết hạn|hạn/i,'exp'],[/utm|facebook/i,'utm'],[/mật khẩu/i,'pw'],[/đuôi|slug|ngắn/i,'slug']]:[[/tải/i,'dl'],[/google/i,'google'],[/watermark|đóng dấu/i,'wm'],[/gỡ|hết hạn|ngày/i,'aexp']];
+    for(const m of map) if(m[0].test(t)) return m[1]; return null;
+  }
+  function send(){
+    const t=$('#say').value.trim(); if(!t) return;
+    const id=match(t);
+    if(id) run(id,t); else { st.log=st.log.concat([{who:'u',text:t},{who:'a',text:'Mình chưa chắc ý bạn. Thử một trong các gợi ý bên dưới, hoặc chỉnh trực tiếp trên form.'}]); $('#say').value=''; render(); }
+  }
+
+  document.addEventListener('click',e=>{
+    const k=e.target.closest('[data-kind]'); if(k){st.kind=k.dataset.kind;st.flash=null;st.log=[];st.prev=null;return render();}
+    const tb=e.target.closest('[data-tab]'); if(tb){st.tab[isLink()?'link':'art']=tb.dataset.tab;return render();}
+    const tg=e.target.closest('[data-toggle]'); if(tg){st.on[tg.dataset.toggle]=!st.on[tg.dataset.toggle];st.flash=null;return render();}
+    const ac=e.target.closest('[data-access]'); if(ac){st.access=ac.dataset.access;st.flash=null;return render();}
+    const a=e.target.closest('[data-act]'); if(a) return run(a.dataset.act);
+    if(e.target.id==='undo'&&st.prev){const p=st.prev;Object.assign(st,p,{prev:null,flash:null,log:st.log.concat([{who:'a',text:'Đã hoàn tác thay đổi vừa rồi.'}])});return render();}
+  });
+  $('#say').oninput=e=>$('#send').classList.toggle('on',e.target.value.trim().length>0);
+  $('#say').addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+  $('#send').onclick=send;
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Artifact wave 3 — MCP publish + update từ hội thoại</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Be Vietnam Pro — font thật của app, src/app/layout.tsx. Chỉ dùng cho phần MẶT li2. -->
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===========================================================================
+   PHẦN 1/2 — token và component của li2, sao nguyên từ artifact-wave2-prototype.html
+   (chính nó đọc từng dòng từ src/app/globals.css và các component thật).
+   Không sửa giá trị nào ở đây. Phần thêm của bản này nằm ở PHẦN 2/2 bên dưới.
+   =========================================================================== */
+/* ===========================================================================
+   Token đọc từ src/app/globals.css — KHÔNG tự chế màu, bo góc, cỡ chữ.
+   Mỗi biến dưới đây đều có dòng tương ứng trong file thật.
+   =========================================================================== */
+:root {
+  /* globals.css:36-47 — thang cỡ chữ của app */
+  --text-xs: 0.75rem;      --lh-xs: 1rem;
+  --text-s: 0.875rem;      --lh-s: 1.25rem;
+  --text-sm: 0.9375rem;    --lh-sm: 1.375rem;
+  --text-base: 1rem;       --lh-base: 1.5rem;
+  --text-l: 1.125rem;      --lh-l: 1.625rem;
+  --text-xl: 1.25rem;      --lh-xl: 1.75rem;
+
+  --background: oklch(0.9759 0.0029 264.54);   /* globals.css:49 */
+  --card: #fff;                                 /* globals.css:52 */
+  --primary: oklch(0.165 0.059 257.19);         /* globals.css:56 */
+  --secondary: hsl(251 67% 44%);                /* globals.css:59 */
+  --secondary-blue: hsl(220 92% 62%);           /* globals.css:64 */
+  --secondary-yellow: hsl(43 93% 52%);          /* globals.css:65 */
+  --destructive: hsl(0 84.2% 60.2%);
+  --border: oklch(0.869 0.0198 252.89);         /* globals.css:77 */
+  --accent: hsl(0 0% 96.1%);                    /* globals.css:69 */
+
+  --sidebar: oklch(0.9759 0.0029 264.54);            /* globals.css:86 — trùng --background */
+  --sidebar-foreground: oklch(0.2795 0.0368 260.03); /* globals.css:87 */
+  --sidebar-accent: #fff;                            /* globals.css:90 */
+  --sidebar-width: 14.5rem;                          /* ui/sidebar.tsx:31 */
+
+  --beta-from: #b9aaff;  --beta-to: #d6a4af;    /* globals.css:130-131 */
+
+  --semantic-info: oklch(0.6184 0.1917 262.62);
+  --semantic-warning: oklch(0.6806 0.1423 75.83);
+  --semantic-error: oklch(0.5771 0.2152 27.33);
+  --semantic-success: oklch(0.6271 0.1699 149.21);
+
+  --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-200:#e2e8f0; --slate-300:#cbd5e1;
+  --slate-400:#94a3b8; --slate-500:#64748b; --slate-600:#475569; --slate-700:#334155;
+  --slate-800:#1e293b;
+
+  /* Hai bán kính thật của li2. 16px = panel/dialog (35 lần dùng), 8px = thẻ hàng + nút. */
+  --r-panel: 16px;   /* custom-dialog-v2.tsx:28 */
+  --r-card: 8px;     /* touchpoint-card.tsx:212, button.tsx:7 */
+
+  /* Khung vỏ app — mọi con số dưới đây đọc từ code, không ước lượng */
+  --h-navbar: 52px;      /* navbar/navbar.tsx:25 */
+  --h-pagenav: 60px;     /* content-layout-nav.tsx:29 */
+  --w-content: 1280px;   /* max-w-7xl trong content-layout.tsx:76 */
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--background); color: var(--slate-800);
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: var(--text-s); line-height: var(--lh-s);
+  -webkit-font-smoothing: antialiased;
+}
+h1,h2,h3 { margin: 0; font-weight: 600; }
+
+/* ---- khung tài liệu bọc ngoài (không phải app) ---- */
+.doc { max-width: 1120px; margin: 0 auto; padding: 32px 24px 24px; }
+.doc > header h1 { font-size: var(--text-xl); line-height: var(--lh-xl); }
+.lede { color: var(--slate-500); margin: 6px 0 0; max-width: 72ch; }
+
+.sec { max-width: 1120px; margin: 48px auto 0; padding: 0 24px; }
+.sec-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.sec-num {
+  flex: none; width: 22px; height: 22px; border-radius: 999px; background: var(--primary);
+  color: #fff; font-size: var(--text-xs); line-height: 22px; text-align: center; font-weight: 600;
+}
+.sec-head h2 { font-size: var(--text-l); line-height: var(--lh-l); }
+.sec > p { color: var(--slate-500); margin: 0 0 18px; max-width: 76ch; }
+
+.note {
+  margin-top: 14px; border-left: 2px solid var(--slate-300); padding: 2px 0 2px 12px;
+  color: var(--slate-500); font-size: var(--text-xs); line-height: 1.55; max-width: 92ch;
+}
+.note b { color: var(--slate-600); font-weight: 600; }
+code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.92em;
+       background: var(--slate-100); padding: 1px 5px; border-radius: 4px; }
+hr.div { border: none; border-top: 1px solid var(--border); max-width: 1072px; margin: 56px auto 0; }
+
+/* nhãn trên mỗi khối ảnh */
+.shot-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500);
+  margin: 0 auto 8px; max-width: 1072px; padding: 0 24px;
+}
+.shot-label span {
+  font-weight: 500; padding: 2px 8px; border-radius: 999px;
+}
+.tag-next { background: color-mix(in oklab, var(--semantic-success) 12%, white);
+            color: var(--semantic-success); }
+.tag-now  { background: var(--slate-100); color: var(--slate-500); }
+
+/* ===========================================================================
+   KHUNG VỎ ỨNG DỤNG — dựng theo src/app/(protected)/org/[org_id]/layout.tsx
+   Thứ tự lồng: SidebarProvider(bg-slate-800) > [AppSidebar | Navbar + content]
+   =========================================================================== */
+/* 100% chứ không 100vw: 100vw gồm cả bề ngang thanh cuộn dọc nên sinh thanh cuộn ngang thừa */
+.bleed { width: 100%; overflow-x: auto; }
+.shell {
+  min-width: 1100px; background: var(--slate-800);  /* layout.tsx:66 bg-slate-800 */
+  font-size: var(--text-s); line-height: var(--lh-s);
+  position: relative;   /* để lớp phủ hộp thoại trùm cả header và sidebar, như "fixed inset-0" thật */
+}
+
+/* --- thanh header đen trên cùng — navbar/navbar.tsx:25 --- */
+.top {
+  height: var(--h-navbar); background: var(--slate-800); color: #fff;
+  padding-left: 24px; padding-right: 48px;      /* lg:pl-6 lg:pr-12 */
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.top-left { display: flex; align-items: center; }
+.top-logo { width: 150px; height: 36px; display: block; object-fit: contain; object-position: left; }
+.top-org {            /* navbar.tsx:42 — border-l border-white/30 px-6, h-6 */
+  display: flex; align-items: center; height: 24px;
+  border-left: 1px solid rgb(255 255 255 / 0.3); padding: 0 24px;
+}
+.top-org button {
+  display: flex; align-items: center; gap: 8px; background: transparent; border: none;
+  color: #fff; border-radius: 6px; padding: 6px 8px; cursor: pointer; font-family: inherit;
+}
+.top-org button:hover { background: rgb(255 255 255 / 0.1); }
+.org-icon {           /* navbar.tsx:45 — gradient thật */
+  width: 24px; height: 24px; border-radius: 6px; flex: none;
+  background: linear-gradient(90deg,#B9AAFF 0.08%,#D6A4AF 98.87%);
+  display: grid; place-items: center; color: #fff;
+}
+.org-name { font-size: var(--text-s); font-weight: 400; }
+.top-right { display: flex; align-items: center; gap: 8px; }
+.top-lang {           /* navbar.tsx:64 — className="text-slate-600" trên nền slate-800 (xem ghi chú) */
+  display: flex; align-items: center; gap: 4px; color: var(--slate-600);
+  padding: 8px; cursor: pointer;
+}
+.top-lang b { font-size: var(--text-xs); line-height: 16px; font-weight: 500; letter-spacing: 0; }
+.top-icon { width: 36px; height: 36px; border-radius: 6px; display: grid; place-items: center;
+            color: #fff; position: relative; cursor: pointer; }
+.top-icon:hover { background: rgb(255 255 255 / 0.1); }
+.top-dot { position: absolute; right: 7px; bottom: 7px; width: 8px; height: 8px;
+           border-radius: 999px; background: #22c55e; }  /* bell: bg-green-500 */
+.top-avatar { width: 32px; height: 32px; border-radius: 999px; flex: none;
+              background: linear-gradient(90deg,#B9AAFF 0.08%,#D6A4AF 98.87%);
+              color: #fff; display: grid; place-items: center; font-size: var(--text-xs);
+              font-weight: 600; }
+
+/* --- vùng dưới header: sidebar + nội dung --- */
+.below { display: flex; align-items: stretch; }
+
+/* AppSidebar — app-sidebar.tsx:17 mt-[52px] h-[calc(100svh-52px)] bg-sidebar rounded-tl-3xl */
+.side {
+  width: var(--sidebar-width); flex: none; background: var(--sidebar);
+  border-top-left-radius: 24px;                 /* rounded-tl-3xl */
+  border-right: 1px solid var(--border);        /* ui/sidebar.tsx:275 inner border-r */
+  display: flex; flex-direction: column; position: relative;
+}
+.side-trigger {       /* app-sidebar.tsx:25 + ui/sidebar.tsx:301 */
+  position: absolute; top: 24px; right: 8px; transform: translateY(-50%); z-index: 10;
+  width: 24px; height: 24px; border-radius: 4px; background: var(--card);
+  border: 1px solid var(--slate-300); display: grid; place-items: center; color: var(--slate-800);
+}
+.side-scroll {        /* app-sidebar.tsx:28 — pt-[16px] pb-6 px-6 */
+  flex: 1; padding: 16px 24px 24px; min-height: 0;
+}
+.side-groups > * + * { margin-top: 12px; }       /* space-y-3 */
+.side-glabel {        /* sidebar-middle.tsx:129 — text-[10px] uppercase tracking-wide slate-400 */
+  display: flex; align-items: center; height: 32px;
+  font-size: 10px; line-height: 1; font-weight: 500; letter-spacing: 0.025em;
+  text-transform: uppercase; color: var(--slate-400);
+}
+.side-items > * + * { margin-top: 2px; }         /* space-y-0.5 */
+.side-item {          /* ui/sidebar.tsx:542,569 — h-10 rounded-lg gap-3 px-3 pl-2 border-l-4 text-s */
+  display: flex; align-items: center; gap: 12px; height: 40px;
+  padding: 0 12px 0 8px; border-radius: 8px;
+  border-left: 4px solid transparent; color: var(--sidebar-foreground);
+  font-size: var(--text-s); line-height: var(--lh-s); font-weight: 400;
+  text-decoration: none; cursor: pointer;
+  overflow: visible;   /* sidebar-middle.tsx:57 — "overflow-visible" để vương miện không bị cắt */
+}
+.side-item svg { width: 18px; height: 18px; flex: none; }
+.side-item span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* chỉ nhãn mới co giãn — ô icon và thẻ Beta giữ nguyên bề ngang */
+.side-item .side-ico, .side-item .side-beta { flex: none; }
+.side-item:hover { background: var(--sidebar-accent); color: var(--primary);
+                   border-left-color: var(--primary); box-shadow: 0 4px 6px 0 rgb(0 0 0 / 0.09); }
+.side-item.on {       /* data-[active=true] — ui/sidebar.tsx:550,554 */
+  background: var(--sidebar-accent); color: var(--primary); border-left-color: var(--primary);
+  box-shadow: 0 4px 6px 0 rgb(0 0 0 / 0.09); font-weight: 400;
+}
+.side-ico { position: relative; display: flex; justify-content: center; }
+.side-item .side-crown {  /* sidebar-middle.tsx:62 — Crown 9px stroke-secondary-yellow */
+  position: absolute; top: -2px; right: -8px; width: 9px; height: 9px;
+  stroke: var(--secondary-yellow); fill: none;
+}
+.side-beta {          /* sidebar-middle.tsx:72 — text-[8px] italic gradient beta-tag */
+  font-size: 8px; line-height: 10px; font-style: italic; font-weight: 500; color: #fff;
+  padding: 2px 4px; border-radius: 2px; flex: none;
+  background: linear-gradient(91deg, var(--beta-from) 0%, var(--beta-to) 99%);
+}
+.side-sub {           /* sidebar-middle.tsx:162 — px-3 pt-3 pb-1, chevron 14px */
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 12px 4px; color: var(--slate-400);
+}
+.side-sub span { font-size: 10px; font-weight: 500; letter-spacing: 0.025em; text-transform: uppercase; }
+.side-foot {          /* user-sidebar.tsx:48 — border-t border-slate-300 py-2.5 */
+  border-top: 1px solid var(--slate-300); padding: 10px 0;
+}
+.side-foot > div {    /* user-sidebar.tsx:53 — px-6 py-2.5 gap-3 rounded-lg */
+  display: flex; align-items: center; gap: 12px; padding: 10px 24px; border-radius: 8px;
+}
+.side-foot > div:hover { background: var(--accent); }
+.side-foot p { margin: 0; flex: 1; font-size: var(--text-s); line-height: 20px; color: var(--slate-600); }
+
+/* panel nội dung — layout.tsx:70 bg-background rounded-tr-3xl */
+.main {
+  flex: 1; min-width: 0; background: var(--background);
+  border-top-right-radius: 24px; overflow: hidden;
+  display: flex; flex-direction: column; position: relative;
+}
+.pagenav {            /* content-layout-nav.tsx:29 — h-[60px] border-b px-12 */
+  height: var(--h-pagenav); flex: none; border-bottom: 1px solid var(--border);
+  padding: 12px 48px; background: var(--background);
+}
+.pagenav-in { height: 100%; max-width: var(--w-content); margin: 0 auto;
+               display: flex; align-items: center; gap: 12px; }
+.pagenav h3 { font-size: var(--text-l); line-height: var(--lh-l); font-weight: 500; }
+.pagenav-extra { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.content {            /* content-layout.tsx:56 — lg:px-12 py-6 */
+  padding: 24px 48px; background: var(--background);
+}
+.content-in { max-width: var(--w-content); margin: 0 auto; }
+
+/* nút của app — ui/button.tsx:7,12,13,37 */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  height: 40px; padding: 8px 16px; border-radius: var(--r-card);
+  font-family: inherit; font-size: 14px; line-height: 20px; font-weight: 500;
+  cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+}
+.btn svg { width: 20px; height: 20px; }
+.btn-default   { background: var(--primary); color: #fff; }           /* button.tsx:12 */
+.btn-secondary { background: var(--card); color: var(--slate-700);
+                 border-color: var(--slate-200); padding-left: 12px; } /* button.tsx:13 + pl-3 */
+.btn-tertiary  { background: transparent; color: var(--slate-700); }   /* button.tsx:15 */
+/* disabled:opacity-30 — button.tsx:12 */
+.btn[disabled], .btn.off { opacity: .3; cursor: not-allowed; }
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===========================================================================
+   THẺ ARTIFACT — khớp từng dòng với artifact-card.tsx:36-124
+   =========================================================================== */
+.alist > * + * { margin-top: 12px; }    /* artifact-list/index.tsx:69 border-spacing-y-3 */
+.acard {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card); border: 1px solid var(--slate-300); border-radius: var(--r-card);
+  padding: 16px 16px 16px 8px;          /* md:pl-2 md:pr-4 md:py-4 */
+  width: 100%; min-width: 0; overflow: hidden; cursor: pointer; position: relative;
+}
+.acard:hover { border-color: var(--primary); }
+.aqr {                                  /* artifact-card.tsx:40 — rounded-[15px] p-2 90x90, không viền */
+  width: 90px; height: 90px; flex: none; border-radius: 15px; padding: 8px;
+  background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.aqr svg { display: block; width: 100%; height: 100%; }
+.abody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 0 8px; }
+.arow  { display: flex; gap: 8px; min-width: 0; }
+.acol  { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.aname-line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.aname { font-size: var(--text-s); line-height: var(--lh-s); font-weight: 500;
+         color: var(--slate-800); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.abadge {                               /* artifact-status-badge.tsx:25 */
+  flex: none; border-radius: 999px; border: 1px solid; padding: 2px 10px;
+  font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500;
+}
+.tone-success { background: color-mix(in oklab, var(--semantic-success) 10%, white);
+                color: var(--semantic-success);
+                border-color: color-mix(in oklab, var(--semantic-success) 25%, white); }
+.tone-neutral { background: var(--slate-100); color: var(--slate-600); border-color: var(--slate-200); }
+.akind {                                /* artifact-card.tsx:69 — badge xám, không viền */
+  flex: none; padding: 2px 8px; border-radius: 999px; font-size: var(--text-xs);
+  line-height: 1rem; font-weight: 400; background: var(--slate-100); color: var(--slate-500);
+}
+.alink-line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.alink {                                /* artifact-card.tsx:77 */
+  font-size: var(--text-s); line-height: var(--lh-s); font-weight: 500;
+  color: var(--secondary-blue); max-width: 320px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.aicon {                                /* artifact-card.tsx:87 — p-1.5 rounded-full hover:bg-slate-100 */
+  display: flex; align-items: center; justify-content: center; padding: 6px;
+  border-radius: 999px; border: none; background: transparent; cursor: pointer;
+}
+.aicon:hover { background: var(--slate-100); }
+.aicon svg { width: 16px; height: 16px; }
+.ablue  { color: var(--secondary-blue); }
+.aviolet{ color: var(--secondary); }
+.ameta { display: flex; align-items: center; gap: 12px; flex: none; }  /* artifact-card.tsx:101 gap-3 */
+.asmall { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500);
+          white-space: nowrap; }
+
+/* phần THÊM MỚI của bản đề xuất — chỉ ba thứ dưới đây là mới */
+.ascans { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+          font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-600); }
+.ascans svg { width: 14px; height: 14px; }
+.ascans b { font-size: var(--text-s); line-height: var(--lh-s); font-weight: 600; color: var(--slate-800); }
+.ascans.zero { color: var(--slate-400); }
+
+/* dropdown ⋮ — ui/dropdown-menu.tsx:68,87 */
+.ddwrap { position: relative; }
+.dd {
+  position: absolute; top: calc(100% + 4px); right: 0; z-index: 20; min-width: 200px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 4px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.dd-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 4px;
+           font-size: var(--text-sm); line-height: var(--lh-sm); color: var(--slate-700); }
+.dd-item svg { width: 16px; height: 16px; flex: none; }
+.dd-item:hover { background: var(--accent); }
+.dd-item.danger { color: var(--destructive); }
+.dd-sep { height: 1px; background: var(--border); margin: 4px 0; }
+
+/* thanh quota — hình dạng panel ⇒ 16px + border-slate-300 (funnel-summary.tsx:30)
+   HAI trục, không gộp một: artifact.type.ts:256-260 nói rõ hết chỗ và hết dung lượng
+   đòi hai hành động ngược nhau (gỡ bớt / thu nhỏ), gộp lại là lấy đi thông tin đó. */
+.quota {
+  border: 1px solid var(--slate-300); border-radius: var(--r-panel);
+  background: var(--card); padding: 14px 16px; margin-bottom: 12px;
+}
+.quota-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 760px) { .quota-grid { grid-template-columns: 1fr; } }
+.qax-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.qax-k { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500); }
+.qax-v { font-size: var(--text-s); line-height: var(--lh-s); color: var(--slate-600); }
+.qax-v b { font-weight: 600; color: var(--slate-800); }
+.track { height: 6px; border-radius: 999px; background: var(--slate-200); margin-top: 8px;
+         overflow: hidden; display: flex; }
+/* Màu chỉ ở trục đang sắp hết. Trục còn rộng dùng xám — màu là nghĩa, không phải trang trí. */
+.fill  { height: 100%; border-radius: 999px; background: var(--slate-400); }
+.qax.warn .fill { background: var(--semantic-warning); }
+.qax-note { margin: 6px 0 0; color: var(--slate-500); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.qax.warn .qax-note { color: var(--semantic-warning); }
+
+/* ===========================================================================
+   HỘP THOẠI — ui/dialog.tsx:24,52 + custom-dialog-v2.tsx:28,164,187
+   =========================================================================== */
+.scrim { position: absolute; inset: 0; background: rgb(0 0 0 / 0.8); z-index: 30;
+         display: flex; align-items: center; justify-content: center; }
+.dialog {
+  /* size="sm" = 640px (custom-dialog-v2.tsx:36), KHÔNG phải "xs" 480px: hộp thoại này mang một
+     bảng đối chiếu hai tên file kèm badge loại, ở 480px tên file bị cắt mất phần đuôi — mà đuôi
+     file chính là thứ đang được so. Một hộp thoại, một bề ngang, dùng cho cả bảy trạng thái. */
+  width: 640px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-panel);
+  padding: 24px 20px;                        /* px-5 py-6 */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  position: relative; display: flex; flex-direction: column; gap: 16px;
+}
+.dialog-x { position: absolute; top: 16px; right: 16px; color: var(--slate-500); }
+.dialog-x svg { width: 24px; height: 24px; }
+.dialog-head { margin: 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--slate-300); }
+.dialog-head h3 { font-size: var(--text-l); line-height: 1.75rem; color: var(--slate-700); font-weight: 600; }
+.dialog-head p { margin: 2px 0 0; font-size: var(--text-s); line-height: var(--lh-s);
+                 color: var(--slate-500); font-weight: 400; }
+.dialog-body { padding: 0 16px; }
+.drop {
+  border: 1px dashed var(--slate-300); border-radius: var(--r-panel);
+  background: var(--card); padding: 26px 20px; text-align: center;
+}
+.keep {
+  margin-top: 14px; display: flex; gap: 10px; align-items: flex-start;
+  background: color-mix(in oklab, var(--semantic-success) 8%, white);
+  border: 1px solid color-mix(in oklab, var(--semantic-success) 25%, white);
+  border-radius: var(--r-card); padding: 11px 12px;
+}
+.keep b { color: var(--semantic-success); font-weight: 600; font-size: var(--text-s); }
+.keep p { margin: 2px 0 0; color: var(--slate-600); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.dialog-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 0 16px; }
+
+/* ===========================================================================
+   TRANG CHI TIẾT ARTIFACT — artifact-detail/index.tsx:88-176
+   =========================================================================== */
+.detail { max-width: 768px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+.detail-head { display: flex; flex-direction: column; gap: 8px; }
+.detail-linkline { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.panel {                /* rounded-[16px] border-slate-200 bg-card — detail:147,161 */
+  border: 1px solid var(--slate-200); border-radius: var(--r-panel); background: var(--card);
+}
+.panel-preview { height: 220px; display: grid; place-items: center; align-content: center;
+                 color: var(--slate-400); gap: 10px; text-align: center; }
+.panel-qr { display: flex; align-items: center; gap: 16px; padding: 16px; }
+.panel-meta { padding: 8px 16px; }
+.meta-row { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            padding: 8px 0; border-bottom: 1px solid var(--slate-100); }
+.meta-row:last-child { border-bottom: none; }
+.meta-row .k { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500); }
+.meta-row .v { font-size: var(--text-s); line-height: var(--lh-s); color: var(--slate-700); }
+.btn-sm { height: 36px; padding: 8px 16px; font-size: var(--text-sm); line-height: 20px; }
+.btn-sm svg { width: 18px; height: 18px; }
+
+/* ===========================================================================
+   LUỒNG CẬP NHẬT — các mảnh chỉ có trong hộp thoại
+   =========================================================================== */
+/* ô chọn file ở trạng thái đã chọn — artifact-dropzone.tsx:68,85-102 */
+.drop-picked { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.drop-picked .fname { font-size: var(--text-s); line-height: var(--lh-s); font-weight: 500;
+                      color: var(--slate-800); word-break: break-all; }
+.drop-picked .again { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500);
+                      text-decoration: underline; }
+.drop.err { border-color: var(--semantic-error); border-style: dashed; }
+.err-line { margin: 8px 0 0; font-size: var(--text-xs); line-height: 1.5; color: var(--semantic-error); }
+.err-line b { font-weight: 600; }
+
+/* đổi từ → sang */
+.diff { margin-top: 16px; border: 1px solid var(--slate-200); border-radius: var(--r-card);
+        overflow: hidden; }
+.diff-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+.diff-row + .diff-row { border-top: 1px solid var(--slate-200); }
+.diff-row.to { background: var(--slate-50); }
+.diff-k { flex: none; width: 84px; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500); }
+.diff-v { flex: 1; min-width: 0; font-size: var(--text-s); line-height: var(--lh-s);
+          color: var(--slate-800); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.diff-row.to .diff-v { font-weight: 500; }
+.diff-sz { flex: none; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500); }
+.diff-old .diff-v { color: var(--slate-500); }
+
+/* quota chiếu trước */
+.after { margin-top: 14px; }
+.after-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.after .track { margin-top: 8px; }
+.fill-add { height: 100%; background: color-mix(in oklab, var(--slate-400) 45%, white); }
+.after-note { margin: 6px 0 0; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500); }
+
+/* cảnh báo mất bản cũ — không giấu, và kèm đúng một lối thoát */
+.lose {
+  margin-top: 14px; display: flex; gap: 10px; align-items: flex-start;
+  background: var(--slate-50); border: 1px solid var(--slate-200);
+  border-radius: var(--r-card); padding: 11px 12px;
+}
+.lose b { font-weight: 600; color: var(--slate-800); font-size: var(--text-s); }
+.lose p { margin: 2px 0 0; color: var(--slate-600); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.lose a { color: var(--secondary); font-size: var(--text-xs); font-weight: 500;
+          display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
+.lose a svg { width: 14px; height: 14px; }
+
+/* cảnh báo đổi loại file */
+.warnbox {
+  margin-top: 14px; display: flex; gap: 10px; align-items: flex-start;
+  background: color-mix(in oklab, var(--semantic-warning) 8%, white);
+  border: 1px solid color-mix(in oklab, var(--semantic-warning) 25%, white);
+  border-radius: var(--r-card); padding: 11px 12px;
+}
+.warnbox b { color: var(--semantic-warning); font-weight: 600; font-size: var(--text-s); }
+.warnbox p { margin: 2px 0 0; color: var(--slate-600); font-size: var(--text-xs); line-height: var(--lh-xs); }
+
+/* đang tải lên */
+.prog { margin-top: 16px; border: 1px solid var(--slate-200); border-radius: var(--r-panel);
+        background: var(--card); padding: 16px; }
+.prog-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.prog-name { font-size: var(--text-s); line-height: var(--lh-s); font-weight: 500; color: var(--slate-800);
+             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prog-pct { flex: none; font-size: var(--text-s); line-height: var(--lh-s); font-weight: 600;
+            color: var(--slate-800); font-variant-numeric: tabular-nums; }
+.prog .track { margin-top: 10px; }
+.prog .fill { background: var(--semantic-info); }
+.prog-note { margin: 10px 0 0; font-size: var(--text-xs); line-height: 1.5; color: var(--slate-500); }
+
+/* xong */
+.done-mark { width: 44px; height: 44px; border-radius: 999px; margin: 0 auto;
+             background: color-mix(in oklab, var(--semantic-success) 12%, white);
+             display: grid; place-items: center; color: var(--semantic-success); }
+.done-mark svg { width: 22px; height: 22px; }
+.fact { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; }
+.fact + .fact { border-top: 1px solid var(--slate-100); }
+.fact svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.fact b { font-weight: 600; color: var(--slate-800); font-size: var(--text-s); }
+.fact p { margin: 2px 0 0; color: var(--slate-600); font-size: var(--text-xs); line-height: var(--lh-xs); }
+
+/* dải nền tối đặt nhiều hộp thoại cạnh nhau — cùng màu lớp phủ bg-black/80 trên --background */
+.dlg-band { background: color-mix(in srgb, #000 80%, var(--background)); padding: 40px 24px; }
+.dlg-grid { max-width: 1352px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr;
+            gap: 40px 32px; align-items: start; }
+@media (max-width: 1100px) { .dlg-grid { grid-template-columns: 1fr; max-width: 640px; } }
+.dlg-cell { display: flex; flex-direction: column; gap: 10px; }
+.dlg-cap { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-300); }
+.dlg-cap b { color: #fff; font-weight: 600; }
+.dlg-grid .dialog { width: 100%; }
+
+/* ===========================================================================
+   ĐIỆN THOẠI — mục 2 là trang CÔNG KHAI, cố ý KHÔNG có khung app
+   =========================================================================== */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; max-width: 720px; }
+@media (max-width: 760px) { .pair { grid-template-columns: 1fr; } }
+.pair-label { display: inline-flex; font-size: var(--text-xs); line-height: var(--lh-xs);
+              font-weight: 500; padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; }
+.phone {
+  width: 300px; border: 1px solid var(--slate-300); border-radius: 22px; background: #fff;
+  padding: 10px;
+}
+.phone-screen { border-radius: 14px; overflow: hidden; border: 1px solid var(--slate-200); }
+.phone-bar {
+  background: var(--slate-100); padding: 7px 10px; display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--slate-500); border-bottom: 1px solid var(--slate-200);
+}
+.phone-url { background: #fff; border: 1px solid var(--slate-200); border-radius: 999px;
+             padding: 2px 9px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.phone-body { padding: 20px 16px 26px; min-height: 290px; }
+/* trang 404 hiện tại — cố ý xấu, đây là bản sao thứ đang chạy thật */
+.raw404 { font-family: Times, serif; font-size: 16px; color: #000; padding: 10px 2px; min-height: 290px; }
+.gone-brand { display: flex; align-items: center; gap: 8px; padding-bottom: 14px;
+              border-bottom: 1px solid var(--slate-200); }
+.gone-brand span { font-weight: 700; font-size: var(--text-s); color: var(--primary); }
+.gone-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--slate-100);
+             display: grid; place-items: center; margin: 26px 0 14px; }
+.gone h3 { font-size: var(--text-l); line-height: var(--lh-l); }
+.gone p  { color: var(--slate-500); margin: 8px 0 0; font-size: var(--text-s); line-height: var(--lh-s); }
+.gone .reassure { margin-top: 14px; padding: 10px 12px; border-radius: var(--r-card);
+                  background: var(--slate-50); border: 1px solid var(--slate-200); color: var(--slate-600);
+                  font-size: var(--text-xs); line-height: 1.5; }
+/* Nhận diện Li2: chữ nhỏ cuối trang, KHÔNG phải nút. Cỡ `--text-xs` (globals.css:36), màu
+   slate-400 — nhạt hơn mọi thứ khác trên trang, để nó là chữ ký chứ không phải lời mời. */
+.gone-foot { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--slate-200);
+             font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-400); }
+.gone-foot a { color: var(--slate-500); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---- sơ đồ chuỗi gián tiếp (mục 3) — đây là sơ đồ, không phải màn hình ---- */
+.chain {
+  display: flex; align-items: stretch; flex-wrap: wrap;
+  border: 1px solid var(--slate-300); border-radius: var(--r-panel); overflow: hidden; background: var(--card);
+}
+.hop { flex: 1 1 150px; padding: 14px 12px; border-right: 1px solid var(--slate-200); min-width: 0; }
+.hop:last-child { border-right: none; }
+.hop-k { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-400); }
+.hop-v { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: var(--text-xs);
+         margin-top: 4px; word-break: break-all; }
+.hop.changes { background: color-mix(in oklab, var(--semantic-warning) 10%, white); }
+.hop-tag { display: inline-block; margin-top: 7px; font-size: 11px; line-height: 1.4;
+           padding: 1px 7px; border-radius: 999px; }
+.tag-keep { background: color-mix(in oklab, var(--semantic-success) 14%, white); color: var(--semantic-success); }
+.tag-swap { background: color-mix(in oklab, var(--semantic-warning) 18%, white); color: #8a5a00; }
+
+/* ===========================================================================
+   PHẦN 2/2 — chỉ của bản này.
+   Ba mặt, ba ngôn ngữ hình ảnh, cố ý khác nhau:
+     (a) MẶT li2        — token ở PHẦN 1, font Be Vietnam Pro.
+     (b) MẶT Claude.ai  — cửa sổ hội thoại. KHÔNG token li2, KHÔNG màu li2.
+     (c) MẶT tài liệu   — nhãn, ghi chú, bảng lỗi.
+   =========================================================================== */
+
+/* focus thấy được — PHẦN 1 không có, và đây là tài liệu người ta sẽ tab qua */
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible {
+  outline: 2px solid var(--secondary-blue); outline-offset: 2px; border-radius: 4px;
+}
+
+/* nhãn phân biệt mặt nào */
+.tag-claude { background: #efece6; color: #6b6558; }
+.tag-doc    { background: var(--slate-100); color: var(--slate-500); }
+
+.legend { max-width: 1072px; margin: 18px auto 0; padding: 0 24px;
+          display: flex; flex-wrap: wrap; gap: 10px; }
+.legend div { display: flex; align-items: center; gap: 8px; font-size: var(--text-xs);
+              line-height: var(--lh-xs); color: var(--slate-500);
+              border: 1px solid var(--slate-200); border-radius: 999px; padding: 4px 12px 4px 8px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+
+/* ---------------------------------------------------------------------------
+   (a) Trang consent — src/app/(protected)/mcp/consent/page.tsx
+   `main` thật là flex min-h-screen items-center justify-center bg-slate-50 p-4,
+   KHÔNG nằm trong khung sidebar của org. Card = rounded-2xl border-slate-300 (card.tsx:11).
+   --------------------------------------------------------------------------- */
+.stage { background: var(--slate-50); padding: 32px 16px; display: grid; place-items: center;
+         border: 1px solid var(--border); border-radius: var(--r-panel); }
+.cs-card { width: 100%; max-width: 512px; background: var(--card);
+           border: 1px solid var(--slate-300); border-radius: 16px; }
+.cs-head { padding: 24px 24px 0; display: flex; flex-direction: column; gap: 8px; }
+.cs-kicker { display: flex; align-items: center; gap: 8px; font-size: var(--text-s);
+             line-height: var(--lh-s); color: var(--slate-500); }
+.cs-kicker svg { width: 16px; height: 16px; }
+.cs-head h1 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600;
+              color: var(--slate-800); }
+.cs-head p { margin: 0; font-size: var(--text-s); line-height: var(--lh-s); color: var(--slate-600); }
+.cs-head p b { color: var(--slate-800); font-weight: 500; }
+.cs-body { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.cs-sec { display: flex; flex-direction: column; gap: 12px; }
+.cs-sec h2 { display: flex; align-items: center; gap: 6px; font-size: var(--text-s);
+             line-height: var(--lh-s); font-weight: 600; color: var(--slate-800); }
+.cs-sec h2 svg { width: 16px; height: 16px; color: var(--slate-500); }
+.cs-sec > p { margin: 0; font-size: var(--text-s); line-height: var(--lh-s); color: var(--slate-600); }
+.cs-perm { display: flex; align-items: flex-start; gap: 12px; border: 1px solid var(--slate-200);
+           border-radius: 6px; padding: 12px; margin: 0; }
+label.cs-perm { cursor: pointer; }
+label.cs-perm:hover { background: var(--slate-50); }
+.cs-perm input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex: none;
+                                accent-color: var(--primary); }
+.cs-perm svg.tick { width: 16px; height: 16px; margin-top: 2px; flex: none; color: #16a34a; }
+.cs-perm .pt { display: flex; flex-direction: column; gap: 2px; }
+.cs-perm .pt > span:first-child { display: flex; align-items: center; gap: 6px;
+  font-size: var(--text-s); line-height: var(--lh-s); font-weight: 500; color: var(--slate-800); }
+.cs-perm .pt > span:first-child svg { width: 16px; height: 16px; color: var(--slate-500); }
+.cs-perm .pt > span + span { font-size: var(--text-s); line-height: var(--lh-s);
+                             color: var(--slate-600); }
+.cs-orgs { list-style: none; margin: 0; padding: 0;
+           border: 1px solid var(--slate-200); border-radius: 6px; }
+.cs-orgs li { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+              padding: 12px; font-size: var(--text-s); line-height: var(--lh-s); color: var(--slate-800); }
+.cs-orgs li + li { border-top: 1px solid var(--slate-200); }
+/* badge.tsx size="xs": px-3 py-[2px] text-[12px] italic rounded-full */
+.bxs { flex: none; border-radius: 999px; padding: 2px 12px; font-size: 12px; line-height: 18px;
+       font-weight: 500; font-style: italic; }
+.bxs.ok { background: #16a34a; color: #fff; }                       /* variant success */
+.bxs.out { background: transparent; color: var(--slate-800); border: 1px solid var(--border); }
+.cs-warn { display: flex; align-items: flex-start; gap: 8px; margin: 0;
+           border: 1px solid #fde68a; background: #fffbeb; border-radius: 6px; padding: 12px;
+           font-size: var(--text-s); line-height: var(--lh-s); color: #78350f; }
+.cs-warn svg { width: 16px; height: 16px; margin-top: 2px; flex: none; }
+.cs-foot { display: flex; justify-content: flex-end; gap: 8px; }
+.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+/* ---------------------------------------------------------------------------
+   (b) MẶT Claude.ai — cửa sổ hội thoại.
+   Font: cố ý KHÔNG chọn một typeface. Đây là chrome của sản phẩm khác;
+   gán cho nó một font chọn lọc là tự bịa thương hiệu cho Claude.ai.
+   --------------------------------------------------------------------------- */
+.chatwrap { max-width: 1072px; margin: 0 auto; padding: 0 24px;
+            display: grid; grid-template-columns: minmax(0,1fr) 232px; gap: 20px;
+            align-items: start; }
+.chatwrap.solo { grid-template-columns: minmax(0,1fr); }
+.chatwin {
+  background: #fff; border: 1px solid #e3e0da; border-radius: 12px; overflow: hidden;
+  font-family: ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px; line-height: 1.6; color: #2b2a28;
+}
+.chatbar { height: 38px; display: flex; align-items: center; gap: 8px; padding: 0 14px;
+           border-bottom: 1px solid #efece7; color: #8a857c; font-size: 12px; }
+.chatbar .dotrow { display: flex; gap: 5px; }
+.chatbar .dotrow i { width: 9px; height: 9px; border-radius: 999px; background: #e0dcd4; }
+.chatbody { padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 18px; }
+.cturn { display: flex; gap: 10px; }
+.cturn.u { justify-content: flex-end; }
+.cturn.u .bub { max-width: 78%; background: #f3f1ec; border-radius: 14px; padding: 10px 14px; }
+.cmark { flex: none; width: 24px; height: 24px; border-radius: 999px; border: 1px solid #ddd8ce;
+         display: grid; place-items: center; color: #8a857c; font-size: 11px; font-weight: 600; }
+.cmark svg { width: 13px; height: 13px; }
+.cmark.tool { border-style: dashed; }
+.cturn.a .bub { flex: 1; min-width: 0; }
+.cturn .bub > p { margin: 0; }
+.cturn .bub > p + p, .cturn .bub > * + * { margin-top: 10px; }
+.cturn .bub strong { font-weight: 600; }
+.clink { color: #2f6fd0; text-decoration: underline; text-underline-offset: 2px;
+         word-break: break-all; }
+.cnum { font-size: 11px; color: #a39d92; flex: none; width: 14px; text-align: right;
+        padding-top: 4px; font-family: ui-monospace, Menlo, monospace; }
+
+/* khối code / tool call — details thật, mở được bằng bàn phím */
+details.cfold { border: 1px solid #e5e2db; border-radius: 10px; background: #fbfaf8;
+                overflow: hidden; }
+details.cfold > summary { list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 8px; padding: 9px 12px;
+  font-size: 12.5px; color: #6b665d; }
+details.cfold > summary::-webkit-details-marker { display: none; }
+details.cfold > summary:hover { background: #f5f3ee; }
+details.cfold > summary .nm { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px;
+                              color: #2b2a28; }
+details.cfold > summary .rt { margin-left: auto; display: flex; align-items: center; gap: 8px;
+                              color: #a39d92; }
+details.cfold > summary svg.chev { width: 14px; height: 14px; transition: transform 140ms ease-out; }
+details.cfold[open] > summary svg.chev { transform: rotate(90deg); }
+details.cfold > summary svg.ico { width: 14px; height: 14px; flex: none; }
+.cfold-body { border-top: 1px solid #efece7; padding: 10px 12px; }
+pre.j { margin: 0; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere;
+        color: #33322e; }
+details.cfold.bad { border-color: #e7cdbd; background: #fdf8f4; }
+details.cfold.bad > summary { color: #9a4a21; }
+details.cfold.bad .cfold-body { border-top-color: #f0ddd0; }
+
+/* cột phải: ảnh mở ra khi bấm qr_url */
+.aside-qr { border: 1px solid var(--slate-200); background: var(--card);
+            border-radius: var(--r-panel); padding: 14px; }
+.aside-qr h4 { margin: 0 0 4px; font-size: var(--text-s); line-height: var(--lh-s);
+               font-weight: 600; color: var(--slate-800); }
+.aside-qr p { margin: 0 0 12px; font-size: var(--text-xs); line-height: 1.5; color: var(--slate-500); }
+.qrframe { background: #fff; border: 1px solid var(--slate-200); border-radius: var(--r-card);
+           padding: 14px; }
+.qrframe svg { display: block; width: 100%; height: auto; }
+.qrbar { display: flex; align-items: center; gap: 6px; padding: 6px 8px; margin-bottom: 8px;
+         border: 1px solid var(--slate-200); border-radius: 6px; background: var(--slate-50);
+         font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--slate-500);
+         overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.qrbar svg { width: 12px; height: 12px; flex: none; }
+.qr403 { border: 1px solid #f0ddd0; background: #fdf8f4; border-radius: var(--r-card);
+         padding: 14px; text-align: center; color: #9a4a21; }
+.qr403 svg { width: 20px; height: 20px; }
+.qr403 b { display: block; margin-top: 6px; font-size: var(--text-s); font-weight: 600; }
+.qr403 span { display: block; margin-top: 2px; font-size: var(--text-xs); line-height: 1.5; }
+
+/* dải đối chiếu trước/sau */
+.same { max-width: 1072px; margin: 16px auto 0; padding: 0 24px; }
+.same-in { border: 1px solid var(--slate-200); background: var(--card);
+           border-radius: var(--r-panel); overflow: hidden; }
+.same-row { display: grid; grid-template-columns: 92px minmax(0,1fr) minmax(0,1fr); gap: 0;
+            align-items: center; }
+.same-row + .same-row { border-top: 1px solid var(--slate-200); }
+.same-row > * { padding: 10px 14px; min-width: 0; }
+.same-row > *:nth-child(3) { border-left: 1px solid var(--slate-200); }
+.same-row.h > * { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500);
+                  background: var(--slate-50); }
+.same-k { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500); }
+.same-v { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; color: var(--slate-800);
+          overflow-wrap: anywhere; }
+.same-v.chg { color: var(--secondary); }
+.same-v.txt { font-family: inherit; font-size: var(--text-s); line-height: var(--lh-s); }
+.same-qr { width: 54px; height: 54px; }
+.same-qr svg { display: block; width: 100%; height: 100%; }
+
+/* ---------------------------------------------------------------------------
+   (c) Bảng chín thông điệp lỗi
+   --------------------------------------------------------------------------- */
+.errs { max-width: 1072px; margin: 0 auto; padding: 0 24px;
+        display: flex; flex-direction: column; gap: 12px; }
+.err { border: 1px solid var(--slate-200); background: var(--card);
+       border-radius: var(--r-panel); overflow: hidden; }
+.err-h { display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+         border-bottom: 1px solid var(--slate-200); }
+.err-n { flex: none; width: 22px; height: 22px; border-radius: 999px; background: var(--slate-100);
+         color: var(--slate-600); font-size: var(--text-xs); line-height: 22px; text-align: center;
+         font-weight: 600; }
+.err-h h3 { font-size: var(--text-s); line-height: var(--lh-s); font-weight: 600;
+            color: var(--slate-800); }
+.err-h .err-tag { margin-left: auto; flex: none; font-size: var(--text-xs); line-height: var(--lh-xs);
+                  color: var(--slate-500); background: var(--slate-100); border-radius: 999px;
+                  padding: 2px 10px; }
+.err-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+.err-cell { padding: 12px 16px; min-width: 0; }
+.err-cell + .err-cell { border-left: 1px solid var(--slate-200); }
+.err-k { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--slate-500);
+         margin-bottom: 6px; }
+.raw { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; line-height: 1.6;
+       background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 6px;
+       padding: 8px 10px; color: var(--slate-700); overflow-wrap: anywhere; }
+.say { font-size: var(--text-s); line-height: var(--lh-s); color: var(--slate-700); }
+.say em { color: var(--slate-500); font-style: normal; }
+
+@media (max-width: 860px) {
+  .chatwrap { grid-template-columns: minmax(0,1fr); }
+  .err-grid { grid-template-columns: minmax(0,1fr); }
+  .err-cell + .err-cell { border-left: none; border-top: 1px solid var(--slate-200); }
+  .same-row { grid-template-columns: 76px minmax(0,1fr); }
+  .same-row > *:nth-child(3) { border-left: none; grid-column: 2; }
+}
+</style>
+</head>
+<body>
+
+<!-- QR giả, định nghĩa MỘT lần: mọi chỗ hiện QR trong tài liệu này dùng cùng một symbol,
+     nên "QR trước và sau update giống nhau" là đúng theo cấu trúc, không phải theo mắt. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="qr" viewBox="0 0 33 33">
+    <rect width="33" height="33" fill="#fff"/>
+    <g fill="#111">
+      <path d="M0 0h7v7H0zM2 2h3v3H2zM26 0h7v7h-7zM28 2h3v3h-3zM0 26h7v7H0zM2 28h3v3H2z"/>
+      <path d="M9 0h2v2H9zM13 0h2v2h-2zM18 1h2v2h-2zM9 4h2v2H9zM15 3h2v3h-2zM21 2h2v2h-2z"/>
+      <path d="M0 9h2v2H0zM3 10h2v2H3zM5 13h2v2H5zM1 15h2v2H1zM0 20h2v2H0zM4 18h2v2H4z"/>
+      <path d="M9 9h3v3H9zM14 10h2v2h-2zM18 9h2v3h-2zM22 11h2v2h-2zM26 9h2v2h-2zM30 10h2v2h-2z"/>
+      <path d="M10 14h2v2h-2zM13 15h3v2h-3zM17 14h2v2h-2zM20 16h2v2h-2zM24 14h2v2h-2zM28 15h2v2h-2z"/>
+      <path d="M9 19h2v2H9zM12 20h2v2h-2zM16 19h3v2h-3zM21 20h2v2h-2zM25 19h2v2h-2zM29 20h2v2h-2z"/>
+      <path d="M9 24h2v3H9zM13 25h2v2h-2zM17 24h2v2h-2zM21 26h2v2h-2zM25 24h3v2h-3zM30 25h2v2h-2z"/>
+      <path d="M10 30h2v2h-2zM14 29h2v3h-2zM18 30h3v2h-3zM23 29h2v3h-2zM27 30h2v2h-2z"/>
+      <path d="M26 20h2v2h-2zM30 16h2v2h-2zM26 15h2v2h-2z"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="doc">
+  <header>
+    <h1>MCP: publish và update artifact từ hội thoại Claude</h1>
+    <p class="lede">
+      Prototype cho chương 3 của <code>docs/artifact-wave3-screens.md</code> — hành trình D1 → D2 → D3.
+      Chương này không có màn hình theo nghĩa thường, nên tài liệu này dựng <b>ba mặt khác nhau</b> và
+      giữ chúng khác nhau về hình: trang consent là của li2, transcript là của Claude, dashboard là
+      của li2. Chỗ nào chưa chốt thì ghi ra, không vẽ lấp.
+    </p>
+  </header>
+  <div class="legend">
+    <div><i style="background:var(--primary)"></i> mặt li2 — token từ <code>globals.css</code></div>
+    <div><i style="background:#e3e0da"></i> mặt Claude.ai — chrome của sản phẩm khác, không tô màu li2</div>
+    <div><i style="background:var(--slate-200)"></i> mặt tài liệu — nhãn và ghi chú</div>
+  </div>
+</div>
+
+<!-- =============================== D1 =============================== -->
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">1</span><h2>D1 — thêm connector li2 (một lần)</h2></div>
+  <p>
+    Người dùng dán URL MCP vào Claude.ai, đăng nhập Casdoor, rồi gặp màn này. Đây là
+    <b>màn duy nhất của li2</b> trong cả luồng MCP — và nó đã có code, chương này không cần sửa gì ở đây.
+  </p>
+
+  <div class="shot-label" style="padding:0 24px">
+    <span class="tag-now">Đã code, không sửa</span>
+    <code>src/app/(protected)/mcp/consent/page.tsx</code> — trạng thái bình thường
+  </div>
+  <div style="max-width:1072px;margin:0 auto;padding:0 24px">
+    <div class="stage">
+      <div class="cs-card">
+        <div class="cs-head">
+          <div class="cs-kicker">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            Connect an application
+          </div>
+          <h1><span style="word-break:break-word">Claude</span> wants to access your Li2 account</h1>
+          <p>Signed in as <b>khanh.qn@gmail.com</b></p>
+        </div>
+        <div class="cs-body">
+          <div class="cs-sec">
+            <h2>This application will be able to</h2>
+            <div class="cs-perm">
+              <svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <div class="pt">
+                <span>Read your links and analytics</span>
+                <span>In any organization you belong to, limited to what your role already lets you see.</span>
+              </div>
+            </div>
+            <label class="cs-perm">
+              <input type="checkbox" checked />
+              <div class="pt">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+                  Create short links
+                </span>
+                <span>Allowed in <b style="font-weight:600">every organization you belong to</b>, not just one, until you disconnect. Untick for read-only access.</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="cs-sec">
+            <h2>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+              Your organizations
+            </h2>
+            <p>Access is checked for each request, so this list reflects your plans right now.</p>
+            <ul class="cs-orgs">
+              <li><span>Showroom Quận 7</span><span class="bxs ok">MCP enabled</span></li>
+              <li><span>Cửa hàng Thủ Đức</span><span class="bxs out">Plan upgrade needed</span></li>
+            </ul>
+          </div>
+
+          <div class="cs-sec">
+            <h2>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              Where access is sent
+            </h2>
+            <p>If you allow, Li2 sends the access code to
+              <span class="mono" style="font-weight:600;color:var(--slate-800)">claude.ai</span>.
+              Do not continue if you do not recognise it.</p>
+          </div>
+
+          <div class="cs-foot">
+            <button class="btn btn-secondary" type="button">Cancel</button>
+            <button class="btn btn-default" type="button">Allow access</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Ô write đã tick sẵn</b> (<code>mcp-oauth.service.ts:1026</code>) — và nó là <b>cổng người duy nhất</b>
+    trên cả đường MCP, vì downstream không có bước xác nhận từng hành động.
+    <code>publish_artifact</code> chỉ xuất hiện trong <code>tools/list</code> khi ô này được tick
+    (<code>api/mcp/route.ts:245-246</code>), nên người bỏ tick sẽ không thấy tool, không phải thấy tool rồi bị từ chối.
+    <br><br>
+    <b>Chỗ không trung thực, và nó là quyết định sản phẩm chứ không phải việc UI:</b> dòng chữ nói
+    “Create short links”. Thêm <code>publish_artifact</code> vào cùng ô này nghĩa là một tick còn cho phép
+    <b>xuất bản nội dung công khai ra web</b> — hai mức rủi ro dưới một ô. Đặc tả 3.B nói sửa việc đó tốn 8 chỗ.
+    Prototype này <b>không</b> vẽ ô mới: Q5 đã chốt dùng scope <code>write</code> có sẵn.
+    <br><br>
+    <b>Và màn này chỉ có tiếng Anh.</b> Người dùng Việt đi trong luồng tiếng Việt, gặp đúng một màn tiếng Anh,
+    ở đúng bước phải đọc kỹ nhất.
+  </div>
+
+  <div class="shot-label" style="margin-top:28px;padding:0 24px">
+    <span class="tag-now">Đã code</span> trạng thái: có org nhưng không org nào có <code>MCP_ACCESS</code>
+  </div>
+  <div style="max-width:1072px;margin:0 auto;padding:0 24px">
+    <div class="stage">
+      <div class="cs-card" style="max-width:512px">
+        <div class="cs-body" style="padding-top:24px">
+          <div class="cs-sec">
+            <h2>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/></svg>
+              Your organizations
+            </h2>
+            <ul class="cs-orgs">
+              <li><span>Cửa hàng Thủ Đức</span><span class="bxs out">Plan upgrade needed</span></li>
+            </ul>
+            <p class="cs-warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              None of your organizations include MCP access yet. You can still connect, but tool calls
+              will fail until a plan includes it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note">
+    Cắt ra một khúc, không dựng lại cả thẻ. Người dùng ở trạng thái này <b>nối được connector</b> rồi mới
+    gặp lỗi ở lần gọi tool đầu tiên — xem lỗi số 6 ở mục 5.
+  </div>
+</section>
+
+<hr class="div" />
+
+<!-- =============================== D2 =============================== -->
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">2</span><h2>D2 — publish một trang HTML từ hội thoại</h2></div>
+  <p>
+    Từ đây trở xuống là <b>giao diện của Claude</b>, không phải của li2. Bảy lượt, theo M3.2.
+    Tool result là <b>một text block chứa JSON</b> — không bảng, không thẻ đẹp, vì đó là đúng cái
+    <code>toToolResult</code> trả về (<code>call-tool.ts:84-90</code>).
+  </p>
+
+  <div class="shot-label" style="padding:0 24px">
+    <span class="tag-claude">Mặt Claude.ai</span> M3.2 — transcript publish
+  </div>
+  <div class="chatwrap">
+    <div class="chatwin">
+      <div class="chatbar">
+        <span class="dotrow"><i></i><i></i><i></i></span>
+        <span>Claude — Bảng giá showroom</span>
+      </div>
+      <div class="chatbody">
+
+        <div class="cturn u">
+          <span class="cnum">1</span>
+          <div class="bub"><p>Làm cho tôi một trang bảng giá tháng 10 cho showroom Quận 7, có 4 dòng dịch vụ.</p></div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">2</span><span class="cmark">C</span>
+          <div class="bub">
+            <p>Xong rồi, đây là trang bảng giá 4 dịch vụ.</p>
+            <details class="cfold">
+              <summary>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+                <span class="nm">bang-gia-t10.html</span>
+                <span class="rt">18.4 KB</span>
+              </summary>
+              <div class="cfold-body">
+                <pre class="j">&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+  … 412 dòng …
+&lt;/html&gt;</pre>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="cturn u">
+          <span class="cnum">3</span>
+          <div class="bub"><p>Đăng cái này lên li2 đi.</p></div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">4</span><span class="cmark">C</span>
+          <div class="bub">
+            <p>Mình đăng lên li2 nhé. <strong>Trang sẽ ở chế độ công khai, ai có link đều mở được.</strong></p>
+          </div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">5</span><span class="cmark tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
+          <div class="bub">
+            <details class="cfold" open>
+              <summary>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                <span class="nm">publish_artifact</span>
+                <span class="rt">li2</span>
+              </summary>
+              <div class="cfold-body">
+<pre class="j">{
+  "org_id": "a3f1c08e-7b24-4d19-9f55-61d0ab38e2c7",
+  "name": "Bảng giá tháng 10 — Showroom Quận 7",
+  "html": "&lt;!DOCTYPE html&gt;… (18.4 KB)"
+}</pre>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">6</span><span class="cmark tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
+          <div class="bub">
+            <details class="cfold" open>
+              <summary>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span class="nm">publish_artifact</span>
+                <span class="rt">1 text block</span>
+              </summary>
+              <div class="cfold-body">
+<pre class="j" id="json-publish">{"artifact_id":"7c9e2b41-5d8a-4f63-9c17-2ab0e5d41f88","status":"live","short_url":"https://li2.ai/bang-gia-t10","serve_url":"https://app.li2.ai/a/k3m9x2","qr_url":"https://cdn.li2.ai/qr/bang-gia-t10.png"}</pre>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">7</span><span class="cmark">C</span>
+          <div class="bub">
+            <p>Đã đăng. Link ngắn: <strong>li2.ai/bang-gia-t10</strong></p>
+            <p>Mã QR tải ở đây: <a class="clink" href="#qr-aside">https://cdn.li2.ai/qr/bang-gia-t10.png</a></p>
+            <p>Trang đang ở chế độ công khai. Đổi nội dung sau mà vẫn giữ nguyên link và mã QR thì nói mình biết.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="aside-qr" id="qr-aside">
+      <h4>Ảnh ở <code>qr_url</code></h4>
+      <p>v1 chốt nhánh a: tool <b>không</b> trả ảnh. Người dùng bấm link mới thấy cái này, trong tab mới.</p>
+      <div class="qrbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        cdn.li2.ai/qr/bang-gia-t10.png
+      </div>
+      <div class="qrframe"><svg viewBox="0 0 33 33" shape-rendering="crispEdges" aria-label="Mã QR của li2.ai/bang-gia-t10"><use href="#qr"/></svg></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Lượt 4 là lượt phải có.</b> “Trang sẽ ở chế độ công khai, ai có link đều mở được” được nói
+    <b>trước</b> khi gọi tool, vì sau khi gọi thì trang đã công khai rồi. Đây là mặc định, không phải
+    lựa chọn — ⏳ <b>agent có được đặt chế độ xem hay không đang chờ chủ sản phẩm quyết</b>; nếu sau này
+    cho phép, lượt 4 thành một câu hỏi, không còn là một thông báo.
+    <br><br>
+    Lượt 5 vẽ tham số gập lại vì <code>html</code> dài 18.4 KB — Claude.ai không in cả chuỗi ra, và
+    prototype cũng không nên.
+  </div>
+
+  <div class="shot-label" style="margin-top:28px;padding:0 24px">
+    <span class="tag-next">Chưa xác minh</span> cùng tool result, nhưng bucket QR là private — link chết
+  </div>
+  <div class="chatwrap">
+    <div class="chatwin">
+      <div class="chatbody">
+        <div class="cturn a">
+          <span class="cmark">C</span>
+          <div class="bub">
+            <p>Đã đăng. Link ngắn: <strong>li2.ai/bang-gia-t10</strong></p>
+            <p>Mã QR tải ở đây: <a class="clink" href="#qr403">https://cdn.li2.ai/qr/bang-gia-t10.png</a></p>
+          </div>
+        </div>
+        <div class="cturn u">
+          <div class="bub"><p>Bấm vào link QR thì nó báo lỗi.</p></div>
+        </div>
+        <div class="cturn a">
+          <span class="cmark">C</span>
+          <div class="bub">
+            <p>Mình xin lỗi — link đó mình chỉ đọc lại từ kết quả tool, mình không mở thử được.
+               Bạn vào li2, mở nội dung này rồi tải QR ở trang chi tiết.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="aside-qr" id="qr403">
+      <h4>Người dùng thấy gì</h4>
+      <p>Nếu bucket không public-readable.</p>
+      <div class="qrbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        cdn.li2.ai/qr/bang-gia-t10.png
+      </div>
+      <div class="qr403">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <b>403 — Access denied</b>
+        <span>Bucket riêng tư. Agent không biết điều đó và vẫn hứa “tải ở đây”.</span>
+      </div>
+    </div>
+  </div>
+  <div class="note">
+    Đặc tả 3.D ràng buộc số 7 và answers Q1 đều để ngỏ: <code>path_qr_code</code> là path hay URL tuyệt đối,
+    và bucket có public-readable không — <b>chưa ai xác minh</b>. Vẽ nhánh này ra để nhớ rằng nếu không
+    xác minh trước, Claude sẽ hứa một thứ không giữ được, và đó là kiểu lỗi bào mòn niềm tin nhanh nhất:
+    lời hứa sai ở đúng khoảnh khắc người dùng vừa tin.
+    <br><br>
+    Nếu kết quả xác minh là private, <b>đừng</b> sửa bằng cách bỏ <code>qr_url</code> khỏi JSON — bỏ đi thì
+    agent không có gì để nói về QR cả. Hoặc mở bucket, hoặc trả một URL đã ký, hoặc đổi câu của tool
+    thành “tải QR trong li2”.
+  </div>
+</section>
+
+<hr class="div" />
+
+<!-- =============================== D3 =============================== -->
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">3</span><h2>D3 — sửa nội dung rồi đăng lại</h2></div>
+  <p>
+    Lý do tool <code>update_artifact</code> tồn tại nằm gọn trong một câu: <b>standee đã in vẫn đúng</b>.
+    Nên transcript phải nói câu đó ra, và prototype phải chứng được nó bằng cách cho xem cùng short link,
+    cùng QR, trước và sau.
+  </p>
+
+  <div class="shot-label" style="padding:0 24px">
+    <span class="tag-claude">Mặt Claude.ai</span> M3.3 — transcript update
+  </div>
+  <div class="chatwrap solo">
+    <div class="chatwin">
+      <div class="chatbar">
+        <span class="dotrow"><i></i><i></i><i></i></span>
+        <span>Claude — Bảng giá showroom · tiếp cùng hội thoại</span>
+      </div>
+      <div class="chatbody">
+
+        <div class="cturn u">
+          <span class="cnum">1</span>
+          <div class="bub"><p>Dòng thứ hai sai giá, sửa thành 4.5 triệu rồi đăng lại.</p></div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">2</span><span class="cmark">C</span>
+          <div class="bub">
+            <p>Mình sửa rồi đăng lại lên <strong>cùng</strong> artifact đó, nên link ngắn và mã QR không đổi.</p>
+          </div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">3</span><span class="cmark tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
+          <div class="bub">
+            <details class="cfold" open>
+              <summary>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                <span class="nm">update_artifact</span>
+                <span class="rt">li2</span>
+              </summary>
+              <div class="cfold-body">
+<pre class="j">{
+  "org_id": "a3f1c08e-7b24-4d19-9f55-61d0ab38e2c7",
+  "artifact_id": "7c9e2b41-5d8a-4f63-9c17-2ab0e5d41f88",
+  "html": "&lt;!DOCTYPE html&gt;… (18.5 KB)"
+}</pre>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">4</span><span class="cmark tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
+          <div class="bub">
+            <details class="cfold" open>
+              <summary>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span class="nm">update_artifact</span>
+                <span class="rt">1 text block</span>
+              </summary>
+              <div class="cfold-body">
+<pre class="j" id="json-update">{"artifact_id":"7c9e2b41-5d8a-4f63-9c17-2ab0e5d41f88","status":"live","short_url":"https://li2.ai/bang-gia-t10","serve_url":"https://app.li2.ai/a/k3m9x2","qr_url":"https://cdn.li2.ai/qr/bang-gia-t10.png","size_bytes":18944,"previous_size_bytes":18841}</pre>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="cturn a">
+          <span class="cnum">5</span><span class="cmark">C</span>
+          <div class="bub">
+            <p>Đã thay nội dung. <strong>li2.ai/bang-gia-t10</strong> giờ mở ra bản mới — mã QR đã in vẫn
+               đúng, lượt quét đã ghi vẫn còn. <strong>Bản cũ không giữ lại được.</strong></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="same">
+    <div class="shot-label" style="padding:0;margin-bottom:8px">
+      <span class="tag-doc">Đối chiếu</span> cái gì đổi, cái gì không
+    </div>
+    <div class="same-in">
+      <div class="same-row h"><div>Trường</div><div>Trước update</div><div>Sau update</div></div>
+      <div class="same-row">
+        <div class="same-k">short_url</div>
+        <div class="same-v">https://li2.ai/bang-gia-t10</div>
+        <div class="same-v">https://li2.ai/bang-gia-t10</div>
+      </div>
+      <div class="same-row">
+        <div class="same-k">serve_url</div>
+        <div class="same-v">https://app.li2.ai/a/k3m9x2</div>
+        <div class="same-v">https://app.li2.ai/a/k3m9x2</div>
+      </div>
+      <div class="same-row">
+        <div class="same-k">qr_url</div>
+        <div class="same-v">https://cdn.li2.ai/qr/bang-gia-t10.png</div>
+        <div class="same-v">https://cdn.li2.ai/qr/bang-gia-t10.png</div>
+      </div>
+      <div class="same-row">
+        <div class="same-k">ảnh QR</div>
+        <div class="same-qr"><svg viewBox="0 0 33 33" shape-rendering="crispEdges" aria-label="QR trước update"><use href="#qr"/></svg></div>
+        <div class="same-qr"><svg viewBox="0 0 33 33" shape-rendering="crispEdges" aria-label="QR sau update"><use href="#qr"/></svg></div>
+      </div>
+      <div class="same-row">
+        <div class="same-k">size_bytes</div>
+        <div class="same-v">18841</div>
+        <div class="same-v chg">18944</div>
+      </div>
+      <div class="same-row">
+        <div class="same-k">nội dung</div>
+        <div class="same-v txt">bản 02/10</div>
+        <div class="same-v chg txt">bản mới — bản cũ mất hẳn</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    Hai ô QR ở trên dùng <b>cùng một <code>&lt;symbol&gt;</code></b>, không phải hai ảnh vẽ giống nhau —
+    nên “QR không đổi” đúng theo cấu trúc tài liệu, không phải đúng theo mắt người xem.
+    <br><br>
+    <b>Câu “Bản cũ không giữ lại được” là bắt buộc.</b> Ở UI có hộp thoại nói hộ; ở đây không có gì
+    ngoài lời Claude. Và nó phải nằm <b>trong cùng lượt</b> với tin vui, không ở lượt sau — một câu
+    cảnh báo đến sau khi người ta đã đóng máy là một câu không ai đọc.
+    <br><br>
+    <code>previous_size_bytes</code> không có trong shape đã chốt ở Q1, nhưng đặc tả M3.3 vẽ nó.
+    Giữ lại vì nó là thứ duy nhất cho agent nói đúng <b>phần chênh</b> khi quota tính delta — xem lỗi số 4.
+  </div>
+</section>
+
+<hr class="div" />
+
+<!-- =============================== M3.4 =============================== -->
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">4</span><h2>M3.4 — kết quả trên dashboard</h2></div>
+  <p>
+    Không có trạng thái mới nào, và <b>đó mới là ràng buộc</b>: artifact tạo từ MCP hiện y như artifact
+    tạo tay. Không cột <code>source</code>, không badge “tạo bởi agent”.
+  </p>
+
+  <div class="shot-label" style="padding:0 24px">
+    <span class="tag-now">Khung app li2</span> <code>/org/&lt;org&gt;/artifacts</code> — cắt lấy phần nội dung
+  </div>
+  <div class="bleed">
+    <div class="shell">
+      <div class="top">
+        <div class="top-left">
+          <img class="top-logo" src="/public/images/li2-logo-withtext.svg" alt="li2" />
+          <div class="top-org">
+            <button type="button">
+              <span class="org-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M10 6h4"/><path d="M10 10h4"/></svg>
+              </span>
+              <span class="org-name">Showroom Quận 7</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="top-right">
+          <div class="top-lang"><b>VI</b></div>
+          <div class="top-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+            <span class="top-dot"></span>
+          </div>
+          <div class="top-avatar">KQ</div>
+        </div>
+      </div>
+
+      <div class="below">
+        <div class="side">
+          <div class="side-scroll">
+            <div class="side-groups">
+              <div>
+                <div class="side-glabel">Tổng quan</div>
+                <div class="side-items">
+                  <a class="side-item" href="#"><span class="side-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span>Bảng điều khiển</span></a>
+                </div>
+              </div>
+              <div>
+                <div class="side-glabel">Nội dung</div>
+                <div class="side-items">
+                  <a class="side-item" href="#"><span class="side-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg></span><span>Short link</span></a>
+                  <a class="side-item on" href="#"><span class="side-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m5 12-3 3 3 3"/><path d="m9 18 3-3-3-3"/></svg></span><span>Nội dung</span><span class="side-beta">Beta</span></a>
+                  <a class="side-item" href="#"><span class="side-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg></span><span>Phân tích</span></a>
+                </div>
+              </div>
+              <div>
+                <div class="side-glabel">Kết nối</div>
+                <div class="side-items">
+                  <a class="side-item" href="#"><span class="side-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span><span>MCP</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="side-foot">
+            <div>
+              <div class="top-avatar" style="width:28px;height:28px">KQ</div>
+              <p>Khánh</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="main">
+          <div class="pagenav">
+            <div class="pagenav-in">
+              <h3>Nội dung</h3>
+              <div class="pagenav-extra">
+                <button class="btn btn-secondary btn-sm" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  Thêm nội dung
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <div class="content-in">
+
+              <div class="quota">
+                <div class="quota-grid">
+                  <div class="qax warn">
+                    <div class="qax-top">
+                      <span class="qax-k">Nội dung đang chạy</span>
+                      <span class="qax-v"><b>3</b> / 3</span>
+                    </div>
+                    <div class="track"><span class="fill" style="width:100%"></span></div>
+                    <p class="qax-note">Hết chỗ. Lần đăng tiếp theo — từ li2 hay từ Claude — sẽ bị từ chối.</p>
+                  </div>
+                  <div class="qax">
+                    <div class="qax-top">
+                      <span class="qax-k">Dung lượng</span>
+                      <span class="qax-v"><b>11.7 MB</b> / 30 MB</span>
+                    </div>
+                    <div class="track"><span class="fill" style="width:39%"></span></div>
+                    <p class="qax-note">Còn 18.3 MB.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alist" style="margin-top:16px">
+                <div class="acard">
+                  <div class="aqr"><svg viewBox="0 0 33 33" shape-rendering="crispEdges" aria-hidden="true"><use href="#qr"/></svg></div>
+                  <div class="abody">
+                    <div class="arow">
+                      <div class="acol">
+                        <div class="aname-line">
+                          <span class="aname">Bảng giá tháng 10 — Showroom Quận 7</span>
+                          <span class="abadge tone-success">Đang chạy</span>
+                          <span class="akind">HTML</span>
+                        </div>
+                        <div class="alink-line">
+                          <span class="alink">li2.ai/bang-gia-t10</span>
+                          <button class="aicon ablue" aria-label="Mở link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><path d="m21 3-9 9"/><path d="M15 3h6v6"/></svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="ameta">
+                        <span class="ascans zero">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+                          chưa có lượt quét
+                        </span>
+                        <span class="asmall">18.4 KB</span>
+                        <span class="asmall">vài giây trước</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="acard">
+                  <div class="aqr"><svg viewBox="0 0 33 33" shape-rendering="crispEdges" aria-hidden="true"><use href="#qr"/></svg></div>
+                  <div class="abody">
+                    <div class="arow">
+                      <div class="acol">
+                        <div class="aname-line">
+                          <span class="aname">Catalogue nội thất Q3</span>
+                          <span class="abadge tone-success">Đang chạy</span>
+                          <span class="akind">PDF</span>
+                        </div>
+                        <div class="alink-line">
+                          <span class="alink">li2.ai/catalogue-q3</span>
+                        </div>
+                      </div>
+                      <div class="ameta">
+                        <span class="ascans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg><b>412</b> lượt quét</span>
+                        <span class="asmall">8.4 MB</span>
+                        <span class="asmall">12 ngày trước</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="acard">
+                  <div class="aqr"><svg viewBox="0 0 33 33" shape-rendering="crispEdges" aria-hidden="true"><use href="#qr"/></svg></div>
+                  <div class="abody">
+                    <div class="arow">
+                      <div class="acol">
+                        <div class="aname-line">
+                          <span class="aname">Thư mời khai trương</span>
+                          <span class="abadge tone-success">Đang chạy</span>
+                          <span class="akind">PDF</span>
+                        </div>
+                        <div class="alink-line">
+                          <span class="alink">li2.ai/khai-truong</span>
+                        </div>
+                      </div>
+                      <div class="ameta">
+                        <span class="ascans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg><b>57</b> lượt quét</span>
+                        <span class="asmall">3.3 MB</span>
+                        <span class="asmall">2 ngày trước</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    Thẻ trên cùng là thẻ vừa sinh ra từ Claude. Nhìn vào thẻ đó <b>không có cách nào biết</b> nó đến
+    từ agent — đúng theo ràng buộc 3.D số 6. Thanh quota và cột lượt quét là đề xuất của chương 1,
+    không phải của chương này; để đây vì nó trả lời câu “đăng thêm được nữa không”.
+    <br><br>
+    Và đây là chỗ hai chương nối vào nhau: quota <b>3/3</b> trong hình này là trạng thái sinh ra
+    lỗi số 1 ở mục 5 — lần gọi <code>publish_artifact</code> tiếp theo bị từ chối trước khi nhận HTML.
+    <br><br>
+    ⚠ <b>Không màn hình nào trả lời được “ai đã publish bằng agent”.</b>
+    <code>artifact.service.ts</code> không gọi <code>orgAuditLogService</code> lần nào; audit chỉ được ghi
+    gián tiếp dưới <code>module: 'touch_point'</code>, không phân biệt được với publish tay. Và
+    <code>log.md</code> 2026-09-30 ghi audit log touch point <b>không ghi</b> trên LiHi — nếu đúng thì
+    mọi thiết kế audit là vô nghĩa cho tới khi cái gốc được sửa.
+  </div>
+</section>
+
+<hr class="div" />
+
+<!-- =============================== M3.5 =============================== -->
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">5</span><h2>M3.5 — chín thông điệp lỗi</h2></div>
+  <p>
+    Người đọc đầu tiên là một model phải quyết định làm gì tiếp; người đọc thứ hai là người dùng nghe
+    lại qua lời Claude. Nên mỗi thông điệp phải mang <b>con số thật</b> và <b>việc cần làm</b>.
+  </p>
+  <div class="note" style="margin:0 auto 18px;max-width:1072px;padding-left:24px;border-left:none">
+    <b>Lệch đặc tả, cố ý.</b> Giao việc nói “JSON lỗi agent nhận”, nhưng lỗi trên đường MCP
+    <b>không phải JSON</b>. <code>McpToolError.toToolResult()</code> trả
+    <code>{isError:true, content:[{type:'text', text: clientMessage}]}</code> —
+    <code>clientMessage</code> là <b>văn xuôi tiếng Anh thuần</b>, không bọc JSON
+    (<code>src/core/mcp/errors.ts:65-95</code>). Cột giữa dưới đây in đúng chuỗi
+    <code>text</code> đó. Vẽ nó thành JSON là vẽ một thứ không tồn tại.
+    Hai câu số 6 và số 9 là <b>chữ đã có thật trong code</b>, không phải đề xuất.
+  </div>
+
+  <div class="errs">
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">1</span><h3>Hết 3/3 nội dung đang chạy</h3>
+        <span class="err-tag">kiểm trước khi nhận HTML</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận</div>
+          <div class="raw">This organization already has 3 published artifacts, which is the maximum on its plan. Delete one in the li2 dashboard, then call this tool again. Nothing was created — there is no draft to clean up.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Tổ chức của bạn đang có 3 nội dung đã xuất bản, là mức tối đa. Vào li2 <b>gỡ một cái</b> rồi mình đăng lại. Chưa có gì được tạo nên không có bản nháp nào phải dọn.”</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">2</span><h3>HTML quá 10 MB</h3>
+        <span class="err-tag">giới hạn mỗi file</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận</div>
+          <div class="raw">The HTML is 12.4 MB after decoding; the limit is 10 MB per file. Nothing was uploaded.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Trang này 12.4 MB, quá mức 10 MB mỗi file. Ảnh nhúng trong trang là chỗ nặng nhất — để mình thay bằng link ảnh rồi đăng lại.”</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">3</span><h3>Vượt 30 MB tổng — khi publish</h3>
+        <span class="err-tag">phép cộng</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận</div>
+          <div class="raw">This organization has used 28.1 of 30 MB. This file needs 4.2 MB. Delete an artifact in the li2 dashboard to free space.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Chỗ lưu của tổ chức dùng 28.1 trên 30 MB, trang này cần 4.2 MB. Lối ra là <b>gỡ một nội dung cũ</b> trong li2, không phải nén trang nhỏ lại.”</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">4</span><h3>Vượt 30 MB tổng — khi update</h3>
+        <span class="err-tag">phép trừ, nói phần chênh</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận</div>
+          <div class="raw">Replacing this file needs 4.2 MB more than the file it replaces, and only 1.9 MB is free. The current content is unchanged.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Bản mới nặng hơn bản đang chạy 4.2 MB, mà chỗ trống chỉ còn 1.9 MB. <b>Trang hiện tại không đổi</b>, link và QR vẫn nguyên. Gỡ một nội dung khác rồi mình đăng lại.”</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">5</span><h3>HTML rỗng</h3>
+        <span class="err-tag">nhánh a — chưa chốt</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận</div>
+          <div class="raw">The html field is empty.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Mình gửi đi một khối rỗng — lỗi của mình. Để mình sinh lại trang rồi đăng.”
+            <br><em>⏳ Nhánh a chốt: không kiểm gì ngoài chuỗi rỗng. Đẩy rác thì trang hiện rác, cùng mức bảo đảm như upload tay một file .html rỗng. <code>kind:'html'</code> có <code>magic: []</code> nên không có gì để kiểm.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">6</span><h3>Org không có <code>MCP_ACCESS</code></h3>
+        <span class="err-tag">chữ đã có trong code</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận — <code>errors.ts:165-171</code></div>
+          <div class="raw">This organization's Li2 plan does not include MCP access, so its data cannot be reached from here. list_orgs shows which of the user's organizations do have it.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Tổ chức Cửa hàng Thủ Đức chưa có quyền MCP trong gói. Showroom Quận 7 thì có — đăng vào đó nhé, hoặc nhờ admin nâng gói.”
+            <br><em>Đây là lỗi mà người đi qua trạng thái cảnh báo vàng ở mục 1 sẽ gặp.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">7</span><h3><code>artifact_id</code> không tồn tại trong org này</h3>
+        <span class="err-tag">không rò thông tin</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận</div>
+          <div class="raw">No artifact with that id in this organization.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Mình không tìm thấy nội dung đó trong tổ chức này. Bạn mở li2 lấy lại link rồi mình thử lại.”
+            <br><em>Cố ý <b>không</b> nói “có thể nó thuộc tổ chức khác” — câu đó xác nhận một id có tồn tại ở đâu đó.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">8</span><h3>Artifact đã bị gỡ</h3>
+        <span class="err-tag">QR đã in sẽ chết</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận</div>
+          <div class="raw">That artifact has been taken down and cannot be updated. Publish a new one.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“Nội dung đó đã bị gỡ nên không thay file được nữa. Mình đăng mới được, nhưng sẽ ra <b>link ngắn và QR mới</b> — QR đã in trên standee sẽ không còn đúng.”</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="err">
+      <div class="err-h"><span class="err-n">9</span><h3>Rate limit</h3>
+        <span class="err-tag">chữ đã có trong code</span></div>
+      <div class="err-grid">
+        <div class="err-cell">
+          <div class="err-k">text block agent nhận — <code>errors.ts:155-162</code></div>
+          <div class="raw">This Li2 connection has made too many tool calls. Wait about 37 seconds and try again — do not retry immediately, and do not split the work across organizations, which shares the same limit. Tell the user what you were doing when it happened.</div>
+        </div>
+        <div class="err-cell">
+          <div class="err-k">Claude nói lại với người dùng</div>
+          <p class="say">“li2 đang chặn tạm vì gọi quá nhiều. Khoảng 37 giây nữa mình đăng lại trang bảng giá — mình đang ở bước đăng, chưa có gì được tạo.”
+            <br><em>Rate limit tiêu thụ <b>trước</b> scope check, nên tới được đây là chắc chắn chưa tạo gì.</em></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note">
+    Lỗi hiện ra trong hội thoại trông như thế này — khối đỏ nhạt, cùng khuôn với tool result thành công,
+    chỉ khác <code>isError</code>:
+  </div>
+
+  <div class="chatwrap solo" style="margin-top:12px">
+    <div class="chatwin">
+      <div class="chatbody">
+        <div class="cturn a">
+          <span class="cmark tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
+          <div class="bub">
+            <details class="cfold bad" open>
+              <summary>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                <span class="nm">publish_artifact</span>
+                <span class="rt">lỗi</span>
+              </summary>
+              <div class="cfold-body">
+<pre class="j">This organization already has 3 published artifacts, which is the
+maximum on its plan. Delete one in the li2 dashboard, then call this
+tool again. Nothing was created — there is no draft to clean up.</pre>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="cturn a">
+          <span class="cmark">C</span>
+          <div class="bub">
+            <p>Chưa đăng được. Tổ chức đang có 3 nội dung đã xuất bản, là mức tối đa.</p>
+            <p>Vào li2 gỡ một cái — <a class="clink" href="#">Catalogue nội thất Q3</a> đang 412 lượt quét,
+               <a class="clink" href="#">Thư mời khai trương</a> thì 57 — rồi nói mình biết, mình đăng lại ngay.
+               Chưa có gì được tạo nên không có bản nháp nào phải dọn.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note">
+    Lỗi “hết 3/3” <b>phải nói việc cần làm</b>, không chỉ báo trạng thái. Và vì agent đã đọc danh sách
+    bằng tool read, nó nói được <b>gỡ cái nào</b> — đó là chỗ đường agent làm tốt hơn một hộp thoại tĩnh.
+  </div>
+</section>
+
+<hr class="div" />
+
+<!-- =============================== chốt =============================== -->
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">6</span><h2>Chỗ còn chờ quyết, chỗ chưa xác minh</h2></div>
+  <div class="note" style="border-left:none;padding-left:24px;max-width:1072px;margin:0 auto">
+    <b>⏳ Agent có được đặt chế độ xem không.</b> Prototype vẽ công khai là mặc định, và vẽ câu nói ra
+    điều đó ở lượt 4. Nếu chủ sản phẩm cho agent đặt chế độ, lượt 4 thành câu hỏi và chương 2 nối vào đây.
+    <br><br>
+    <b>⚠ <code>qr_url</code> có thể là link chết.</b> Chưa ai kiểm <code>path_qr_code</code> là path hay URL
+    tuyệt đối, và bucket có public-readable không. Mục 2 vẽ cả hai nhánh. Đây là việc phải đo trước khi
+    viết câu trả lời của tool, không phải việc UI.
+    <br><br>
+    <b>⏳ “HTML sai” nghĩa là gì.</b> Prototype theo nhánh a: lỗi duy nhất là chuỗi rỗng.
+    <br><br>
+    <b>Lệch đặc tả, cố ý:</b> (1) lỗi là <b>text thuần</b>, không phải JSON — xem ghi chú ở mục 5;
+    (2) <code>previous_size_bytes</code> giữ lại dù không có trong shape Q1, vì nó là thứ duy nhất cho
+    agent nói đúng phần chênh; (3) ảnh QR trong hội thoại được vẽ như <b>ảnh mở ra khi bấm link</b>,
+    không phải một <code>image</code> content block — v1 chốt nhánh a, tool không trả ảnh.
+    <br><br>
+    <b>Chưa dựng:</b> màn “ai publish bằng agent” — không có dữ liệu để dựng, và
+    <code>log.md</code> 2026-09-30 nói audit log touch point còn không ghi trên LiHi.
+  </div>
+</section>
+
+<div style="height:72px"></div>
+</body>
+</html>

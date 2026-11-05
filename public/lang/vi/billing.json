@@ -1,0 +1,57 @@
+{
+  "heading_prefix": "Nâng cấp lên",
+  "tagline": "Mở khóa thêm tính năng cho đội nhóm của bạn",
+  "whats_included": "Tính năng bao gồm",
+  "total_due": "Tổng thanh toán hôm nay",
+  "back_to_pricing": "Quay lại bảng giá",
+  "per_year": "/năm",
+  "per_month": "/tháng",
+
+  "feature": {
+    "orgs": "{{count}} tổ chức",
+    "members": "Tối đa {{count}} thành viên",
+    "domains": "{{count}} tên miền tùy chỉnh",
+    "retention": "Lưu dữ liệu {{days}} ngày",
+    "ai_credits": "{{count}} AI credits / tháng",
+    "meta_tags": "Meta tags tùy chỉnh",
+    "utm_tags": "UTM tags tùy chỉnh",
+    "advanced_analytics": "Phân tích nâng cao"
+  },
+
+  "checkout": {
+    "heading": "Hoàn tất đơn hàng",
+    "subheading": "Chọn chu kỳ thanh toán để tiếp tục",
+    "monthly_label": "Hàng tháng",
+    "monthly_sub": "Thanh toán hàng tháng · 30 ngày",
+    "yearly_label": "Hàng năm",
+    "yearly_sub_savings": "Thanh toán hàng năm · Tiết kiệm {{amount}}/năm",
+    "yearly_sub_default": "Thanh toán hàng năm · 365 ngày",
+    "save_badge": "Tiết kiệm {{pct}}%",
+    "days_access": "Truy cập {{days}} ngày",
+    "confirm": "Xác nhận mua",
+    "processing": "Đang xử lý...",
+    "terms": "Bằng cách xác nhận, bạn đồng ý với điều khoản dịch vụ của chúng tôi"
+  },
+
+  "qr": {
+    "heading": "Quét để thanh toán",
+    "subheading": "Mở ứng dụng ngân hàng và quét mã QR bên dưới",
+    "bank": "Ngân hàng",
+    "bank_name": "Techcombank",
+    "account": "Số tài khoản",
+    "amount": "Số tiền",
+    "description": "Nội dung chuyển khoản",
+    "copy": "Sao chép",
+    "warning": "<bold>Không thay đổi nội dung chuyển khoản này.</bold> Hệ thống sẽ không thể xác nhận thanh toán nếu nội dung bị thay đổi.",
+    "email_notice": "Sau khi chuyển khoản thành công, hãy thư giãn và chờ đợi.",
+    "email_notice_bold": "Chúng tôi sẽ gửi email cho bạn",
+    "email_notice_suffix": "khi gói được kích hoạt — thường trong vài phút.",
+    "self_confirm": "Tôi đã chuyển khoản",
+    "self_confirm_processing": "Đang xác nhận...",
+    "confirmed_heading": "Đang chờ xác minh",
+    "confirmed_body": "Chúng tôi đã nhận được thông báo từ bạn. Hệ thống sẽ tự động kiểm tra giao dịch và kích hoạt gói sau khi xác minh — thường trong vài phút. Vui lòng kiểm tra email để cập nhật.",
+    "go_dashboard": "Tiếp tục đến Dashboard",
+    "redirect_countdown": "Tự động chuyển hướng sau {{seconds}}s...",
+    "confirm_error": "Đơn hàng này đã được xử lý hoặc không tồn tại."
+  }
+}

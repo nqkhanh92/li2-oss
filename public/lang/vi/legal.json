@@ -1,0 +1,256 @@
+{
+  "privacy": {
+    "title": "Chính sách bảo mật",
+    "updated": "Cập nhật lần cuối: 20/10/2026",
+    "intro": "Chính sách này giải thích Li2 thu thập dữ liệu nào khi bạn dùng dịch vụ rút gọn link, mã QR và trang nội dung do Li2 lưu trữ, dùng dữ liệu đó để làm gì, chia sẻ với ai và bạn có những quyền gì.",
+    "sections": [
+      {
+        "heading": "1. Ai chịu trách nhiệm về dữ liệu",
+        "body": [
+          "Li2 vận hành dịch vụ này và là bên kiểm soát dữ liệu đối với dữ liệu tài khoản của bạn.",
+          "Với dữ liệu lượt truy cập sinh ra từ link, mã QR và trang nội dung của bạn, bạn là bên kiểm soát và Li2 xử lý thay bạn theo hợp đồng sử dụng dịch vụ.",
+          "Bản tự triển khai (self-host) do tổ chức vận hành bản đó chịu trách nhiệm; khi đó các mục dưới đây mô tả cách phần mềm hoạt động, còn bên kiểm soát là tổ chức ấy."
+        ]
+      },
+      {
+        "heading": "2. Dữ liệu chúng tôi thu thập",
+        "body": [
+          "Dữ liệu tài khoản: email, tên hiển thị và tổ chức bạn thuộc về, nhận từ nhà cung cấp đăng nhập.",
+          "Nội dung bạn đưa lên: địa chỉ đích của link, tên và thẻ của từng link, tệp HTML bạn xuất bản thành trang nội dung.",
+          "Dữ liệu lượt truy cập: thời điểm, địa chỉ IP, chuỗi User-Agent, trang dẫn tới (referrer), loại thiết bị, hệ điều hành và vị trí suy ra ở mức thành phố hoặc quốc gia từ địa chỉ IP.",
+          "Email người xem: chỉ khi bạn bật chế độ đăng nhập Google cho một trang nội dung. Khi đó email của người mở trang được ghi lại và chỉ tổ chức sở hữu trang đó đọc được.",
+          "Dữ liệu thanh toán: khi bạn mua gói trả phí, chúng tôi lưu thông tin hóa đơn; số thẻ do cổng thanh toán xử lý và Li2 không lưu.",
+          "Dữ liệu kỹ thuật: log lỗi và log truy cập máy chủ, phục vụ vận hành và điều tra sự cố."
+        ]
+      },
+      {
+        "heading": "3. Chúng tôi dùng dữ liệu để làm gì",
+        "body": [
+          "Chuyển hướng link và phục vụ trang nội dung đúng cấu hình bạn đặt.",
+          "Dựng báo cáo thống kê cho tổ chức của bạn: số lượt bấm, lượt quét, thiết bị, khu vực.",
+          "Xác thực, phân quyền và áp hạn mức theo gói dịch vụ.",
+          "Phát hiện và ngăn lạm dụng: phishing, mã độc, spam, dò quét tự động.",
+          "Hỗ trợ khách hàng và trả lời yêu cầu của bạn.",
+          "Chúng tôi KHÔNG bán dữ liệu cá nhân và không dùng dữ liệu lượt truy cập của bạn để bán quảng cáo."
+        ]
+      },
+      {
+        "heading": "4. Cookie và bộ nhớ trình duyệt",
+        "body": [
+          "Trong ứng dụng Li2, cookie dùng để giữ phiên đăng nhập và ghi nhớ ngôn ngữ bạn chọn. Đây là cookie cần thiết cho hoạt động của dịch vụ.",
+          "Trang nội dung công khai đặt cookie khi trang đó yêu cầu mật khẩu hoặc đăng nhập, để bạn không phải nhập lại trong cùng phiên."
+        ]
+      },
+      {
+        "heading": "5. Chia sẻ với bên thứ ba",
+        "body": [
+          "Casdoor: nhà cung cấp đăng nhập, xử lý email và danh tính tài khoản.",
+          "Supabase (PostgreSQL và Storage): lưu dữ liệu ứng dụng, tệp nội dung bạn xuất bản và dữ liệu lượt truy cập.",
+          "Google OAuth: chỉ khi một trang nội dung bật chế độ đăng nhập Google, để xác nhận email người xem.",
+          "Cổng thanh toán: xử lý giao dịch khi bạn mua gói trả phí.",
+          "Nhà cung cấp hạ tầng và giám sát lỗi: lưu log phục vụ vận hành.",
+          "Chúng tôi cũng cung cấp dữ liệu khi pháp luật yêu cầu bằng một văn bản hợp lệ."
+        ]
+      },
+      {
+        "heading": "6. Truy cập qua API và trợ lý AI",
+        "body": [
+          "Bạn có thể cho một ứng dụng bên ngoài, kể cả trợ lý AI, truy cập dữ liệu của tổ chức mình qua API hoặc qua máy chủ MCP của Li2.",
+          "Quyền truy cập đó chỉ tồn tại sau khi bạn bấm đồng ý trên màn hình cấp quyền, giới hạn trong các quyền bạn đã tích, và bạn thu hồi được bất cứ lúc nào trong phần cài đặt.",
+          "Khi ứng dụng bên ngoài đã đọc dữ liệu, dữ liệu đó nằm dưới chính sách của ứng dụng ấy, không còn dưới chính sách này."
+        ]
+      },
+      {
+        "heading": "7. Lưu trữ bao lâu",
+        "body": [
+          "Dữ liệu tài khoản: trong suốt thời gian tài khoản tồn tại.",
+          "Nội dung bạn xuất bản: đến khi bạn xóa. Sau khi xóa, tệp bị xóa khỏi nơi lưu và trang trả về trạng thái đã dỡ bỏ.",
+          "Dữ liệu lượt truy cập: lưu theo thời hạn của gói dịch vụ bạn dùng.",
+          "Log kỹ thuật: lưu ngắn hạn phục vụ vận hành, rồi xóa hoặc gộp thành số liệu tổng.",
+          "Bản sao lưu còn giữ dữ liệu thêm một thời gian sau khi xóa, theo vòng đời của bản sao lưu đó."
+        ]
+      },
+      {
+        "heading": "8. Quyền của bạn",
+        "body": [
+          "Bạn có quyền xem, sửa, xuất và yêu cầu xóa dữ liệu cá nhân của mình.",
+          "Bạn có quyền rút lại sự đồng ý đã cấp cho một ứng dụng bên ngoài, và quyền phản đối việc xử lý trong những trường hợp pháp luật cho phép.",
+          "Phần lớn các quyền trên thực hiện được ngay trong ứng dụng; phần còn lại, hãy liên hệ chúng tôi theo mục cuối.",
+          "Nếu bạn là người xem một trang nội dung và muốn hỏi về dữ liệu của mình, hãy liên hệ tổ chức xuất bản trang đó, vì họ là bên kiểm soát dữ liệu ấy."
+        ]
+      },
+      {
+        "heading": "9. Bảo mật",
+        "body": [
+          "Dữ liệu truyền qua HTTPS. Mật khẩu bảo vệ trang nội dung được lưu dưới dạng băm một chiều, không bao giờ lưu hay trả về bản gốc.",
+          "Truy cập dữ liệu trong hệ thống giới hạn theo vai trò và theo tổ chức.",
+          "Không hệ thống nào an toàn tuyệt đối; nếu xảy ra sự cố ảnh hưởng dữ liệu cá nhân, chúng tôi thông báo theo quy định pháp luật."
+        ]
+      },
+      {
+        "heading": "10. Trẻ em",
+        "body": [
+          "Dịch vụ dành cho người dùng doanh nghiệp và không hướng tới trẻ em dưới 16 tuổi. Chúng tôi không chủ động thu thập dữ liệu của trẻ em."
+        ]
+      },
+      {
+        "heading": "11. Thay đổi chính sách",
+        "body": [
+          "Khi chính sách thay đổi, chúng tôi cập nhật ngày ở đầu trang. Nếu thay đổi ảnh hưởng đáng kể tới quyền của bạn, chúng tôi thông báo trong ứng dụng hoặc qua email."
+        ]
+      },
+      {
+        "heading": "12. Liên hệ",
+        "body": ["Mọi câu hỏi về chính sách này, xin gửi tới support@li2.ai."]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Điều khoản sử dụng",
+    "updated": "Cập nhật lần cuối: 20/10/2026",
+    "intro": "Các điều khoản này là hợp đồng giữa bạn và Li2 về việc sử dụng dịch vụ rút gọn link, mã QR, trang nội dung do Li2 lưu trữ và các API liên quan.",
+    "sections": [
+      {
+        "heading": "1. Chấp nhận điều khoản",
+        "body": [
+          "Khi tạo tài khoản hoặc sử dụng dịch vụ, bạn đồng ý với các điều khoản này và với Chính sách bảo mật.",
+          "Nếu bạn dùng dịch vụ cho một tổ chức, bạn xác nhận mình có quyền ràng buộc tổ chức đó."
+        ]
+      },
+      {
+        "heading": "2. Tài khoản",
+        "body": [
+          "Bạn chịu trách nhiệm về mọi hoạt động diễn ra dưới tài khoản của mình và về việc giữ an toàn thông tin đăng nhập.",
+          "Mỗi tổ chức tự quản lý thành viên và quyền của thành viên. Người có quyền quản trị thấy và sửa được dữ liệu của tổ chức."
+        ]
+      },
+      {
+        "heading": "3. Dịch vụ",
+        "body": [
+          "Dịch vụ gồm: tạo và quản lý link rút gọn, sinh mã QR, xuất bản trang nội dung HTML, và báo cáo thống kê lượt truy cập.",
+          "Chúng tôi có thể thêm, sửa hoặc dừng một tính năng. Nếu việc dừng ảnh hưởng đáng kể tới cách bạn đang dùng dịch vụ, chúng tôi thông báo trước."
+        ]
+      },
+      {
+        "heading": "4. Nội dung của bạn",
+        "body": [
+          "Nội dung bạn đưa lên vẫn thuộc về bạn. Bạn chỉ cấp cho chúng tôi quyền cần thiết để lưu, xử lý và phục vụ nội dung đó cho người truy cập theo đúng cấu hình bạn đặt.",
+          "Bạn xác nhận mình có quyền với nội dung đưa lên và việc xuất bản nó không vi phạm quyền của người khác."
+        ]
+      },
+      {
+        "heading": "5. Nội dung và hành vi bị cấm",
+        "body": [
+          "Phishing, giả mạo thương hiệu hoặc tổ chức khác, thu thập thông tin đăng nhập của người khác.",
+          "Phát tán mã độc, khai thác lỗ hổng, hoặc chuyển hướng tới nội dung như vậy.",
+          "Nội dung vi phạm bản quyền, nội dung bất hợp pháp, nội dung lạm dụng tình dục trẻ em, nội dung kích động bạo lực hoặc thù hận.",
+          "Spam, gửi link hàng loạt không được yêu cầu, hoặc tạo lượt truy cập giả để làm sai lệch báo cáo.",
+          "Dò quét, làm quá tải hệ thống, hoặc vượt hạn mức bằng cách lách giới hạn kỹ thuật.",
+          "Dùng dịch vụ để che giấu đích đến trong một chiến dịch lừa đảo."
+        ]
+      },
+      {
+        "heading": "6. Hạn mức và giới hạn kỹ thuật",
+        "body": [
+          "Mỗi gói dịch vụ có hạn mức riêng về số trang nội dung, dung lượng lưu trữ, số lần gọi API và thời gian lưu dữ liệu thống kê.",
+          "Khi vượt hạn mức, yêu cầu mới bị từ chối kèm thông báo nêu rõ cần dọn gì hoặc nâng gói nào. Dữ liệu đang có không bị xóa vì lý do vượt hạn mức."
+        ]
+      },
+      {
+        "heading": "7. Truy cập bằng chương trình và trợ lý AI",
+        "body": [
+          "Bạn có thể cho ứng dụng bên ngoài, kể cả trợ lý AI, thao tác thay bạn qua API hoặc qua máy chủ MCP, sau khi bạn cấp quyền.",
+          "Mọi thao tác ứng dụng đó thực hiện được tính là thao tác của bạn. Hãy chỉ cấp quyền ghi cho ứng dụng bạn tin, và thu hồi khi không còn dùng.",
+          "Một số thao tác là không thể hoàn tác, ví dụ xóa trang nội dung hoặc xóa link. Chúng tôi không khôi phục được dữ liệu đã xóa."
+        ]
+      },
+      {
+        "heading": "8. Thanh toán",
+        "body": [
+          "Gói trả phí thu theo chu kỳ đã chọn. Phí đã thu cho chu kỳ đang dùng không hoàn lại, trừ khi pháp luật quy định khác.",
+          "Khi gói hết hiệu lực, các tính năng thuộc gói đó ngừng hoạt động; dữ liệu của bạn vẫn còn trong thời hạn lưu trữ của gói miễn phí."
+        ]
+      },
+      {
+        "heading": "9. Đình chỉ và chấm dứt",
+        "body": [
+          "Chúng tôi có thể dỡ một nội dung, vô hiệu một link hoặc đình chỉ tài khoản khi có dấu hiệu vi phạm mục 5, hoặc khi phải tuân thủ yêu cầu pháp lý.",
+          "Với vi phạm nghiêm trọng hoặc gây nguy hại cho người truy cập, việc dỡ bỏ có thể diễn ra ngay và thông báo sau.",
+          "Bạn có thể dừng sử dụng và yêu cầu xóa tài khoản bất cứ lúc nào."
+        ]
+      },
+      {
+        "heading": "10. Không bảo đảm và giới hạn trách nhiệm",
+        "body": [
+          "Dịch vụ được cung cấp trên cơ sở hiện có. Chúng tôi không bảo đảm dịch vụ không gián đoạn hay không có lỗi.",
+          "Trong phạm vi pháp luật cho phép, trách nhiệm của chúng tôi giới hạn ở số tiền bạn đã trả cho dịch vụ trong 12 tháng trước thời điểm phát sinh khiếu nại.",
+          "Chúng tôi không chịu trách nhiệm về nội dung bạn xuất bản hay về đích đến mà link của bạn trỏ tới."
+        ]
+      },
+      {
+        "heading": "11. Thay đổi điều khoản",
+        "body": [
+          "Khi điều khoản thay đổi, chúng tôi cập nhật ngày ở đầu trang và thông báo trong ứng dụng nếu thay đổi là đáng kể. Tiếp tục sử dụng dịch vụ sau đó nghĩa là bạn đồng ý với bản mới."
+        ]
+      },
+      {
+        "heading": "12. Luật áp dụng và giải quyết tranh chấp",
+        "body": [
+          "Các điều khoản này được điều chỉnh và giải thích theo pháp luật Việt Nam.",
+          "Khi có tranh chấp phát sinh từ hoặc liên quan đến các điều khoản này, hai bên ưu tiên thương lượng thiện chí. Nếu trong vòng 30 ngày kể từ khi một bên thông báo mà không đạt được thoả thuận, tranh chấp sẽ được giải quyết tại toà án có thẩm quyền tại Việt Nam.",
+          "Nếu một điều khoản bất kỳ bị coi là vô hiệu hoặc không thể thi hành, các điều khoản còn lại vẫn giữ nguyên hiệu lực."
+        ]
+      },
+      {
+        "heading": "13. Liên hệ",
+        "body": ["Mọi câu hỏi về các điều khoản này, xin gửi tới support@li2.ai."]
+      }
+    ]
+  },
+  "support": {
+    "title": "Hỗ trợ",
+    "updated": "Cập nhật lần cuối: 21/10/2026",
+    "intro": "Trang này cho biết cách liên hệ với đội hỗ trợ Li2, những việc chúng tôi hỗ trợ được, và cách báo cáo một trang nội dung hoặc short link vi phạm.",
+    "sections": [
+      {
+        "heading": "1. Cách liên hệ",
+        "body": [
+          "Gửi email tới support@li2.ai. Đây là kênh hỗ trợ chính thức duy nhất.",
+          "Để chúng tôi xử lý nhanh, xin nêu rõ email đăng nhập, tên tổ chức, đường dẫn hoặc short link liên quan, các bước dẫn tới lỗi và thời điểm xảy ra. Ảnh chụp màn hình rất hữu ích."
+        ]
+      },
+      {
+        "heading": "2. Phạm vi hỗ trợ",
+        "body": [
+          "Chúng tôi hỗ trợ: sự cố đăng nhập và tài khoản, short link và mã QR không hoạt động, trang nội dung do Li2 lưu trữ, số liệu phân tích hiển thị sai, hạn mức và gói dịch vụ, truy cập qua API và qua trợ lý AI.",
+          "Chúng tôi không hỗ trợ: thiết kế hay viết nội dung thay bạn, cấu hình hệ thống bên thứ ba không thuộc Li2, và tư vấn pháp lý."
+        ]
+      },
+      {
+        "heading": "3. Thời gian phản hồi dự kiến",
+        "body": [
+          "Chúng tôi trả lời email trong giờ làm việc (giờ Việt Nam, từ thứ Hai đến thứ Sáu). Yêu cầu gửi ngoài giờ làm việc hoặc vào ngày lễ sẽ được xử lý trong ngày làm việc tiếp theo.",
+          "Đây là thời gian phản hồi dự kiến, không phải cam kết mức dịch vụ. Nếu bạn cần một cam kết về thời gian phản hồi, xin liên hệ qua email để trao đổi riêng."
+        ]
+      },
+      {
+        "heading": "4. Tài liệu",
+        "body": [
+          "Hướng dẫn sử dụng và tài liệu API nằm tại https://docs.li2.ai. Phần lớn câu hỏi về cách dùng đã có câu trả lời ở đó."
+        ]
+      },
+      {
+        "heading": "5. Báo cáo lạm dụng",
+        "body": [
+          "Nếu bạn gặp một short link, mã QR hoặc trang nội dung do Li2 lưu trữ có dấu hiệu lừa đảo, phát tán mã độc, mạo danh, spam hoặc vi phạm pháp luật, xin gửi email tới support@li2.ai với tiêu đề bắt đầu bằng \"Báo cáo lạm dụng\".",
+          "Xin kèm đầy đủ URL vi phạm (dán nguyên văn, không rút gọn lại), mô tả ngắn vấn đề và thời điểm bạn nhìn thấy. Nếu có ảnh chụp màn hình thì càng tốt.",
+          "Chúng tôi xem xét mọi báo cáo và có thể vô hiệu hoá nội dung hoặc đình chỉ tài khoản liên quan theo mục \"Nội dung và hành vi bị cấm\" trong Điều khoản sử dụng."
+        ]
+      },
+      {
+        "heading": "6. Chính sách và điều khoản",
+        "body": ["Chính sách bảo mật: /privacy. Điều khoản sử dụng: /terms."]
+      }
+    ]
+  }
+}

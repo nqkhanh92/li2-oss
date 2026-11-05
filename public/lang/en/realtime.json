@@ -1,0 +1,45 @@
+{
+  "loading": "Loading realtime data...",
+  "last_24_hours": "Last 24 hours",
+  "time_window": {
+    "h24": "24h",
+    "d3": "3 days",
+    "d7": "7 days"
+  },
+  "visualization_layers": "Visualization Layers",
+  "country_outlines": "Country Outlines",
+  "interaction_clusters": "Activity Clusters",
+  "taller_hexagons": "Taller hexagons = More Activities",
+  "recent_interactions": "Recent Activities",
+  "interactions_count": "{{count}} activities in the last {{window}}",
+  "no_interactions": "No activities yet",
+  "page_title": "Recent Link Activity",
+  "auto_update": "Live",
+  "auto_update_description": "Updates every 10 seconds",
+  "hero": {
+    "active_now": "Active Now",
+    "engagements_1hr": "Engagements (1h)",
+    "engagements_24hr": "Engagements (24h)",
+    "top_channel": "Top Channel"
+  },
+  "top_links": {
+    "title": "Top Links",
+    "empty_title": "No activity",
+    "empty_description": "No engagements in this time window"
+  },
+  "channel_breakdown": {
+    "title": "Channels"
+  },
+  "feed": {
+    "title": "Recent Activity"
+  },
+  "table": {
+    "headers": {
+      "linkName": "Link name",
+      "action": "Action",
+      "country": "Country",
+      "platform": "Platform",
+      "time": "Time"
+    }
+  }
+}

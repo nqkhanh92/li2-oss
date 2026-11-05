@@ -1,0 +1,53 @@
+{
+  "loading": {
+    "title": "Loading Invitation",
+    "description": "Please wait while we verify your invitation..."
+  },
+  "header": {
+    "invited_to_join": "You've been invited to join"
+  },
+  "inviter": {
+    "label": "Invited by:"
+  },
+  "description": {
+    "join_benefits": "Joining this organization will grant you access to shared resources, projects, and communication channels."
+  },
+  "auth_required": {
+    "title": "Authentication Required",
+    "description": "You need to sign in to accept this invitation."
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "sign_in": "Sign In",
+    "decline": "Decline",
+    "accept": "Accept",
+    "return_home": "Return to Home",
+    "go_to_organization": "Go to this organization"
+  },
+  "status": {
+    "accepted": {
+      "title": "Invitation Accepted",
+      "description": "You have successfully joined {{orgName}}. You will be redirected to the dashboard shortly."
+    },
+    "expired": {
+      "title": "Invitation Expired",
+      "description": "This invitation link has expired. Invitation links are valid for 7 days."
+    },
+    "invalid": {
+      "title": "Invalid Invitation",
+      "description": "This invitation link is invalid or has been revoked by the organization admin."
+    },
+    "declined": {
+      "title": "Invitation Declined",
+      "description": "You have declined this invitation. It will be removed when the invitation expires."
+    },
+    "forbidden": {
+      "title": "Invalid Invitation",
+      "description": "This invitation is not for you. Please contact the organization admin."
+    }
+  },
+  "error_help": "If you believe this is a mistake, please contact your organization administrator to request a new invitation.",
+  "footer": {
+    "copyright": "© {{year}} {{appName}}. All rights reserved."
+  }
+}

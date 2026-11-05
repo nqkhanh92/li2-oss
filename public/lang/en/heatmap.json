@@ -1,0 +1,145 @@
+{
+  "tabs": {
+    "click": "Click Heatmap",
+    "scroll": "Scroll Heatmap"
+  },
+  "stats": {
+    "totalClicks": "Total Clicks",
+    "uniqueVisitors": "Unique Visitors",
+    "totalSessions": "Total Sessions",
+    "reachedBottom": "Reached Bottom (100%)"
+  },
+  "empty": {
+    "selectPage": "Select a page to view its heatmap",
+    "selectPageDesc": "Choose a page from the dropdown above to see where visitors click.",
+    "noClickData": "No click data for this period",
+    "noClickDataDesc": "Try selecting a different date range or device type.",
+    "selectPageScroll": "Select a page to view scroll depth",
+    "selectPageScrollDesc": "Choose a page from the dropdown above to see how far visitors scroll.",
+    "noScrollData": "No scroll data for this period",
+    "noScrollDataDesc": "Try selecting a different date range or device type."
+  },
+  "controls": {
+    "selectDateRange": "Select date range",
+    "all": "All",
+    "desktop": "Desktop",
+    "tablet": "Tablet",
+    "mobile": "Mobile",
+    "heatmap": "Heatmap",
+    "clickmap": "Clickmap",
+    "viewOnSite": "View on site",
+    "tagEventsOnSite": "Tag Events on Site",
+    "overlayOpacity": "Overlay opacity"
+  },
+  "filter": {
+    "filteredByLink": "Filtered by link",
+    "linkFilter": "Link: {{name}}"
+  },
+  "elements": {
+    "noData": "No element data available.",
+    "clicks": "clicks",
+    "createEventRule": "Create event rule",
+    "title": "Top Clicked Elements"
+  },
+  "rageClicks": {
+    "title": "Rage Clicks",
+    "noData": "No rage clicks detected in this period.",
+    "clicks": "clicks",
+    "session_one": "{{count}} session",
+    "session_other": "{{count}} sessions"
+  },
+  "sidebar": {
+    "pages": "PAGES",
+    "pagesCount": "{{count}} pages",
+    "expandTree": "Expand page tree",
+    "collapseSidebar": "Collapse sidebar",
+    "searchPages": "Search pages...",
+    "loading": "Loading pages...",
+    "noData": "No page data for this period.",
+    "noDataDesc": "Adjust the date range or check that the SDK is installed.",
+    "no_recent_tooltip": "No activity in the last 3 days. Check that the tracking script is installed on this page.",
+    "mode_top": "Top",
+    "mode_recent": "Recent",
+    "mode_tree": "Tree",
+    "all_domains": "All domains",
+    "switch_domain": "Switch domain…",
+    "search_in": "Search {{host}}…",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "expand_all": "Expand all",
+    "collapse_all": "Collapse all",
+    "view_all": "View all {{count}} pages in {{host}}",
+    "more_count": "… {{count}} more",
+    "show_less": "Show less",
+    "showing_all": "Showing all {{count}} pages",
+    "no_matches": "No pages match your search.",
+    "interactions_count": "{{count}} interactions",
+    "range_hint": "Counts reflect this date range",
+    "page_cap": "top {{count}}",
+    "page_cap_tooltip": "Showing the {{count}} most active pages for this range. Lower-traffic pages may be omitted.",
+    "legend_title": "Legend",
+    "legend_recent": "Recent — active in the last 3 days",
+    "legend_hot": "Hot — top 10% by interactions",
+    "legend_bar": "Bar length = share of interactions in the domain"
+  },
+  "scrollStats": {
+    "title": "Scroll Depth Breakdown",
+    "scrollDepth": "Scroll Depth",
+    "usersReached": "Users Reached",
+    "percentOfVisitors": "% of Visitors",
+    "avgTimeInZone": "Avg. Time in Zone",
+    "reachedBottom": "Reached Bottom (100%)"
+  },
+  "canvas": {
+    "pagePreviewUnavailable": "Page preview unavailable",
+    "iframeBlocked": "— this site restricts iframe embedding. Heatmap coordinates are still accurate.",
+    "viewOnSiteButton": "View on site",
+    "noHostname": "Page preview unavailable. Configure a hostname in Analytics Settings to enable preview.",
+    "loadingPreview": "Loading page preview...",
+    "viewForAccuracy": "View on site for pixel-perfect accuracy"
+  },
+  "createEvent": {
+    "title": "Create Event Rule",
+    "description": "Assign an event name to this element. Events will be generated retroactively for the last 30 days of click data."
+  },
+  "demo": {
+    "badge": "Pro Feature",
+    "demoNotice": "This is a sample heatmap with demo data.",
+    "getStarted": { "cta": "Continue" },
+    "hero": {
+      "title": "See Exactly Where Visitors Click & Scroll",
+      "desc": "Heatmap Analytics overlays real visitor behavior on your pages so you can optimize layouts, CTAs, and content placement."
+    },
+    "features": {
+      "clickMap": {
+        "title": "Click Heatmap",
+        "desc": "Visualize where visitors click most on any page with color-coded density maps."
+      },
+      "scrollMap": {
+        "title": "Scroll Heatmap",
+        "desc": "See how far visitors scroll and where they lose interest on your pages."
+      },
+      "rageClicks": {
+        "title": "Rage Click Detection",
+        "desc": "Identify frustrating UI elements that users repeatedly click expecting a response."
+      },
+      "elementStats": {
+        "title": "Element-level Stats",
+        "desc": "Get click counts and interaction rates for every element on the page."
+      }
+    }
+  },
+  "elementOverlay": {
+    "clickElement": "Click Element",
+    "rageClickElement": "Rage Click Element",
+    "clicks": "Clicks",
+    "shareOfTotal": "Share of total",
+    "rank": "Rank",
+    "rageClicks": "Rage clicks",
+    "affectedSessions": "Affected sessions"
+  },
+  "plan_upgrade": {
+    "title": "Heatmap is not available on your plan",
+    "description": "Upgrade your plan to visualize where visitors click and how far they scroll on your pages."
+  }
+}

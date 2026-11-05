@@ -1,0 +1,237 @@
+{
+  "page": {
+    "subtitle": "Track user journeys and find where visitors drop off."
+  },
+  "list": {
+    "tableHeader": {
+      "name": "Name",
+      "totalEntered": "Total Entered",
+      "conversions": "Conversions",
+      "dropOff": "Drop-off",
+      "cvr": "CVR",
+      "action": "Action",
+      "search": "Search funnels..."
+    },
+    "noFunnels": "No funnels yet",
+    "noFunnelsDesc": "Create your first funnel to track visitor journeys on your website.",
+    "createFunnel": "Create Funnel",
+    "newFunnel": "New Funnel",
+    "deleteTitle": "Delete Funnel",
+    "deleteDesc": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "card": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "step_one": "{{count}} step",
+    "step_other": "{{count}} steps",
+    "report": "Report",
+    "edit": "Edit"
+  },
+  "form": {
+    "namePlaceholder": "e.g. Purchase Flow",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe what this funnel tracks",
+    "steps": "Funnel Steps ({{count}})",
+    "addStep": "Add Step",
+    "saveFunnel": "Save Funnel",
+    "createFunnel": "Create Funnel",
+    "updateFunnel": "Update Funnel",
+    "cancel": "Cancel",
+    "step": "Step {{index}}",
+    "stepName": "Step Name *",
+    "stepNamePlaceholder": "e.g. Product Page",
+    "compare": "Compare",
+    "condition": "Condition",
+    "requiredStep": "Required step",
+    "firstStepRequired": "The first step must be required — it defines who enters this funnel.",
+    "lastStepRequired": "The last step must be required — it is the conversion goal.",
+    "requiredVsOptional": "Required vs Optional",
+    "requiredDetail": "Required: Funnel waits for this step across all pageviews. Sessions that never reach it are counted as drop-offs.",
+    "optionalDetail": "Optional: If not matched immediately, this step is skipped and the funnel continues. Use for steps that only some users take.",
+    "sourceAlert": "Building funnel for traffic from a specific link. Step 1 has been pre-filled — add more steps to track the conversion path.",
+    "noEventMatch": "No events match this name yet. Ensure an Event Rule or trackEvent() call produces \"{{name}}\".",
+    "eventRulePaused": "Event rule \"{{name}}\" is paused. Enable it in Event Rules to resume tracking.",
+    "separateWithCommas": "Separate multiple values with commas",
+    "lead": "Lead",
+    "sale": "Sale",
+    "patternTypes": {
+      "page_path": "Page Path",
+      "page_path_help": "Match against the URL path (e.g. /products/shoes)",
+      "page_url": "Page URL",
+      "page_url_help": "Match against the full URL including domain",
+      "page_title": "Page Title",
+      "page_title_help": "Match against the page title (document.title)",
+      "event": "Event",
+      "event_help": "Match against custom event names tracked by your SDK",
+      "search_query": "Search Query",
+      "search_query_help": "Match against URL query parameters",
+      "link": "Link",
+      "link_help": "Match visitors who came from a specific short link",
+      "conversion": "Conversion",
+      "conversion_help": "Match visitors who completed a lead or sale conversion"
+    },
+    "conditions": {
+      "contains": "Contains",
+      "equals": "Equals",
+      "starts_with": "Starts with",
+      "ends_with": "Ends with",
+      "matches_regex": "Matches regex",
+      "in": "Is one of"
+    },
+    "conditionLabels": {
+      "contains": "contains",
+      "equals": "equals",
+      "starts_with": "starts with",
+      "ends_with": "ends with",
+      "matches_regex": "matches regex"
+    },
+    "patternInputs": {
+      "pattern": "Pattern",
+      "patternPlaceholder": "e.g. /products",
+      "pageUrlPlaceholder": "e.g. https://example.com/products",
+      "pageTitlePlaceholder": "e.g. Pricing Page",
+      "eventNameLabel": "Event name",
+      "eventNamePlaceholder": "e.g. signup_click",
+      "searchQueryPlaceholder": "e.g. utm_source=google",
+      "touchPointLabel": "Touch Point",
+      "touchPointPlaceholder": "Select a link...",
+      "conversionTypeLabel": "Conversion Type",
+      "conversionTypePlaceholder": "Select type...",
+      "conversionEventNameLabel": "Event Name",
+      "conversionEventNamePlaceholder": "All event names (optional)",
+      "conversionEventNameAll": "All event names"
+    }
+  },
+  "report": {
+    "selectDateRange": "Select date range",
+    "funnelSteps": "Funnel Steps",
+    "stepDetails": "Step Details",
+    "stateNoVisitors": "No visitor data yet. This could mean no visitors have arrived, or your tracking setup needs attention.",
+    "stateNoVisitorsCta": "Verify Installation",
+    "stateProcessing": "Your funnel data is being processed. This usually takes a few minutes.",
+    "stateNoMatches": "No matching sessions found yet. Your funnel data updates daily overnight — if your steps look correct, new results will appear as visitors complete the funnel.",
+    "eventStepsWarning": "This funnel includes Event steps — make sure matching Event Rules or trackEvent() calls are active.",
+    "noStepsConfigured": "No steps configured"
+  },
+  "summary": {
+    "totalEntries": "Total Entries",
+    "conversions": "Conversions",
+    "conversionRate": "Conversion Rate"
+  },
+  "dropOff": {
+    "title": "Biggest Drop-off",
+    "low": "Low",
+    "moderate": "Moderate",
+    "critical": "Critical",
+    "droppedOff": "{{num}} visitors dropped off ({{rate}}%)"
+  },
+  "table": {
+    "step": "Step",
+    "name": "Name",
+    "visits": "Visits",
+    "entries": "Entries",
+    "proceeds": "Proceeds",
+    "dropOff": "Drop-off",
+    "rate": "Rate"
+  },
+  "visitors": {
+    "stepTitle": "Step {{position}}: {{name}}",
+    "visitorsReached_one": "{{count}} visitor reached this step",
+    "visitorsReached_other": "{{count}} visitors reached this step",
+    "all": "All",
+    "proceeded": "Proceeded",
+    "droppedOff": "Dropped off",
+    "noVisitors": "No visitors found",
+    "tryDifferentFilter": "Try a different filter",
+    "noSessionsPeriod": "No sessions reached this step in the selected period",
+    "visitor": "Visitor",
+    "progress": "Progress",
+    "device": "Device",
+    "location": "Location",
+    "time": "Time",
+    "pagination": "Page {{page}} of {{total}} ({{count}} total)",
+    "done": "Done",
+    "drop": "Drop"
+  },
+  "mainCard": {
+    "entries": "entries",
+    "conversions": "conversions",
+    "dropped": "dropped",
+    "scrollHint": "Scroll to see more"
+  },
+  "chart": {
+    "visits": "Visits",
+    "funnelConversion": "Funnel Conversion",
+    "dropOff": "Drop-off",
+    "noSessionsReached": "No sessions reached this step in the selected period.",
+    "noEventFound": "No event rule named \"{{pattern}}\" exists.",
+    "createEventRuleHint": "or call trackEvent('{{pattern}}') in your SDK.",
+    "eventRule": "Create an Event Rule",
+    "eventRulePaused": "Event rule \"{{pattern}}\" is paused.",
+    "eventRuleEnableHint": "Enable it in Event Rules to start tracking.",
+    "eventActiveNoMatches": "Event rule \"{{pattern}}\" is active but hasn't detected any matches yet. Allow time for visitors to trigger it.",
+    "eventRulePausedHistorical": "This event rule is paused — only showing historical data."
+  },
+  "visitorDetail": {
+    "backToVisitors": "Back to visitors",
+    "sessionNotFound": "Session not found",
+    "sessionSummary": "Session Summary",
+    "browser": "Browser",
+    "device": "Device",
+    "location": "Location",
+    "source": "Source",
+    "direct": "Direct",
+    "started": "Started",
+    "duration": "Duration",
+    "pagesViewed": "Pages viewed",
+    "entryPage": "Entry page",
+    "exitPage": "Exit page",
+    "funnelProgress": "Funnel progress",
+    "stepsOf": "{{matched}} of {{total}} steps",
+    "noFunnelSteps": "No funnel steps",
+    "completed": "Completed",
+    "dropped": "Dropped",
+    "pageJourney": "Page Journey",
+    "noPageviews": "No pageviews recorded for this session.",
+    "exit": "Exit",
+    "entry": "Entry",
+    "droppedBefore": "Dropped before Step {{position}}: {{name}}",
+    "sessionLabel": "Session:",
+    "visitorLabel": "Visitor:",
+    "stepBadge": "Step {{position}}",
+    "matched": "Matched:"
+  },
+  "demo": {
+    "badge": "Pro Feature",
+    "demoNotice": "This is a sample report with demo data.",
+    "getStarted": { "cta": "Continue" },
+    "hero": {
+      "title": "Understand How Visitors Convert",
+      "desc": "Funnel Analytics lets you map every step of your visitor journey, find where people drop off, and optimize for more conversions."
+    },
+    "features": {
+      "trackJourney": {
+        "title": "Track Visitor Journeys",
+        "desc": "See exactly how visitors move through your pages from entry to conversion."
+      },
+      "findDropOff": {
+        "title": "Find Drop-off Points",
+        "desc": "Identify which steps lose the most visitors and fix them first."
+      },
+      "visitorDrilldown": {
+        "title": "Visitor Drill-down",
+        "desc": "Click any funnel step to see the list of real visitors who reached or dropped off at that step."
+      },
+      "multiStep": {
+        "title": "Multi-step Funnels",
+        "desc": "Build funnels with any number of steps using page URLs or custom events."
+      }
+    }
+  },
+  "plan_upgrade": {
+    "title": "Funnels is not available on your plan",
+    "description": "Upgrade your plan to track visitor journeys and visualize conversion funnels."
+  }
+}

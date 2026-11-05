@@ -1,0 +1,55 @@
+{
+  "form": {
+    "name": "Touchpoint Name",
+    "destination_url": "Destination URL",
+    "description": "Description",
+    "tag": "Tag: (Optional)",
+    "link_description": "Link is the default channel automatically created and cannot be disabled",
+    "qr_description": "Generate a QR Code you can share anywhere. You can customize the QR Code in the details section after creation.",
+    "short_link": {
+      "label": "Short Link (Optional)",
+      "domain": "Domain",
+      "back_half": "Back Half"
+    },
+    "interaction_channel": {
+      "label": "Integration Channel",
+      "description": "Select an engagement channel to share where people can see it"
+    }
+  },
+  "advanced_form": {
+    "parcevoy": {
+      "label": "Parcelvoy",
+      "description": "Connect your account to Parcelvoy to enable email marketing features like subscriber sync, automated campaign triggers, and email activity tracking."
+    },
+    "meta_tags": {
+      "label": "Meta Tags",
+      "description": "Customize how your link appears when shared on social media or embedded on other platforms. Set the title, description, and image shown in the preview.",
+      "image": "Image",
+      "title": "Title",
+      "choose_file": "Choose Files",
+      "title_placeholder": "Write your title here",
+      "description_field": "Description",
+      "description_placeholder": "Write a short description",
+      "app_desc": "$t(common:appName) is a proximity marketing platform that helps businesses to connect with their customers in real-time.",
+      "full_example_allow_utm": "Nếu liên kết ngắn được truy cập bằng các tham số UTM trong URL (ví dụ: https://short.link/L4EW1K?utm_source=new_campaign), ứng dụng của bạn sẽ sử dụng các tham số mới này để chuyển hướng, ghi đè lên các tham số được lưu trữ cho liên kết cụ thể đó."
+    },
+    "utm_tags": {
+      "label": "UTM Parameters",
+      "description": "Track how users access your destination URL by adding UTM tags for marketing analytics.",
+      "allow_utm_overwrite": "Allow UTM Overwrite",
+      "allow_utm_overwrite_description": "When allowed, UTM parameters in the shortlink URL will override the stored ones.",
+      "redirect_example": "Redirect Example",
+      "when_a_user_visits": "When a user visits",
+      "they_will_be_redirected_to": "They will be redirected to",
+      "full_example_allow_utm": "If the short link is visited with UTM parameters in the URL (e.g., https://short.link/L4EW1K?utm_source=new_campaign), your application will use these new parameters to redirect, overriding the stored parameters for the specific link.",
+      "ga4_id_gtm_id_feature_is_enabled": "GA4 ID/ GTM ID feature is enabled",
+      "ga4_id_gtm_id_feature_is_enabled_description": "When this feature enabled, the UTM parameters will be sent to the specified GA4 or GTM ID instead of being sent to the destination URL."
+    },
+    "lockable": {
+      "label": "Upgrade to Premium"
+    },
+    "utm_shortlink_builder": {
+      "label": "UTM Shortlink Builder"
+    }
+  }
+}

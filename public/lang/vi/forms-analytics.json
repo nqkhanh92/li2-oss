@@ -1,0 +1,69 @@
+{
+  "page": {
+    "title": "Form Analytics",
+    "selectDateRange": "Chọn khoảng thời gian"
+  },
+  "kpi": {
+    "totalFills": "Tổng Fills",
+    "totalFillsSub": "lượt chạm form duy nhất",
+    "totalSubmits": "Tổng Submits",
+    "totalSubmitsSub": "lần gửi thành công",
+    "avgCompletionRate": "Tỷ lệ hoàn thành TB",
+    "avgCompletionRateSub": "fills → submits",
+    "avgTimeOnForm": "Thời gian TB trên Form",
+    "avgTimeOnFormSub": "qua tất cả lần gửi",
+    "bestPerformingForm": "Form hoạt động tốt nhất",
+    "bestPerformingFormSub": "{{pct}}% hoàn thành"
+  },
+  "chart": {
+    "completionTrend": "Xu hướng tỷ lệ hoàn thành",
+    "fills": "Fills",
+    "submits": "Submits",
+    "completionLabel": "{{value}} ({{pct}} hoàn thành)"
+  },
+  "table": {
+    "title": "Hiệu suất Form",
+    "form": "Form",
+    "page": "Trang",
+    "fills": "Fills",
+    "submits": "Submits",
+    "completionPct": "% Hoàn thành",
+    "avgTime": "Thời gian TB",
+    "noData": "Không có dữ liệu form trong khoảng thời gian này"
+  },
+  "detail": {
+    "conversionFunnel": "Phễu chuyển đổi",
+    "fills": "Fills",
+    "submits": "Submits",
+    "completed": "{{pct}}% hoàn thành",
+    "droppedOff": "{{pct}}% đã thoát",
+    "avgTimeOnForm": "Thời gian TB trên Form",
+    "dailyTrend": "Xu hướng hàng ngày",
+    "fastCompletion": "Hoàn thành nhanh",
+    "normal": "Bình thường",
+    "struggling": "⚠ Người dùng có thể đang gặp khó khăn",
+    "highFriction": "🔴 Nhiều ma sát — xem lại độ dài form",
+    "unknownForm": "Unknown Form"
+  },
+  "demo": {
+    "badge": "Tính năng Pro",
+    "demoNotice": "Đây là báo cáo mẫu với dữ liệu demo.",
+    "getStarted": {
+      "cta": "Tiếp tục"
+    },
+    "hero": {
+      "title": "Hiểu cách khách truy cập tương tác với form của bạn",
+      "desc": "Form Analytics theo dõi mọi lượt điền, gửi và thoát để bạn giảm ma sát và cải thiện tỷ lệ hoàn thành."
+    },
+    "features": {
+      "trackFills": { "title": "Theo dõi lượt điền form", "desc": "Xem bao nhiêu khách truy cập bắt đầu điền từng form trên trang." },
+      "avgTime": { "title": "Thời gian TB trên Form", "desc": "Đo thời gian khách truy cập dành cho form để phát hiện vấn đề phức tạp." },
+      "completionRate": { "title": "Tỷ lệ hoàn thành", "desc": "Theo dõi tỷ lệ khách truy cập gửi thành công từng form." },
+      "dropOff": { "title": "Phân tích thoát", "desc": "Xác định form nào có tỷ lệ bỏ dở cao nhất và hiểu lý do tại sao." }
+    }
+  },
+  "plan_upgrade": {
+    "title": "Form Analytics không có trong gói hiện tại của bạn",
+    "description": "Nâng cấp gói để phân tích tương tác form và theo dõi mức độ tương tác từng trường trên trang của bạn."
+  }
+}

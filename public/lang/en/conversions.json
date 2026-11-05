@@ -1,0 +1,121 @@
+{
+  "tabs": {
+    "events": "Events",
+    "customers": "Customers"
+  },
+  "stats": {
+    "totalLeads": "Total Leads",
+    "totalCustomers": "Total Customers",
+    "totalSales": "Total Sales",
+    "totalRevenue": "Total Revenue"
+  },
+  "funnel": {
+    "title": "Conversion Funnel",
+    "description": "Track your conversion journey from clicks to sales",
+    "filters": "Funnel Filters",
+    "selectDateRange": "Select date range",
+    "allTouchPoints": "All Links",
+    "overall": "Overall",
+    "visits": "Visits",
+    "leads": "Leads",
+    "sales": "Sales",
+    "clicksToLeads": "Clicks → Leads",
+    "leadsToSales": "Leads → Sales",
+    "noData": "No conversion data available for the selected filters",
+    "visits.botExcludedTooltip": "Bot traffic is excluded",
+    "percentage": {
+      "baseline": "Baseline (100%)",
+      "ofVisits": "{{percentage}}% of total visits"
+    },
+    "visitsToSales": "Visits → Sales",
+    "rates": {
+      "visitsToLeadsTooltip": "Percentage of visits that became leads",
+      "leadsToSalesTooltip": "Percentage of leads that became sales",
+      "overallTooltip": "End-to-end conversion: {{v2l}}% × {{l2s}}% = {{overall}}%"
+    },
+    "attributed": "Attributed",
+    "direct": "Direct"
+  },
+  "attribution": {
+    "title": "Top Performance",
+    "leads": "Leads",
+    "sales": "Sales",
+    "cvr": "CVR",
+    "revenue": "Revenue",
+    "topPerformer": "Top Performer",
+    "aboveAverage": "Above Average",
+    "belowAverage": "Below Average",
+    "direct": "Direct",
+    "direct_description": "Conversions without a tracked link"
+  },
+  "events": {
+    "title": "Conversion Events",
+    "searchPlaceholder": "Search by email or name...",
+    "columns": {
+      "eventName": "Event Name",
+      "customer": "Customer",
+      "touchPoint": "Link",
+      "type": "Type",
+      "amount": "Amount",
+      "createdAt": "Created At",
+      "sourceLead": "Source Lead"
+    },
+    "empty": "No conversion events found",
+    "anonymous": "Anonymous",
+    "fromLead": "from \"{{leadName}}\"",
+    "direct": "Direct",
+    "directDescription": "Not via short link"
+  },
+  "customers": {
+    "title": "Customer Profiles",
+    "searchPlaceholder": "Search by email or name...",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "leadCount": "Leads",
+      "firstTouchPoint": "First Link",
+      "createdAt": "Created At"
+    },
+    "empty": "No customer profiles found"
+  },
+  "pagination": {
+    "showing": "Showing {{from}} to {{to}} of {{total}}"
+  },
+  "plan_upgrade": {
+    "title": "Conversion Tracking is not available on your plan",
+    "description": "Upgrade your plan to track leads, sales, and attribute conversions to your links."
+  },
+  "filters": {
+    "eventName": {
+      "all": "All events"
+    }
+  },
+  "demo": {
+    "badge": "Pro Feature",
+    "demoNotice": "This is a sample report with demo data.",
+    "getStarted": { "cta": "Continue" },
+    "hero": {
+      "title": "Track Every Lead, Sale & Revenue",
+      "desc": "Conversion Tracking connects your links to real business outcomes — see who converted, from which link, and how much revenue each link drives."
+    },
+    "features": {
+      "trackConversions": {
+        "title": "Track Leads & Sales",
+        "desc": "Automatically capture every lead form submission and purchase event tied to your short links."
+      },
+      "funnelView": {
+        "title": "Visualize Your Funnel",
+        "desc": "See the full journey from clicks to leads to sales with step-by-step conversion rates."
+      },
+      "attribution": {
+        "title": "Link Attribution",
+        "desc": "Know exactly which links and campaigns are driving the most leads and revenue."
+      },
+      "revenue": {
+        "title": "Revenue Per Link",
+        "desc": "Track sale amounts and total revenue attributed to each link or campaign."
+      }
+    }
+  }
+}

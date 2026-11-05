@@ -1,0 +1,34 @@
+{
+  "tag_list": {
+    "label": "Tag List",
+    "table_header_filter": {
+      "create_button": "Create Tag",
+      "search_label": "Search",
+      "created_date": "Created Date",
+      "cancel_button": "Cancel",
+      "create_dialog_title": "Create Tag",
+      "tag": "Tag"
+    }
+  },
+  "tag_create": {
+    "label": "Create Tag",
+    "form": {
+      "name": "Tag Name",
+      "color": "Color",
+      "description": "Description"
+    }
+  },
+  "tag_edit": {
+    "label": "Tag Info",
+    "form": {
+      "name": "Tag Name",
+      "color": "Color",
+      "description": "Description"
+    },
+    "delete_dialog_title": "You’re about to delete a Tag",
+    "delete_dialog": "This action cannot be undone. Are you sure?",
+    "save_button": "Save Changes",
+    "delete_button": "Delete Tag",
+    "cancel_button": "Cancel"
+  }
+}

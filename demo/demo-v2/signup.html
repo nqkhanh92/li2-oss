@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SpeedNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/li2-analytics.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent">
+                ⚡ SpeedNet
+            </a>
+        </div>
+    </nav>
+
+    <div class="flex-grow flex items-center justify-center px-6 py-12">
+        <div class="max-w-md w-full bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-3xl p-10 shadow-2xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold mb-2">Create Account</h2>
+                <p class="text-gray-400">Join the fastest network today</p>
+            </div>
+
+            <form id="signupForm" class="space-y-5">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">First Name</label>
+                        <input type="text" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="Jane">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Last Name</label>
+                        <input type="text" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="Doe">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+                    <input type="email" id="signupEmail" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="jane@example.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Password</label>
+                    <input type="password" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors" placeholder="••••••••">
+                </div>
+                <div class="text-xs text-gray-500 leading-relaxed">
+                    By signing up, you agree to our <a href="#" class="text-purple-500 hover:underline">Terms of Service</a> and <a href="#" class="text-purple-500 hover:underline">Privacy Policy</a>.
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/20 transition-all active:scale-[0.98]">
+                    Create Account
+                </button>
+            </form>
+
+            <div id="successMessage" class="hidden mt-6 p-4 bg-emerald-500/10 border border-emerald-500/50 rounded-xl text-emerald-500 text-center">
+                <p class="font-bold">Account created!</p>
+                <p class="text-sm">Welcome to SpeedNet. Redirecting...</p>
+            </div>
+
+            <p class="mt-8 text-center text-gray-500 text-sm">
+                Already have an account? <a href="signin.html" class="text-purple-500 hover:text-purple-400 font-medium">Sign in instead</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('signupEmail').value;
+
+            // Trigger li2 conversion if available
+            if (window.li2Analytics && typeof window.li2Analytics.trackLead === 'function') {
+                window.li2Analytics.trackLead({
+                    email: email,
+                    first_name: e.target.querySelector('input[placeholder="Jane"]').value,
+                    last_name: e.target.querySelector('input[placeholder="Doe"]').value,
+                    source: 'signup_page'
+                });
+            }
+
+            // Show success message
+            this.classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

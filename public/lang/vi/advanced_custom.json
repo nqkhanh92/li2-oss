@@ -1,0 +1,54 @@
+{
+  "form": {
+    "name": "Tên Touchpoint",
+    "destination_url": "URL đích",
+    "description": "Mô tả",
+    "tag": "Tag: (Tùy chọn)",
+    "link_description": "Link rút gọn là kênh mặc định được tự động tạo và không thể tắt",
+    "qr_description": "Tạo Mã QR mà bạn có thể chia sẻ ở bất cứ đâu.Bạn có thể tùy chỉnh Mã QR trong phần chi tiết sau khi tạo xong.",
+    "short_link": {
+      "label": "Link rút gọn (Tùy chọn)",
+      "domain": "Tên miền",
+      "back_half": "Đuôi liên kết"
+    },
+    "interaction_channel": {
+      "label": "Kênh tích hợp",
+      "description": "Chọn kênh tương tác để chia sẻ ở nơi mọi người có thể nhìn thấy"
+    }
+  },
+  "advanced_form": {
+    "parcevoy": {
+      "label": "Parcelvoy",
+      "description": "Kết nối tài khoản của bạn với Parcelvoy để kích hoạt các tính năng tiếp thị qua email như đồng bộ hóa người đăng ký, kích hoạt chiến dịch tự động và theo dõi hoạt động email."
+    },
+    "utm_tags": {
+      "label": "UTM Parameters",
+      "description": "Theo dõi cách mọi người truy cập vào URL đích của bạn bằng cách thêm thẻ UTM để phân tích tiếp thị.",
+      "allow_utm_overwrite": "Cho phép ghi đè UTM",
+      "allow_utm_overwrite_description": "Khi được phép, UTM tham số trong URL rút gọn sẽ ghi đè các tham số đã lưu.",
+      "redirect_example": "Ví dụ về chuyển hướng",
+      "when_a_user_visits": "Khi người dùng truy cập",
+      "they_will_be_redirected_to": "Họ sẽ được chuyển hướng đến",
+      "full_example_allow_utm": "Nếu liên kết ngắn được truy cập bằng các tham số UTM trong URL (ví dụ: https://short.link/L4EW1K?utm_source=new_campaign), ứng dụng của bạn sẽ sử dụng các tham số mới này để chuyển hướng, ghi đè lên các tham số được lưu trữ cho liên kết cụ thể đó.",
+      "ga4_id_gtm_id_feature_is_enabled": "GA4 ID/ GTM ID tính năng được bật",
+      "ga4_id_gtm_id_feature_is_enabled_description": "Khi tính năng này được bật, UTM tham số sẽ được gửi đến GA4 hoặc GTM ID được chỉ định thay vì được gửi đến URL đích."
+    },
+    "meta_tags": {
+      "label": "Meta Tags",
+      "description": "Tùy chỉnh cách liên kết của bạn hiển thị khi được chia sẻ trên mạng xã hội hoặc được nhúng trên các nền tảng khác. Đặt tiêu đề, mô tả và hình ảnh sẽ hiển thị trong bản xem trước.",
+      "image": "Image",
+      "title": "Tiêu đề",
+      "choose_file": "Chọn file",
+      "title_placeholder": "Nhập tiêu đề",
+      "description_field": "Mô tả",
+      "description_placeholder": "Nhập mô tả",
+      "app_desc": "$t(common:appName) là một nền tảng marketing gần gũi giúp doanh nghiệp kết nối với khách hàng của họ trong thời gian thực."
+    },
+    "lockable": {
+      "label": "Nâng cấp lên Premium"
+    },
+    "utm_shortlink_builder": {
+      "label": "Trình tạo liên kết UTM rút gọn"
+    }
+  }
+}

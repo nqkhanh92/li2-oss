@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chuyển 2 hành động vào danh sách chính</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--navy:#000D27;--blue:#4580F7;--ink:#1A2230;--mut:#64748B;
+        --line:#D6DDE6;--bg:#F7F8FA;--bad:#DC2F3E;--warn:#D9890B;--ok:#16A34A}
+  body{font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       color:var(--ink);background:var(--bg)}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 20px 80px}
+  h1{font-size:28px;letter-spacing:-.025em;margin-bottom:5px}
+  h2{font-size:21px;letter-spacing:-.02em;margin:0 0 3px}
+  .sub{color:var(--mut);font-size:13.5px}
+  header{border-bottom:3px solid var(--navy);padding-bottom:16px;margin-bottom:28px}
+  section{margin:42px 0 0}
+  .shead{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;
+         border-bottom:1px solid var(--line);padding-bottom:9px}
+  .snum{width:29px;height:29px;flex:none;border-radius:50%;background:var(--navy);color:#fff;
+        font-size:13.5px;font-weight:600;display:grid;place-items:center}
+  .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);
+       font-weight:650;margin-bottom:9px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+  /* hàng trong danh sách */
+  .row{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);
+       border-radius:9px;padding:11px 13px}
+  .thumb{width:36px;height:36px;flex:none;border-radius:7px;background:#EEF2F7;
+         display:grid;place-items:center;font-size:15px}
+  .rbody{flex:1;min-width:0}
+  .rtitle{font-size:13px;font-weight:550}
+  .rmeta{font-size:11px;color:var(--mut);margin-top:2px;display:flex;gap:9px}
+  .chip{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;white-space:nowrap}
+  .c-pub{background:#FEF0C7;color:#92400E}
+  .c-lock{background:#DCFCE7;color:#15803D}
+  .dots{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);
+        display:grid;place-items:center;font-size:13px;color:var(--mut);background:#fff}
+  .dots.hot{border-color:var(--navy);background:var(--navy);color:#fff}
+
+  /* dropdown mockup */
+  .menu{background:#fff;border:1px solid var(--line);border-radius:10px;padding:5px;
+        box-shadow:0 8px 24px rgba(16,24,40,.12);width:272px}
+  .menu.wide{width:300px}
+  .mi{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;
+      font-size:13px;color:#334155}
+  .mi .ic{width:16px;text-align:center;font-size:13px;flex:none}
+  .mi .arr{margin-left:auto;color:#B6C2D0;font-size:11px}
+  .mi.new{background:#F0F6FF;color:#1D4ED8;font-weight:550;
+          box-shadow:inset 0 0 0 1px #BFDBFE}
+  .mi.dang{color:var(--bad)}
+  .mi.off{opacity:.45}
+  .mi .tag{margin-left:auto;font-size:9.5px;background:var(--blue);color:#fff;
+           padding:1px 6px;border-radius:9px;font-weight:650;letter-spacing:.03em}
+  .msep{height:1px;background:#EDF0F4;margin:4px 6px}
+  .mnote{font-size:10.5px;color:var(--mut);padding:1px 10px 7px 36px;line-height:1.45}
+
+  /* submenu */
+  .sub2{background:#fff;border:1px solid var(--line);border-radius:10px;padding:5px;
+        box-shadow:0 8px 24px rgba(16,24,40,.12);width:286px;margin-left:30px;margin-top:-3px}
+  .sm{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:6px;font-size:12.5px}
+  .sm.on{background:#F1F5F9}
+  .sm .rd{width:14px;height:14px;border-radius:50%;border:2px solid #CBD5E1;flex:none;margin-top:2px}
+  .sm.on .rd{border-color:var(--navy);box-shadow:inset 0 0 0 3px #fff;background:var(--navy)}
+  .sm .tx{flex:1}
+  .sm .t1{font-weight:550;color:#334155}
+  .sm .t2{font-size:10.5px;color:var(--mut);margin-top:1px}
+
+  /* bảng */
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);
+        border-radius:10px;overflow:hidden;font-size:13.5px}
+  th{background:#F3F5F8;padding:9px 12px;text-align:left;font-size:11px;
+     text-transform:uppercase;letter-spacing:.055em;color:#64748B;font-weight:600}
+  td{padding:9px 12px;border-top:1px solid #EDF0F4;vertical-align:top}
+  td code,p code,li code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:11.5px;
+          font-family:ui-monospace,Menlo,monospace}
+  .no{color:var(--bad);font-weight:600}.yes{color:var(--ok);font-weight:600}
+  .mid{color:var(--warn);font-weight:600}
+  .ctr{text-align:center}
+
+  .note{border-left:4px solid var(--navy);background:#fff;border-radius:0 9px 9px 0;
+        padding:13px 16px;margin:15px 0}
+  .note.bad{border-color:var(--bad);background:#FEF4F4}
+  .note.warn{border-color:var(--warn);background:#FFFBEB}
+  .note.ok{border-color:var(--ok);background:#F2FBF5}
+  .note b{font-weight:650}
+
+  .flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:#fff;
+        border:1px solid var(--line);border-radius:9px;padding:12px;margin:8px 0}
+  .step{background:#F1F5F9;border-radius:7px;padding:6px 11px;font-size:12px;white-space:nowrap}
+  .step.hl{background:var(--navy);color:#fff;font-weight:500}
+  .step.cut{background:#FEE;color:var(--bad);text-decoration:line-through;opacity:.6}
+  .arw{color:#B6C2D0;font-size:12px}
+  .cnt{margin-left:auto;font-weight:650;font-size:13px}
+
+  .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:12px;
+         font-weight:650;letter-spacing:.05em;text-transform:uppercase}
+  .b-now{background:#FEE;color:var(--bad)}
+  .b-new{background:#DCFCE7;color:#15803D}
+
+  footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);
+         color:var(--mut);font-size:12.5px}
+  @media(max-width:880px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Chuyển 2 hành động vào danh sách chính</h1>
+  <div class="sub">Việc #1 · 02/11/2026 · mọi menu dưới đây vẽ theo code thật, không phải tưởng tượng</div>
+</header>
+
+<!-- 1. HIỆN TRẠNG -->
+<section>
+  <div class="shead"><div class="snum">1</div><div><h2>Hiện trạng</h2>
+    <div class="sub">Cùng một file, hai menu khác nhau — tuỳ bạn vào từ đâu</div></div></div>
+
+  <div class="two">
+    <div>
+      <div class="lbl">Danh sách chính <span class="badge b-now" style="margin-left:5px">ai cũng vào</span></div>
+      <div class="row" style="margin-bottom:10px">
+        <div class="thumb">📕</div>
+        <div class="rbody"><div class="rtitle">Báo giá tháng 11.pdf</div>
+          <div class="rmeta"><span>lihi.cyb/bao-gia-11</span><span>12 lượt mở</span></div></div>
+        <span class="chip c-pub">Ai có link</span>
+        <div class="dots hot">⋯</div>
+      </div>
+      <div class="menu">
+        <div class="mi"><span class="ic">✏️</span>Sửa</div>
+        <div class="mi"><span class="ic">▦</span>Tải mã QR</div>
+        <div class="msep"></div>
+        <div class="mi dang"><span class="ic">🗑</span>Xoá</div>
+      </div>
+      <div class="note bad" style="margin-top:12px">
+        <b>Thiếu hai việc</b> mà chỉ file mới cần:<br>
+        <span style="font-size:13px">thay nội dung file, và đổi quyền xem.</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="lbl">Trang <code>/artifacts</code>
+        <span class="badge b-now" style="margin-left:5px">0 đường vào</span></div>
+      <div class="row" style="margin-bottom:10px;opacity:.65">
+        <div class="thumb">📕</div>
+        <div class="rbody"><div class="rtitle">Báo giá tháng 11.pdf</div>
+          <div class="rmeta"><span>cùng một file</span></div></div>
+        <span class="chip c-pub">Ai có link</span>
+        <div class="dots hot">⋯</div>
+      </div>
+      <div class="menu">
+        <div class="mi new"><span class="ic">🔄</span>Thay nội dung</div>
+        <div class="mi new"><span class="ic">🌐</span>Mở công khai</div>
+        <div class="msep"></div>
+        <div class="mi dang"><span class="ic">🗑</span>Xoá</div>
+      </div>
+      <div class="note warn" style="margin-top:12px">
+        <b>Hai việc xanh chỉ có ở đây.</b><br>
+        <span style="font-size:13px">Mà trang này không có mục sidebar nào — vào được duy nhất
+        bằng cách gõ URL hoặc bấm từng hàng ở danh sách chính.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note bad">
+    <b>Và menu bên phải có một lỗi riêng: nó chỉ MỞ được, không KHOÁ được.</b>
+    <div class="flow" style="margin:10px 0 4px">
+      <span style="font-size:11.5px;color:var(--mut);width:68px">MỞ công khai</span>
+      <span class="step hl">1 bấm trong menu này</span>
+      <span style="font-size:11.5px;color:var(--bad);margin-left:8px">không hỏi xác nhận</span>
+      <span class="cnt" style="color:var(--bad)">1 bấm</span>
+    </div>
+    <div class="flow" style="margin:4px 0 0">
+      <span style="font-size:11.5px;color:var(--mut);width:68px">KHOÁ lại</span>
+      <span class="step">bấm vào hàng</span><span class="arw">→</span>
+      <span class="step">cuộn qua 3 khối</span><span class="arw">→</span>
+      <span class="step">chọn chế độ</span><span class="arw">→</span>
+      <span class="step">nhập mật khẩu</span><span class="arw">→</span>
+      <span class="step">cuộn lên lưu</span>
+      <span class="cnt" style="color:var(--bad)">5 bấm</span>
+    </div>
+    <div style="font-size:12.5px;color:var(--mut);margin-top:8px">
+      Sản phẩm bán <i>"kiểm soát ai được xem"</i> mà việc mở dễ gấp 5 lần việc khoá.
+      <code>artifact-card.tsx:88</code>
+    </div>
+  </div>
+</section>
+
+<!-- 2. ĐỀ XUẤT -->
+<section>
+  <div class="shead"><div class="snum">2</div><div><h2>Đề xuất — một menu, đủ việc</h2>
+    <div class="sub">Gộp hai menu, và sửa luôn chuyện chỉ-mở-không-khoá</div></div></div>
+
+  <div class="two">
+    <div>
+      <div class="lbl">Menu mới — hàng là FILE</div>
+      <div class="row" style="margin-bottom:10px">
+        <div class="thumb">📕</div>
+        <div class="rbody"><div class="rtitle">Báo giá tháng 11.pdf</div>
+          <div class="rmeta"><span>lihi.cyb/bao-gia-11</span><span>12 lượt mở</span></div></div>
+        <span class="chip c-pub">Ai có link</span>
+        <div class="dots hot">⋯</div>
+      </div>
+      <div class="menu wide">
+        <div class="mi"><span class="ic">✏️</span>Sửa tên &amp; đường dẫn</div>
+        <div class="mi new"><span class="ic">🔄</span>Thay nội dung file<span class="tag">mới</span></div>
+        <div class="mi new"><span class="ic">🔒</span>Quyền xem<span class="arr">▸</span></div>
+        <div class="msep"></div>
+        <div class="mi"><span class="ic">▦</span>Tải mã QR</div>
+        <div class="mi"><span class="ic">📋</span>Chép link</div>
+        <div class="msep"></div>
+        <div class="mi dang"><span class="ic">🗑</span>Xoá</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="lbl">Mở "Quyền xem" ra — khoá và mở cùng một chỗ</div>
+      <div style="height:62px"></div>
+      <div class="sub2">
+        <div class="sm on"><span class="rd"></span><div class="tx">
+          <div class="t1">Ai có link cũng mở được</div>
+          <div class="t2">Đang dùng · không biết được ai đã xem</div></div></div>
+        <div class="sm"><span class="rd"></span><div class="tx">
+          <div class="t1">Cần mật khẩu</div>
+          <div class="t2">Tự tạo mật khẩu ngẫu nhiên, hiện một lần</div></div></div>
+        <div class="sm"><span class="rd"></span><div class="tx">
+          <div class="t1">Đăng nhập Google</div>
+          <div class="t2">Ghi lại email người xem → biết ai đã mở</div></div></div>
+        <div class="sm"><span class="rd"></span><div class="tx">
+          <div class="t1">Chỉ người trong tổ chức</div>
+          <div class="t2">Người ngoài thấy trang xin đăng nhập</div></div></div>
+      </div>
+      <div class="note ok" style="margin-top:14px">
+        <b>Cân lại được hai chiều.</b>
+        <div class="flow" style="margin:9px 0 0;background:transparent;border:0;padding:0">
+          <span class="step hl">⋯ → Quyền xem</span><span class="arw">→</span>
+          <span class="step">chọn</span>
+          <span class="cnt" style="color:var(--ok)">2 bấm · khoá hay mở đều vậy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Hàng là LINK thì menu ngắn hơn — hai mục mới tự ẩn.</b>
+    <div class="two" style="margin-top:12px;align-items:start">
+      <div>
+        <div class="row" style="margin-bottom:10px">
+          <div class="thumb">🔗</div>
+          <div class="rbody"><div class="rtitle">Khuyến mãi Tết → shopee.vn/…</div>
+            <div class="rmeta"><span>lihi.cyb/tet-2027</span><span>1.204 lượt bấm</span></div></div>
+          <div class="dots hot">⋯</div>
+        </div>
+        <div class="menu">
+          <div class="mi"><span class="ic">✏️</span>Sửa</div>
+          <div class="mi off"><span class="ic">🔄</span>Thay nội dung file</div>
+          <div class="mi off"><span class="ic">🔒</span>Quyền xem</div>
+          <div class="msep"></div>
+          <div class="mi"><span class="ic">▦</span>Tải mã QR</div>
+          <div class="mi dang"><span class="ic">🗑</span>Xoá</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--mut);margin-top:7px">
+          Hai mục mờ ở đây chỉ để bạn thấy chúng biến đi — thực tế <b>không render</b>.
+        </div>
+      </div>
+      <div style="font-size:13.5px;color:#475569;padding-top:4px">
+        Danh sách chính <b>đã biết</b> hàng nào là file, hàng nào là link —
+        hàm <code>isArtifactContentType()</code> đang dùng sẵn ở
+        <code>row-kind.ts:97</code>, <code>159</code>, <code>228</code>.<br><br>
+        Nên thêm hai mục có điều kiện là <b>một dòng <code>if</code></b>,
+        không phải viết lại menu.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. VÌ SAO RẺ -->
+<section>
+  <div class="shead"><div class="snum">3</div><div><h2>Vì sao việc này rẻ hơn tưởng</h2>
+    <div class="sub">Phát hiện khi đọc code — không phải viết mới, chỉ dọn chỗ</div></div></div>
+
+  <div class="note ok">
+    <b>"Thay nội dung" ở trang <code>/artifacts</code> không hề làm việc gì — nó chỉ là một cái liên kết.</b>
+    <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+                margin-top:10px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#334155">
+      onSelect = push(`/artifacts/${'{'}id{'}'}#sec-replace`)
+    </div>
+    <div style="font-size:13px;color:var(--mut);margin-top:9px">
+      Nó <b>nhảy sang trang chi tiết</b> rồi cuộn tới khối "Cập nhật nội dung".
+      Chức năng thật nằm ở trang chi tiết, không nằm ở menu.
+      Nên chuyển nó đi chỉ là <b>chép một dòng điều hướng</b> — hành vi y nguyên.
+      <code>artifact-card.tsx:227</code>
+    </div>
+  </div>
+
+  <table style="margin-top:16px">
+    <tr><th>Mục cần thêm</th><th>Phần việc thật</th><th class="ctr">Có sẵn gì</th></tr>
+    <tr><td><b>Thay nội dung file</b></td>
+        <td>Chép một dòng điều hướng sang trang chi tiết</td>
+        <td class="ctr yes">có đủ</td></tr>
+    <tr><td><b>Quyền xem</b> (4 chế độ)</td>
+        <td>Dùng lại component đã có ở trang chi tiết</td>
+        <td class="ctr yes"><code>ArtifactAccessFields</code></td></tr>
+    <tr><td>Phân biệt hàng file / link</td>
+        <td>Một <code>if</code></td>
+        <td class="ctr yes"><code>isArtifactContentType()</code></td></tr>
+    <tr><td>Đường gọi API đổi quyền</td>
+        <td>Không viết mới</td>
+        <td class="ctr yes"><code>useUpdateArtifactAccess</code></td></tr>
+  </table>
+
+  <div class="note warn" style="margin-top:15px">
+    <b>Một chỗ phải cẩn thận:</b> mật khẩu chỉ hiện <b>một lần duy nhất</b> — server chỉ lưu bản mã hoá,
+    không trả lại được. Nếu đặt mật khẩu từ menu thì phải hiện nó ngay tại đó, không thể để người dùng
+    đóng menu rồi đi tìm.
+  </div>
+</section>
+
+<!-- 4. KẾT QUẢ -->
+<section>
+  <div class="shead"><div class="snum">4</div><div><h2>Được gì</h2>
+    <div class="sub">Ba thứ, trong đó hai thứ không phải mục tiêu ban đầu</div></div></div>
+
+  <table>
+    <tr><th>Trước</th><th>Sau</th></tr>
+    <tr><td>Hai menu khác nhau cho cùng một file</td>
+        <td class="yes">Một menu, đủ việc</td></tr>
+    <tr><td>Thay file &amp; đổi quyền <b>chỉ ở trang không ai vào được</b></td>
+        <td class="yes">Làm ngay trên danh sách chính</td></tr>
+    <tr><td>Khoá 5 bấm · mở 1 bấm · <span class="no">không hỏi xác nhận</span></td>
+        <td class="yes">2 bấm cả hai chiều, chọn trong một danh sách</td></tr>
+    <tr><td><code>/artifacts</code> phải tồn tại vì <b>còn giữ 2 việc</b></td>
+        <td class="yes">Hết lý do tồn tại → chuyển thành redirect</td></tr>
+    <tr><td>37 trang mồ côi</td>
+        <td class="mid">36 trang mồ côi</td></tr>
+  </table>
+
+  <div class="note">
+    <b>Hai thứ được thêm, ngoài mục tiêu ban đầu:</b>
+    <div style="font-size:13.5px;margin-top:8px;color:#475569">
+      · <b>Sửa luôn bất đối xứng khoá/mở</b> — vì thay "Mở công khai" (một chiều) bằng
+      "Quyền xem" (bốn chiều) thì chuyện đó tự hết.<br><br>
+      · <b>Người dùng thấy được chế độ hiện tại</b> — danh sách có chấm tròn đánh dấu
+      cái đang dùng, nên không cần mở trang chi tiết chỉ để biết trang này đang khoá hay mở.
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b>Và một việc phải làm SAU, không làm cùng lúc:</b> xoá <code>/artifacts</code>.<br>
+    <span style="font-size:13px">Chú thích trong <code>menu-list.tsx:150</code> ghi rõ
+    <i>"đang có link sâu trỏ vào"</i>. Nên thứ tự là:
+    thêm hai mục → kiểm không còn ai cần trang đó → mới chuyển thành redirect.
+    Làm ngược lại thì link đã lưu sẽ chết.</span>
+  </div>
+</section>
+
+<!-- 5. PHẠM VI -->
+<section>
+  <div class="shead"><div class="snum">5</div><div><h2>Phạm vi thay đổi</h2>
+    <div class="sub">Để biết việc này to hay nhỏ</div></div></div>
+
+  <table>
+    <tr><th>File</th><th>Việc</th></tr>
+    <tr><td><code>short-link-list/index.tsx</code></td>
+        <td>Thêm 2 mục menu có điều kiện · khoảng dòng 160–235</td></tr>
+    <tr><td><code>artifact-list/artifact-card.tsx</code></td>
+        <td>Thay "Mở công khai" một chiều bằng danh sách 4 chế độ</td></tr>
+    <tr><td><code>public/lang/{vi,en}/*.json</code></td>
+        <td>Thêm nhãn cho 4 chế độ trong menu</td></tr>
+    <tr><td>Test</td>
+        <td>Hàng link <b>không</b> hiện 2 mục mới · đổi quyền gọi đúng API ·
+            mật khẩu ngẫu nhiên phải hiện ra · chế độ hiện tại được đánh dấu</td></tr>
+  </table>
+
+  <div class="note ok">
+    <b>Không có gì phải đổi ở tầng dưới.</b><br>
+    <span style="font-size:13px">Không migration, không sửa bảng, không viết API mới.
+    Đây là việc <b>sắp xếp lại giao diện</b> — thứ rẻ nhất và dễ hoàn tác nhất.</span>
+  </div>
+</section>
+
+<footer>
+  Mọi menu trong trang này vẽ theo code thật: <code>short-link-list/index.tsx</code> ·
+  <code>artifact-list/artifact-card.tsx</code> · <code>row-kind.ts</code> ·
+  <code>menu-list.tsx</code>.<br><br>
+  Số "37 trang mồ côi" đo trên LiHi — <b>LiHi là bản thử nghiệm</b>, không phải production.
+</footer>
+
+</div>
+</body>
+</html>

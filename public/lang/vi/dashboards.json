@@ -1,0 +1,312 @@
+{
+  "list": {
+    "title": "Dashboards",
+    "newDashboard": "Tạo Dashboard",
+    "tabAll": "Tất cả",
+    "tabMy": "Dashboard của tôi",
+    "tabShared": "Được chia sẻ",
+    "searchPlaceholder": "Tìm kiếm dashboard...",
+    "sort": {
+      "updatedAt": "Cập nhật gần đây",
+      "nameAsc": "Tên A-Z",
+      "nameDesc": "Tên Z-A",
+      "newestFirst": "Mới nhất",
+      "oldestFirst": "Cũ nhất",
+      "mostWidgets": "Nhiều widget nhất"
+    },
+    "noSearchResults": {
+      "title": "Không tìm thấy dashboard",
+      "description": "Không có dashboard nào khớp \"{{query}}\"",
+      "clear": "Xóa tìm kiếm"
+    },
+    "pinnedSection": "Đã ghim",
+    "tabEmpty": {
+      "my": {
+        "title": "Bạn chưa tạo dashboard nào",
+        "description": "Tạo dashboard đầu tiên để bắt đầu theo dõi những gì quan trọng."
+      },
+      "shared": {
+        "title": "Chưa có dashboard được chia sẻ",
+        "description": "Khi đồng nghiệp chia sẻ dashboard, nó sẽ xuất hiện ở đây. Bạn cũng có thể chia sẻ từ Cài đặt truy cập của bất kỳ dashboard nào.",
+        "step1": "Mở dashboard",
+        "step2": "Cài đặt truy cập",
+        "step3": "Thêm thành viên",
+        "cta": "Xem Dashboard của tôi"
+      }
+    },
+    "empty": {
+      "title": "Trung tâm điều khiển đang chờ bạn",
+      "description": "Kết hợp lượt click, chuyển đổi và thông tin khách truy cập trong một giao diện. Tạo dashboard đầu tiên chỉ trong chưa đầy một phút."
+    }
+  },
+  "create": {
+    "title": "Tạo Dashboard",
+    "subtitle": "Chọn mẫu để bắt đầu nhanh, hoặc bắt đầu với trang trắng.",
+    "nameLabel": "Tên dashboard",
+    "namePlaceholder": "Dashboard của tôi",
+    "templateLabel": "Mẫu",
+    "blankDescription": "Bắt đầu từ đầu",
+    "widgetCount": "{{count}} widgets",
+    "blankHoverDescription": "Bắt đầu từ trang trống và thêm từng widget.",
+    "includesLabel": "Bao gồm:",
+    "submit": "Tạo Dashboard",
+    "creating": "Đang tạo...",
+    "proRequired": "Mẫu này yêu cầu gói Pro để sử dụng.",
+    "upgradeCta": "Nâng cấp",
+    "proRequiredTooltip": "Nâng cấp lên Pro để sử dụng mẫu này",
+    "successMessage": "Đã tạo dashboard!"
+  },
+  "card": {
+    "onlyMe": "Chỉ mình tôi",
+    "restricted": "Hạn chế",
+    "everyone": "Tất cả",
+    "open": "Mở",
+    "rename": "Đổi tên",
+    "duplicate": "Nhân bản",
+    "delete": "Xóa",
+    "widgetsMore": "+{{count}} nữa",
+    "deleteConfirm": {
+      "title": "Xóa dashboard",
+      "description": "Bạn có chắc muốn xóa \"{{name}}\"? Hành động này không thể hoàn tác.",
+      "confirm": "Xóa"
+    }
+  },
+  "actions": {
+    "pin": "Ghim lên đầu",
+    "unpin": "Bỏ ghim"
+  },
+  "bulk": {
+    "selected": "{{count}} đã chọn",
+    "duplicate": "Nhân bản",
+    "delete": "Xóa",
+    "deleteConfirm": {
+      "title": "Xóa {{count}} dashboard",
+      "description": "Bạn có chắc muốn xóa {{count}} dashboard? Hành động này không thể hoàn tác."
+    }
+  },
+  "selector": {
+    "switchDashboard": "Chuyển dashboard",
+    "myDashboards": "Dashboard của tôi",
+    "sharedWithMe": "Được chia sẻ với tôi",
+    "createNew": "Tạo Dashboard mới"
+  },
+  "access": {
+    "settings": "Cài đặt truy cập",
+    "title": "Cài đặt truy cập",
+    "dataNotice": "Thành viên có quyền truy cập có thể xem tất cả dữ liệu hiển thị bởi các widget của dashboard này, bao gồm dữ liệu họ có thể không truy cập được qua quyền vai trò.",
+    "modeLabel": "Ai có thể truy cập",
+    "modes": {
+      "only_me": "Chỉ mình tôi",
+      "restricted": "Thành viên cụ thể",
+      "everyone": "Tất cả trong tổ chức"
+    },
+    "everyoneRole": "Vai trò của tất cả",
+    "defaultRole": "Vai trò mặc định cho thành viên mới",
+    "roles": {
+      "owner": "Chủ sở hữu",
+      "viewer": "Xem",
+      "editor": "Chỉnh sửa"
+    },
+    "everyoneInfo": "Tất cả thành viên tổ chức có quyền truy cập. Thành viên mới tự động được cấp quyền.",
+    "members": "Thành viên",
+    "addMember": "Thêm thành viên",
+    "searchPlaceholder": "Tìm kiếm theo tên hoặc email...",
+    "noResults": "Không tìm thấy thành viên",
+    "revokeConfirm": "Hành động này sẽ thu hồi quyền truy cập của {{count}} thành viên. Tiếp tục?",
+    "confirmTitle": "Thay đổi chế độ truy cập",
+    "confirmRevokeMembers": "Thao tác này sẽ thu hồi quyền truy cập cho {{count}} thành viên.",
+    "confirmRevokeAll": "Thao tác này sẽ thu hồi quyền truy cập cho tất cả thành viên.",
+    "confirmSwitchRestricted": "Chuyển sang Hạn chế sẽ thu hồi quyền truy cập cho tất cả thành viên chưa được mời.",
+    "transferOwnership": "Chuyển quyền sở hữu",
+    "transferTitle": "Chuyển quyền sở hữu",
+    "transferDescription": "Chủ sở hữu mới sẽ có toàn quyền kiểm soát. Bạn sẽ trở thành Người chỉnh sửa.",
+    "transferTo": "Chuyển cho: {{name}}",
+    "confirmTransfer": "Chuyển"
+  },
+  "dateRange": {
+    "today": "Hôm nay",
+    "last7d": "7 ngày qua",
+    "last30d": "30 ngày qua",
+    "last90d": "90 ngày qua",
+    "custom": "Tùy chỉnh"
+  },
+  "queryBuilder": {
+    "createTitle": "Tạo Widget",
+    "editTitle": "Chỉnh sửa Widget",
+    "templatesTab": "Mẫu có sẵn",
+    "customTab": "Tùy chỉnh",
+    "standard": "Tiêu chuẩn",
+    "formula": "Công thức",
+    "formulaMetricA": "Chỉ số A (Tử số)",
+    "formulaMetricB": "Chỉ số B (Mẫu số)",
+    "formulaOperator": "Phép tính",
+    "widgetName": "Tên Widget",
+    "widgetNamePlaceholder": "Widget của tôi",
+    "dataSource": "Nguồn dữ liệu",
+    "metric": "Chỉ số",
+    "groupBy": "Nhóm theo",
+    "filters": "Bộ lọc",
+    "addFilter": "Thêm bộ lọc",
+    "removeFilter": "Xóa bộ lọc",
+    "filterValue": "Giá trị",
+    "visualization": "Biểu đồ",
+    "size": "Kích thước",
+    "useCustomDateRange": "Sử dụng khoảng thời gian tùy chỉnh",
+    "usingGlobalRange": "Đang dùng khoảng thời gian của dashboard: {{range}}",
+    "createWidget": "Tạo Widget",
+    "saveChanges": "Lưu thay đổi",
+    "configureToPreview": "Cấu hình widget để xem trước",
+    "loadingPreview": "Đang tải bản xem trước...",
+    "previewError": "Không thể tải bản xem trước"
+  },
+  "view": {
+    "addWidget": "Thêm Widget",
+    "emptyState": "Thêm widget đầu tiên để bắt đầu.",
+    "emptyStateViewer": "Chưa có widget nào.",
+    "notFound": "Không tìm thấy dashboard",
+    "backToList": "Quay lại danh sách",
+    "linksGroup": "Links",
+    "websiteGroup": "Website"
+  },
+  "widget": {
+    "edit": "Chỉnh sửa",
+    "duplicate": "Nhân bản",
+    "viewConfig": "Xem cấu hình",
+    "customDateRange": "Khoảng thời gian tùy chỉnh",
+    "delete": "Xóa",
+    "retry": "Thử lại",
+    "failedToLoad": "Không thể tải",
+    "featureDisabled": "Tính năng đã tắt",
+    "featureDisabledHint": "Widget này vẫn được giữ lại. Nó sẽ hoạt động lại nếu tính năng được bật lên.",
+    "noData": "Không có dữ liệu",
+    "proRequired": "Cần nâng cấp Pro",
+    "upgradeToView": "Nâng cấp gói để xem widget này.",
+    "frozenSince": "Dữ liệu đóng băng từ {{date}}",
+    "upgradeToRefresh": "Nâng cấp để làm mới",
+    "divisionByZero": "Mẫu số bằng không — điều chỉnh công thức",
+    "table": {
+      "name": "Tên",
+      "count": "Số lượng"
+    }
+  },
+  "templates": {
+    "domainEvents": "Sự kiện",
+    "domainInteractions": "Tương tác",
+    "domainConversions": "Chuyển đổi",
+    "dashboards": {
+      "blank": {
+        "name": "Dashboard Trống",
+        "description": "Bắt đầu từ trang trống và thêm widget theo nhu cầu."
+      },
+      "link-performance": {
+        "name": "Hiệu suất Link",
+        "description": "Xem link nào được click nhiều nhất, khán giả ở đâu, và họ dùng thiết bị gì."
+      },
+      "website-analytics": {
+        "name": "Phân tích Website",
+        "description": "Theo dõi lượt xem trang, khám phá trang phổ biến nhất, và xem traffic đến từ đâu."
+      },
+      "conversion-tracking": {
+        "name": "Theo dõi Chuyển đổi",
+        "description": "Theo dõi lead và doanh số, xu hướng chuyển đổi, và nguồn nào chuyển đổi tốt nhất."
+      },
+      "engagement": {
+        "name": "Tương tác",
+        "description": "Hiểu cách khách truy cập tương tác với trang web — click, cuộn, và sự kiện tùy chỉnh."
+      }
+    },
+    "widgets": {
+      "link-total-clicks": {
+        "name": "Tổng Clicks",
+        "description": "Tổng số lượt nhấp link"
+      },
+      "link-clicks-over-time": {
+        "name": "Clicks theo Thời gian",
+        "description": "Xu hướng click hàng ngày trong khoảng thời gian đã chọn"
+      },
+      "link-channel-breakdown": {
+        "name": "Phân bổ theo Kênh",
+        "description": "Phân bổ click theo kênh (Link, QR, NFC)"
+      },
+      "link-top-links": {
+        "name": "Top Links",
+        "description": "Các link được click nhiều nhất"
+      },
+      "link-geo-distribution": {
+        "name": "Phân bổ Địa lý",
+        "description": "Clicks theo quốc gia"
+      },
+      "link-device-split": {
+        "name": "Phân bổ Thiết bị",
+        "description": "Phân bổ click theo loại thiết bị"
+      },
+      "web-total-pageviews": {
+        "name": "Tổng Pageviews",
+        "description": "Tổng số lượt xem trang"
+      },
+      "web-traffic-over-time": {
+        "name": "Traffic theo Thời gian",
+        "description": "Xu hướng pageview hàng ngày trong khoảng thời gian đã chọn"
+      },
+      "web-top-pages": {
+        "name": "Top Trang",
+        "description": "Các trang được xem nhiều nhất"
+      },
+      "web-referrer-sources": {
+        "name": "Nguồn Referrer",
+        "description": "Nguồn traffic theo domain referrer"
+      },
+      "event-top-events": {
+        "name": "Top Sự kiện",
+        "description": "Các sự kiện được kích hoạt nhiều nhất"
+      },
+      "event-over-time": {
+        "name": "Sự kiện theo Thời gian",
+        "description": "Xu hướng sự kiện hàng ngày trong khoảng thời gian đã chọn"
+      },
+      "interaction-total-count": {
+        "name": "Tổng Tương tác",
+        "description": "Tổng số lượt tương tác của người dùng"
+      },
+      "interaction-by-type": {
+        "name": "Tương tác theo Loại",
+        "description": "Phân bổ tương tác theo loại (click, cuộn, v.v.)"
+      },
+      "interaction-top-pages": {
+        "name": "Top Trang Tương tác",
+        "description": "Các trang có nhiều tương tác nhất"
+      },
+      "conversion-total-leads": {
+        "name": "Tổng Leads",
+        "description": "Tổng số sự kiện chuyển đổi lead"
+      },
+      "conversion-total-sales": {
+        "name": "Tổng Sales",
+        "description": "Tổng số sự kiện chuyển đổi bán hàng"
+      },
+      "conversion-over-time": {
+        "name": "Chuyển đổi theo Thời gian",
+        "description": "Xu hướng chuyển đổi hàng ngày trong khoảng thời gian đã chọn"
+      },
+      "conversion-by-utm-source": {
+        "name": "Chuyển đổi theo UTM Source",
+        "description": "Phân bổ chuyển đổi theo nguồn UTM"
+      }
+    }
+  },
+  "layout": {
+    "editLayout": "Chỉnh bố cục",
+    "done": "Xong",
+    "saving": "Đang lưu...",
+    "lockConflict": "{{email}} đang chỉnh sửa bảng điều khiển này. Vui lòng thử lại sau.",
+    "sessionExpiredTitle": "Phiên chỉnh sửa đã hết hạn",
+    "sessionExpiredDescription": "Một người dùng khác có thể đã tiếp quản, hoặc phiên của bạn đã hết thời gian. Tải lại để xem thay đổi mới nhất.",
+    "reload": "Tải lại bảng điều khiển"
+  },
+  "errors": {
+    "not_found": "Không tìm thấy dashboard",
+    "no_access": "Bạn không còn quyền truy cập dashboard này",
+    "cannot_edit": "Bạn không có quyền chỉnh sửa dashboard này",
+    "owner_only": "Chỉ chủ sở hữu dashboard mới có thể thực hiện hành động này"
+  }
+}

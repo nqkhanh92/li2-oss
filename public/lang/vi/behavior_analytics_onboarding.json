@@ -1,0 +1,176 @@
+{
+  "common": {
+    "back": "Quay lại",
+    "done": "Hoàn thành",
+    "in_progress": "Đang thực hiện",
+    "continue": "Tiếp tục",
+    "skip": "Bỏ qua",
+    "continue_anyway": "Tiếp tục dù vậy",
+    "coming_soon": "Sắp ra mắt",
+    "only_owner": "Chỉ dành cho Owner"
+  },
+  "smart_setup": {
+    "no_script_title": "Hãy đảm bảo script theo dõi đã được cài đặt",
+    "no_script_desc": "AI có thể đề xuất funnel và quy tắc sự kiện dựa trên website của bạn, nhưng chúng chỉ thu thập dữ liệu khi script theo dõi đang hoạt động trên các trang.",
+    "no_script_cta": "Hướng dẫn cài đặt"
+  },
+  "goal_select": {
+    "title": "Bạn muốn thiết lập gì?",
+    "subtitle": "Chọn mục tiêu và chúng tôi sẽ hướng dẫn bạn qua các bước thiết lập phù hợp.",
+    "goals": {
+      "installation": {
+        "title": "Cài đặt script",
+        "description": "Cài đặt script Li2 Analytics lên website của bạn từng bước một."
+      },
+      "ai_setup": {
+        "title": "Thiết lập Funnel bằng AI",
+        "description": "Để AI phân tích website và tự động đề xuất funnel & quy tắc sự kiện."
+      },
+      "heatmap_guide": {
+        "title": "Heatmap & Click Map",
+        "description": "Hiển thị trực quan nơi người dùng nhấp, di chuyển và cuộn trang."
+      },
+      "session_guide": {
+        "title": "Ghi lại phiên làm việc",
+        "description": "Ghi và phát lại toàn bộ phiên người dùng để phát hiện điểm ma sát."
+      }
+    }
+  },
+  "wizard": {
+    "title": "Cài đặt Behavior Analytics",
+    "subtitle": "Làm theo các bước sau để bắt đầu theo dõi hành vi người dùng trên website của bạn.",
+    "steps": {
+      "site_url": "Thêm website",
+      "install": "Cài script",
+      "verify": "Xác minh cài đặt",
+      "features": "Chọn tính năng",
+      "test": "Kiểm tra thiết lập"
+    },
+    "all_set_title": "Hoàn thành rồi!",
+    "all_set_description": "Behavior analytics đã được kích hoạt trên website của bạn. Bắt đầu khám phá dữ liệu ngay thôi.",
+    "redirect_countdown": "Chuyển đến Site Analytics sau {{count}}s…",
+    "go_to_site_analytics": "Đến Site Analytics"
+  },
+  "step_site_url": {
+    "title": "Thêm website của bạn",
+    "subtitle": "Nhập URL website và chọn cách bạn sẽ cài đặt script theo dõi.",
+    "input_label": "URL website",
+    "invalid_url": "Vui lòng nhập URL hợp lệ (ví dụ: https://example.com)",
+    "detecting": "Đang phát hiện nền tảng…",
+    "wordpress_detected": "Đã phát hiện WordPress",
+    "platform_hint": "Nhập URL website bên trên để chọn nền tảng",
+    "platform_html": "HTML / JavaScript",
+    "platform_html_desc": "Thêm thẻ script CDN hoặc cài gói npm",
+    "platform_wordpress": "WordPress",
+    "platform_wordpress_desc": "Cài đặt plugin Li2 Analytics trên trang của bạn"
+  },
+  "step_script_install": {
+    "title": "Cài đặt script",
+    "subtitle": "Thêm script vào website của bạn. Chọn phương thức phù hợp với tech stack của bạn.",
+    "tab_html": "HTML",
+    "tab_react": "React / Next.js",
+    "html_hint": "Dán đoạn mã vào trong thẻ <head> của mỗi trang bạn muốn theo dõi.",
+    "snippet_title": "Đoạn mã HTML",
+    "react_init_title": "Khởi tạo trong ứng dụng",
+    "next_btn": "Tiếp tục",
+    "wp_subtitle": "Cài đặt plugin Li2 Analytics trên trang WordPress của bạn để bắt đầu theo dõi.",
+    "wp_method_upload": "Tải lên plugin",
+    "wp_step_download": "Tải xuống plugin Li2 Analytics (.zip)",
+    "wp_download_btn": "Tải plugin (.zip)",
+    "wp_step_goto_upload": "Vào WordPress Admin → Plugins → Add New → Upload Plugin",
+    "wp_step_choose": "Chọn file .zip vừa tải và nhấn Install Now",
+    "wp_step_activate": "Nhấn Activate Plugin để hoàn tất",
+    "wp_configure": {
+      "title": "Cấu hình Plugin",
+      "subtitle": "Cấu hình plugin Li2 với Publishable Key của bạn để bắt đầu theo dõi hành vi.",
+      "tab_auto": "Tự động",
+      "tab_manual": "Thủ công",
+      "auto_desc": "Nhấn Tự động cấu hình — chúng tôi sẽ đẩy Publishable Key của bạn trực tiếp vào plugin.",
+      "auto_btn": "Tự động cấu hình",
+      "applying": "Đang áp dụng…",
+      "waiting": "Đang chờ plugin xác nhận…",
+      "success": "Cấu hình đã được áp dụng thành công",
+      "error": "Không thể áp dụng cấu hình",
+      "popup_blocked": "Popup bị chặn. Vui lòng cho phép popup và nhấn Tự động cấu hình lại.",
+      "window_closed": "Cửa sổ đã đóng trước khi cấu hình được áp dụng",
+      "auto_fallback_prefix": "Nếu tự động cấu hình không hoạt động (popup bị chặn hoặc plugin chưa kích hoạt), hãy chuyển sang tab",
+      "auto_fallback_suffix": ".",
+      "manual_step1_link": "Mở cài đặt Li2 Analytics",
+      "manual_step1_suffix": "trong WordPress admin.",
+      "manual_step2": "Sao chép Publishable Key và dán vào cài đặt plugin.",
+      "manual_step3": "Nhấn Save Settings trong plugin.",
+      "done_btn": "Xong — Plugin đã được cấu hình"
+    }
+  },
+  "step_verify": {
+    "title": "Xác minh cài đặt",
+    "subtitle": "Mở trang web để xác nhận script đã được tải đúng cách.",
+    "cta_open": "Mở trang web",
+    "cta_waiting": "Đang chờ phản hồi…",
+    "waiting_hint": "Giữ tab trang web mở — chúng tôi sẽ tự động phát hiện script.",
+    "no_url_hint": "Chưa có URL trang web. Quay lại bước 1.",
+    "result_title": "Kết quả xác minh",
+    "check_script": "Script được tìm thấy trên trang",
+    "check_key": "Publishable key khớp",
+    "script_not_found": "Không phát hiện được script",
+    "key_mismatch": "Key sai: {{key}}…",
+    "empty_key": "Key chưa được thiết lập trong script",
+    "success_msg": "Script đang hoạt động và được cấu hình đúng!",
+    "reverify": "Xác minh lại",
+    "skip_hint": "Bỏ qua — bạn có thể xác minh từ cài đặt sau.",
+    "wp_subtitle": "Mở trang web để xác nhận plugin Li2 Analytics đang hoạt động."
+  },
+  "step_features": {
+    "title": "Chọn tính năng theo dõi",
+    "subtitle": "Chọn những sự kiện hành vi bạn muốn thu thập. Bạn có thể thay đổi cài đặt này bất cứ lúc nào.",
+    "pageview_tracking": "Theo dõi lượt xem trang",
+    "pageview_tracking_desc": "Tự động ghi lại mỗi lượt truy cập và điều hướng trang.",
+    "click_tracking": "Theo dõi lượt nhấp",
+    "click_tracking_desc": "Ghi lại các lượt nhấp vào nút, liên kết và các phần tử tương tác.",
+    "scroll_tracking": "Theo dõi cuộn trang",
+    "scroll_tracking_desc": "Đo lường người dùng cuộn xuống bao nhiêu trên trang.",
+    "form_tracking": "Theo dõi biểu mẫu",
+    "form_tracking_desc": "Theo dõi việc gửi biểu mẫu, focus vào trường và việc bỏ ngang.",
+    "outbound_tracking": "Theo dõi liên kết ngoài",
+    "outbound_tracking_desc": "Tự động gắn click ID vào các liên kết ngoài để attribution được truyền sang trang đích.",
+    "outbound_domains_label": "Theo dõi nhấp chuột đến các domain bên ngoài này",
+    "outbound_add_btn": "Thêm",
+    "outbound_empty": "Chưa có domain nào. Thêm ít nhất một domain để theo dõi.",
+    "session_recording": "Ghi lại phiên làm việc",
+    "session_recording_desc": "Phát lại phiên của người dùng để hiểu cách họ tương tác với giao diện.",
+    "save_btn": "Lưu & Hoàn thành",
+    "tracking_options_title": "Tùy chọn theo dõi",
+    "tracking_cookie_path": "Đường dẫn cookie",
+    "tracking_cookie_path_desc": "Phạm vi đường dẫn của cookie theo dõi. Dùng / để theo dõi toàn bộ trang.",
+    "tracking_cookie_domain": "Domain cookie",
+    "tracking_cookie_domain_desc": "Domain cho cookie. Dùng .example.com để chia sẻ giữa các subdomain.",
+    "tracking_session_timeout": "Thời gian hết phiên (giây)",
+    "tracking_session_timeout_desc": "Thời gian không hoạt động trước khi bắt đầu phiên mới. Tối thiểu 60 giây.",
+    "tracking_cookie_expires": "Thời hạn cookie (ngày)",
+    "tracking_cookie_expires_desc": "Thời gian cookie theo dõi tồn tại trong trình duyệt của người dùng."
+  },
+  "step_test": {
+    "title": "Kiểm tra thiết lập",
+    "subtitle": "Mở website và thực hiện một số hành động để xác nhận sự kiện đang được ghi lại.",
+    "no_url_hint": "Chưa có URL website — quay lại bước 1 để thêm website.",
+    "actions_title": "Thử các hành động này trên website của bạn:",
+    "test_pageview": "Điều hướng đến một vài trang trên website",
+    "test_click": "Nhấp vào các nút, liên kết và phần tử tương tác",
+    "test_scroll": "Cuộn xuống một trang qua 50%",
+    "test_form": "Bắt đầu điền và gửi một biểu mẫu",
+    "test_outbound": "Nhấp vào liên kết ngoài và kiểm tra click ID có được gắn vào URL đích không",
+    "test_session": "Duyệt website trong vài phút để tạo một phiên",
+    "not_seeing": "Không thấy sự kiện?",
+    "try_debug": "Thử chế độ debug",
+    "back_to_test": "Quay lại bước kiểm tra",
+    "debug_title": "Chế độ Debug",
+    "debug_on": "Tất cả yêu cầu SDK đang được ghi lại",
+    "debug_off": "Bật lên để bắt đầu ghi lại sự kiện hành vi",
+    "debug_warning": "Có thể chứa dữ liệu nhạy cảm — tắt trong môi trường production",
+    "debug_empty": "Bật chế độ debug bên trên để bắt đầu ghi lại sự kiện",
+    "filter_pageview": "Lượt xem trang",
+    "filter_interaction": "Tương tác",
+    "listening": "Đang lắng nghe sự kiện…",
+    "events_received_from": "Đã nhận sự kiện từ"
+  }
+}

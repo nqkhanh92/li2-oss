@@ -1,0 +1,171 @@
+{
+  "module": {
+    "collection": "Space",
+    "collections": "Spaces"
+  },
+  "form": {
+    "name_placeholder": "Nhập tên space",
+    "description_placeholder": "Mô tả space này...",
+    "org_permission_label": "Chế độ truy cập",
+    "org_permission_description": "Kiểm soát ai trong tổ chức có thể truy cập space này",
+    "select_permission_placeholder": "Chọn quyền truy cập tổ chức",
+    "create_title": "Tạo space",
+    "edit_title": "Chỉnh sửa space",
+    "create_description": "Tạo space mới để tổ chức các link của bạn",
+    "edit_description": "Cập nhật thông tin space",
+    "create_button": "Tạo space",
+    "update_button": "Cập nhật space",
+    "success": {
+      "created": "Tạo space thành công",
+      "updated": "Cập nhật space thành công"
+    },
+    "error": {
+      "create": "Không thể tạo space",
+      "update": "Không thể cập nhật space"
+    }
+  },
+  "messages": {
+    "delete_warning": "Bạn có chắc chắn muốn xóa space này? Các links trong space sẽ không bị xóa.",
+    "created": "Tạo space thành công",
+    "updated": "Cập nhật space thành công",
+    "deleted": "Xóa space thành công",
+    "member_added": "Thêm thành viên thành công",
+    "members_added": "Đã thêm {{count}} thành viên thành công",
+    "member_removed": "Xóa thành viên thành công",
+    "member_role_updated": "Cập nhật vai trò thành viên thành công",
+    "leave_success": "Bạn đã rời khỏi space",
+    "links_added": "Đã thêm link vào space",
+    "links_added_count": "Đã thêm {{count}} link vào space",
+    "links_removed": "Đã xóa link khỏi space"
+  },
+  "errors": {
+    "cannot_change_last_owner_role": "Không thể thay đổi vai trò của chủ sở hữu cuối cùng. Hãy thêm chủ sở hữu khác trước.",
+    "cannot_remove_last_owner": "Không thể xóa chủ sở hữu cuối cùng khỏi space",
+    "last_owner_cannot_leave": "Bạn là chủ sở hữu cuối cùng. Hãy chuyển quyền sở hữu trước khi rời đi.",
+    "cannot_change_own_role": "Bạn không thể thay đổi vai trò của chính mình",
+    "cannot_remove_self": "Bạn không thể tự xóa mình. Hãy sử dụng tùy chọn rời khỏi space.",
+    "not_a_member": "Bạn không phải là thành viên của space này",
+    "creator_cannot_leave": "Người tạo Space không thể rời đi. Vui lòng xoá Space nếu không còn sử dụng.",
+    "new_owner_must_be_member": "Chủ sở hữu mới phải là thành viên của space trước",
+    "only_owners_can_transfer": "Chỉ chủ sở hữu mới có thể chuyển quyền sở hữu",
+    "user_already_member": "Người dùng đã là thành viên của space này",
+    "name_already_exists": "Tên space đã tồn tại trong tổ chức của bạn",
+    "collection_not_found": "Không tìm thấy space",
+    "member_not_found": "Không tìm thấy thành viên trong space này",
+    "access_denied": "Không tìm thấy space hoặc quyền truy cập bị từ chối",
+    "no_access_to_collection": "Bạn không có quyền truy cập space này",
+    "cannot_view_collection": "Bạn không có quyền xem space này",
+    "cannot_edit_collection": "Bạn không có quyền chỉnh sửa space này",
+    "cannot_delete_collection": "Bạn không có quyền xóa space này",
+    "cannot_manage_members": "Bạn không có quyền quản lý thành viên space",
+    "user_not_org_member": "Người dùng không phải là thành viên của tổ chức này",
+    "can_only_add_own_touchpoints": "Bạn chỉ có thể thêm các điểm chạm của riêng mình vào space này",
+    "can_only_remove_own_touchpoints": "Bạn chỉ có thể xóa các điểm chạm của riêng mình khỏi space này",
+    "can_only_move_own_touchpoints": "Bạn chỉ có thể di chuyển các điểm chạm của riêng mình",
+    "cannot_add_touchpoints": "Bạn không có quyền thêm link vào space này",
+    "max_collections_reached": "Tổ chức của bạn đã đạt số lượng space tối đa được phép theo gói của bạn"
+  },
+  "search_placeholder": "Tìm kiếm space...",
+  "permissions": {
+    "can_edit": {
+      "label": "Public",
+      "description": "Các thành viên trong tổ chức đều có thể xem và chỉnh sửa space này"
+    },
+    "can_view": {
+      "label": "View only",
+      "description": "Các thành viên trong tổ chức có thể xem nhưng không được chỉnh sửa space này"
+    },
+    "no_access": {
+      "label": "Private",
+      "description": "Chỉ những thành viên được chỉ định mới có thể truy cập vào space này"
+    }
+  },
+  "roles": {
+    "owner": {
+      "label": "Chủ sở hữu",
+      "description": "Toàn quyền truy cập bao gồm quản lý thành viên"
+    },
+    "editor": {
+      "label": "Biên tập viên",
+      "description": "Có thể thêm, chỉnh sửa và xóa links trong space này"
+    },
+    "viewer": {
+      "label": "Người xem",
+      "description": "Chỉ có thể xem space"
+    },
+    "no_access": {
+      "label": "Không có quyền",
+      "description": "Không thể xem hoặc chỉnh sửa"
+    }
+  },
+  "tabs": {
+    "overview": "Tổng quan",
+    "touch_points": "Links",
+    "members": "Thành viên"
+  },
+  "stats": {
+    "touch_points": "Links",
+    "members": "Thành viên",
+    "org_permission": "Chế độ truy cập của tổ chức"
+  },
+  "details": {
+    "title": "Chi tiết Space",
+    "created_at": "Ngày tạo",
+    "updated_at": "Cập nhật lần cuối",
+    "edit_button": "Chỉnh sửa Space",
+    "delete_buttons": "Xóa Space",
+    "name": "Tên",
+    "description": "Mô tả",
+    "color": "Màu sắc"
+  },
+  "touch_points": {
+    "title": "Các Link trong Space",
+    "description": "Quản lý links được gán cho space này",
+    "add_button": "Thêm links",
+    "add_dialog_title": "Thêm links",
+    "add_dialog_description": "Chọn link để thêm vào space này",
+    "select_at_least_one": "Vui lòng chọn ít nhất một link",
+    "no_results": "Không tìm thấy link",
+    "all_added": "Tất cả link đã có trong space này",
+    "empty_title": "Chưa có link",
+    "empty_description": "Thêm link để tổ chức chúng trong space này",
+    "add_first": "Thêm link đầu tiên",
+    "in_collection": "trong space này",
+    "search_placeholder": "Tìm links...",
+    "select_all": "Chọn tất cả"
+  },
+  "members": {
+    "title": "Thành viên Space",
+    "description": "Quản lý ai có quyền truy cập space này",
+    "add_button": "Thêm thành viên",
+    "leave_button": "Rời khỏi",
+    "add_dialog_title": "Thêm thành viên",
+    "add_dialog_description": "Chọn thành viên trong space để thêm vào space này",
+    "select_at_least_one": "Vui lòng chọn ít nhất một thành viên",
+    "search_placeholder": "Tìm kiếm thành viên...",
+    "no_results": "Không tìm thấy thành viên",
+    "all_added": "Tất cả thành viên đã có trong space này",
+    "empty_title": "Chưa có thành viên bổ sung",
+    "empty_description": "Thêm thành viên trong space để cộng tác trong space này",
+    "add_first": "Thêm thành viên đầu tiên",
+    "with_access": "có quyền truy cập space này",
+    "role": "Vai trò"
+  },
+  "field": {
+    "collection": "Space",
+    "select_collection": "Chọn một space",
+    "no_collection": "Không có space"
+  },
+  "select_collection": "Chọn Space",
+  "no_collections": "Chưa có space nào cả",
+  "confirm_delete_dialog": "Xác nhận việc xóa",
+  "deleting": "Đang xóa...",
+  "no_collections_description": "Hãy tạo Space đầu tiên để bắt đầu quản lý links",
+  "empty_state_description": "Spaces của bạn đang trống. Thêm Space mới để bắt đầu.",
+  "no_results": "Không tìm thấy Spaces nào",
+  "all_in_current": "Tất cả Links đều đã nằm trong Space này",
+  "plan_upgrade": {
+    "title": "Tính năng Spaces không có trong gói hiện tại của bạn",
+    "description": "Nâng cấp gói để tổ chức links vào spaces và cộng tác với nhóm của bạn."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "labels": {
+    "name": "Template name",
+    "description": "Description"
+  },
+  "placeholders": {
+    "description": "Describe this template (optional)",
+    "medium": "Marketing medium (e.g., cpc, email, organic)",
+    "source": "Referrer (e.g., newsletter, social)",
+    "campaign": "Campaign name or ID",
+    "term": "Paid search keyword",
+    "content": "Used to differentiate ads (e.g., button vs. banner)"
+  },
+  "help": {
+    "source": "Identifies where your traffic is coming from, such as a search engine, newsletter, or other referral source.",
+    "medium": "Identifies the marketing medium, such as email, CPC (cost-per-click), social media, or organic search.",
+    "campaign": "Identifies a specific product promotion or strategic campaign to track performance.",
+    "term": "Identifies paid search keywords. Used for paid search campaigns to track which keywords are driving traffic.",
+    "content": "Used to differentiate similar content or links within the same ad to identify which version performs better."
+  },
+  "buttons": {
+    "create": "Create Template"
+  }
+}

@@ -1,0 +1,143 @@
+// import { NextResponse } from 'next/server'
+// import { protectedDefaultPath } from '@/shared/constants'
+// import { logger } from '@/infrastructure/logging/logger'
+// import { v4 as uuidv4 } from 'uuid'
+// import { hybridAuditLogger } from '@/shared/lib/logs/hybrid-audit-logger'
+// import { availableEvents } from '@/features/bootstrap/stores/bootstrap-store'
+// import { setCasdoorToken } from '@/app/actions/auth'
+// import { authService } from '@/core/services/auth.service'
+// import { profileService } from '@/core/services/profile.service'
+// import { bootstrapService } from '@/core/services/bootstrap.service'
+// import { dubService } from '@/infrastructure/external/dub'
+// import { facebookTrackingService } from '@/infrastructure/external/facebook/tracking-service'
+// import { li2TrackingService } from '@/infrastructure/external/li2'
+// import { ga4TrackingService } from '@/infrastructure/external/ga4'
+// import { cookies } from 'next/headers'
+// const log = logger.child({
+//   module: 'auth/callback',
+// })
+
+// export async function GET(request: Request) {
+//   //** Get the searchParams then get the code of auth callback */
+//   const { searchParams } = new URL(request.url)
+//   const code = searchParams.get('code')
+
+//   if (!code) {
+//     return NextResponse.json({
+//       success: false,
+//       redirect: '/auth/login',
+//       message: 'No code provided',
+//     })
+//   }
+//   try {
+//     //** Get the access_token and refresh_token from the code */
+//     const { access_token, refresh_token } = await authService.getAuthToken(code)
+
+//     const { data: profile, isNew, avatar } = await authService.verifyAndUpdateProfile(access_token)
+
+//     // Detect signup method from avatar URL
+//     // Google OAuth users have avatar from googleusercontent.com
+//     const signupMethod: 'google' | 'email' = avatar?.includes('googleusercontent.com') ? 'google' : 'email'
+
+//     /**Dub tracking section - REMOVE THIS IF NOT USE ANYMORE */
+//     if (isNew && profile.email && process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+//       const clickId = (cookies()).get('dub_id')?.value
+//       if (clickId) {
+//         await dubService.trackLead({
+//           clickId: clickId,
+//           eventName: 'Sign up',
+//           customerExternalId: profile.id,
+//           customerName: profile.email,
+//           customerEmail: profile.email,
+//         })
+//       }
+
+//       await li2TrackingService.trackLead({
+//         eventName: 'Sign up',
+//         customerExternalId: profile.email,
+//         customerName: profile.email,
+//         customerEmail: profile.email,
+//         metadata: {
+//           userId: profile.id,
+//         },
+//       })
+
+//       await facebookTrackingService.trackSignUp(profile.email, undefined, request)
+
+//       await ga4TrackingService.trackSignUp({
+//         userId: profile.id,
+//         email: profile.email,
+//         method: signupMethod,
+//       })
+//     }
+
+//     if (isNew) {
+//       const forwarded = request.headers.get('x-forwarded-for')
+//       const rawIp = forwarded?.split(',')[0].trim() || request.headers.get('x-real-ip')
+//       const ip = rawIp?.startsWith('::ffff:') ? rawIp.replace('::ffff:', '') : rawIp || 'Unknown'
+//       const fp = searchParams.get('uid') || 'Unknown'
+//       const requestId = `req_${uuidv4()}`
+//       const userAgent = request.headers.get('user-agent') || 'Unknown'
+
+//       await profileService.updateProfile(profile.id, {
+//         signup_ip: ip,
+//         signup_fp: fp,
+//       })
+//       await hybridAuditLogger.logEvent('auth/callback', {
+//         eventType: 'USER_REGISTRATION',
+//         userId: profile.id,
+//         timestamp: new Date(),
+//         requestId,
+//         ipAddress: ip,
+//         userAgent,
+//         result: 'SUCCESS',
+//         reason: '',
+//         metadata: {
+//           email: profile.email,
+//           name: profile.display_name,
+//           ip,
+//           fp,
+//         },
+//       })
+//       // await bootstrapService.attemptPremiumGrant(profile, {
+//       //   requestId,
+//       //   ip,
+//       //   fp,
+//       //   userAgent,
+//       // })
+//     }
+//     //** END CAMPAIGN: 200 FREE PREMIUM */
+
+//     let redirect_to = searchParams.get('redirect_to')
+//     if (profile.is_banned) {
+//       redirect_to = '/banned'
+//       if (profile.ban_reason) redirect_to += `?reason=${profile.ban_reason}`
+//     }
+
+//     const base = process.env.NEXT_PUBLIC_APP_BASE_URL!
+//     const target_url = new URL(
+//       redirect_to ?? protectedDefaultPath,
+//       base
+//     )
+
+//     // Prevent open redirect — only allow same-origin redirects
+//     const base_url = new URL(base)
+//     if (target_url.host !== base_url.host) {
+//       target_url.href = new URL(protectedDefaultPath, base).href
+//     }
+
+//     target_url.searchParams.set(availableEvents.LOGIN_COMPLETED, 'true')
+
+//     await setCasdoorToken(access_token, refresh_token)
+//     const response = NextResponse.redirect(target_url)
+
+//     return response
+//   } catch (error: any) {
+//     log.error({ error })
+
+//     const errorUrl = new URL('/auth/error', process.env.NEXT_PUBLIC_APP_BASE_URL)
+//     errorUrl.searchParams.set('error', 'Authentication failed. Please try again.')
+
+//     return NextResponse.redirect(errorUrl)
+//   }
+// }

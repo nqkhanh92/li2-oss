@@ -1,0 +1,24 @@
+services:
+  nextjs:
+    build:
+      context: .
+      args:
+        - NODE_ENV=production
+    image: registry.example.com/ftc/proximity_production:latest
+    container_name: quik-proxy-mark
+    env_file:
+      - .env.production
+    # working_dir: /app
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    volumes:
+      - /var/log/li2-app:/app/logs
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

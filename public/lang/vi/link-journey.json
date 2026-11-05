@@ -1,0 +1,91 @@
+{
+  "emptyState": {
+    "noLinks": "Cài đặt Li2 SDK trên trang web của bạn để xem hành trình khách truy cập.",
+    "awaitingData": "Chưa có dữ liệu khách truy cập. Dữ liệu có thể mất vài phút để hiển thị.",
+    "externalLink": "Link này trỏ đến trang bên ngoài. Dữ liệu hành vi chỉ khả dụng cho các trang đã cài đặt Li2 SDK."
+  },
+  "page": {
+    "noJourneyTitle": "Chưa có dữ liệu hành trình khách truy cập",
+    "noJourneyDesc": "Để xem khách truy cập làm gì sau khi nhấp vào link, bạn cần một short link trỏ đến website với Li2 SDK đã được cài đặt.",
+    "createShortLink": "Tạo Short Link",
+    "sdkSetupGuide": "Hướng dẫn cài đặt SDK",
+    "selectDateRange": "Chọn khoảng thời gian",
+    "selectLinkPrompt": "Chọn một link ở trên để xem hành trình khách truy cập."
+  },
+  "steps": {
+    "click": "Nhấp chuột",
+    "visit": "Truy cập",
+    "engage": "Tương tác",
+    "convert": "Chuyển đổi"
+  },
+  "linkSelector": {
+    "placeholder": "Chọn một link...",
+    "searchPlaceholder": "Tìm kiếm link...",
+    "noResults": "Không tìm thấy link phù hợp.",
+    "noResultsDesc": "Chỉ các link trỏ đến trang có Li2 SDK mới xuất hiện ở đây. Link đến trang bên ngoài sẽ không có dữ liệu hành trình.",
+    "views": "lượt xem"
+  },
+  "traffic": {
+    "totalClicks": "Tổng lần nhấp",
+    "uniqueVisitors": "Khách truy cập duy nhất",
+    "sessions": "Phiên",
+    "bounceRate": "Tỷ lệ thoát"
+  },
+  "pageFlow": {
+    "title": "Luồng trang",
+    "noData": "Không có dữ liệu trang cho link này.",
+    "pagesVisited_one": "{{count}} trang đã truy cập",
+    "pagesVisited_other": "{{count}} trang đã truy cập",
+    "views": "lượt xem",
+    "visitors": "khách",
+    "heatmap": "Bản đồ nhiệt",
+    "funnel": "Phễu"
+  },
+  "behavioral": {
+    "title": "Điểm nổi bật hành vi",
+    "noData": "Chưa có dữ liệu tương tác. Li2 SDK tự động ghi lại hành vi nhấp chuột trên trang.",
+    "interactions": "Tương tác",
+    "rageClicks": "Nhấp chuột liên tục",
+    "topClickedElements": "Phần tử được nhấp nhiều nhất"
+  },
+  "conversions": {
+    "title": "Chuyển đổi",
+    "noData": "Không có dữ liệu chuyển đổi cho link này trong khoảng thời gian đã chọn.",
+    "leads": "Khách tiềm năng",
+    "sales": "Doanh số",
+    "revenue": "Doanh thu",
+    "recentConversions": "Chuyển đổi gần đây",
+    "anonymous": "Ẩn danh"
+  },
+  "demo": {
+    "badge": "Tính năng Pro",
+    "demoNotice": "Đây là hành trình mẫu với dữ liệu demo.",
+    "getStarted": { "cta": "Tiếp tục" },
+    "hero": {
+      "title": "Xem Toàn Bộ Hành Trình Sau Mỗi Lần Nhấp",
+      "desc": "Link Journey kết nối mỗi lần nhấp short link với hành vi thực tế trên trang — trang nào khách truy cập, họ nhấp vào đâu và có chuyển đổi không."
+    },
+    "features": {
+      "clickData": {
+        "title": "Thống kê Click & Lưu lượng",
+        "desc": "Xem tổng lần nhấp, khách truy cập duy nhất, phiên và tỷ lệ thoát cho bất kỳ short link nào."
+      },
+      "pageFlow": {
+        "title": "Luồng Trang",
+        "desc": "Khám phá trang nào khách truy cập đến sau khi nhấp, xếp hạng theo lưu lượng."
+      },
+      "behavioral": {
+        "title": "Điểm Nổi Bật Hành Vi",
+        "desc": "Theo dõi tương tác trên trang, phần tử được nhấp nhiều nhất và rage click."
+      },
+      "conversions": {
+        "title": "Phân Bổ Chuyển Đổi",
+        "desc": "Xem link nào tạo ra leads, sales và doanh thu — gắn trực tiếp với từng lần nhấp."
+      }
+    },
+    "planUpgrade": {
+      "title": "Link Journey không có trong gói hiện tại của bạn",
+      "description": "Nâng cấp gói để theo dõi toàn bộ hành trình khách truy cập từ nhấp chuột đến chuyển đổi."
+    }
+  }
+}

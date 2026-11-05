@@ -1,0 +1,370 @@
+import { AVAILABLE_DATA_SOURCES } from './data-source-config'
+import type { WidgetTemplate, DashboardTemplate } from '../types'
+
+export const WIDGET_TEMPLATES: WidgetTemplate[] = [
+  // === Links (data_source: 'visits') ===
+  {
+    id: 'link-total-clicks',
+    name: 'dashboards:templates.widgets.linkTotalClicks.name',
+    description: 'dashboards:templates.widgets.linkTotalClicks.description',
+    data_source: 'visits',
+    pro_only: false,
+    config: {
+      data_source: 'visits',
+      metric: 'count',
+      group_by: 'none',
+      filters: [],
+      visualization: 'number',
+      size: 'small',
+    },
+  },
+  {
+    id: 'link-clicks-over-time',
+    name: 'dashboards:templates.widgets.linkClicksOverTime.name',
+    description: 'dashboards:templates.widgets.linkClicksOverTime.description',
+    data_source: 'visits',
+    pro_only: false,
+    config: {
+      data_source: 'visits',
+      metric: 'count',
+      group_by: 'day',
+      filters: [],
+      visualization: 'line',
+      size: 'large',
+    },
+  },
+  {
+    id: 'link-channel-breakdown',
+    name: 'dashboards:templates.widgets.linkChannelBreakdown.name',
+    description: 'dashboards:templates.widgets.linkChannelBreakdown.description',
+    data_source: 'visits',
+    pro_only: false,
+    config: {
+      data_source: 'visits',
+      metric: 'count',
+      group_by: 'channel',
+      filters: [],
+      visualization: 'pie',
+      size: 'small',
+    },
+  },
+  {
+    id: 'link-top-links',
+    name: 'dashboards:templates.widgets.linkTopLinks.name',
+    description: 'dashboards:templates.widgets.linkTopLinks.description',
+    data_source: 'visits',
+    pro_only: false,
+    config: {
+      data_source: 'visits',
+      metric: 'count',
+      group_by: 'touch_point',
+      filters: [],
+      visualization: 'table',
+      size: 'medium',
+    },
+  },
+  {
+    id: 'link-geo-distribution',
+    name: 'dashboards:templates.widgets.linkGeoDistribution.name',
+    description: 'dashboards:templates.widgets.linkGeoDistribution.description',
+    data_source: 'visits',
+    pro_only: false,
+    config: {
+      data_source: 'visits',
+      metric: 'count',
+      group_by: 'country',
+      filters: [],
+      visualization: 'table',
+      size: 'medium',
+    },
+  },
+  {
+    id: 'link-device-split',
+    name: 'dashboards:templates.widgets.linkDeviceSplit.name',
+    description: 'dashboards:templates.widgets.linkDeviceSplit.description',
+    data_source: 'visits',
+    pro_only: false,
+    config: {
+      data_source: 'visits',
+      metric: 'count',
+      group_by: 'device',
+      filters: [],
+      visualization: 'pie',
+      size: 'small',
+    },
+  },
+
+  // === Website (data_source: 'pageviews') ===
+  {
+    id: 'web-total-pageviews',
+    name: 'dashboards:templates.widgets.webTotalPageviews.name',
+    description: 'dashboards:templates.widgets.webTotalPageviews.description',
+    data_source: 'pageviews',
+    pro_only: true,
+    config: {
+      data_source: 'pageviews',
+      metric: 'count',
+      group_by: 'none',
+      filters: [],
+      visualization: 'number',
+      size: 'small',
+    },
+  },
+  {
+    id: 'web-traffic-over-time',
+    name: 'dashboards:templates.widgets.webTrafficOverTime.name',
+    description: 'dashboards:templates.widgets.webTrafficOverTime.description',
+    data_source: 'pageviews',
+    pro_only: true,
+    config: {
+      data_source: 'pageviews',
+      metric: 'count',
+      group_by: 'day',
+      filters: [],
+      visualization: 'line',
+      size: 'large',
+    },
+  },
+  {
+    id: 'web-top-pages',
+    name: 'dashboards:templates.widgets.webTopPages.name',
+    description: 'dashboards:templates.widgets.webTopPages.description',
+    data_source: 'pageviews',
+    pro_only: true,
+    config: {
+      data_source: 'pageviews',
+      metric: 'count',
+      group_by: 'page_path',
+      filters: [],
+      visualization: 'table',
+      size: 'medium',
+    },
+  },
+  {
+    id: 'web-referrer-sources',
+    name: 'dashboards:templates.widgets.webReferrerSources.name',
+    description: 'dashboards:templates.widgets.webReferrerSources.description',
+    data_source: 'pageviews',
+    pro_only: true,
+    config: {
+      data_source: 'pageviews',
+      metric: 'count',
+      group_by: 'referrer',
+      filters: [],
+      visualization: 'bar',
+      size: 'medium',
+    },
+  },
+
+  // === Events (data_source: 'events') ===
+  {
+    id: 'event-top-events',
+    name: 'dashboards:templates.widgets.eventTopEvents.name',
+    description: 'dashboards:templates.widgets.eventTopEvents.description',
+    data_source: 'events',
+    pro_only: true,
+    config: {
+      data_source: 'events',
+      metric: 'count',
+      group_by: 'event_name',
+      filters: [],
+      visualization: 'bar',
+      size: 'small',
+    },
+  },
+  {
+    id: 'event-over-time',
+    name: 'dashboards:templates.widgets.eventOverTime.name',
+    description: 'dashboards:templates.widgets.eventOverTime.description',
+    data_source: 'events',
+    pro_only: true,
+    config: {
+      data_source: 'events',
+      metric: 'count',
+      group_by: 'day',
+      filters: [],
+      visualization: 'line',
+      size: 'small',
+    },
+  },
+
+  // === Interactions (data_source: 'interactions') ===
+  {
+    id: 'interaction-total-count',
+    name: 'dashboards:templates.widgets.interactionTotalCount.name',
+    description: 'dashboards:templates.widgets.interactionTotalCount.description',
+    data_source: 'interactions',
+    pro_only: true,
+    config: {
+      data_source: 'interactions',
+      metric: 'count',
+      group_by: 'none',
+      filters: [],
+      visualization: 'number',
+      size: 'small',
+    },
+  },
+  {
+    id: 'interaction-by-type',
+    name: 'dashboards:templates.widgets.interactionByType.name',
+    description: 'dashboards:templates.widgets.interactionByType.description',
+    data_source: 'interactions',
+    pro_only: true,
+    config: {
+      data_source: 'interactions',
+      metric: 'count',
+      group_by: 'interaction_type',
+      filters: [],
+      visualization: 'pie',
+      size: 'small',
+    },
+  },
+  {
+    id: 'interaction-top-pages',
+    name: 'dashboards:templates.widgets.interactionTopPages.name',
+    description: 'dashboards:templates.widgets.interactionTopPages.description',
+    data_source: 'interactions',
+    pro_only: true,
+    config: {
+      data_source: 'interactions',
+      metric: 'count',
+      group_by: 'page_path',
+      filters: [],
+      visualization: 'table',
+      size: 'small',
+    },
+  },
+
+  // === Conversions (data_source: 'conversions') ===
+  {
+    id: 'conversion-total-leads',
+    name: 'dashboards:templates.widgets.conversionTotalLeads.name',
+    description: 'dashboards:templates.widgets.conversionTotalLeads.description',
+    data_source: 'conversions',
+    pro_only: true,
+    config: {
+      data_source: 'conversions',
+      metric: 'lead_count',
+      group_by: 'none',
+      filters: [],
+      visualization: 'number',
+      size: 'small',
+    },
+  },
+  {
+    id: 'conversion-total-sales',
+    name: 'dashboards:templates.widgets.conversionTotalSales.name',
+    description: 'dashboards:templates.widgets.conversionTotalSales.description',
+    data_source: 'conversions',
+    pro_only: true,
+    config: {
+      data_source: 'conversions',
+      metric: 'sale_count',
+      group_by: 'none',
+      filters: [],
+      visualization: 'number',
+      size: 'small',
+    },
+  },
+  {
+    id: 'conversion-over-time',
+    name: 'dashboards:templates.widgets.conversionOverTime.name',
+    description: 'dashboards:templates.widgets.conversionOverTime.description',
+    data_source: 'conversions',
+    pro_only: true,
+    config: {
+      data_source: 'conversions',
+      metric: 'count',
+      group_by: 'day',
+      filters: [],
+      visualization: 'line',
+      size: 'small',
+    },
+  },
+  {
+    id: 'conversion-by-utm-source',
+    name: 'dashboards:templates.widgets.conversionByUtmSource.name',
+    description: 'dashboards:templates.widgets.conversionByUtmSource.description',
+    data_source: 'conversions',
+    pro_only: true,
+    config: {
+      data_source: 'conversions',
+      metric: 'count',
+      group_by: 'utm_source',
+      filters: [],
+      visualization: 'bar',
+      size: 'small',
+    },
+  },
+]
+
+export const DASHBOARD_TEMPLATES: DashboardTemplate[] = [
+  {
+    id: 'blank',
+    name: 'dashboards:templates.dashboards.blank.name',
+    description: 'dashboards:templates.dashboards.blank.description',
+    widget_ids: [],
+    pro_only: false,
+  },
+  {
+    id: 'link-performance',
+    name: 'dashboards:templates.dashboards.linkPerformance.name',
+    description: 'dashboards:templates.dashboards.linkPerformance.description',
+    widget_ids: [
+      'link-total-clicks',
+      'link-clicks-over-time',
+      'link-channel-breakdown',
+      'link-top-links',
+      'link-geo-distribution',
+      'link-device-split',
+    ],
+    pro_only: false,
+  },
+  {
+    id: 'website-analytics',
+    name: 'dashboards:templates.dashboards.websiteAnalytics.name',
+    description: 'dashboards:templates.dashboards.websiteAnalytics.description',
+    widget_ids: [
+      'web-total-pageviews',
+      'web-traffic-over-time',
+      'web-top-pages',
+      'web-referrer-sources',
+    ],
+    pro_only: true,
+  },
+  {
+    id: 'conversion-tracking',
+    name: 'dashboards:templates.dashboards.conversionTracking.name',
+    description: 'dashboards:templates.dashboards.conversionTracking.description',
+    widget_ids: [
+      'conversion-total-leads',
+      'conversion-total-sales',
+      'conversion-over-time',
+      'conversion-by-utm-source',
+    ],
+    pro_only: true,
+  },
+  {
+    id: 'engagement',
+    name: 'dashboards:templates.dashboards.engagement.name',
+    description: 'dashboards:templates.dashboards.engagement.description',
+    widget_ids: [
+      'web-total-pageviews',
+      'interaction-total-count',
+      'interaction-by-type',
+      'interaction-top-pages',
+      'event-top-events',
+      'event-over-time',
+    ],
+    pro_only: true,
+  },
+]
+
+export const AVAILABLE_WIDGET_TEMPLATES: WidgetTemplate[] = WIDGET_TEMPLATES.filter((tmpl) =>
+  AVAILABLE_DATA_SOURCES.includes(tmpl.data_source)
+)
+
+// A dashboard template is all-or-nothing: drop it as soon as one of its widgets is hidden
+export const AVAILABLE_DASHBOARD_TEMPLATES: DashboardTemplate[] = DASHBOARD_TEMPLATES.filter(
+  (tmpl) => tmpl.widget_ids.every((id) => AVAILABLE_WIDGET_TEMPLATES.some((w) => w.id === id))
+)

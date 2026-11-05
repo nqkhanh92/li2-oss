@@ -1,0 +1,102 @@
+{
+  "title": "API Keys",
+  "description": "Manage API keys for programmatic access to your organization",
+  "create_button": "Create API Key",
+  "create_dialog": {
+    "title": "Create API Key",
+    "description": "Create a new API key for programmatic access to your organization",
+    "name_label": "Name",
+    "name_placeholder": "e.g., Production Server Key",
+    "type_label": "Type",
+    "type_user": "You",
+    "type_user_description": "Personal API key",
+    "type_bot": "Machine",
+    "type_bot_description": "Service account",
+    "type_help_user": "This key will track activities under your name",
+    "type_help_bot": "A bot user will be created and added to your organization as a member",
+    "permissions_label": "Permissions",
+    "preset_read_only": "Read-only",
+    "preset_read_only_desc": "View only",
+    "preset_standard": "Standard",
+    "preset_standard_desc": "Read & Write",
+    "preset_full": "Full",
+    "preset_full_desc": "All access",
+    "preset_custom": "Custom",
+    "preset_custom_desc": "Select specific",
+    "permissions_summary": "This API key will have {{preset}} access to some resources",
+    "permissions_more": "+{{count}} more permissions",
+    "expiration_label": "Expiration",
+    "expiration_7days": "7 days",
+    "expiration_30days": "30 days",
+    "expiration_365days": "365 days",
+    "expiration_never": "Never",
+    "expiration_custom": "Custom",
+    "pick_date": "Pick a date",
+    "expires_on": "Expires on {{date}}",
+    "advanced_settings": "Advanced Settings",
+    "cancel_button": "Cancel",
+    "create_button": "Create API Key",
+    "creating_button": "Creating..."
+  },
+  "detail_dialog": {
+    "title": "API Key Details",
+    "name_label": "Name",
+    "type_label": "Type",
+    "status_label": "Status",
+    "status_active": "Active",
+    "status_inactive": "Inactive",
+    "created_label": "Created",
+    "last_used_label": "Last Used",
+    "never_used": "Never",
+    "expires_label": "Expires",
+    "never_expires": "Never",
+    "permissions_label": "Permissions",
+    "permissions_count": "{{count}} permissions",
+    "close_button": "Close",
+    "deactivate_button": "Deactivate",
+    "activate_button": "Activate",
+    "delete_button": "Delete"
+  },
+  "created_dialog": {
+    "title": "API Key Created Successfully",
+    "description": "Make sure to copy your API key now. You won't be able to see it again!",
+    "key_label": "API Key",
+    "copy_button": "Copy",
+    "copied": "Copied",
+    "close_button": "I've saved my API key"
+  },
+  "list": {
+    "empty_title": "No API keys",
+    "empty_description": "Create your first API key to get started",
+    "name_column": "Name",
+    "type_column": "Type",
+    "status_column": "Status",
+    "created_column": "Created",
+    "last_used_column": "Last Used",
+    "actions_column": "Actions"
+  },
+  "types": {
+    "user": "User",
+    "bot": "Bot"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "actions": {
+    "view_details": "View Details",
+    "delete": "Delete",
+    "confirm_delete": "Are you sure you want to delete this API key?",
+    "delete_success": "API key deleted successfully",
+    "delete_error": "Failed to delete API key",
+    "update_success": "API key updated successfully",
+    "update_error": "Failed to update API key"
+  },
+  "toast": {
+    "status_updated": "Status Updated",
+    "status_activated": "API key has been activated",
+    "status_deactivated": "API key has been deactivated",
+    "deleted": "API Key Deleted",
+    "deleted_description": "The API key has been permanently deleted"
+  }
+}

@@ -1,0 +1,252 @@
+# Li2 self-host — `docker compose up -d` là chạy được, không cần dịch vụ bên ngoài nào.
+#
+# ## Vì sao chỉ có 4 dịch vụ Supabase chứ không phải 11
+#
+# Bản đầy đủ của Supabase có db, kong, rest, auth, storage, realtime, studio, functions, meta,
+# imgproxy, supavisor. Đã đo từng cái trong mã nguồn Li2:
+#
+#   db       cần  — 125 bảng
+#   rest     cần  — mọi truy vấn đi qua PostgREST
+#   kong     cần  — supabase-js gọi /rest/v1 và /storage/v1, phải có cổng định tuyến
+#   storage  cần  — 3 lời gọi ở `src/infrastructure/storage/artifact-storage.ts`
+#   auth     KHÔNG — Li2 dùng Casdoor. Chỗ duy nhất gọi `supabase.auth` là
+#                    `src/infrastructure/database/supabase/middleware.ts:43`, và file đó là mã
+#                    chết: không file nào import nó.
+#   realtime KHÔNG — 0 lời gọi `.channel()`
+#   studio, functions, meta, imgproxy, supavisor  KHÔNG — 0 lời gọi
+#
+# Bớt 7 dịch vụ là bớt ~2 GB image và 7 thứ có thể hỏng lúc người lạ cài lần đầu.
+#
+# ## Trước khi chạy
+#
+#   cp .env.example .env && ./generate-keys.sh     # sinh JWT_SECRET, ANON_KEY, SERVICE_KEY
+#
+# Phiên bản image ghim đúng bản đang chạy thật trên instance LiHi, không dùng `latest`.
+
+name: li2
+
+services:
+  db:
+    image: supabase/postgres:17.6.1.136
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?xem .env.example}
+      POSTGRES_DB: postgres
+      JWT_SECRET: ${JWT_SECRET:?chạy ./generate-keys.sh trước}
+      JWT_EXP: 3600
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # Thứ tự chạy theo tên file, và initdb dừng cả loạt ngay ở script đầu tiên lỗi.
+      # 00 tạo schema `extensions`, 01 tạo vai trò, 02 nạp 125 bảng.
+      - ./init/00-extensions.sh:/docker-entrypoint-initdb.d/00-extensions.sh:ro
+      - ./init/01-roles.sh:/docker-entrypoint-initdb.d/01-roles.sh:ro
+      - ../supabase/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql:ro
+      # 03 nạp 29 hàng tham chiếu. Thiếu nó thì lần đăng nhập đầu tiên hỏng vì
+      # bảng `plans` rỗng — xem phần đầu seed.sql.
+      - ../supabase/seed.sql:/docker-entrypoint-initdb.d/03-seed.sql:ro
+    healthcheck:
+      # -U supabase_admin: image supabase/postgres KHÔNG có vai trò `postgres`, và
+      # pg_isready thử kết nối thật nên sai tên là log đầy FATAL mỗi 5 giây.
+      test: ['CMD-SHELL', 'pg_isready -U supabase_admin -d postgres -h localhost']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      # Lần `up` ĐẦU TIÊN phải nạp 129 bảng + 976 GRANT, mất khoảng 2 phút trên máy để bàn.
+      # Trong lúc đó Postgres chưa nhận kết nối ngoài, nên không có start_period thì db bị
+      # đánh dấu unhealthy và rest/storage/kong bỏ cuộc với "dependency failed to start".
+      start_period: 240s
+
+  rest:
+    image: postgrest/postgrest:v14.12
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@db:5432/postgres
+      PGRST_DB_ANON_ROLE: anon
+      # `agent` là schema của cụm AI — bản OSS giữ cụm đó nên phải khai ở đây.
+      PGRST_DB_SCHEMAS: public,logs,agent
+      PGRST_DB_EXTRA_SEARCH_PATH: public
+      PGRST_DB_MAX_ROWS: 1000
+      PGRST_DB_USE_LEGACY_GUCS: 'false'
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+
+  storage:
+    image: supabase/storage-api:v1.60.4
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+      rest: { condition: service_started }
+    environment:
+      ANON_KEY: ${ANON_KEY:?chạy ./generate-keys.sh trước}
+      SERVICE_KEY: ${SERVICE_KEY:?chạy ./generate-keys.sh trước}
+      AUTH_JWT_SECRET: ${JWT_SECRET}
+      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD}@db:5432/postgres
+      POSTGREST_URL: http://rest:3000
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      FILE_SIZE_LIMIT: ${MAX_UPLOAD_BYTES:-52428800}
+      # Ba biến này Supabase bắt buộc phải có kể cả khi không dùng S3.
+      TENANT_ID: stub
+      REGION: stub
+      GLOBAL_S3_BUCKET: stub
+      ENABLE_IMAGE_TRANSFORMATION: 'false'   # cần imgproxy; Li2 không dùng
+      # JWKS rỗng: Li2 chỉ ký HS256 bằng AUTH_JWT_SECRET, không dùng khoá bất đối xứng.
+      JWT_JWKS: '{"keys":[]}'
+      REQUEST_ALLOW_X_FORWARDED_PATH: 'true'
+      STORAGE_PUBLIC_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
+    volumes:
+      - storage_data:/var/lib/storage
+
+  kong:
+    image: kong/kong:3.9.1
+    restart: unless-stopped
+    depends_on:
+      rest: { condition: service_started }
+      storage: { condition: service_started }
+    # Kong không thay biến môi trường trong file cấu hình khai báo, nên phải thay trước khi
+    # giao cho nó. Dùng `sed` chứ KHÔNG dùng `eval "echo ..."` như bản mẫu của Supabase: eval
+    # bung MỌI thứ trông giống biến shell, kể cả `${...}` nằm trong dòng chú thích của file —
+    # đã gãy đúng như vậy ("bad substitution" ở dòng 58).
+    #
+    # Ghi ra /tmp vì image chạy bằng user `kong`, không ghi được /home/kong.
+    # Entrypoint của kong:3.x là /entrypoint.sh (bản 2.x mới là /docker-entrypoint.sh).
+    entrypoint: >
+      bash -c 'sed -e "s#\$${SUPABASE_ANON_KEY}#$$SUPABASE_ANON_KEY#"
+      -e "s#\$${SUPABASE_SERVICE_KEY}#$$SUPABASE_SERVICE_KEY#"
+      /home/kong/kong.template.yml > /tmp/kong.yml
+      && /entrypoint.sh kong docker-start'
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: /tmp/kong.yml
+      KONG_DNS_ORDER: LAST,A,CNAME
+      KONG_PLUGINS: request-transformer,cors,key-auth,acl
+      SUPABASE_ANON_KEY: ${ANON_KEY}
+      SUPABASE_SERVICE_KEY: ${SERVICE_KEY}
+    volumes:
+      - ./kong.yml:/home/kong/kong.template.yml:ro
+    # Trình duyệt gọi thẳng Supabase cho phần tải tệp lên, nên cổng này phải ra được ngoài
+    # container. Giá trị phải khớp NEXT_PUBLIC_SUPABASE_URL trong .env.
+    ports:
+      - '${SUPABASE_PORT:-8001}:8000'
+
+  # Chạy một lần rồi thoát: tạo bucket `artifact-content` mà `artifact-storage.ts:12` đọc cứng.
+  # Không có nó thì mọi thao tác artifact trả "Bucket not found" — mà artifact là một trong ba
+  # tính năng lõi của bản OSS.
+  #
+  # `|| true`: lần `up` thứ hai sẽ gặp bucket đã tồn tại (409). Đó là trạng thái ĐÚNG, không
+  # phải lỗi, nên không được để nó làm hỏng cả lệnh.
+  storage-init:
+    image: curlimages/curl:latest
+    restart: 'no'
+    depends_on:
+      kong: { condition: service_healthy }
+    environment:
+      SERVICE_KEY: ${SERVICE_KEY}
+    entrypoint:
+      - 'sh'
+      - '-c'
+      - 'curl -fsS -X POST http://kong:8000/storage/v1/bucket -H "apikey: $$SERVICE_KEY" -H "Authorization: Bearer $$SERVICE_KEY" -H "Content-Type: application/json" -d "{\"id\":\"artifact-content\",\"name\":\"artifact-content\",\"public\":false}" || true'
+
+  casdoor-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: casdoor
+      POSTGRES_PASSWORD: ${CASDOOR_DB_PASSWORD:?xem .env.example}
+      POSTGRES_DB: casdoor
+    volumes:
+      - casdoor_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U casdoor']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  casdoor:
+    # Instance LiHi build Casdoor từ nguồn; bản self-host dùng image chính thức để người cài
+    # không phải chờ một lần biên dịch Go.
+    image: casbin/casdoor:v1.885.0
+    restart: unless-stopped
+    depends_on:
+      casdoor-db: { condition: service_healthy }
+    environment:
+      RUNNING_IN_DOCKER: 'true'
+      driverName: postgres
+      dataSourceName: user=casdoor password=${CASDOOR_DB_PASSWORD} host=casdoor-db port=5432 sslmode=disable dbname=casdoor
+      origin: ${CASDOOR_BASE_URL:-http://localhost:8000}
+    # ⚠ Cổng của App cũng công bố Ở ĐÂY, không phải ở service `app`.
+    # Xem giải thích `network_mode` bên dưới: app dùng chung không gian mạng với container này,
+    # nên mọi cổng của nó phải khai ở đây.
+    ports:
+      - '${CASDOOR_PORT:-8000}:8000'
+      - '${PORT:-3000}:3000'
+
+  redis:
+    image: redis:8.2
+    restart: unless-stopped
+    command:
+      ['redis-server', '--requirepass', '${REDIS_PASSWORD:?xem .env.example}', '--appendonly', 'yes']
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli -a "$$REDIS_PASSWORD" ping | grep PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        # ⚠ NEXT_PUBLIC_* được inline LÚC BUILD. Đổi giá trị trong .env rồi chỉ `up -d` là không
+        # có tác dụng — phải `docker compose build app` lại.
+        NEXT_PUBLIC_EDITION: oss
+        NEXT_PUBLIC_APP_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+        # ⚠ Biến mà mã THẬT đọc là _APP_URL (7 chỗ, `lib/casdoor/index.ts:8`).
+        # _BASE chỉ có 1 chỗ dùng. Đặt nhầm cái kia thì app vẫn chạy nhưng chuyển
+        # hướng đăng nhập sang Casdoor của instance khác — đã gặp đúng vậy.
+        NEXT_PUBLIC_CASDOOR_APP_URL: ${NEXT_PUBLIC_CASDOOR_APP_URL:-http://localhost:8000}
+        NEXT_PUBLIC_CASDOOR_BASE: ${NEXT_PUBLIC_CASDOOR_BASE:-http://localhost:8000}
+        NEXT_PUBLIC_CASDOOR_ORG_NAME: ${NEXT_PUBLIC_CASDOOR_ORG_NAME:-}
+        NEXT_PUBLIC_CASDOOR_APP_NAME: ${NEXT_PUBLIC_CASDOOR_APP_NAME:-}
+        NEXT_PUBLIC_CASDOOR_CLIENT_ID: ${NEXT_PUBLIC_CASDOOR_CLIENT_ID:-}
+        NEXT_PUBLIC_CASDOOR_BASE64_CERT: ${NEXT_PUBLIC_CASDOOR_BASE64_CERT:-}
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+      kong: { condition: service_started }
+      redis: { condition: service_healthy }
+      casdoor: { condition: service_started }
+    # ⚠ Dùng CHUNG không gian mạng với container casdoor. Đây không phải trang trí.
+    #
+    # `NEXT_PUBLIC_CASDOOR_APP_URL` được Next nhúng vào bundle lúc build, và nhúng vào CẢ mã
+    # server — ghi đè lúc chạy không có tác dụng (đã thử). Nghĩa là **một** URL phải đúng cho
+    # cả hai phía:
+    #   trình duyệt → Casdoor      cần  http://localhost:8000
+    #   app (server) → Casdoor     thì  localhost:8000 lại là chính app
+    # Không URL nào chứa `localhost` thoả mãn cả hai... trừ khi hai container dùng chung một
+    # ngăn xếp mạng. Lúc đó `localhost:8000` bên trong app ĐÚNG là Casdoor.
+    #
+    # Hệ quả: app không còn tên DNS riêng, và cổng 3000 phải khai ở service `casdoor`.
+    network_mode: 'service:casdoor'
+    env_file: .env
+    environment:
+      SUPABASE_URL: http://kong:8000
+      NEXT_PUBLIC_SUPABASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}/supabase
+      # ⚠ Mã đọc REDIS_HOST/PORT/PASSWORD rời (`infrastructure/cache/redis/index.ts`), KHÔNG
+      # đọc REDIS_URL. Đặt nhầm REDIS_URL thì ioredis rơi về 127.0.0.1:6379 và log đầy
+      # ECONNREFUSED trong khi container redis vẫn khoẻ.
+      REDIS_HOST: redis
+      REDIS_PORT: '6379'
+      REDIS_DB: '0'
+
+volumes:
+  db_data:
+  storage_data:
+  casdoor_data:
+  redis_data:
