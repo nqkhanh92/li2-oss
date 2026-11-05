@@ -113,7 +113,10 @@ export function getMenuList(pathname: string): Group[] {
           ),
           submenus: [],
           isPremium: false,
-          enabled: !disabledFeatures.ONBOARDING,
+          // Get Started là bản cloud. Hai thẻ của trang đó giới thiệu Heatmaps, Funnels,
+          // Session Replay, Conversion Tracking, Link Journey — toàn thứ bản OSS KHÔNG có.
+          // Để lại là quảng cáo tính năng không tồn tại. Chủ sản phẩm chốt 2026-11-05.
+          enabled: isCloud && !disabledFeatures.ONBOARDING,
         },
         {
           href: `/org/${org_id}/overview`,

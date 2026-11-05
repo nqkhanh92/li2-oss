@@ -10,6 +10,7 @@ import { useCanny } from '@/shared/providers/canny-provider'
 import { CustomAvatar } from './custom-avatar'
 import { CustomBadge } from './custom-badge'
 import { cn } from '@/shared/lib/utils'
+import { isOss } from '@/shared/constants/edition'
 import { disabledFeatures } from '@/shared/constants/disabled-features'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef } from 'react'
@@ -45,7 +46,11 @@ export function UserSidebar() {
 
   const hiddenBtnRef = useRef<HTMLButtonElement>(null)
 
-  if (disabledFeatures.ROADMAP) return null
+  // Roadmap & Requests là Canny — dịch vụ ngoài, và `canny-provider.tsx:27` trỏ cứng tới
+  // `li2.canny.io`, tức bảng góp ý của CHÍNH Li2. Người tự host không có tài khoản Canny; để
+  // lại thì tốt nhất là nút chết, tệ nhất là đẩy người dùng của họ sang bảng góp ý của người
+  // khác. Không có biến cấu hình nào sửa được chuyện đó.
+  if (isOss || disabledFeatures.ROADMAP) return null
 
   return (
     <div className="w-full border-t border-slate-300 flex flex-col items-start justify-center py-2.5">

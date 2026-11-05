@@ -52,6 +52,7 @@ ARG NEXT_PUBLIC_CASDOOR_ORG_NAME=
 ARG NEXT_PUBLIC_CASDOOR_APP_NAME=
 ARG NEXT_PUBLIC_CASDOOR_CLIENT_ID=
 ARG NEXT_PUBLIC_CASDOOR_BASE64_CERT=
+ARG NEXT_PUBLIC_MAPBOX_TOKEN=
 
 # Giá trị GIẢ, chỉ sống trong stage builder này. `next build` chạy giai đoạn "collect page
 # data", tức là NẠP mã server thật — và mã đó dựng client Supabase lẫn Redis ngay lúc import.
@@ -75,7 +76,7 @@ RUN set -eu; \
              NEXT_PUBLIC_CASDOOR_BASE NEXT_PUBLIC_CASDOOR_APP_URL \
              NEXT_PUBLIC_CASDOOR_ORG_NAME \
              NEXT_PUBLIC_CASDOOR_APP_NAME NEXT_PUBLIC_CASDOOR_CLIENT_ID \
-             NEXT_PUBLIC_CASDOOR_BASE64_CERT; do \
+             NEXT_PUBLIC_CASDOOR_BASE64_CERT NEXT_PUBLIC_MAPBOX_TOKEN; do \
       eval "val=\${$v}"; \
       [ -n "$val" ] && export "$v=$val" || true; \
     done; \

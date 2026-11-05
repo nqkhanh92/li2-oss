@@ -36,6 +36,7 @@ import { usePlanProvider, UserPlan } from '@/shared/providers/plan-provider'
 import { PAID_PLAN_KEYS } from '@/shared/types/plan-permission'
 import { Separator } from '../../ui/separator'
 import { CustomAvatar } from '../sidebar/custom-avatar'
+import { isCloud } from '@/shared/constants/edition'
 import { CustomBadge } from '../sidebar/custom-badge'
 import { useTranslation } from 'react-i18next'
 import { CustomSwitch } from '../../customize/custom-switch'
@@ -97,7 +98,9 @@ export function UserNav() {
                     <span className="truncate font-medium">
                       {profile?.display_name || profile?.email || 'User'}
                     </span>
-                    <CustomBadge
+                    {/* Bản OSS không có bậc gói nào, nên nhãn "Free account" ở đây chỉ gây
+                        hiểu nhầm là còn thứ gì đó phải mua. Xem `lib/plan/check-plan.ts`. */}
+                    {isCloud && <CustomBadge
                       plan={plan || {}}
                       startIcon={
                         PAID_PLAN_KEYS.includes(plan?.plans?.plan_key as any) ? (
@@ -118,7 +121,7 @@ export function UserNav() {
                           : 'default'
                       }
                       className="min-h-4 py-1 px-2"
-                    />
+                    />}
                   </div>
                   <ChevronDown className="hidden md:block w-4 h-4" />
                 </Button>
@@ -131,7 +134,7 @@ export function UserNav() {
           <div className="lg:hidden flex items-center gap-2 text-sm leading-[20px] font-medium px-2 py-1.5">
             <div className="lg:hidden grid flex-1 text-left text-sm leading-tight">
               <span className="truncate">{profile?.display_name || profile?.email || 'User'}</span>
-              <CustomBadge
+              {isCloud && <CustomBadge
                 plan={plan || {}}
                 startIcon={
                   ['premium', 'premium trial'].includes(plan?.plans?.name?.toLowerCase() || '') ? (
@@ -152,7 +155,7 @@ export function UserNav() {
                     ? 'premium'
                     : 'default'
                 }
-              />
+              />}
             </div>
           </div>
           <Separator className="lg:hidden flex" />

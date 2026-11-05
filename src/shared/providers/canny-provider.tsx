@@ -5,6 +5,7 @@ import { Dialog, DialogContent } from '../components/ui/dialog'
 import { SkeletonCard } from '../components/customize/skeleton-card'
 import { cn } from '../lib/utils'
 import { Button } from '../components/ui/button'
+import { isOss } from '@/shared/constants/edition'
 import { disabledFeatures } from '../constants/disabled-features'
 
 interface CannyContextType {
@@ -22,13 +23,14 @@ export const CannyProvider = ({ children }: { children: ReactNode }) => {
   const [frDialogLoading, setFrDialogLoading] = useState(false)
   const [frDialogOpen, setFrDialogOpen] = useState(false)
   const { ssoToken, isLoading: isLoadingToken } = useCannySso({
-    enabled: !disabledFeatures.ROADMAP,
+    enabled: !isOss && !disabledFeatures.ROADMAP,
   })
   const roadMapUrl = `https://li2.canny.io/?ssoToken=${ssoToken}`
 
   useEffect(() => {
     // Ẩn Roadmap = không tải SDK bên thứ ba, không chỉ ẩn nút.
-    if (disabledFeatures.ROADMAP) return
+    // Bản OSS không tải SDK bên thứ ba nào — xem `user-sidebar.tsx`.
+    if (isOss || disabledFeatures.ROADMAP) return
     const script = document.createElement('script')
     script.src = 'https://sdk.canny.io/sdk.js'
     document.body.appendChild(script)

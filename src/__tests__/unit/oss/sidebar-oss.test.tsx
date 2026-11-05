@@ -114,6 +114,13 @@ describe('sidebar bản OSS — tiêu chí nghiệm thu bằng hình', () => {
     expect(await enabledLabels('cloud')).toContain('sidebar.funnels')
   })
 
+  it('bản OSS KHÔNG có Get Started', async () => {
+    // Hai thẻ của trang đó giới thiệu Heatmaps, Funnels, Session Replay, Conversion Tracking,
+    // Link Journey — bản OSS không có cái nào. Chủ sản phẩm chốt 2026-11-05.
+    expect(await enabledLabels('oss')).not.toContain('sidebar.onboarding')
+    expect(await enabledLabels('cloud')).toContain('sidebar.onboarding')
+  })
+
   it('bản OSS KHÔNG còn vương miện 👑 nào — không có bậc gói để nâng cấp lên', async () => {
     const crowned = await premiumLabels('oss')
     expect(crowned, 'isPremium phải tắt hết khi EDITION=oss').toEqual([])
@@ -156,6 +163,7 @@ describe('sidebar bản OSS — tiêu chí nghiệm thu bằng hình', () => {
       'sidebar.eventRules',
       'sidebar.funnels',
       'sidebar.linkJourney',
+      'sidebar.onboarding',
       'sidebar.sessionRecordings',
       'sidebar.siteAnalytics',
     ])

@@ -216,6 +216,7 @@ services:
         NEXT_PUBLIC_CASDOOR_APP_NAME: ${NEXT_PUBLIC_CASDOOR_APP_NAME:-}
         NEXT_PUBLIC_CASDOOR_CLIENT_ID: ${NEXT_PUBLIC_CASDOOR_CLIENT_ID:-}
         NEXT_PUBLIC_CASDOOR_BASE64_CERT: ${NEXT_PUBLIC_CASDOOR_BASE64_CERT:-}
+        NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN:-}
     restart: unless-stopped
     depends_on:
       db: { condition: service_healthy }

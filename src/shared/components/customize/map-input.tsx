@@ -112,8 +112,11 @@ export const MapInput = React.forwardRef<MapInputRef, MapInputProps>(
           </Command>
         </div>
         <Map
-          // Khoá Mapbox của chính người vận hành. Lấy ở https://account.mapbox.com/access-tokens
-          // Bỏ trống thì ô chọn vị trí trên bản đồ không hiện; phần còn lại vẫn chạy.
+          // Khoá Mapbox đọc từ env, KHÔNG viết thẳng vào mã. Bản cũ nhúng cứng một token
+          // `pk.` gắn với một tài khoản cá nhân: token loại này vốn lộ sẵn trong mọi trình
+          // duyệt tải trang, nhưng nó vẫn tính vào hạn mức của tài khoản đó, và ai clone mã
+          // cũng dùng được. Lấy khoá tại https://account.mapbox.com/access-tokens
+          // Bỏ trống thì ô bản đồ không hiện; phần còn lại của form vẫn chạy.
           mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
           onMove={(evt) => setViewState((pre) => ({ ...pre, ...evt.viewState }))}
           {...viewState}

@@ -5,12 +5,39 @@ import {
   PlanLimitKey,
   OrgAdvancedFeatureKey,
 } from '@/shared/types/plan-permission'
+import { isOss } from '@/shared/constants/edition'
 
+/**
+ * ## Vì sao bản OSS bỏ hẳn cổng gói
+ *
+ * Bậc gói chỉ có nghĩa khi có chỗ để nâng cấp lên. Bản tự host không có ai bán gì cho ai, nên
+ * mỗi lần cổng này trả `false` là một ngõ cụt: người dùng thấy "Upgrade now" và nút đó không dẫn
+ * đi đâu. Đã nhìn thấy thật trên trang Customers của bản tự host.
+ *
+ * ## Vì sao chặn ở ĐÂY chứ không gỡ lời gọi
+ *
+ * **91 file** gọi `hasPlan` / `ensureOrgPlan` / `checkOrgLimitation`. Gỡ từng lời gọi là sửa 91
+ * file và chắc chắn sót. Hai dòng `if (isOss) return true` dưới đây làm mọi đường dẫn — kể cả
+ * `ensureUserPlan`, `ensureOrgPlan`, `PlanPolicy`, `OrgPlanPolicy`, vốn đều quy về hai hàm này —
+ * trở nên dễ dãi cùng lúc.
+ *
+ * ## Vì sao KHÔNG gán tổ chức sang gói PREMIUM thay vì shim
+ *
+ * Hai trong bốn hằng ở `shared/constants/index.ts:131` trỏ vào hàng **không tồn tại**:
+ * `PREMIUM = 8c337bdb…` nhưng hàng thật là `638acf5f…`, `FREE_TRIAL = 374e934f…` nhưng hàng thật
+ * là `e3b16158…`. Gán sang PREMIUM là lặp lại đúng lỗi khoá ngoại 23503 đã làm hỏng lần đăng
+ * nhập đầu tiên. Shim không quan tâm tổ chức đang mang hàng nào.
+ *
+ * ⚠ Đây là cơ chế **giao diện và luồng dùng**, không phải cơ chế cấp phép. Nó không mở khoá mã
+ * nằm ở `src/ee/` — mã đó bị ẩn bằng `EDITION`, không bằng gói.
+ */
 export function hasPlan(
   userPlan: Plan,
   key: Exclude<PlanLimitKey, OrgAdvancedFeatureKey>,
   currentValue: number | string
 ): boolean {
+  if (isOss) return true
+
   const planLimit = userPlan[key]
   if (typeof planLimit === 'boolean') return planLimit
 
@@ -51,6 +78,9 @@ export function checkOrgLimitation(
   key: OrgPlanLimitKey,
   expectedValue?: number | string | string[]
 ): boolean {
+  // Xem khối chú thích ở `hasPlan`: bản OSS không có bậc gói nào để chặn.
+  if (isOss) return true
+
   const planLimit = orgPlan[key]
 
   // if plan limit is boolean, return plan limit
